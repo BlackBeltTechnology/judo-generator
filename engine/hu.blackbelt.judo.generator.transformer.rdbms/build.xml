@@ -8,11 +8,9 @@
 	<property name="target.dir.name" value="target-ant" />
 	<property name="target.dir" location="${target.dir.name}" />
 
-	<property name="meta.psm.project.dir" location="../hu.blackbelt.judo.meta.psm" />
-
-	<property name="psm.model.project.dir" location="../hu.blackbelt.judo.generator.psm" />
-
-	<property name="third.party.project.dir" location="../hu.blackbelt.judo.third.party" />
+	<property name="meta.psm.project.dir" location="../hu.blackbelt.judo.generator.meta.psm" />
+	<property name="psm.model.project.dir" location="../hu.blackbelt.judo.generator.transformer.psm" />
+	<property name="third.party.project.dir" location="../hu.blackbelt.judo.generator.third.party" />
 
 	<path id="ant.taskdef.classpath">
 		<fileset dir="${third.party.project.dir}/lib/ant" includes="**/*.jar" />
@@ -46,7 +44,7 @@
 	<!-- =========================== -->
 	<!-- Project specific parameters -->
 	<!-- =========================== -->	
-	<property name="meta.psm.rdbms.project.dir" location="../hu.blackbelt.judo.meta.psm.rdbms" />
+	<property name="meta.psm.rdbms.project.dir" location="../hu.blackbelt.judo.generator.meta.psm.rdbms" />
 	<property name="rdbms.psm.library.dir" location="${meta.psm.rdbms.project.dir}/library" />
 	<property name="gen.dir" location="${target.dir}/rdbms" />
 	<property name="readRdbmsPsmModel" value="false"/>

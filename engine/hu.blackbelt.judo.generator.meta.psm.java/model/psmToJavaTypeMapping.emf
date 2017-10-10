@@ -1,0 +1,16 @@
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/java/mapping", prefix="psmToJava")
+package psmToJavaTypeMapping;
+
+import "http://blackbelt.hu/judo/meta/psm";
+import "http://blackbelt.hu/judo/meta/psm/java";
+
+class Mapping {
+  ref psm.JPrimitive[1] psmType;
+  ref java.JvmPrimitive[1] javaType;
+  attr String name;
+}
+
+class Mappings {
+  val Mapping[*] mappings;
+}
+

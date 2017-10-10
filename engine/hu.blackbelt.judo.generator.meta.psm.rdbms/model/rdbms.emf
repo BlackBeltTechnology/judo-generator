@@ -1,0 +1,89 @@
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/rdbms", prefix="rdbms")
+package rdbms;
+
+abstract class RdbmsElement {
+  attr String name;
+  attr String uuid;
+  attr String shortName;
+  attr String fullName;
+  attr String description;
+  attr String sqlName;
+}
+
+class RdbmsTable extends RdbmsElement {
+  val RdbmsField[*]#table fields;
+  ref RdbmsUniqueKey[*]#table uniqueKeys;
+  ref RdbmsIdentifierField[1] primaryKey;
+}
+
+abstract class RdbmsField extends RdbmsElement {
+  ref RdbmsTable[1]#fields table;
+  ref RdbmsFieldType[1] type;
+  attr boolean[1] mandatory;
+}
+
+class RdbmsForeignKey extends RdbmsIdentifierField {
+  ref RdbmsIdentifierField[1]#foreignKeys referenceKey;
+  attr boolean inheritenceBased = false;
+}
+
+class RdbmsUniqueKey extends RdbmsElement {
+  ref RdbmsTable[1]#uniqueKeys table;
+}
+
+class RdbmsJunctionTable extends RdbmsTable {
+  ref RdbmsForeignKey[1] field1;
+  ref RdbmsForeignKey[1] field2;
+}
+
+class RdbmsIdentifierField extends RdbmsField {
+  ref RdbmsForeignKey[*]#referenceKey foreignKeys;
+}
+
+class RdbmsView extends RdbmsElement {
+  ref RdbmsTable baseTable;
+  val RdbmsViewField[*]#view fields;
+}
+
+abstract class RdbmsViewField extends RdbmsElement {
+  ref RdbmsView[1]#fields view;
+}
+
+class RdbmsViewValueField extends RdbmsViewField {
+  ref RdbmsValueField[1] tableField;
+}
+
+class RdbmsViewExpressionField extends RdbmsViewField {
+  ref RdbmsExpression[1] expression;
+}
+
+class RdbmsExpression extends RdbmsElement {
+  attr String expression;
+  ref RdbmsValueField[*] parts;
+}
+
+class RdbmsFieldType {
+  attr String name;
+  attr String rdbmsTypeName;
+  attr String uuid;
+  attr String description;
+  attr int size;
+  attr int precision;
+  attr int scale;
+  attr int storageByte;
+}
+
+class RdbmsModel {
+  val RdbmsFieldType[*] rdbmsFieldTypes;
+  val RdbmsTable[*] rdbmsTables;
+  val RdbmsView[*] rdbmsViews;
+}
+
+class RdbmsValueField extends RdbmsField {
+  attr boolean technical = false;
+}
+
+class RdbmsViewIdentifierField extends RdbmsViewField {
+  ref RdbmsIdentifierField[1] tableField;
+}
+

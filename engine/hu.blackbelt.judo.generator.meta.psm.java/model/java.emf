@@ -1,0 +1,201 @@
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/java", prefix="java")
+package java;
+
+abstract class JvmElement {
+  attr String[1] name;
+  id attr String[1] uuid;
+  attr String shortName;
+  attr String fullName;
+  attr String description;
+  attr boolean framework = false;
+  attr boolean fwElement = false;
+}
+
+class JvmModel extends JvmElement {
+  val JvmPackage[*]#ownerModel packages;
+  attr String[1] version;
+  ref JvmPackage[1] applicationTop;
+}
+
+class JvmPackage extends JvmPackagableElement {
+  val JvmPackagableElement[*]#~package contents;
+  ref JvmModel#packages ownerModel;
+  ref JvmClass domainBqlClass;
+}
+
+abstract class JvmPackagableElement extends JvmElement {
+  ref JvmPackage#contents ~package;
+}
+
+abstract class JvmType extends JvmPackagableElement {
+  ref JvmType supertype;
+  attr boolean useForJudoId;
+}
+
+abstract class JvmTypedElement extends JvmElement {
+  ref JvmType[1] type;
+}
+
+class JvmClass extends JvmInterface {
+  val JvmMember[*]#ownerClass members;
+  val JvmStateMachine[*]#ownerClass stateMachines;
+  ref JvmEnum#classRepresentation fixedEnum;
+  attr boolean ~abstract;
+  ref JvmAttribute representationAttribute;
+  attr boolean representsTenant;
+  attr boolean tenantMember;
+  attr boolean technicalObject;
+  attr boolean representsEnum;
+  attr boolean representsTenantUser;
+  attr boolean representsUser;
+  attr boolean businessSingleton;
+  ref JvmInterface[*] implements;
+}
+
+class JvmEnum extends JvmCoordinated {
+  val JvmLiteral[*]#ownerEnum literals;
+  ref JvmClass#fixedEnum classRepresentation;
+}
+
+class JvmLiteral extends JvmElement {
+  ref JvmEnum#literals ownerEnum;
+}
+
+class JvmPrimitive extends JvmType {
+  attr String primitive;
+}
+
+abstract class JvmCollection extends JvmType {
+  ref JvmType[1] componentType;
+}
+
+class JvmList extends JvmCollection {
+}
+
+class JvmMethod extends JvmTypedElement {
+  val JvmMethodParameter[*]#ownerMethod parameters;
+  ref JvmTransition[*]#executingMethod transitions;
+  ref JvmGuard[*]#implementingMethod guards;
+  attr boolean classBased;
+  attr boolean bulk;
+  attr JvmMethodKind kind;
+  ref JvmInterface#methods ownerClass;
+  ref JvmMethod origin;
+}
+
+abstract class JvmMember extends JvmTypedElement {
+  ref JvmClass#members ownerClass;
+  attr boolean ~derived;
+  attr boolean ~unique;
+  attr String defaultValueExpression;
+}
+
+class JvmMethodParameter extends JvmTypedElement {
+  ref JvmMethod#parameters ownerMethod;
+}
+
+enum JvmMethodKind {
+  CUSTOM = 0;
+  QUERY = 1;
+  QUERY_COUNT = 3;
+  SM_DECIDE = 4;
+  CUSTOM_BULK = 5;
+}
+
+class JvmAttribute extends JvmMember {
+  attr boolean mandatory;
+  attr boolean technical;
+  attr String regexpForValidation;
+  attr String calculationScript;
+  attr String regexp;
+}
+
+class JvmReference extends JvmMember {
+  attr JvmReferenceKind kind;
+  attr int upper;
+  attr int lower;
+  attr boolean navigable;
+  attr String optionScript;
+  ref JvmReference opposite;
+  attr String virtualExpressionScript;
+  attr JvmReferenceType referenceType;
+  attr String derivedDescription;
+}
+
+class JvmState extends JvmElement {
+  ref JvmStateMachine#states ownerStateMachine;
+  ref JvmTransition[*]#fromState outgoingTransitions;
+  ref JvmTransition[*]#toState incomingTransitions;
+  attr boolean initialState;
+  attr boolean finalState;
+}
+
+class JvmStateMachine extends JvmElement {
+  ref JvmClass#stateMachines ownerClass;
+  val JvmState[*]#ownerStateMachine states;
+  val JvmTransition[*]#ownerStateMachine transitions;
+  ref JvmEnum[1] correspondingEnum;
+}
+
+class JvmTransition extends JvmElement {
+  ref JvmState[1]#outgoingTransitions fromState;
+  ref JvmState#incomingTransitions toState;
+  val JvmGuard#ownerTransition guard;
+  ref JvmMethod#transitions executingMethod;
+  ref JvmStateMachine#transitions ownerStateMachine;
+}
+
+class JvmGuard extends JvmElement {
+  ref JvmTransition#guard ownerTransition;
+  ref JvmMethod[1]#guards implementingMethod;
+  ref JvmLiteral[1] literal;
+  attr String text;
+  attr String expression;
+}
+
+enum JvmReferenceKind {
+  ASSOCIATION = 0;
+  AGGREGATION = 1;
+  COMPOSITION = 2;
+}
+
+class JvmInterface extends JvmCoordinated {
+  val JvmMethod[*]#ownerClass methods;
+}
+
+enum JvmReferenceType {
+  OneToOne = 0;
+  ManyToMany = 1;
+  OneToMany = 2;
+  ManyToOne = 3;
+}
+
+enum JvmJudoCoordinate {
+  ORIGIN = 0;
+  BO = 1;
+  BO_SERVICE_INTERFACE = 2;
+  DTO = 3;
+  REST_DTO = 4;
+  BO_ENUM_SERVICE = 5;
+  BO_BUILDER = 6;
+  BO_BQL = 7;
+  PO = 8;
+  BO_ENUM = 9;
+  PO_ENUM = 10;
+  DOMAIN_BQL = 11;
+  DAO_MINIMAL = 12;
+  BO_SERVICE_ABSTRACT = 13;
+  BO_SERVICE_DEFAULT = 14;
+  BO_SERVICE_WRAPPER = 15;
+  DAO_QUERY_DSL = 16;
+  DAO_Q_CLASS = 17;
+  BO_INTERFACE = 18;
+  BO_BUILDER_INTERFACE = 19;
+  BO_BQL_INTERFACE = 20;
+}
+
+abstract class JvmCoordinated extends JvmType {
+  attr JvmJudoCoordinate coordinate;
+  ref JvmCoordinated origin;
+}
+

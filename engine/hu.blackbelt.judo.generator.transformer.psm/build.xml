@@ -15,12 +15,12 @@
 	<property name="psm.hutn.location" location="${model.src.dir}/${psm.model.file.name}.hutn" />
 
 
-	<property name="third.party.project.dir" location="../hu.blackbelt.judo.third.party" />
+	<property name="third.party.project.dir" location="../hu.blackbelt.judo.generator.third.party" />
 	
 	<property name="psm.model.location" location="${transformed.dir}/${psm.model.file.name}.${model.file.extension}" />
 	<property name="psm.model.name" value="PSM" />
 
-	<property name="psm.meta.project.dir" location="../hu.blackbelt.judo.meta.psm" />
+	<property name="psm.meta.project.dir" location="../hu.blackbelt.judo.generator.meta.psm" />
 	<property name="psm.meta.location" location="${psm.meta.project.dir}/model/psm.ecore" />
 	<property name="psm.meta.uri" value="http://blackbelt.hu/judo/meta/psm" />
 	<property name="psm.library.dir" location="${psm.meta.project.dir}/library" />
@@ -28,7 +28,7 @@
 
 
 	
-	<property name="hutn.parser.project.dir" location="../../hu.blackbelt.judo.workaround.ant.hutn.parser" />
+	<property name="hutn.parser.project.dir" location="../../tools/hu.blackbelt.judo.workaround.ant.hutn.parser" />
 	
 	<property name="main.class.name" value="hu.blackbelt.judo.workaround.ant.hutn.parser.Main" />
 	
@@ -44,6 +44,7 @@
 	<target name="prepare">
 		<mkdir dir="${target.dir}" />
 		<mkdir dir="${transformed.dir}" />
+		<delete file="${transformed.dir}/${psm.model.file.name}_psmtypestokenreplaced.hutn" failonerror="false"/>
 		<delete file="${psm.model.location}" failonerror="false" />
 		<touch file="${psm.model.location}" />
 		<path id="hutn.parse.classpath">
@@ -54,6 +55,7 @@
 
 	<target name="prepareForMaven">
 		<mkdir dir="${transformed.dir}" />
+        <delete file="${transformed.dir}/${psm.model.file.name}_psmtypestokenreplaced.hutn" failonerror="false"/>
 		<delete file="${psm.model.location}" failonerror="false" />
 		<touch file="${psm.model.location}" />
 		<path id="hutn.parse.classpath">

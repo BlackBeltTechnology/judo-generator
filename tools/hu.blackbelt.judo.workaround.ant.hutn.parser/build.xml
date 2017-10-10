@@ -2,14 +2,14 @@
 <project default="build">
 	<property name="target.dir" location="target-ant" />
 
-	<property name="hutn.file.location" location="../hu.blackbelt.judo.generator/src/model/test_car.hutn" />
-	<property name="psm.meta.location" location="../hu.blackbelt.judo.meta.psm/model/psm.ecore" />
-	<property name="psm.types.location" location="../hu.blackbelt.judo.meta.psm/library/psmTypes.model" />
+	<property name="hutn.file.location" location="../../engine//hu.blackbelt.judo.generator.transformer.psm/src/model/test_car.hutn" />
+	<property name="psm.meta.location" location="../../engine//hu.blackbelt.judo.meta.psm/model/psm.ecore" />
+	<property name="psm.types.location" location="../../engine/hu.blackbelt.judo.meta.psm/library/psmTypes.model" />
 	<property name="transformed.model.name" value="transformedModelFromAnt.model" />
 	<property name="transformed.base.dir" value="${target.dir}" />
 	<property name="psm.meta.uri" value="http://blackbelt.hu/judo/meta/psm" />
 
-	<property name="dep.jar.file" location="../generator-engine/hu.blackbelt.judo.third.party/lib/ant/epsilon-ant/epsilon-1.4-kitchensink.jar" />
+	<property name="dep.jar.file" location="../../engine/hu.blackbelt.judo.generator.third.party/lib/ant/epsilon-ant/epsilon-1.4-kitchensink.jar" />
 	<property name="_src.dir" location="src/main/java" />
 	<property name="classes.dir" location="${target.dir}/classes" />
 	<property name="jar.name" value="hutnTomodelParser.jar" />

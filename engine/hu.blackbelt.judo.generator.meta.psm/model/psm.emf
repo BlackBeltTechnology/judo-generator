@@ -1,0 +1,187 @@
+@namespace(uri="http://blackbelt.hu/judo/meta/psm", prefix="psm")
+package psm;
+
+abstract class JElement {
+  id attr String[1] uuid;
+  attr String name;
+  attr String shortName;
+  attr String fullName;
+  attr String description;
+  attr boolean framework;
+  attr JLayer[*] participates;
+  attr JVisibility visibility;
+}
+
+abstract class JType extends JElement {
+}
+
+abstract class JTypedElement extends JElement {
+  ref JType[1] type;
+}
+
+class JPrimitive extends JType {
+  ref JPackage#primitives ~package;
+  attr boolean useForIdType;
+}
+
+class JEnumeration extends JType {
+  ref JPackage#enumerations ~package;
+  val JLiteral[*]#enumeration literals;
+  ref JClass#fixedEnum classRepresentation;
+}
+
+class JClass extends JType {
+  attr boolean ~abstract;
+  val JStateMachine[*]#ownerClass stateMachines;
+  val JOperation[*]#ownerClass operations;
+  attr String[*] aliases;
+  ref JAttribute[*] attributeOrder;
+  ref JAttribute[*] attributesForListing;
+  ref JEnumeration#classRepresentation fixedEnum;
+  attr boolean representsTenant;
+  attr boolean tenantMember;
+  ref JAttribute representation;
+  attr boolean representsEnum;
+  attr boolean representsTenantUser;
+  attr boolean representsUser;
+  ref JClass supertype;
+  ref JPackage#classes ~package;
+  ref JRole[*]#ownerClass roles;
+  val JAttribute[*]#ownerClass attributes;
+  attr boolean businessSingleton;
+}
+
+class JAttribute extends JTypedElement {
+  attr boolean ~unique;
+  attr boolean ~ordered;
+  attr String value;
+  attr String placeholder;
+  attr String regexp;
+  attr boolean mandatory;
+  attr boolean ~derived;
+  attr boolean calculated;
+  attr int decimals;
+  attr String interval;
+  attr boolean technical;
+  ref JClass#attributes ownerClass;
+}
+
+class JOperation extends JElement {
+  attr boolean classBased;
+  ref JClass#operations ownerClass;
+  val JParameter[*]#ownerOperation parameters;
+  ref JTransition[*]#executingOperation transition;
+  attr boolean bulk;
+  attr JOperationKind kind;
+}
+
+class JParameter extends JTypedElement {
+  attr boolean ~ordered;
+  attr boolean ~unique;
+  attr int lower = 0;
+  attr int upper = 1;
+  ref JOperation#parameters ownerOperation;
+  attr boolean input = true;
+}
+
+class JRelationship extends JElement {
+  ref JPackage#relationships ~package;
+  val JRole[2]#ownerRelationship roles;
+  attr boolean ~derived;
+}
+
+class JRole extends JElement {
+  attr int lower = 0;
+  attr int upper = 1;
+  attr boolean navigable;
+  attr boolean ~unique;
+  attr boolean ~ordered = true;
+  ref JRelationship#roles ownerRelationship;
+  attr String derivedExpression;
+  attr String derivedDescription;
+  attr JAssociationKind kind = "ASSOCIATION";
+  attr String optionScript;
+  ref JClass[1]#roles ownerClass;
+  attr String value;
+  attr boolean calculated;
+}
+
+class JLiteral extends JElement {
+  ref JEnumeration#literals enumeration;
+}
+
+class JPackage extends JElement {
+  val JEnumeration[*]#~package enumerations;
+  val JPrimitive[*]#~package primitives;
+  val JRelationship[*]#~package relationships;
+  val JPackage[*]#parent children;
+  ref JPackage#children parent;
+  ref JModel#packages ownerModel;
+  val JClass[*]#~package classes;
+}
+
+class JStateMachine extends JElement {
+  ref JClass#stateMachines ownerClass;
+  val JState[*]#ownerStateMachine states;
+  val JTransition[*]#stateMachine transitions;
+  ref JEnumeration[1] correspondingEnum;
+}
+
+class JTransition extends JElement {
+  ref JStateMachine#transitions stateMachine;
+  val JGuard#transition guard;
+  ref JState[1]#incomingTransitions toState;
+  ref JState[1]#outgoingTransitions fromState;
+  ref JOperation#transition executingOperation;
+}
+
+class JState extends JElement {
+  ref JStateMachine#states ownerStateMachine;
+  ref JTransition[*]#toState incomingTransitions;
+  ref JTransition[*]#fromState outgoingTransitions;
+  attr boolean initialState;
+  attr boolean finalState;
+}
+
+class JGuard extends JElement {
+  ref JTransition#guard transition;
+  attr String text;
+  attr String expression;
+}
+
+enum JVisibility {
+  PUBLIC = 0;
+  PROTECTED = 1;
+  PACKAGE = 2;
+  PRIVATE = 3;
+}
+
+class JModel extends JElement {
+  val JPackage[*]#ownerModel packages;
+  attr String[1] version;
+  attr String packagePrefix;
+  ref JPackage[1] applicationTop;
+}
+
+enum JAssociationKind {
+  ASSOCIATION = 0;
+  AGGREGATION = 1;
+  COMPOSITION = 2;
+}
+
+enum JOperationKind {
+  CUSTOM = 0;
+  QUERY = 1;
+}
+
+enum JLayer {
+  ALL = 0;
+  PERSISTENCE = 1;
+  SERVICE = 2;
+  OPERATION = 3;
+  REST = 4;
+  UI = 5;
+  DOCUMENT = 6;
+  PERMISSION = 7;
+}
+
