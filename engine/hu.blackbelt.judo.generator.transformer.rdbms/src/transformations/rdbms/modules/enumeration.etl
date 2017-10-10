@@ -1,0 +1,20 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+/*
+rule JEnumerationToRdbmsTable 
+	transform s : PSM!JEnumeration
+	to t : RDBMS!RdbmsTable
+	extends JElementToRdbmsElement {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+			s.name.println();
+	}
+
+rule JEnumerationToRdbmsView 
+	transform s : PSM!JEnumeration
+	to v : RDBMS!RdbmsView
+	extends JElementToRdbmsElement {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+			s.name.println();
+	}
+*/

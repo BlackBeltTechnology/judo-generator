@@ -1,0 +1,87 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+@abstract
+rule JAttributeToRdbmsField
+	transform s : PSM!JAttribute
+	to t : RDBMS!RdbmsField 
+	extends JElementToRdbmsElement { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE)
+	    if (not s.uuid.isDefined() or s.uuid.isEmpty()) {
+	        t.uuid  = uuid3(s.ownerClass.uuid, s.name);
+	    } else {
+	        t.uuid = s.uuid;
+	    }
+		t.table = s.ownerClass.equivalent("JClassToRdbmsTable");
+		t.type = s.type.rdbmsType();
+		t.sqlName = s.fieldSqlName(); // fieldSqlName(s);
+		t.name = s.name;
+		t.description = s.ownerClass.name + "." + s.name;
+		if (s.isPrimaryKey() or s.isGuid() or s.isXmiid()) {
+			t.mandatory = true;
+		} else {
+			t.mandatory = s.mandatory;
+		}
+}
+
+
+rule JAttributeToTableIdField
+	transform s : PSM!JAttribute
+	to t : RDBMS!RdbmsIdentifierField 
+	extends JAttributeToRdbmsField { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
+		t.table.primaryKey = t;
+		t.sqlName = "ID";
+		t.type = idType();
+}
+
+rule JAttributeToTableValueField
+	transform s : PSM!JAttribute
+	to t : RDBMS!RdbmsValueField
+	extends JAttributeToRdbmsField { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey()
+		t.technical = s.isTechnical();
+}
+
+@lazy
+rule JAttributeToViewIdFieldWothoutView
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewIdentifierField
+	extends JElementToRdbmsElement { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
+		v.name = "id";
+		v.sqlName = "ID";
+		v.tableField = s.equivalent("JAttributeToTableIdField");
+		v.uuid = uuid3(v.tableField.uuid, "view");
+		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+		v.description = s.ownerClass.name + "." + s.name;		
+}
+
+
+rule JAttributeToViewIdField
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewIdentifierField 
+	extends JAttributeToViewIdFieldWothoutView {
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
+		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+}
+
+@lazy
+rule JAttributeToViewValueFieldWithoutView
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewValueField 
+	extends JElementToRdbmsElement { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey()
+		v.tableField = s.equivalent("JAttributeToTableValueField");
+		v.sqlName  = v.tableField.sqlName;
+		v.uuid = uuid3(v.tableField.uuid, "view");
+		v.description = s.ownerClass.name + "." + s.name;
+}
+
+rule JAttributeToViewValueField
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewValueField 
+	extends JAttributeToViewValueFieldWithoutView { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey()
+		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+}

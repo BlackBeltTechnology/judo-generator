@@ -1,0 +1,22 @@
+@cached
+operation PSM!JPackage fqName () : String {
+	return fqNameInternal(self);
+}
+
+operation fqNameInternal (pe : PSM!JPackage) : String {
+	if (pe.parent.isDefined()) {
+		return pe.parent.fqName() + "." + pe.name;
+	} else {
+		return pe.name;
+	}
+}
+
+@cached
+operation PSM!JPackage packageSqlName() : String {
+    if (self.name = "framework") {
+    	return "FRW";
+    } else {
+        return self.sqlName();
+        // return abbreviate(self.name, 6).toUpperCase();
+    }
+}

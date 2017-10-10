@@ -1,0 +1,29 @@
+operation addGuardMethodsAndEnum () : Any {
+	for (state in JAVA!JvmState.all.select(s | s.outgoingTransitions.size() > 1)) {
+		var groupedByMethod = state.getOutgoingTransitionsGroupedByExecutingMethod();
+		for (key in groupedByMethod.keySet()) {
+			var val = groupedByMethod.get(key);
+			if (val.size() > 1) {
+				var oClass = state.ownerStateMachine.ownerClass;
+				var enum = new JAVA!JvmEnum;
+				enum.name = key.name.firstToUpperCase() + state.name.firstToUpperCase();
+				enum.uuid = uuid3(val.uuid, enum.name);
+				enum.package = oClass.package;
+				var decideMethod = new JAVA!JvmMethod;
+				decideMethod.name = "decide" + enum.name;
+				decideMethod.uuid = uuid3(val.uuid, decideMethod.name);
+				decideMethod.ownerClass = oClass;
+				decideMethod.type = enum;
+				decideMethod.kind = JAVA!JvmMethodKind#SM_DECIDE;
+				for (tr in val) {
+					var literal = new JAVA!JvmLiteral;
+					literal.name = tr.guard.text.toUpperCase();
+					literal.uuid = uuid3(enum.uuid, literal.name);
+					literal.ownerEnum = enum;
+					tr.guard.literal = literal;
+					tr.guard.implementingMethod = decideMethod;
+				}
+			}
+		}
+	}
+}

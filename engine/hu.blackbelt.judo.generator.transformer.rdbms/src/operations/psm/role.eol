@@ -1,0 +1,25 @@
+@cached
+operation PSM!JRole opposite () : PSM!JRole {
+	var role1 : PSM!JRole = self.ownerRelationship.roles.first();
+	var role2 : PSM!JRole = self.ownerRelationship.roles.second();
+	if (self = role1) {
+		return role2;
+	} else {
+		return role1;
+	}
+}
+
+@cached
+operation PSM!JRole isForeign() : Boolean {
+	return self.ownerRelationship.relationReferenceOwnerRole() = self;
+}
+
+@cached
+operation PSM!JRole isMandatory() : Boolean {
+	return self.lower = 1;
+}
+
+@cached
+operation PSM!JRole roleSqlName() : String {
+    return "C_" + self.sqlName() + "_ID";
+}

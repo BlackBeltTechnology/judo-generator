@@ -1,0 +1,38 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+rule JStateMachine 
+	transform s : PSM!JStateMachine
+	to t : JAVA!JvmStateMachine
+	extends JElement {
+		t.ownerClass ::= s.ownerClass;
+		t.correspondingEnum ::= s.correspondingEnum;
+}
+
+rule JState 
+	transform s : PSM!JState
+	to t : JAVA!JvmState
+	extends JElement {
+		t.ownerStateMachine ::= s.ownerStateMachine;
+		t.initialState = s.initialState;
+		t.finalState = s.finalState;
+}
+
+rule JTransition 
+	transform s : PSM!JTransition
+	to t : JAVA!JvmTransition 
+	extends JElement {
+		t.fromState ::= s.fromState;
+		t.toState ::= s.toState;
+		t.ownerStateMachine ::= s.stateMachine;
+		t.executingMethod ::= s.executingOperation;
+}
+
+rule JGuard 
+	transform s : PSM!JGuard
+	to t : JAVA!JvmGuard 
+	extends JElement {
+		t.ownerTransition ::= s.transition;
+		t.text = s.text;
+		t.expression = s.expression;
+}

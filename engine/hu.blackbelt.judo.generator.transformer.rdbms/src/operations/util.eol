@@ -1,0 +1,65 @@
+operation randomUUID () : String {
+	return Native("java.util.UUID").randomUUID().toString();
+}
+
+@cached
+operation getUuidNativeStub () : Any {
+	return Native("java.util.UUID");
+}
+
+@cached
+operation getLongNativeStub () : Any {
+	return Native("java.lang.Long");
+}
+
+//hack balaton style :-) this method should have been in an epsilon Tool, but I did not managed to make it work
+operation uuid3 (namespace : String, name : String) : String {
+	var nameSpace_OID_uuid = getUuidNativeStub().fromString(namespace);
+
+	var msb = nameSpace_OID_uuid.getMostSignificantBits();
+	var lsb = nameSpace_OID_uuid.getLeastSignificantBits();
+
+	var outputStreamString = new Native("java.io.ByteArrayOutputStream");
+	var i = 0;
+	while (i < 8) {
+		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(msb, 8 * (7 - i))).intValue());
+		i++;
+	}
+	while (i < 16) {
+		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(lsb, 8 * (7 - i))).intValue());
+		i++;
+	}
+	
+	outputStreamString.write(name.getBytes());
+
+	return getUuidNativeStub().nameUUIDFromBytes(outputStreamString.toByteArray()).toString();
+}
+
+
+operation abbreviate(text : String, maxLength : Integer) : String {
+
+    if (text.length() > maxLength) {
+		var cns = text.substring(0,2) + text.substring(2).replace("a", "").replace("e","").replace("i", "").replace("o","").replace("u",""); 
+		var pos = cns.length() - 2;
+                
+                
+		while (cns.length() > maxLength) {
+		   if (cns.substring(pos, pos + 1).matches("[a-z]")) {
+		       cns = cns.substring(0, pos) + cns.substring(pos + 1);
+           } else {
+               cns = cns.substring(0, pos) + cns.substring(pos, pos + 1).toLowerCase() + cns.substring(pos + 1);
+           }
+		   pos = pos - 3;
+		   if (pos < 2) {
+		       pos = cns.length() - 2;
+		   }
+		}
+               
+		return cns.toLowerCase();
+    } else {
+        return text.toLowerCase();
+    }}
+
+operation idType() : RDBMS!RdbmsFieldType {
+	return RDBMSTYPES!RdbmsFieldType.all.select( p | p.name = "Id").first();
+}

@@ -1,0 +1,81 @@
+import "modules/element.etl";
+import "modules/model.etl";
+import "modules/package.etl";
+import "modules/class.etl";
+import "modules/role.etl";
+import "modules/enumeration.etl";
+import "modules/operation.etl";
+import "modules/attribute.etl";
+import "modules/parameter.etl";
+import "modules/stateMachine.etl";
+
+import "pre/addParticipateToAllElement.eol";
+import "pre/modifyVoidBusinessMethodsToReturnDeclaringClass.eol";
+import "pre/addIdToEntities.eol";
+
+import "post/addGuardMethodsAndEnum.eol";
+import "post/addDomainBqlClasses.eol";
+import "post/addAndModifyMethods.eol";
+import "post/addHuBlackbeltPackages.eol";
+import "post/modifyReferenceTypeToInterfaceForFrameworkEntities.eol";
+
+pre {
+	var PACKAGE_NAME = "key_package_name";
+	var NAME_SUFFIX = "key_name_suffix";
+	var NAME_PREFIX = "key_name_prefix";
+	var COORDINATE_GROUP = "COORDINATE_GROUP";
+	var COORDINATES = Map{
+			JAVA!JvmJudoCoordinate#ORIGIN = Map{PACKAGE_NAME = "", NAME_PREFIX = "", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#ORIGIN},
+			JAVA!JvmJudoCoordinate#BO = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#PO = Map{PACKAGE_NAME = "business.po", NAME_PREFIX = "", NAME_SUFFIX = "Po", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#PO},
+			JAVA!JvmJudoCoordinate#BO_BQL = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "Bql", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_ENUM = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "Enum", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#PO_ENUM = Map{PACKAGE_NAME = "business.po", NAME_PREFIX = "", NAME_SUFFIX = "EnumPo", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#PO},
+			JAVA!JvmJudoCoordinate#BO_BUILDER = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "Builder", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_ENUM_SERVICE = Map{PACKAGE_NAME = "business.service.regular", NAME_PREFIX = "", NAME_SUFFIX = "EnumService", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE = Map{PACKAGE_NAME = "business.service", NAME_PREFIX = "", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_SERVICE_ABSTRACT = Map{PACKAGE_NAME = "business.service.regular", NAME_PREFIX = "Abstract", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT = Map{PACKAGE_NAME = "business.service.regular", NAME_PREFIX = "Default", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_SERVICE_WRAPPER = Map{PACKAGE_NAME = "business.service.regular", NAME_PREFIX = "Wrapper", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#DAO_MINIMAL = Map{PACKAGE_NAME = "business.dao.minimal", NAME_PREFIX = "Minimal", NAME_SUFFIX = "Dao", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#DAO_Q_CLASS = Map{PACKAGE_NAME = "querydsl", NAME_PREFIX = "Q", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#DAO_QUERY_DSL = Map{PACKAGE_NAME = "business.dao.minimal.querydsl", NAME_PREFIX = "QueryDslMinimal", NAME_SUFFIX = "Dao", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_INTERFACE = Map{PACKAGE_NAME = "api.entity", NAME_PREFIX = "", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO_INTERFACE},
+			JAVA!JvmJudoCoordinate#BO_BUILDER_INTERFACE = Map{PACKAGE_NAME = "api.builder", NAME_PREFIX = "", NAME_SUFFIX = "Builder", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO_INTERFACE},
+			JAVA!JvmJudoCoordinate#BO_BQL_INTERFACE = Map{PACKAGE_NAME = "api.bql", NAME_PREFIX = "", NAME_SUFFIX = "Bql", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO_INTERFACE}
+		};
+
+	addParticipateToAllElement();
+	modifyVoidBusinessMethodsToReturnDeclaringClass();
+	addIdToEntities();
+	
+}
+
+post {
+	repairScrewedUpReferenceOppositeType();
+	hacklongtoPOId();
+	
+	addGuardMethodsAndEnum();
+	addDomainBqlClasses();
+	addAndModifyMethods();
+	addHuBlackbeltPackages();
+	modifyReferenceTypeToInterfaceForFrameworkEntities();
+	
+}
+
+operation hacklongtoPOId () : Any {
+	for (attr in JAVA!JvmAttribute.all.select(r | r.name = "id" and r.ownerClass.coordinate = JAVA!JvmJudoCoordinate#PO)) { 
+		attr.type = longType();
+	}
+}
+
+operation repairScrewedUpReferenceOppositeType () : Any {
+	for (ref in JAVA!JvmReference.all.select(r | r.type.uuid = voidType().uuid)) { 
+		if (ref.upper = -1) {
+			ref.type = createJvmList(ref.opposite.ownerClass);  
+		} else {
+			ref.type = ref.opposite.ownerClass;
+		}
+	}
+	
+}

@@ -1,0 +1,12 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+rule JPackage 
+	transform s : PSM!JPackage
+	to t : JAVA!JvmPackage 
+	extends JElement {
+		t.package ::= s.parent;
+		if (s.ownerModel.isDefined()) {
+			t.ownerModel ::= s.ownerModel;
+		}
+}

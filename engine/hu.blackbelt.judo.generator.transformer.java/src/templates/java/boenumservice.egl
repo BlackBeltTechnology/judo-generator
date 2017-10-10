@@ -1,0 +1,41 @@
+[%
+  import "../../operations/_importAll.eol";
+  
+  out.setContentType("Java");
+  
+  var className = class.name;
+%]
+
+package [%=class.package.fqName()%];
+
+
+import hu.blackbelt.judo.business.dao.api.EntityDao;
+import hu.blackbelt.judo.business.expression.api.meta.Property;
+import hu.blackbelt.judo.business.service.api.base.AbstractEnumService;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+
+@Component(immediate = true)
+@Service
+public class [%=className%] extends AbstractEnumService<[%=class.bo().fqName()%], [%=class.fixedEnum.fqName()%]> {
+	
+	@org.apache.felix.scr.annotations.Reference(policyOption = org.apache.felix.scr.annotations.ReferencePolicyOption.GREEDY)    
+	private [%=class.origin.daoMinimal().fqName()%] daoMinimal;
+	
+	
+	@Override
+	public Property getPathForBql() {
+		return [%=class.origin.package.domainBqlClass.fqName()%].[%=class.origin.name.firstToLowerCase()%]().code();
+	}
+	
+	@Override
+	public EntityDao<[%=class.bo().fqName()%]> getEntityDao() {
+		return daoMinimal;
+	}
+	
+	@Override
+	public Class<[%=class.fixedEnum.fqName()%]> handles() {
+		return [%=class.fixedEnum.fqName()%].class;
+	}
+}

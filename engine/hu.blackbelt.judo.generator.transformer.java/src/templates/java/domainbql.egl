@@ -1,0 +1,18 @@
+[%
+  import "../../operations/_importAll.eol";
+  
+  out.setContentType("Java");
+  
+%]
+
+package [%=class.package.fqName()%];
+
+public final class [%=class.name%] {
+    private  [%=class.name%]() {
+    }
+    [%for (c in class.origin.package.classes().excluding(class)) {%] 
+		public static [%=c.bql().fqName()%] [%=c.name.firstToLowerCase%]() {
+	        return new [%=c.bql().fqName()%]();
+	    }
+	[%}%]
+}

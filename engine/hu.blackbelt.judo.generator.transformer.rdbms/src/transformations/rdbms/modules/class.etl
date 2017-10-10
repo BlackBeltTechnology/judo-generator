@@ -1,0 +1,51 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+rule JClassToRdbmsTable 
+	transform s : PSM!JClass
+	to t : RDBMS!RdbmsTable
+	extends JElementToRdbmsElement {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+	    t.sqlName = s.tableSqlName();
+	    t.name = s.package.name + " " + s.name;
+	    t.description = s.name;
+	    for (c : PSM!JClass in s.allDescandences()) {
+			// var table : RDBMS!RdbmsTable = s.equivalent("JClassToRdbmsTable");
+			var created : RDBMS!RdbmsForeignKey = new RDBMS!RdbmsForeignKey();
+			created.name = c.name;
+			created.uuid = uuid3(s.uuid, c.uuid);
+			created.description = c.name + c.primaryKeyAttribute().name;
+			created.sqlName = "C_" + c.tableSqlName() + "_ID";
+			created.inheritenceBased = true;
+			created.type = idType();
+			created.referenceKey = c.primaryKeyAttribute().equivalent("JAttributeToTableIdField");
+			t.fields.add(created);
+	    }
+}
+
+rule JClassToRdbmsView 
+	transform s : PSM!JClass
+	to v : RDBMS!RdbmsView
+	extends JElementToRdbmsElement {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+	    v.name = s.package.name + " " + s.name;
+	    v.sqlName = s.viewSqlName();
+	    v.baseTable = s.equivalent("JClassToRdbmsTable");
+	    for (a : PSM!JAttribute in s.allSupertypesAttributes()) {
+	   		var f : RDBMS!RdbmsViewValueField = a.equivalent("JAttributeToViewValueField");
+
+	    	var created : RDBMS!RdbmsViewValueField = new RDBMS!RdbmsViewValueField();
+	    	created.uuid = uuid3(f.uuid, v.name);
+	    	created.shortName = f.shortName;
+	    	created.fullName = f.fullName;
+	    	created.description = f.description;
+	    	created.sqlName = f.sqlName;
+	    	created.tableField = f.tableField;
+	    	created.name = f.name;
+			
+	    	created.view = v;
+	    	v.fields.add(created);
+
+	    }
+}
+

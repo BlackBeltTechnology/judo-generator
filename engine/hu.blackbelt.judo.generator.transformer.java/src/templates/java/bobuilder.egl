@@ -1,0 +1,125 @@
+[%
+  import "../../operations/_importAll.eol";
+  
+  out.setContentType("Java");
+  
+  var className = class.name;
+  var boClass = class.bo();
+%]
+
+package [%=class.package.fqName()%];
+
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.FluentIterable;
+
+import java.io.Serializable;
+import javax.annotation.Nullable;
+import static com.google.common.collect.ImmutableList.copyOf;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@NoArgsConstructor
+public  class [%=className%]
+	[%if (class.implements.size() > 0) { %]
+		implements
+		[%for (interface in class.implements) { %]
+			[%=interface.fqName()%]
+			[%if (hasMore) {%][%=","%][%}%]
+		[%}%] 
+	[%}%]
+	{
+
+	private [%=boClass.fqName()%] dto = new [%=boClass.fqName()%]();
+	
+	[%for (attr in class.allAttributes()) {%]
+		public [%=className%] [%=attr.name%]([%=attr.type.fqName()%] par) {
+			dto.set[%=attr.name.firstToUpperCase()%](par);
+			return this;
+		}
+	[%}%]
+	
+	[%for (ref in class.allReferences()) {%]
+		[%if (ref.navigable) {%]
+			[%if (ref.type.isCollection()) {%]
+				[%if (ref.framework) {%]
+					public [%=className%] writable[%=ref.name.firstToUpperCase()%]() {
+						dto.set[%=ref.name.firstToUpperCase()%](Lists.newArrayList());
+						return this;
+					}
+					
+					public [%=className%] empty[%=ref.name.firstToUpperCase()%]() {
+						dto.set[%=ref.name.firstToUpperCase()%](ImmutableList.of());
+						return this;
+					}
+					
+					public <T extends [%=ref.type.bare().boInterface().fqName()%]> [%=className%] [%=ref.name%](T... pars) {
+						dto.set[%=ref.name.firstToUpperCase()%](copyOf(pars));
+						return this;
+					}
+					
+					public [%=className%] [%=ref.name%]Id([%=idType().fqName()%]... ids) {
+						dto.set[%=ref.name.firstToUpperCase()%](FluentIterable.from(copyOf(ids)).transform(new Function<[%=idType().fqName()%], [%=ref.type.bare().boInterface().fqName()%]>() {
+								@Nullable
+								@Override
+								public [%=ref.type.bare().boInterface().fqName()%] apply([%=idType().fqName()%] id) {
+								return new [%=ref.type.bare().boBuilder().fqName()%]().id(id).build();
+								}
+							}).toList());
+						return this;
+					}
+				[%} else{%]
+					public [%=className%] writable[%=ref.name.firstToUpperCase()%]() {
+						dto.set[%=ref.name.firstToUpperCase()%](Lists.<[%=ref.type.bare().bo().fqName()%]>newArrayList());
+						return this;
+					}
+				
+					public [%=className%] empty[%=ref.name.firstToUpperCase()%]() {
+						dto.set[%=ref.name.firstToUpperCase()%](ImmutableList.<[%=ref.type.bare().bo().fqName()%]>of());
+						return this;
+					}
+					
+					public [%=className%] [%=ref.name%]([%=ref.type.bare().bo().fqName()%]... pars) {
+						dto.set[%=ref.name.firstToUpperCase()%](copyOf(pars));
+						return this;
+					}
+					
+					public [%=className%] [%=ref.name%]Id([%=idType().fqName()%]... ids) {
+						dto.set[%=ref.name.firstToUpperCase()%](FluentIterable.from(copyOf(ids)).transform(new Function<[%=idType().fqName()%], [%=ref.type.bare().bo().fqName()%]>() {
+								@Nullable
+								@Override
+								public [%=ref.type.bare().bo().fqName()%] apply([%=idType().fqName()%] id) {
+								return new [%=ref.type.bare().boBuilder().fqName()%]().id(id).build();
+								}
+							}).toList());
+						return this;
+					}
+				[%}%]
+			[%} else{%]
+				[%if (ref.framework) {%]
+					public <T extends [%=ref.type.bare().boInterface().fqName()%]> [%=className%] [%=ref.name%](T par) {
+						dto.set[%=ref.name.firstToUpperCase()%](([%=ref.type.bare().bo().fqName()%]) par);
+						return this;
+					}
+				[%} else{%]
+					public [%=className%] [%=ref.name%]([%=ref.type.bare().bo().fqName()%] par) {
+						dto.set[%=ref.name.firstToUpperCase()%](par);
+						return this;
+					}
+				[%}%]
+				public [%=className%] [%=ref.name%]Id([%=idType().fqName()%] id) {
+					dto.set[%=ref.name.firstToUpperCase()%](new [%=ref.type.bare().fqName()%]().id(id).build());
+					return this;
+				}
+			[%}%]
+		[%}%]
+	[%}%]
+	
+	public [%=boClass.fqName()%] build() {
+		[%=boClass.fqName()%] ret = dto;
+		dto = new [%=boClass.fqName()%]();
+		return ret;
+	}
+}

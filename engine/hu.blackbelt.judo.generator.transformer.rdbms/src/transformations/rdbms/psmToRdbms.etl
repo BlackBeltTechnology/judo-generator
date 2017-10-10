@@ -1,0 +1,20 @@
+import "modules/element.etl";
+import "modules/type.etl";
+import "modules/class.etl";
+import "modules/enumeration.etl";
+import "modules/attribute.etl";
+import "modules/role.etl";
+
+import "pre/addParticipateToAllElement.eol";
+import "pre/addIdToEntities.eol";
+
+pre {
+	addParticipateToAllElement();
+	addIdToEntities();	
+}
+
+post {
+
+}
+
+

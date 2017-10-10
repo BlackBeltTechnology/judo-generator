@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ASCII"?>
+<psmToJava:Mappings xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:psmToJava="http://blackbelt.hu/judo/meta/psm/java/mapping" xmi:id="_-011kPzVEeaBFPkGdGK2hw">
+  <mappings xmi:id="__UoI4PzVEeaBFPkGdGK2hw" name="boolean">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_OHrYYPzUEeaBFPkGdGK2hw"/>
+    <javaType href="javaTypes.model#_dpeDsPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_JXjmYPzWEeaBFPkGdGK2hw" name="integer">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw"/>
+    <javaType href="javaTypes.model#_Y0obsPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_LEgQYPzWEeaBFPkGdGK2hw" name="string">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_Rb7XYPzUEeaBFPkGdGK2hw"/>
+    <javaType href="javaTypes.model#_b1qjwPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_Y0yEUP3REeaoDf1J_JybNQ" name="void">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_gvW2cPzaEeaBFPkGdGK2hw"/>
+    <javaType href="javaTypes.model#_x45xcPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_IJ_-AAPwEee8NtDzlTwkPw" name="date">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_Rls6AAJcEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_VmL6gAPpEee8NtDzlTwkPw"/>
+  </mappings>
+  <mappings xmi:id="_l8hLkAPwEee8NtDzlTwkPw" name="datetime">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_XciKgAJcEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_VmL6gAPpEee8NtDzlTwkPw"/>
+  </mappings>
+  <mappings xmi:id="_qT40cAPwEee8NtDzlTwkPw" name="file">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_QFfPAAJdEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_rysY8APpEee8NtDzlTwkPw"/>
+  </mappings>
+  <mappings xmi:id="_tSQDAAPwEee8NtDzlTwkPw" name="float">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_vALbAAJcEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_bZMa8APpEee8NtDzlTwkPw"/>
+  </mappings>
+  <mappings xmi:id="_vZ0zgAPwEee8NtDzlTwkPw" name="gps">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_Ig8fgAJdEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_b1qjwPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_yW4agAPwEee8NtDzlTwkPw" name="memo">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_sB5sAAJcEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_b1qjwPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_2EdfgAPwEee8NtDzlTwkPw" name="percentage">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_yU4tAAJcEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_bZMa8APpEee8NtDzlTwkPw"/>
+  </mappings>
+  <mappings xmi:id="_5S_RAAPwEee8NtDzlTwkPw" name="currency">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_2Dr6AAJcEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_kr1D8APpEee8NtDzlTwkPw"/>
+  </mappings>
+  <mappings xmi:id="_8wAxgAPwEee8NtDzlTwkPw" name="text">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_pN2QAAJcEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_b1qjwPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_C0MhgAPxEee8NtDzlTwkPw" name="time">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_amLcAAJcEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_PItckAPwEee8NtDzlTwkPw"/>
+  </mappings>
+  <mappings xmi:id="_EqYAAAPxEee8NtDzlTwkPw" name="track">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_MZ9_gAJdEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_b1qjwPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_Nmu3AAPxEee8NtDzlTwkPw" name="uuid">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_TeZEgAJdEeePbOdRMfS3CA"/>
+    <javaType href="javaTypes.model#_b1qjwPjhEeayhPkH_hAwlg"/>
+  </mappings>
+  <mappings xmi:id="_2ZR9QBhaEeeH4r4fPwP1ww" name="serializable">
+    <psmType href="../../hu.blackbelt.judo.meta.psm/library/psmTypes.model#_edPa4BhaEeeH4r4fPwP1ww"/>
+    <javaType href="javaTypes.model#_uvs8wBhaEeeH4r4fPwP1ww"/>
+  </mappings>
+</psmToJava:Mappings>

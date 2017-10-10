@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="psm" nsURI="http://blackbelt.hu/judo/meta/psm" nsPrefix="psm">
+  <eClassifiers xsi:type="ecore:EClass" name="JElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shortName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="framework" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="participates" upperBound="-1"
+        eType="#//JLayer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" eType="#//JVisibility"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JType" abstract="true" eSuperTypes="#//JElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="JTypedElement" abstract="true" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//JType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JPrimitive" eSuperTypes="#//JType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="#//JPackage"
+        eOpposite="#//JPackage/primitives"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="useForIdType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JEnumeration" eSuperTypes="#//JType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="#//JPackage"
+        eOpposite="#//JPackage/enumerations"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="literals" upperBound="-1"
+        eType="#//JLiteral" containment="true" eOpposite="#//JLiteral/enumeration"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classRepresentation" eType="#//JClass"
+        eOpposite="#//JClass/fixedEnum"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JClass" eSuperTypes="#//JType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stateMachines" upperBound="-1"
+        eType="#//JStateMachine" containment="true" eOpposite="#//JStateMachine/ownerClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
+        eType="#//JOperation" containment="true" eOpposite="#//JOperation/ownerClass"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aliases" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOrder" upperBound="-1"
+        eType="#//JAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributesForListing" upperBound="-1"
+        eType="#//JAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fixedEnum" eType="#//JEnumeration"
+        eOpposite="#//JEnumeration/classRepresentation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsTenant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tenantMember" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//JAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsEnum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsTenantUser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsUser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supertype" eType="#//JClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="#//JPackage"
+        eOpposite="#//JPackage/classes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roles" upperBound="-1"
+        eType="#//JRole" eOpposite="#//JRole/ownerClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+        eType="#//JAttribute" containment="true" eOpposite="#//JAttribute/ownerClass"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="businessSingleton" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JAttribute" eSuperTypes="#//JTypedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordered" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="placeholder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="regexp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="derived" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="calculated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="decimals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interval" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="technical" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JClass"
+        eOpposite="#//JClass/attributes"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JOperation" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classBased" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JClass"
+        eOpposite="#//JClass/operations"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//JParameter" containment="true" eOpposite="#//JParameter/ownerOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transition" upperBound="-1"
+        eType="#//JTransition" eOpposite="#//JTransition/executingOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bulk" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//JOperationKind"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JParameter" eSuperTypes="#//JTypedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordered" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerOperation" eType="#//JOperation"
+        eOpposite="#//JOperation/parameters"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="input" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JRelationship" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="#//JPackage"
+        eOpposite="#//JPackage/relationships"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roles" lowerBound="2" upperBound="2"
+        eType="#//JRole" containment="true" eOpposite="#//JRole/ownerRelationship"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="derived" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JRole" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="navigable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordered" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerRelationship" eType="#//JRelationship"
+        eOpposite="#//JRelationship/roles"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="derivedExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="derivedDescription" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//JAssociationKind"
+        defaultValueLiteral="ASSOCIATION"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optionScript" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" lowerBound="1"
+        eType="#//JClass" eOpposite="#//JClass/roles"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="calculated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JLiteral" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enumeration" eType="#//JEnumeration"
+        eOpposite="#//JEnumeration/literals"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JPackage" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enumerations" upperBound="-1"
+        eType="#//JEnumeration" containment="true" eOpposite="#//JEnumeration/package"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="primitives" upperBound="-1"
+        eType="#//JPrimitive" containment="true" eOpposite="#//JPrimitive/package"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relationships" upperBound="-1"
+        eType="#//JRelationship" containment="true" eOpposite="#//JRelationship/package"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        eType="#//JPackage" containment="true" eOpposite="#//JPackage/parent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//JPackage"
+        eOpposite="#//JPackage/children"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerModel" eType="#//JModel"
+        eOpposite="#//JModel/packages"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" upperBound="-1"
+        eType="#//JClass" containment="true" eOpposite="#//JClass/package"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JStateMachine" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JClass"
+        eOpposite="#//JClass/stateMachines"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="states" upperBound="-1"
+        eType="#//JState" containment="true" eOpposite="#//JState/ownerStateMachine"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" upperBound="-1"
+        eType="#//JTransition" containment="true" eOpposite="#//JTransition/stateMachine"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="correspondingEnum" lowerBound="1"
+        eType="#//JEnumeration"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JTransition" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stateMachine" eType="#//JStateMachine"
+        eOpposite="#//JStateMachine/transitions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="guard" eType="#//JGuard"
+        containment="true" eOpposite="#//JGuard/transition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toState" lowerBound="1"
+        eType="#//JState" eOpposite="#//JState/incomingTransitions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fromState" lowerBound="1"
+        eType="#//JState" eOpposite="#//JState/outgoingTransitions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="executingOperation" eType="#//JOperation"
+        eOpposite="#//JOperation/transition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JState" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerStateMachine" eType="#//JStateMachine"
+        eOpposite="#//JStateMachine/states"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="incomingTransitions" upperBound="-1"
+        eType="#//JTransition" eOpposite="#//JTransition/toState"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingTransitions" upperBound="-1"
+        eType="#//JTransition" eOpposite="#//JTransition/fromState"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialState" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="finalState" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JGuard" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transition" eType="#//JTransition"
+        eOpposite="#//JTransition/guard"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JVisibility">
+    <eLiterals name="PUBLIC"/>
+    <eLiterals name="PROTECTED" value="1"/>
+    <eLiterals name="PACKAGE" value="2"/>
+    <eLiterals name="PRIVATE" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JModel" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
+        eType="#//JPackage" containment="true" eOpposite="#//JPackage/ownerModel"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="packagePrefix" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="applicationTop" lowerBound="1"
+        eType="#//JPackage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JAssociationKind">
+    <eLiterals name="ASSOCIATION"/>
+    <eLiterals name="AGGREGATION" value="1"/>
+    <eLiterals name="COMPOSITION" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JOperationKind">
+    <eLiterals name="CUSTOM"/>
+    <eLiterals name="QUERY" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JLayer">
+    <eLiterals name="ALL"/>
+    <eLiterals name="PERSISTENCE" value="1"/>
+    <eLiterals name="SERVICE" value="2"/>
+    <eLiterals name="OPERATION" value="3"/>
+    <eLiterals name="REST" value="4"/>
+    <eLiterals name="UI" value="5"/>
+    <eLiterals name="DOCUMENT" value="6"/>
+    <eLiterals name="PERMISSION" value="7"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,53 @@
+operation addAndModifyMethods () : Any {
+	var allMethods = JAVA!JvmMethod.all.asSet();
+	for (method in allMethods) {
+		if (method.kind = JAVA!JvmMethodKind#CUSTOM) {
+			if (not method.classBased) {
+				createBulkMethodFor(method);
+				method.addIdParam();
+			}
+		} else if (method.kind = JAVA!JvmMethodKind#QUERY) {
+			if (method.type.isCollection()) {
+				createQueryCountMethodFor(method);
+				method.addPaginationParam();
+			}
+		}
+	}
+}
+
+operation createQueryCountMethodFor (method : JAVA!JvmMethod) : Any {
+	var countMethod = new JAVA!JvmMethod;
+	countMethod.name = method.name + "Count";
+	countMethod.uuid = uuid3(method.uuid, countMethod.name);
+	countMethod.ownerClass = method.ownerClass;
+	countMethod.type = intType();
+	countMethod.kind = JAVA!JvmMethodKind#QUERY_COUNT;
+	countMethod.classBased = method.classBased;
+	var allParams = method.parameters.asSequence();
+	for (param in allParams) {
+		var countParam = new JAVA!JvmMethodParameter;
+		countParam.name = param.name;
+		countParam.uuid = uuid3(param.uuid, param.name);
+		countParam.type = param.type;
+		countParam.ownerMethod = countMethod;
+	}
+}
+
+operation createBulkMethodFor (method : JAVA!JvmMethod) : Any {
+	var bulkMethod = new JAVA!JvmMethod;
+	bulkMethod.name = method.name;
+	bulkMethod.classBased = method.classBased;
+	bulkMethod.uuid = uuid3(method.uuid, bulkMethod.name);
+	bulkMethod.ownerClass = method.ownerClass;
+	bulkMethod.addIdsParam();
+	bulkMethod.type = createJvmList(method.type);
+	bulkMethod.kind = JAVA!JvmMethodKind#CUSTOM_BULK;
+	var allParams = method.parameters.asSequence();
+	for (param in allParams) {
+		var bulkParam = new JAVA!JvmMethodParameter;
+		bulkParam.name = param.name;
+		bulkParam.uuid = uuid3(param.uuid, param.name);
+		bulkParam.type = param.type;
+		bulkParam.ownerMethod = bulkMethod;
+	}
+}

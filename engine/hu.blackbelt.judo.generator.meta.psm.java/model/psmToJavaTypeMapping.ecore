@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="psmToJavaTypeMapping" nsURI="http://blackbelt.hu/judo/meta/psm/java/mapping"
+    nsPrefix="psmToJava">
+  <eClassifiers xsi:type="ecore:EClass" name="Mapping">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="psmType" lowerBound="1"
+        eType="ecore:EClass http://blackbelt.hu/judo/meta/psm#//JPrimitive"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="javaType" lowerBound="1"
+        eType="ecore:EClass http://blackbelt.hu/judo/meta/psm/java#//JvmPrimitive"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Mappings">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
+        eType="#//Mapping" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,10 @@
+operation addHuBlackbeltPackages () : Any {
+	var topModel = JAVA!JvmModel.all.first();
+	var origPackages = topModel.packages.asSet();
+	var topPackage = topModel.findOrCreatePackageRecursively("hu.blackbelt");
+	for (p in origPackages) { 
+		if (p.name <> "java"){
+			p.package = topPackage;
+		}
+	}
+}

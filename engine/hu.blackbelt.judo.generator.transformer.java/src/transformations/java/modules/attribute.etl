@@ -1,0 +1,66 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+@abstract
+rule JAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute 
+	extends JElement { 
+}
+
+rule OriginAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute 
+	extends JAttribute { 
+		t.fillFrom(s, "OriginClass");
+		t.uuid = s.uuid;
+}
+
+rule PoAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute 
+	extends JAttribute { 
+		t.fillFrom(s, "PoClass");
+}
+
+rule BoAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute 
+	extends JAttribute { 
+		t.fillFrom(s, "BoClass");
+}
+
+rule BoBuilderAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute 
+	extends JAttribute { 
+		t.fillFrom(s, "BoBuilderClass");
+}
+
+rule BoBqlAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute 
+	extends JAttribute { 
+		t.fillFrom(s, "BoBqlClass");
+}
+
+operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule : String) : Any {
+	self.uuid = uuid3(source.uuid, correspondingRule);
+	self.ownerClass = source.ownerClass.equivalent(correspondingRule);
+	self.type = source.type.equivalent(correspondingRule);
+	self.unique = source.unique;
+	self.mandatory = source.mandatory;
+	self.technical = source.technical;
+    self.regexp = source.regexp;
+    self.derived = source.derived;
+	if (self.type.isUndefined()) {
+		self.type = source.type.findJavaPrimitive();
+	}
+	if (source.value.isDefined() and not source.derived) {
+		if (source.calculated) {
+			self.calculationScript = source.value;
+		} else {
+			self.defaultValueExpression = source.value;
+		}
+	}
+}

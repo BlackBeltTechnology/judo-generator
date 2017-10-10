@@ -1,0 +1,11 @@
+operation addDomainBqlClasses () : Any {
+	for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO).origin.package.asSet()) {
+		var domainBqlClass = new JAVA!JvmClass;
+		domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
+		domainBqlClass.name = package.name.firstToUpperCase();
+		domainBqlClass.package = package;
+		domainBqlClass.uuid = uuid3(package.uuid, domainBqlClass.name);
+		domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
+		package.domainBqlClass = domainBqlClass;
+	}
+}

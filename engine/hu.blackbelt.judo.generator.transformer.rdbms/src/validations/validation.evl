@@ -1,0 +1,28 @@
+/*
+context RDBMSTYPES!RdbmsModel {
+	
+	constraint HasOneAndOnlyOneTypeForId {
+		check : RDBMSTYPES!RdbsField.all.select( t | t.useForJudoId).size() = 1
+		message : "There must be one and only one type designed for ID type use!"
+	}	
+}
+
+
+context PSMTYPES!JPrimitive {
+	
+	constraint HasMappingFromPSMToRdbmsType {
+		check{
+			var mapping = RTM!Mapping.all.select( m | m.psmType.name = self.name).first();
+			return mapping.isDefined() and mapping.rdbmsFieldType.isDefined();
+			}
+		message : "No rdbms type mapping for PSM Type: " + self.name
+	}	
+}
+
+context PSM!JElement {
+	 critique NameMustNotBeEmpty {
+		check : self.name.isDefined() and self.name.trim().size() > 0
+		message : "Empty name for a named element: " + self
+	}
+}
+*/

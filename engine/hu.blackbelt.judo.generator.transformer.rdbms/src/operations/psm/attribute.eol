@@ -1,0 +1,30 @@
+@cached
+operation PSM!JAttribute isPrimaryKey () : Boolean {
+	return self.name = "id";
+}
+
+@cached
+operation PSM!JAttribute isTechnical () : Boolean {
+    return self.isAudit() or self.isXmiid() or self.isGuid(); 
+}
+
+@cached
+operation PSM!JAttribute isAudit () : Boolean {
+	return self.name = "auditUpdateUser" or self.name = "auditUpdateTime" or self.name = "auditCreateUser" or self.name = "auditCreateTime";
+}
+
+@cached
+operation PSM!JAttribute isGuid () : Boolean {
+	return self.name = "guid";
+}
+
+@cached
+operation PSM!JAttribute isXmiid () : Boolean {
+	return self.name = "xmiid";
+}
+
+@cached
+operation PSM!JAttribute fieldSqlName() : String {
+    return "C_" + self.sqlName();
+}
+

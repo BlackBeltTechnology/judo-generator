@@ -1,0 +1,27 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+@primary
+rule JRoleToRdbmsJunctionTable
+	transform s : PSM!JRelationship
+	to t : RDBMS!RdbmsJunctionTable, p : RDBMS!RdbmsIdentifierField, f1 : RDBMS!RdbmsForeignKey, f2 : RDBMS!RdbmsForeignKey  
+	extends JElementToRdbmsElement {
+	guard : s.isJunction()
+		t.sqlName = junctionTableSqlName(s);
+		
+		f1.fillFromRole(s.primaryRole());
+		f2.fillFromRole(s.secondaryRole());
+
+		t.field1 = f1;
+		t.field2 = f2;
+		
+		p.name = "id";
+		p.sqlName = "ID";
+		p.mandatory = true;
+		p.type = idType();
+		p.uuid =  uuid3(s.ownerClass.uuid, s.uuid);
+		
+		t.fields.add(f1);
+		t.fields.add(f2);
+		t.fields.add(p);
+	}

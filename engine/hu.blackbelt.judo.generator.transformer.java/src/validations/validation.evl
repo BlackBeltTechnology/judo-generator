@@ -1,0 +1,26 @@
+context JAVATYPES!JvmModel {
+	
+	constraint HasOneAndOnlyOneTypeForId {
+		check : JAVATYPES!JvmType.all.select( t | t.useForJudoId).size() = 1
+		message : "There must be one and only one type designed for ID type use!"
+	}	
+}
+
+
+context PSMTYPES!JPrimitive {
+	
+	constraint HasMappingFromPSMToJavaType {
+		check{
+			var mapping = JTM!Mapping.all.select( m | m.psmType.name = self.name).first();
+			return mapping.isDefined() and mapping.javaType.isDefined();
+			}
+		message : "No java type mapping for PSM Type: " + self.name
+	}	
+}
+
+context PSM!JElement {
+	 critique NameMustNotBeEmpty {
+		check : self.name.isDefined() and self.name.trim().size() > 0
+		message : "Empty name for a named element: " + self
+	}
+}

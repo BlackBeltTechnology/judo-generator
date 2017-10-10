@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="java" nsURI="http://blackbelt.hu/judo/meta/psm/java" nsPrefix="java">
+  <eClassifiers xsi:type="ecore:EClass" name="JvmElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shortName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="framework" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fwElement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmModel" eSuperTypes="#//JvmElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
+        eType="#//JvmPackage" containment="true" eOpposite="#//JvmPackage/ownerModel"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="applicationTop" lowerBound="1"
+        eType="#//JvmPackage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmPackage" eSuperTypes="#//JvmPackagableElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-1"
+        eType="#//JvmPackagableElement" containment="true" eOpposite="#//JvmPackagableElement/package"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerModel" eType="#//JvmModel"
+        eOpposite="#//JvmModel/packages"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domainBqlClass" eType="#//JvmClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmPackagableElement" abstract="true"
+      eSuperTypes="#//JvmElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="#//JvmPackage"
+        eOpposite="#//JvmPackage/contents"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmType" abstract="true" eSuperTypes="#//JvmPackagableElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supertype" eType="#//JvmType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="useForJudoId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmTypedElement" abstract="true" eSuperTypes="#//JvmElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//JvmType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmClass" eSuperTypes="#//JvmInterface">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1"
+        eType="#//JvmMember" containment="true" eOpposite="#//JvmMember/ownerClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stateMachines" upperBound="-1"
+        eType="#//JvmStateMachine" containment="true" eOpposite="#//JvmStateMachine/ownerClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fixedEnum" eType="#//JvmEnum"
+        eOpposite="#//JvmEnum/classRepresentation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="representationAttribute"
+        eType="#//JvmAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsTenant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tenantMember" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="technicalObject" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsEnum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsTenantUser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsUser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="businessSingleton" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="implements" upperBound="-1"
+        eType="#//JvmInterface"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmEnum" eSuperTypes="#//JvmCoordinated">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="literals" upperBound="-1"
+        eType="#//JvmLiteral" containment="true" eOpposite="#//JvmLiteral/ownerEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classRepresentation" eType="#//JvmClass"
+        eOpposite="#//JvmClass/fixedEnum"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmLiteral" eSuperTypes="#//JvmElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerEnum" eType="#//JvmEnum"
+        eOpposite="#//JvmEnum/literals"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmPrimitive" eSuperTypes="#//JvmType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="primitive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmCollection" abstract="true" eSuperTypes="#//JvmType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentType" lowerBound="1"
+        eType="#//JvmType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmList" eSuperTypes="#//JvmCollection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmMethod" eSuperTypes="#//JvmTypedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//JvmMethodParameter" containment="true" eOpposite="#//JvmMethodParameter/ownerMethod"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" upperBound="-1"
+        eType="#//JvmTransition" eOpposite="#//JvmTransition/executingMethod"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="guards" upperBound="-1"
+        eType="#//JvmGuard" eOpposite="#//JvmGuard/implementingMethod"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classBased" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bulk" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//JvmMethodKind"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JvmInterface"
+        eOpposite="#//JvmInterface/methods"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="origin" eType="#//JvmMethod"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmMember" abstract="true" eSuperTypes="#//JvmTypedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JvmClass"
+        eOpposite="#//JvmClass/members"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="derived" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultValueExpression"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmMethodParameter" eSuperTypes="#//JvmTypedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerMethod" eType="#//JvmMethod"
+        eOpposite="#//JvmMethod/parameters"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JvmMethodKind">
+    <eLiterals name="CUSTOM"/>
+    <eLiterals name="QUERY" value="1"/>
+    <eLiterals name="QUERY_COUNT" value="3"/>
+    <eLiterals name="SM_DECIDE" value="4"/>
+    <eLiterals name="CUSTOM_BULK" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmAttribute" eSuperTypes="#//JvmMember">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="technical" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="regexpForValidation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="calculationScript" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="regexp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmReference" eSuperTypes="#//JvmMember">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//JvmReferenceKind"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="navigable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optionScript" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" eType="#//JvmReference"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="virtualExpressionScript"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="referenceType" eType="#//JvmReferenceType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="derivedDescription" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmState" eSuperTypes="#//JvmElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerStateMachine" eType="#//JvmStateMachine"
+        eOpposite="#//JvmStateMachine/states"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingTransitions" upperBound="-1"
+        eType="#//JvmTransition" eOpposite="#//JvmTransition/fromState"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="incomingTransitions" upperBound="-1"
+        eType="#//JvmTransition" eOpposite="#//JvmTransition/toState"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialState" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="finalState" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmStateMachine" eSuperTypes="#//JvmElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JvmClass"
+        eOpposite="#//JvmClass/stateMachines"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="states" upperBound="-1"
+        eType="#//JvmState" containment="true" eOpposite="#//JvmState/ownerStateMachine"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" upperBound="-1"
+        eType="#//JvmTransition" containment="true" eOpposite="#//JvmTransition/ownerStateMachine"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="correspondingEnum" lowerBound="1"
+        eType="#//JvmEnum"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmTransition" eSuperTypes="#//JvmElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fromState" lowerBound="1"
+        eType="#//JvmState" eOpposite="#//JvmState/outgoingTransitions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toState" eType="#//JvmState"
+        eOpposite="#//JvmState/incomingTransitions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="guard" eType="#//JvmGuard"
+        containment="true" eOpposite="#//JvmGuard/ownerTransition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="executingMethod" eType="#//JvmMethod"
+        eOpposite="#//JvmMethod/transitions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerStateMachine" eType="#//JvmStateMachine"
+        eOpposite="#//JvmStateMachine/transitions"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmGuard" eSuperTypes="#//JvmElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerTransition" eType="#//JvmTransition"
+        eOpposite="#//JvmTransition/guard"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="implementingMethod" lowerBound="1"
+        eType="#//JvmMethod" eOpposite="#//JvmMethod/guards"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="literal" lowerBound="1"
+        eType="#//JvmLiteral"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JvmReferenceKind">
+    <eLiterals name="ASSOCIATION"/>
+    <eLiterals name="AGGREGATION" value="1"/>
+    <eLiterals name="COMPOSITION" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmInterface" eSuperTypes="#//JvmCoordinated">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="methods" upperBound="-1"
+        eType="#//JvmMethod" containment="true" eOpposite="#//JvmMethod/ownerClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JvmReferenceType">
+    <eLiterals name="OneToOne"/>
+    <eLiterals name="ManyToMany" value="1"/>
+    <eLiterals name="OneToMany" value="2"/>
+    <eLiterals name="ManyToOne" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JvmJudoCoordinate">
+    <eLiterals name="ORIGIN"/>
+    <eLiterals name="BO" value="1"/>
+    <eLiterals name="BO_SERVICE_INTERFACE" value="2"/>
+    <eLiterals name="DTO" value="3"/>
+    <eLiterals name="REST_DTO" value="4"/>
+    <eLiterals name="BO_ENUM_SERVICE" value="5"/>
+    <eLiterals name="BO_BUILDER" value="6"/>
+    <eLiterals name="BO_BQL" value="7"/>
+    <eLiterals name="PO" value="8"/>
+    <eLiterals name="BO_ENUM" value="9"/>
+    <eLiterals name="PO_ENUM" value="10"/>
+    <eLiterals name="DOMAIN_BQL" value="11"/>
+    <eLiterals name="DAO_MINIMAL" value="12"/>
+    <eLiterals name="BO_SERVICE_ABSTRACT" value="13"/>
+    <eLiterals name="BO_SERVICE_DEFAULT" value="14"/>
+    <eLiterals name="BO_SERVICE_WRAPPER" value="15"/>
+    <eLiterals name="DAO_QUERY_DSL" value="16"/>
+    <eLiterals name="DAO_Q_CLASS" value="17"/>
+    <eLiterals name="BO_INTERFACE" value="18"/>
+    <eLiterals name="BO_BUILDER_INTERFACE" value="19"/>
+    <eLiterals name="BO_BQL_INTERFACE" value="20"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JvmCoordinated" abstract="true" eSuperTypes="#//JvmType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordinate" eType="#//JvmJudoCoordinate"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="origin" eType="#//JvmCoordinated"/>
+  </eClassifiers>
+</ecore:EPackage>

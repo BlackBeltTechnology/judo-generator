@@ -1,0 +1,9 @@
+operation modifyReferenceTypeToInterfaceForFrameworkEntities () : Any {
+	for (ref in JAVA!JvmReference.all.select(r | r.framework and r.ownerClass.coordinate = JAVA!JvmJudoCoordinate#BO)) {
+		if (ref.type.isCollection()) {
+			ref.type = createJvmList(ref.type.componentType.boInterface());
+		} else {
+			ref.type = ref.type.boInterface();
+		}
+	}
+}

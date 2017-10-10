@@ -1,0 +1,12 @@
+operation PSM!JElement participates (jLayerEnum : Any) : Boolean {
+	return self.participates.includes(PSM!JLayer#ALL) or self.participates.includes(jLayerEnum);
+}
+
+@cached
+operation PSM!JElement sqlName() : String {
+    if (self.shortName.isDefined()) {
+	    return self.shortName.toUpperCase();
+	} else {
+    	return abbreviate(self.name, 6).toUpperCase();
+	}
+}

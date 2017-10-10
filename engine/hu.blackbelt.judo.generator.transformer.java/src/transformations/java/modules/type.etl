@@ -1,0 +1,13 @@
+import "../../../operations/_importAll.eol";
+
+operation PSM!JType transformType (typeRuleName : String, isCollection : Boolean) : JAVA!JvmType {
+	var ret = self.equivalent(typeRuleName);
+	if (ret.isUndefined()) {
+		ret = self.findJavaPrimitive();
+	}
+	if (isCollection) {
+		return createJvmList(ret);  
+	} else {
+		return ret;
+	}
+}

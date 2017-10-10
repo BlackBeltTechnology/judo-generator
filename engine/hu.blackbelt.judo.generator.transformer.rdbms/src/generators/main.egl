@@ -1,0 +1,19 @@
+[%
+import "../operations/_importAll.eol";
+
+getTemplate("create-table").genCreateTables(getTables());
+
+operation Template genCreateTables(tables : Collection) : Any {
+	self.populate("tables", tables);
+	self.generate("sql/create_tables.sql");
+	self.reset();
+}
+
+operation getTemplate (templateName : String) : Any {
+	return TemplateFactory.load("../templates/sql/" + templateName + ".egl");
+}
+
+operation getTables () : Collection {
+	return RDBMS!RdbmsTable.all;
+}
+%]

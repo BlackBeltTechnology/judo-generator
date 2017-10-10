@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="rdbms" nsURI="http://blackbelt.hu/judo/meta/psm/rdbms" nsPrefix="rdbms">
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shortName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sqlName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsTable" eSuperTypes="#//RdbmsElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
+        eType="#//RdbmsField" containment="true" eOpposite="#//RdbmsField/table"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueKeys" upperBound="-1"
+        eType="#//RdbmsUniqueKey" eOpposite="#//RdbmsUniqueKey/table"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKey" lowerBound="1"
+        eType="#//RdbmsIdentifierField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsField" abstract="true" eSuperTypes="#//RdbmsElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"
+        eOpposite="#//RdbmsTable/fields"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//RdbmsFieldType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsForeignKey" eSuperTypes="#//RdbmsIdentifierField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referenceKey" lowerBound="1"
+        eType="#//RdbmsIdentifierField" eOpposite="#//RdbmsIdentifierField/foreignKeys"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inheritenceBased" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsUniqueKey" eSuperTypes="#//RdbmsElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"
+        eOpposite="#//RdbmsTable/uniqueKeys"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsJunctionTable" eSuperTypes="#//RdbmsTable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="field1" lowerBound="1"
+        eType="#//RdbmsForeignKey"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="field2" lowerBound="1"
+        eType="#//RdbmsForeignKey"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsIdentifierField" eSuperTypes="#//RdbmsField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foreignKeys" upperBound="-1"
+        eType="#//RdbmsForeignKey" eOpposite="#//RdbmsForeignKey/referenceKey"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsView" eSuperTypes="#//RdbmsElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="baseTable" eType="#//RdbmsTable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
+        eType="#//RdbmsViewField" containment="true" eOpposite="#//RdbmsViewField/view"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewField" abstract="true" eSuperTypes="#//RdbmsElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="view" lowerBound="1" eType="#//RdbmsView"
+        eOpposite="#//RdbmsView/fields"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewValueField" eSuperTypes="#//RdbmsViewField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
+        eType="#//RdbmsValueField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewExpressionField" eSuperTypes="#//RdbmsViewField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+        eType="#//RdbmsExpression"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsExpression" eSuperTypes="#//RdbmsElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parts" upperBound="-1"
+        eType="#//RdbmsValueField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsFieldType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rdbmsTypeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="storageByte" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rdbmsFieldTypes" upperBound="-1"
+        eType="#//RdbmsFieldType" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rdbmsTables" upperBound="-1"
+        eType="#//RdbmsTable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rdbmsViews" upperBound="-1"
+        eType="#//RdbmsView" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsValueField" eSuperTypes="#//RdbmsField">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="technical" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewIdentifierField" eSuperTypes="#//RdbmsViewField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
+        eType="#//RdbmsIdentifierField"/>
+  </eClassifiers>
+</ecore:EPackage>
