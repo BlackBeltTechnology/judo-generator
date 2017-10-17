@@ -1,8 +1,8 @@
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/rdbms/mapping", prefix="psmToRdbms")
 package psmToRdbmsMapping;
 
-import "http://blackbelt.hu/judo/meta/psm/rdbms";
 import "http://blackbelt.hu/judo/meta/psm";
+import "http://blackbelt.hu/judo/meta/psm/rdbms";
 
 class Mappings {
   val Mapping[*] mappings;

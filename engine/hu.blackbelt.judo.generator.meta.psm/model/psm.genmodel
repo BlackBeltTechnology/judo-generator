@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.blackbelt.judo.meta.psm/src" modelPluginID="hu.blackbelt.judo.meta.psm"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.blackbelt.judo.generator.meta.psm/src" modelPluginID="hu.blackbelt.judo.generator.meta.psm"
     modelName="Psm" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
@@ -31,7 +31,7 @@
       <genEnumLiterals ecoreEnumLiteral="psm.ecore#//JLayer/DOCUMENT"/>
       <genEnumLiterals ecoreEnumLiteral="psm.ecore#//JLayer/PERMISSION"/>
     </genEnums>
-    <genClasses ecoreClass="psm.ecore#//JElement">
+    <genClasses image="false" ecoreClass="psm.ecore#//JElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/uuid"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/shortName"/>
@@ -41,16 +41,16 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/participates"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/visibility"/>
     </genClasses>
-    <genClasses ecoreClass="psm.ecore#//JType"/>
-    <genClasses ecoreClass="psm.ecore#//JTypedElement">
+    <genClasses image="false" ecoreClass="psm.ecore#//JType"/>
+    <genClasses image="false" ecoreClass="psm.ecore#//JTypedElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JTypedElement/type"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JPrimitive">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JPrimitive/package"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JPrimitive/package"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JPrimitive/useForIdType"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JEnumeration">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JEnumeration/package"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JEnumeration/package"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JEnumeration/literals"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JEnumeration/classRepresentation"/>
     </genClasses>
@@ -69,7 +69,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JClass/representsTenantUser"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JClass/representsUser"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JClass/supertype"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JClass/package"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JClass/package"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JClass/roles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JClass/attributes"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JClass/businessSingleton"/>
@@ -86,27 +86,26 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/decimals"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/interval"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/technical"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JAttribute/ownerClass"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JAttribute/ownerClass"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JOperation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/classBased"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JOperation/ownerClass"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JOperation/ownerClass"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JOperation/parameters"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JOperation/transition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/bulk"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/kind"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/visibility"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JParameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/ordered"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/unique"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/lower"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/upper"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JParameter/ownerOperation"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JParameter/ownerOperation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/input"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JRelationship">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JRelationship/package"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JRelationship/package"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JRelationship/roles"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRelationship/derived"/>
     </genClasses>
@@ -116,7 +115,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/navigable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/unique"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/ordered"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JRole/ownerRelationship"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JRole/ownerRelationship"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/derivedExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/derivedDescription"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/kind"/>
@@ -126,39 +125,39 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/calculated"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JLiteral">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JLiteral/enumeration"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JLiteral/enumeration"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JPackage">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JPackage/enumerations"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JPackage/primitives"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JPackage/relationships"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JPackage/children"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JPackage/parent"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JPackage/ownerModel"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JPackage/parent"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JPackage/ownerModel"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JPackage/classes"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JStateMachine">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JStateMachine/ownerClass"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JStateMachine/ownerClass"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JStateMachine/states"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JStateMachine/transitions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JStateMachine/correspondingEnum"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JTransition">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JTransition/stateMachine"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JTransition/stateMachine"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JTransition/guard"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JTransition/toState"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JTransition/fromState"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JTransition/executingOperation"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JState">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JState/ownerStateMachine"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JState/ownerStateMachine"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JState/incomingTransitions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JState/outgoingTransitions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JState/initialState"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JState/finalState"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JGuard">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JGuard/transition"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JGuard/transition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JGuard/text"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JGuard/expression"/>
     </genClasses>
