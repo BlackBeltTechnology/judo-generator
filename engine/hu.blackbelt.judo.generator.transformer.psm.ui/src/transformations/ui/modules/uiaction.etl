@@ -1,0 +1,20 @@
+rule UIAction
+	transform joperation : PSM!JOperation
+	to uiaction : UI!UIAction {
+		//inherited from Identifiable
+		uiaction.uuid = joperation.uuid;
+		uiaction.name = joperation.name;
+		//Attributes
+		uiaction.classBased = joperation.classBased;
+		uiaction.toBeConfirmed = not (joperation.stereotype = "nonconfirmed");
+		uiaction.notBulk = not joperation.bulk;
+		uiaction.isQuery = (joperation.kind = QUERY);
+		//Fields
+		for (param in joperation.parameters) {
+			if (not param.input) {
+				uiaction.result = param.equivalent();
+			} else {
+				uiaction.fields.add(param.equivalent());
+			}
+		}
+	} 

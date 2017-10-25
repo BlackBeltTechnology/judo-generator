@@ -1,0 +1,12 @@
+rule UIModule
+	transform jpackage : PSM!JPackage
+	to uimodule : UI!UIModule {
+	guard : jpackage.stereotype = 'dto' or jpackage.stereotype = 'screen'
+		uimodule.name = jpackage.name;
+		uimodule.uuid = jpackage.uuid;
+		uimodule.classes = jpackage.classes.equivalents();
+		uimodule.fullyQualifiedName = jpackage.fullname;
+		if (jpackage.ownerModel.isDefined()) {
+			uimodule.version = jpackage.ownerModule.version;
+		} 
+	}

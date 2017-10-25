@@ -1,0 +1,17 @@
+import "modules/type.etl";
+
+import "pre/addParticipateToAllElement.eol";
+import "pre/addIdToEntities.eol";
+
+pre {
+	addParticipateToAllElement();
+	addIdToEntities();	
+}
+
+
+
+post {
+
+}
+
+

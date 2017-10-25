@@ -6,7 +6,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/hu.blackbelt.judo.third.party/lib/ant/epsilon-ant/epsilon-1.4-kitchensink.jar"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -23,5 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/hu.blackbelt.judo.generator.third.party/lib/ant/epsilon-ant/epsilon-1.4-kitchensink.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

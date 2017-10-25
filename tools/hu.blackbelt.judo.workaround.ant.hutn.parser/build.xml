@@ -3,8 +3,8 @@
 	<property name="target.dir" location="target-ant" />
 
 	<property name="hutn.file.location" location="../../engine//hu.blackbelt.judo.generator.transformer.psm/src/model/test_car.hutn" />
-	<property name="psm.meta.location" location="../../engine//hu.blackbelt.judo.meta.psm/model/psm.ecore" />
-	<property name="psm.types.location" location="../../engine/hu.blackbelt.judo.meta.psm/library/psmTypes.model" />
+	<property name="psm.meta.location" location="../../engine//hu.blackbelt.judo.generator.meta.psm/model/psm.ecore" />
+	<property name="psm.types.location" location="../../engine/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model" />
 	<property name="transformed.model.name" value="transformedModelFromAnt.model" />
 	<property name="transformed.base.dir" value="${target.dir}" />
 	<property name="psm.meta.uri" value="http://blackbelt.hu/judo/meta/psm" />
