@@ -44,7 +44,7 @@ rule JAttributeToTableValueField
 }
 
 @lazy
-rule JAttributeToViewIdFieldWothoutView
+rule JAttributeToViewIdFieldWithoutView
 	transform s : PSM!JAttribute
 	to v : RDBMS!RdbmsViewIdentifierField
 	extends JElementToRdbmsElement { 
@@ -57,11 +57,10 @@ rule JAttributeToViewIdFieldWothoutView
 		v.description = s.ownerClass.name + "." + s.name;		
 }
 
-
 rule JAttributeToViewIdField
 	transform s : PSM!JAttribute
 	to v : RDBMS!RdbmsViewIdentifierField 
-	extends JAttributeToViewIdFieldWothoutView {
+	extends JAttributeToViewIdFieldWithoutView {
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
 		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
 }

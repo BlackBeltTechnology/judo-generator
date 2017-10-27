@@ -61,5 +61,5 @@ operation abbreviate(text : String, maxLength : Integer) : String {
     }}
 
 operation idType() : RDBMS!RdbmsFieldType {
-	return RDBMSTYPES!RdbmsFieldType.all.select( p | p.name = "Id").first();
+	return RDBMS!RdbmsFieldType.all.select( p | p.name = "Id").first();
 }

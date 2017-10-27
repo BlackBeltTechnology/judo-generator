@@ -7,10 +7,14 @@ import "modules/role.etl";
 
 import "pre/addParticipateToAllElement.eol";
 import "pre/addIdToEntities.eol";
+import "pre/addAllRdbmsTypes.eol";
+
 
 pre {
 	addParticipateToAllElement();
 	addIdToEntities();	
+	addAllRdbmsConfiguration();
+	addAllRdbmsFieldTypes();
 }
 
 post {

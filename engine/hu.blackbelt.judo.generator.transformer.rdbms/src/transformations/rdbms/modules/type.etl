@@ -1,14 +1,14 @@
 import "../../../operations/_importAll.eol";
  
-operation PSM!JPrimitive rdbmsType () : RDBMSTYPES!RdbmsFieldType {
+ // TODO here
+operation PSM!JPrimitive rdbmsType () : RDBMS!RdbmsFieldType {
 	// return  RTM!Mapping.all.select(m | m.psmType.name = self.name).first().rdbmsFieldType;
 	// HACKL! Without it the generator unable to access the instance;s attributes.
 	/*for (t : RTM!Mapping in  RTM!Mapping.all) {
 		t.name.println();
 	} */
-	
 	var name = RTM!Mapping.all.select(m | m.psmType.name = self.name).first().rdbmsFieldType.name;
-	var ret =  RDBMSTYPES!RdbmsFieldType.all.select( p | p.name = name).first();
+	var ret =  RDBMS!RdbmsFieldType.all.select( p | p.name = name).first();
 	return ret;
     
 }

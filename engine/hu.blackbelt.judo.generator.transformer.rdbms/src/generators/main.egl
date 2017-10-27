@@ -5,7 +5,7 @@ getTemplate("create-table").genCreateTables(getTables());
 
 operation Template genCreateTables(tables : Collection) : Any {
 	self.populate("tables", tables);
-	self.generate("sql/create_tables.sql");
+	self.generate("sql/" + RDBMS!RdbmsConfiguration.all.first().dialect.toLowercase() + "/" + "create_tables.sql");
 	self.reset();
 }
 

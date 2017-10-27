@@ -83,6 +83,8 @@
         eType="#//RdbmsTable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rdbmsViews" upperBound="-1"
         eType="#//RdbmsView" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="configuration" lowerBound="1"
+        eType="#//RdbmsConfiguration" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsValueField" eSuperTypes="#//RdbmsField">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="technical" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
@@ -91,5 +93,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewIdentifierField" eSuperTypes="#//RdbmsViewField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
         eType="#//RdbmsIdentifierField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsConfiguration">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dialect" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
