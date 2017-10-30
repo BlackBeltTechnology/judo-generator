@@ -32,7 +32,6 @@
 	<property name="templates.dir" location="${_src.dir}/templates" />
 	<property name="transformations.dir" location="${_src.dir}/transformations" />
 	<property name="validations.dir" location="${_src.dir}/validations" />
-	<property name="generators.dir" location="${_src.dir}/generators" />
 
 	<property name="transformed.dir" location="${target.dir}/resources" />
 
@@ -47,7 +46,7 @@
 
 	<!-- PSM Types -->
 	<property name="psmtypes.model.name" value="PSMTYPES" />
-	<property name="psmtypes.model.location" location="${psm.library.dir}/psmTypes.model" />
+	<property name="psmtypes.model.location" location="${psm.library.dir}/psmTypes.${model.file.extension}" />
 
 	<!-- =========================== -->
 	<!-- Project specific parameters -->
@@ -55,12 +54,10 @@
 	<property name="sqlDialects" value="Postgres"/>
 	<property name="meta.psm.rdbms.project.dir" location="../hu.blackbelt.judo.generator.meta.psm.rdbms" />
 	<property name="rdbms.psm.library.dir" location="${meta.psm.rdbms.project.dir}/library" />
-	<property name="gen.dir" location="${target.dir}/rdbms" />
 	<property name="readRdbmsPsmModel" value="false"/>
 
 	<!-- RDBMS Model -->
 	<property name="rdbms.psm.model.name" value="RDBMS" />
-	<!-- <property name="rdbms.psm.model.location" location="${transformed.dir}/rdbms_psm.model" /> -->
 	<property name="rdbms.psm.model.location.prefix" location="${transformed.dir}/rdbms_psm" />
 
 	<property name="rdbms.psm.meta.location" location="${meta.psm.rdbms.project.dir}/model/rdbms.ecore" />
@@ -68,39 +65,23 @@
 
 	<!-- RDBMS Types -->
 	<property name="rdbmstypes.model.name" value="RDBMSTYPES" />
-	<!-- <property name="rdbmstypes.model.location" location="${rdbms.psm.library.dir}/rdbmsTypes.model" /> -->
 	<property name="rdbmstypes.model.location.prefix" location="${rdbms.psm.library.dir}/rdbmsTypes" />
 	
 	<!-- TypeMapping Model -->
 	<property name="typemapping.rdbms.psm.model.name" value="RTM" />
-	<!-- <property name="typemapping.rdbms.psm.model.location" location="${meta.psm.rdbms.project.dir}/library/typeMapping.model" /> -->
 	<property name="typemapping.rdbms.psm.model.location.prefix" location="${meta.psm.rdbms.project.dir}/library/typeMapping" />
 
 	<property name="typemapping.rdbms.psm.meta.location" location="${meta.psm.rdbms.project.dir}/model/psmToRdbmsTypeMapping.ecore" />
 	<property name="typemapping.rdbms.psm.meta.uri" value="http://blackbelt.hu/judo/meta/psm/rdbms/mapping" />
 
 	<property name="rdbms.psm.transformation.entry" location="${transformations.dir}/rdbms/psmToRdbms.etl" />
-	<property name="rdbms.psm.generation.entry" location="${generators.dir}/main.egl" />
 	<property name="rdbmstypes.model.validation" location="${validations.dir}/validation.evl" />
 
 	<property name="psm.meta.location" location="${meta.psm.project.dir}/model/psm.ecore" />
-	<property name="transformed.model.name" value="transformedModelFromAnt.model" />
 
 	<target name="prepare">
-		<delete dir="${gen.dir}" failonerror="false" />
-		<mkdir dir="${gen.dir}/rdbms" />
 		<mkdir dir="${target.dir}" />
-		<mkdir dir="${gen.dir}" />
 		<mkdir dir="${transformed.dir}" />
-		<!--
-		<delete file="${rdbms.psm.model.location}" failonerror="false" />
-		<touch file="${rdbms.psm.model.location}" /> -->
-	</target>
-
-	<target name="prepareForMaven">
-		<mkdir dir="${transformed.dir}" />
-<!--		<delete file="${rdbms.psm.model.location}" failonerror="false" />
-		<touch file="${rdbms.psm.model.location}" /> -->
 	</target>
 
 	<target name="loadModels">
@@ -108,8 +89,8 @@
 		<epsilon.emf.register file="${psm.meta.location}" />
 		<epsilon.emf.register file="${typemapping.rdbms.psm.meta.location}" />
 		<epsilon.emf.loadModel name="${psm.model.name}" modelfile="${psm.model.location}" metamodeluri="${psm.meta.uri}" read="true" store="false" expand="true" />
-		<epsilon.emf.loadModel name="${rdbms.psm.model.name}" modelfile="${rdbms.psm.model.location.prefix}${sqlDialect}.model" metamodeluri="${rdbms.psm.meta.uri}" read="${readRdbmsPsmModel}" store="true" expand="true" />
-		<epsilon.emf.loadModel name="${rdbmstypes.model.name}" modelfile="${rdbmstypes.model.location.prefix}${sqlDialect}.model" metamodeluri="${rdbms.psm.meta.uri}" />
+		<epsilon.emf.loadModel name="${rdbms.psm.model.name}" modelfile="${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension}" metamodeluri="${rdbms.psm.meta.uri}" store="true" read="${readRdbmsPsmModel}" expand="true" />
+		<epsilon.emf.loadModel name="${rdbmstypes.model.name}" modelfile="${rdbmstypes.model.location.prefix}${sqlDialect}.${model.file.extension}" metamodeluri="${rdbms.psm.meta.uri}" />
 		<epsilon.emf.loadModel name="${psmtypes.model.name}" modelfile="${psmtypes.model.location}" metamodeluri="${psm.meta.uri}" />
 		<epsilon.emf.loadModel name="${typemapping.rdbms.psm.model.name}" modelfile="${typemapping.rdbms.psm.model.location.prefix}${sqlDialect}.model" metamodeluri="${typemapping.rdbms.psm.meta.uri}" expand="true" />
 	</target>
@@ -124,6 +105,7 @@
 	</target>
 
 	<target name="transform">
+		<echo>Generating: ${rdbms.psm.model.name} - ${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension}</echo>
 		<epsilon.etl src="${rdbms.psm.transformation.entry}">
 			<model ref="${psm.model.name}" />
 			<model ref="${rdbms.psm.model.name}" />
@@ -131,17 +113,9 @@
 			<model ref="${psmtypes.model.name}" />
 			<model ref="${typemapping.rdbms.psm.model.name}" />
 		</epsilon.etl>
+		<!--<epsilon.emf.storeModel name="${rdbms.psm.model.name}"/>-->
 	</target>
 
-	<target name="generate">
-		<epsilon.egl src="${rdbms.psm.generation.entry}" outputRoot="${gen.dir}">
-			<model ref="${rdbmstypes.model.name}" />	
-			<model ref="${rdbms.psm.model.name}" />
-		</epsilon.egl>
-	</target>
-
-
-	<!-- Dialect specific calls -->
 	<target name="mainFromMaven">
 		<foreach list="${sqlDialects}" param="sqlDialect" target="mainFromMavenForDialect"/>
 	</target>
@@ -154,52 +128,15 @@
 		<foreach list="${sqlDialects}" param="sqlDialect" target="mainForDialect"/>
 	</target>
 
-	<target name="pre" depends="prepare">
-		<foreach list="${sqlDialects}" param="sqlDialect" target="preForDialect"/>
-	</target>
 
-	<target name="executeTransform">
-		<foreach list="${sqlDialects}" param="sqlDialect" target="transformInTransaction"/>
-	</target>
-
-	<target name="executeTransformAndGenerate">
-		<foreach list="${sqlDialects}" param="sqlDialect" target="transformAndGenerateForDialect"/>
-	</target>
-
-
-	<target name="mainFromMavenForDialect" depends="prepareForMaven, loadModels, validate, transform, generate" />
-	<target name="mainFromCommandLineForDialect" depends="prepare, loadModels, validate, transform, generate" />
-	<target name="mainForDialect" depends="doGenerate"/>
-	<target name="preForDialect" depends="loadModels, validate"/>
-	<target name="transformAndGenerateForDialect" depends="loadModels,transformInTransaction,generate" />
-
-	<target name="transformInTransaction" depends="loadModels" >
-			<trycatch>
-				<try>
-					<epsilon.startTransaction name="TransforTransaction" />
-					<runtarget target="transform" />
-					<epsilon.commitTransaction name="TransforTransaction" />
-				</try>
-				<catch>
-					<epsilon.rollbackTransaction name="TransforTransaction" />
-				</catch>
-			</trycatch>
-		</target>
-
-	<target name="doTransform" depends="preForDialect, transformInTransaction" />
-
-	<target name="doGenerate" depends="doTransform">
-		<trycatch>
-			<try>
-				<epsilon.startTransaction name="GenerateTransaction" />
-				<runtarget target="generate" />
-				<epsilon.commitTransaction name="GenerateTransaction" />
-			</try>
-			<catch>
-				<epsilon.rollbackTransaction name="GenerateTransaction" />
-			</catch>
-		</trycatch>
-		<epsilon.disposeModels/>
-	</target>
+	<!-- Dialect specific calls -->
+	<target name="prepareForDialect">
+		<delete file="${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension}" failonerror="false" />
+		<touch file="${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension}" /> 
+	</target>	
+	
+	<target name="mainFromMavenForDialect" depends="prepareForDialect, loadModels, validate, transform" />
+	<target name="mainFromCommandLineForDialect" depends="prepareForDialect, loadModels, validate, transform" />
+	<target name="mainForDialect" depends="prepareForDialect, loadModels, validate, transform"/>
 
 </project>

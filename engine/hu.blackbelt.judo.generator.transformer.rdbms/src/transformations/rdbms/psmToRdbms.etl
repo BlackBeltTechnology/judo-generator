@@ -13,8 +13,8 @@ import "pre/addAllRdbmsTypes.eol";
 pre {
 	addParticipateToAllElement();
 	addIdToEntities();	
-	addAllRdbmsConfiguration();
-	addAllRdbmsFieldTypes();
+//	addAllRdbmsConfiguration();
+//	addAllRdbmsFieldTypes();
 }
 
 post {
