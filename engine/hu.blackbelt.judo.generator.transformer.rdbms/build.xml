@@ -87,14 +87,24 @@
 		<mkdir dir="${transformed.dir}" />
 	</target>
 
+	
 	<target name="loadModels">
-		<epsilon.emf.register file="${rdbms.psm.meta.location}" />
+
+		<echo>EMF register: ${psm.meta.location}</echo>
 		<epsilon.emf.register file="${psm.meta.location}" />
-		<epsilon.emf.register file="${typemapping.rdbms.psm.meta.location}" />
+		<echo>EMF register: ${rdbms.psm.meta.location}</echo>
+		<epsilon.emf.register file="${rdbms.psm.meta.location}" />
+		<echo>EMF register: ${typemapping.rdbms.psm.meta.location}</echo>		
+        <epsilon.emf.register file="${typemapping.rdbms.psm.meta.location}" />
+		<echo>Load mode|: ${psm.model.name} ${psm.model.location} ${psm.meta.uri}</echo>
 		<epsilon.emf.loadModel name="${psm.model.name}" modelfile="${psm.model.location}" metamodeluri="${psm.meta.uri}" read="true" store="false" expand="true" />
+		<echo>Load mode|: ${rdbms.psm.model.name} ${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension} ${psm.meta.uri} ${rdbms.psm.meta.uri}</echo>
 		<epsilon.emf.loadModel name="${rdbms.psm.model.name}" modelfile="${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension}" metamodeluri="${rdbms.psm.meta.uri}" store="true" read="${readRdbmsPsmModel}" expand="true" />
+		<echo>Load mode|: ${rdbmstypes.model.name} ${rdbmstypes.model.location.prefix}${sqlDialect}.${model.file.extension} ${psm.meta.uri} ${rdbms.psm.meta.uri}</echo>
 		<epsilon.emf.loadModel name="${rdbmstypes.model.name}" modelfile="${rdbmstypes.model.location.prefix}${sqlDialect}.${model.file.extension}" metamodeluri="${rdbms.psm.meta.uri}" />
+		<echo>Load mode|: ${psmtypes.model.name} ${psmtypes.model.location} ${psm.meta.uri} ${psm.meta.uri}</echo>
 		<epsilon.emf.loadModel name="${psmtypes.model.name}" modelfile="${psmtypes.model.location}" metamodeluri="${psm.meta.uri}" />
+		<echo>Load mode|: ${typemapping.rdbms.psm.model.name} ${typemapping.rdbms.psm.model.location.prefix}${sqlDialect}.model ${psm.meta.uri} ${typemapping.rdbms.psm.meta.uri}</echo>
 		<epsilon.emf.loadModel name="${typemapping.rdbms.psm.model.name}" modelfile="${typemapping.rdbms.psm.model.location.prefix}${sqlDialect}.model" metamodeluri="${typemapping.rdbms.psm.meta.uri}" expand="true" />
 	</target>
 
@@ -109,6 +119,8 @@
 
 	<target name="transform">
 		<echo>Generating: ${rdbms.psm.model.name} - ${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension}</echo>
+ 		<echo>            ${rdbmstypes.model.name} - ${rdbmstypes.model.location.prefix}${sqlDialect}.${model.file.extension} - Meta: ${rdbms.psm.meta.uri}</echo>
+
 		<epsilon.etl src="${rdbms.psm.transformation.entry}">
 			<model ref="${psm.model.name}" />
 			<model ref="${rdbms.psm.model.name}" />
