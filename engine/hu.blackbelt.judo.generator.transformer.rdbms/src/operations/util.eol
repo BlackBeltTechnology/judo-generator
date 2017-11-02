@@ -63,3 +63,7 @@ operation abbreviate(text : String, maxLength : Integer) : String {
 operation idType() : RDBMS!RdbmsFieldType {
 	return RDBMS!RdbmsFieldType.all.select( p | p.name = "Id").first();
 }
+
+operation hasFeature(feature : String) : Boolean {
+    return RDBMS!RdbmsFeature.all.exists(f | f.name = "ForeignKey");
+}

@@ -33,3 +33,12 @@ operation addAllRdbmsConfiguration () : Any {
 		}		
 	}	
 }
+
+operation addAllRdbmsFeature () : Any {
+	for (s: RDBMSTYPES!RdbmsFeature in RDBMSTYPES!RdbmsFeature.all) {
+		var t : RDBMS!RdbmsFeature = new RDBMS!RdbmsFeature;
+		for (attr : RDBMS!EAttribute in t.eClass.getEAllAttributes()) {
+			t.eSet(attr, s.eGet(attr));
+		}		
+	}	
+}

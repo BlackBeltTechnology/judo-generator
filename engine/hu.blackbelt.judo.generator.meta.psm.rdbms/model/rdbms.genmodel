@@ -69,12 +69,20 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModel/rdbmsFieldTypes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModel/rdbmsTables"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModel/rdbmsViews"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModel/configuration"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsValueField">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsValueField/technical"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsViewIdentifierField">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewIdentifierField/tableField"/>
+    </genClasses>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsConfiguration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsConfiguration/dialect"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsConfiguration/features"/>
+    </genClasses>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsFeature/name"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -13,5 +13,7 @@
   <rdbmsFieldTypes xmi:id="_n6DB0JxXEeeO26D_eQyRGQ" name="Percentage" rdbmsTypeName="real" uuid="rdbms-type-percentage-postgres" description="Percentage" size="-1" precision="-1" scale="-1"/>
   <rdbmsFieldTypes xmi:id="_yi4BsJxXEeeO26D_eQyRGQ" name="Currency" rdbmsTypeName="numeric" uuid="rdbms-type-currency-postgres" description="Currency" precision="2"/>
   <rdbmsFieldTypes xmi:id="_CFMDAKqQEeeVGr8G3K7eOw" name="Id" rdbmsTypeName="long" uuid="rdbms-type-id-postgres" description="Id"/>
-  <configuration xmi:id="_0hPwoLpYEeeDOcmqBEhdJQ" dialect="Postgres"/>
+  <configuration xmi:id="_0hPwoLpYEeeDOcmqBEhdJQ" dialect="Postgres">
+    <features xmi:id="_w1ttkL6LEeedxuqBM4gA-Q" name="CascadeDeleteOnSuperType"/>
+  </configuration>
 </rdbms:RdbmsModel>

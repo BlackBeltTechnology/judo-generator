@@ -4,12 +4,13 @@
 	<property name="third.party.project.dir" location="../hu.blackbelt.judo.generator.third.party" />
 
 	<!-- ANT Taskdefs for ant-contrib -->
+<!--
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 	 <classpath>
 	    <pathelement location="${third.party.project.dir}/lib/ant/contrib/ant-contrib.jar"/>
 	  </classpath>
 	</taskdef>
-
+-->
 	<property name="model.file.extension" value="model" />
 
 	<property name="root.dir" location="." />
@@ -79,6 +80,8 @@
 
 	<property name="psm.meta.location" location="${meta.psm.project.dir}/model/psm.ecore" />
 
+	
+	<!-- TARGET DEFINITIONS -->
 	<target name="prepare">
 		<mkdir dir="${target.dir}" />
 		<mkdir dir="${transformed.dir}" />
@@ -116,6 +119,10 @@
 		<!--<epsilon.emf.storeModel name="${rdbms.psm.model.name}"/>-->
 	</target>
 
+	<target name="dispose">
+		<epsilon.disposeModels/>
+	</target>
+
 	<target name="mainFromMaven">
 		<foreach list="${sqlDialects}" param="sqlDialect" target="mainFromMavenForDialect"/>
 	</target>
@@ -135,8 +142,9 @@
 		<touch file="${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension}" /> 
 	</target>	
 	
-	<target name="mainFromMavenForDialect" depends="prepareForDialect, loadModels, validate, transform" />
-	<target name="mainFromCommandLineForDialect" depends="prepareForDialect, loadModels, validate, transform" />
-	<target name="mainForDialect" depends="prepareForDialect, loadModels, validate, transform"/>
+	<target name="mainFromMavenForDialect" depends="prepareForDialect, loadModels, validate, transform, dispose" />
+	<target name="mainFromCommandLineForDialect" depends="prepareForDialect, loadModels, validate, transform, dispose" />
+	<target name="mainForDialect" depends="prepareForDialect, loadModels, validate, transform, dispose"/>
+
 
 </project>
