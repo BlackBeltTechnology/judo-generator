@@ -1,8 +1,8 @@
 package hu.blackbelt.judo.generator.maven.plugin;
 
-import hu.blackbelt.judo.generator.maven.plugin.execute.Model;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -20,7 +20,11 @@ public final class EmfModelLoader {
 
         final StringProperties properties = new StringProperties();
         properties.put(EmfModel.PROPERTY_NAME, emfModel.getName() + "");
-        properties.put(EmfModel.PROPERTY_ALIASES, emfModel.getAliases().stream().collect(joining(",")) + "");
+        if (emfModel.getAliases() != null) {
+            properties.put(EmfModel.PROPERTY_ALIASES, emfModel.getAliases().stream().collect(joining(",")) + "");
+        } else {
+            properties.put(EmfModel.PROPERTY_ALIASES, "");
+        }
         properties.put(EmfModel.PROPERTY_READONLOAD, emfModel.isReadOnLoad()+ "");
         properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, emfModel.isStoreOnDisposal() + "");
         properties.put(EmfModel.PROPERTY_EXPAND, emfModel.isExpand() + "");
@@ -36,6 +40,7 @@ public final class EmfModelLoader {
             properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelUri + "");
         }
 
+        /*
         if (modelFile != null && modelUri != null) {
             throw new MojoExecutionException("Only one of modelFile or modelUri may be used");
         } else if (modelUri != null) {
@@ -43,9 +48,15 @@ public final class EmfModelLoader {
         } else {
             properties.put(EmfModel.PROPERTY_MODEL_URI, convertFileToUri(modelFile));
         }
+        */
+        properties.put(EmfModel.PROPERTY_MODEL_URI, convertFileToUri(modelFile));
 
         if (metamodelFile != null) {
             properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI, convertFileToUri(metamodelFile));
+        }
+
+        if (emfModel.getPlatformAlias() != null && emfModel.getPlatformAlias().trim() != "") {
+            URIConverter.URI_MAP.put(URI.createURI(emfModel.getPlatformAlias()), URI.createFileURI(modelFile.getAbsolutePath()));
         }
 
         try {
@@ -53,7 +64,7 @@ public final class EmfModelLoader {
             repository.addModel(model);
             return model;
         } catch (EolModelLoadingException e) {
-            throw new MojoExecutionException("Cannot load model: " + modelFile.toString());
+            throw new MojoExecutionException("Cannot load model: " + modelFile.toString(), e);
         }
     }
 

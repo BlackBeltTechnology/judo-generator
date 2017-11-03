@@ -14,10 +14,14 @@ public class EclipsePlatformUrlConnection extends URLConnection {
 
     protected EclipsePlatformUrlConnection(URL url, Map<String, File> urlMapping) throws IOException {
         super(url);
-        if (!urlMapping.containsKey(url.toString())) {
-            throw new IOException("URL not mapped: " + url.toString());
+        String urlStr = url.toExternalForm().replace("platform: ", "platform:");
+        System.out.println("Open platform URL: " + urlStr);
+
+        if (!urlMapping.containsKey(urlStr)) {
+            System.err.println("URL is not mapped: " + urlStr);
+            throw new IOException("URL not mapped: " + urlStr);
         } else {
-            realFile = urlMapping.get(url.toString());
+            realFile = urlMapping.get(urlStr);
         }
     }
 
@@ -27,6 +31,7 @@ public class EclipsePlatformUrlConnection extends URLConnection {
 
     @Override
     public InputStream getInputStream() throws IOException {
+        System.out.println("Open file stream: " + realFile.getAbsolutePath());
         return new FileInputStream(realFile);
     }
 }

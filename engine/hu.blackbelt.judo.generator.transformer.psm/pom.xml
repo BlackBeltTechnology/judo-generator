@@ -10,7 +10,7 @@
         <relativePath>../../parent</relativePath>
     </parent>
 
-    <artifactId>transformer-rdbms</artifactId>
+    <artifactId>transformer-psm</artifactId>
     <packaging>pom</packaging>
 
   <build>
@@ -23,13 +23,11 @@
           <execution>
             <phase>generate-resources</phase>
             <goals>
-              <goal>execute</goal>
+              <goal>parseHutn</goal>
             </goals>
             <configuration>
               <metaModels>
                 <metaModel>mvn:${groupId}:meta-psm:ecore:psm:${project.version}</metaModel>
-                <metaModel>mvn:${groupId}:meta-psm-rdbms:ecore:rdbms:${project.version}</metaModel>
-                <metaModel>mvn:${groupId}:meta-psm-rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
               </metaModels>
 
                 <models>
@@ -41,27 +39,9 @@
                         </metaModelUris>
                         <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
                     </model>
-
-
-                    <model>
-                        <artifact>mvn:${groupId}:meta-psm-rdbms:model:rdbmsTypesPostgres:${project.version}</artifact>
-                        <name>RDBMSTYPES</name>
-                        <metaModelUris>
-                            <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
-                        </metaModelUris>
-                        <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm.rdbms/library/rdbmsTypesPostgres.model</platformAlias>
-                    </model>
-
-
-                    <model>
-                        <artifact>mvn:${groupId}:meta-psm-rdbms:model:typeMappingPostgres:${project.version}</artifact>
-                        <name>RTM</name>
-                        <metaModelUris>
-                            <param>http://blackbelt.hu/judo/meta/psm/rdbms/mapping</param>
-                        </metaModelUris>
-                    </model>
-
                 </models>
+                <hutnFile>src/model/test_opm_platform.hutn</hutnFile>
+                <targetFile>${project.build.directory}/target.model</targetFile>
             </configuration>
           </execution>
         </executions>

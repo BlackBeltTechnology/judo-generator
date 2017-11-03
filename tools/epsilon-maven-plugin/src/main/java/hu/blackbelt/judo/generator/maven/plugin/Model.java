@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.generator.maven.plugin.execute;
+package hu.blackbelt.judo.generator.maven.plugin;
 
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.emf.common.util.URI;
@@ -52,7 +52,7 @@ public class Model {
      * this model conforms. Users may combine this key with  to load "fileBasedMetamodelUris"
      * both file-based and URI-based metamodels at the same time.
      */
-    @Parameter(name = "metamodelUris", readonly = true)
+    @Parameter(name = "metaModelUris", readonly = true)
     List<String> metaModelUris;
 
     /**
