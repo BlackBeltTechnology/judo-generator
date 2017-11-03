@@ -89,7 +89,12 @@
 
 	
 	<target name="loadModels">
-
+		<!-- 
+		    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm.rdbms/library/rdbmsTypesPostgres.model#_ewi48JxSEeeO26D_eQyRGQ"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw"/>
+		
+		-->
+		
 		<echo>EMF register: ${psm.meta.location}</echo>
 		<epsilon.emf.register file="${psm.meta.location}" />
 		<echo>EMF register: ${rdbms.psm.meta.location}</echo>
@@ -101,9 +106,9 @@
 		<echo>Load mode|: ${rdbms.psm.model.name} ${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension} ${psm.meta.uri} ${rdbms.psm.meta.uri}</echo>
 		<epsilon.emf.loadModel name="${rdbms.psm.model.name}" modelfile="${rdbms.psm.model.location.prefix}${sqlDialect}.${model.file.extension}" metamodeluri="${rdbms.psm.meta.uri}" store="true" read="${readRdbmsPsmModel}" expand="true" />
 		<echo>Load mode|: ${rdbmstypes.model.name} ${rdbmstypes.model.location.prefix}${sqlDialect}.${model.file.extension} ${psm.meta.uri} ${rdbms.psm.meta.uri}</echo>
-		<epsilon.emf.loadModel name="${rdbmstypes.model.name}" modelfile="${rdbmstypes.model.location.prefix}${sqlDialect}.${model.file.extension}" metamodeluri="${rdbms.psm.meta.uri}" />
+		<epsilon.emf.loadModel name="${rdbmstypes.model.name}" modelfile="${rdbmstypes.model.location.prefix}${sqlDialect}.${model.file.extension}" metamodeluri="${rdbms.psm.meta.uri}" aliases="platform:/resource/hu.blackbelt.judo.generator.meta.psm.rdbms/library/rdbmsTypes${sqlDialect}.${model.file.extension}" />
 		<echo>Load mode|: ${psmtypes.model.name} ${psmtypes.model.location} ${psm.meta.uri} ${psm.meta.uri}</echo>
-		<epsilon.emf.loadModel name="${psmtypes.model.name}" modelfile="${psmtypes.model.location}" metamodeluri="${psm.meta.uri}" />
+		<epsilon.emf.loadModel name="${psmtypes.model.name}" modelfile="${psmtypes.model.location}" metamodeluri="${psm.meta.uri}" aliases="platform:/resource/hu.blackbelt.judo.generator.meta.psm.rdbms/library/rdbmsTypesPostgres.model"/>
 		<echo>Load mode|: ${typemapping.rdbms.psm.model.name} ${typemapping.rdbms.psm.model.location.prefix}${sqlDialect}.model ${psm.meta.uri} ${typemapping.rdbms.psm.meta.uri}</echo>
 		<epsilon.emf.loadModel name="${typemapping.rdbms.psm.model.name}" modelfile="${typemapping.rdbms.psm.model.location.prefix}${sqlDialect}.model" metamodeluri="${typemapping.rdbms.psm.meta.uri}" expand="true" />
 	</target>

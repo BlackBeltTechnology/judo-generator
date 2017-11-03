@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.blackbelt.judo.generator</groupId>
+        <artifactId>generator-parent</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../../parent</relativePath>
+    </parent>
+
+    <artifactId>meta-psm-rdbms</artifactId>
+    <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+  
+                <artifact>
+                  <file>model/rdbms.ecore</file>
+                  <type>ecore</type>
+                  <classifier>rdbms</classifier>
+                </artifact>
+                <artifact>
+                  <file>model/psmToRdbmsTypeMapping.ecore</file>
+                  <type>ecore</type>
+                  <classifier>psmToRdbmsTypeMapping</classifier>
+                </artifact>
+                <artifact>
+                  <file>library/rdbmsTypesPostgres.model</file>
+                  <type>model</type>
+                  <classifier>rdbmsTypesPostgres</classifier>
+                </artifact>
+                <artifact>
+                  <file>library/typeMappingPostgres.model</file>
+                  <type>model</type>
+                  <classifier>typeMappingPostgres</classifier>
+                </artifact>
+                <artifact>
+                  <file>library/rdbmsTypesHsqldb.model</file>
+                  <type>model</type>
+                  <classifier>rdbmsTypesHsqldb</classifier>
+                </artifact>
+                <artifact>
+                  <file>library/typeMappingHsqldb.model</file>
+                  <type>model</type>
+                  <classifier>typeMappingHsqldb</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

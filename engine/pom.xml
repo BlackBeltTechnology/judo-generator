@@ -8,7 +8,15 @@
         <relativePath>../parent</relativePath>
     </parent>
     <artifactId>engine</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>hu.blackbelt.judo.generator.meta.psm</module>
+        <module>hu.blackbelt.judo.generator.meta.psm.java</module>
+        <module>hu.blackbelt.judo.generator.meta.psm.rdbms</module>
+        <module>hu.blackbelt.judo.generator.transformer.rdbms</module>
+
+    </modules>
     <build>
         <plugins>
             <plugin>
