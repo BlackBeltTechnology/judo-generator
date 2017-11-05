@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="main">
+
+	<property name="model.file.extension" value="model" />
+
+	<property name="root.dir" location="." />
+	<property name="_src.dir" location="${root.dir}/src" />
+	<property name="target.dir.name" value="target-buildVariable" />
+	<property name="target.dir" location="${target.dir.name}" />
+
+	<property name="meta.psm.project.dir" location="../hu.blackbelt.judo.generator.meta.psm" />
+	<property name="psm.model.project.dir" location="../hu.blackbelt.judo.generator.transformer.psm" />
+	<property name="third.party.project.dir" location="../hu.blackbelt.judo.generator.third.party" />
+
+	<path id="buildVariable.taskdef.classpath">
+		<fileset dir="${third.party.project.dir}/lib/buildVariable" includes="**/*.jar" />
+	</path>
+	
+	<taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="buildVariable.taskdef.classpath" />
+	<taskdef resource="org/eclipse/epsilon/workflow/tasks/tasks.xml" classpathref="buildVariable.taskdef.classpath" loaderref="epsilon.loader" />
+	<taskdef resource="org/eclipse/epsilon/workflow/tasks/emf/tasks.xml"  loaderref="epsilon.loader" />
+
+	<property name="model.src.dir" location="${_src.dir}/model" />
+	<property name="templates.dir" location="${_src.dir}/templates" />
+	<property name="transformations.dir" location="${_src.dir}/transformations" />
+	<property name="validations.dir" location="${_src.dir}/validations" />
+	<property name="generators.dir" location="${_src.dir}/generators" />
+
+	<property name="transformed.dir" location="${target.dir}/resources" />
+
+	<property name="psm.library.dir" location="${meta.psm.project.dir}/library" />	
+	
+	<!-- PSM Model definitions -->
+	<property name="psm.model.name" value="PSM" />
+	<property name="psm.model.file.name" value="test_opm" />
+	<property name="psm.model.location" location="${psm.model.project.dir}/target-buildVariable/resources/${psm.model.file.name}.${model.file.extension}" />
+	<property name="psm.meta.location" location="${meta.psm.project.dir}/model/psm.ecore" />
+	<property name="psm.meta.uri" value="http://blackbelt.hu/judo/meta/psm" />
+
+	<!-- PSM Types -->
+	<property name="psmtypes.model.name" value="PSMTYPES" />
+	<property name="psmtypes.model.location" location="${psm.library.dir}/psmTypes.model" />
+
+	<!-- =========================== -->
+	<!-- Project specific parameters -->
+	<!-- =========================== -->	
+	<property name="meta.psm.ui.project.dir" location="../hu.blackbelt.judo.generator.meta.psm.ui" />
+	<property name="ui.psm.library.dir" location="${meta.psm.ui.project.dir}/library" />
+	<property name="gen.dir" location="${target.dir}/ui" />
+	<property name="readUiPsmModel" value="false"/>
+
+	<!-- UI Model -->
+	<property name="ui.psm.model.name" value="UI" />
+	<property name="ui.psm.model.location" location="${transformed.dir}/ui_psm.model" />
+	<property name="ui.psm.meta.location" location="${meta.psm.ui.project.dir}/model/ui.ecore" />
+	<property name="ui.psm.meta.uri" value="http://blackbelt.hu/judo/meta/psm/ui" />
+
+	<!-- UI Types -->
+	<property name="uitypes.model.name" value="UITYPES" />
+	<property name="uitypes.model.location" location="${ui.psm.library.dir}/uiTypes.model" />
+	
+	<!-- TypeMapping Model -->
+	<property name="typemapping.ui.psm.model.name" value="UTM" />
+	<property name="typemapping.ui.psm.model.location" location="${meta.psm.ui.project.dir}/library/typeMapping.model" />
+	<property name="typemapping.ui.psm.meta.location" location="${meta.psm.ui.project.dir}/model/psmToUiTypeMapping.ecore" />
+	<property name="typemapping.ui.psm.meta.uri" value="http://blackbelt.hu/judo/meta/psm/ui/mapping" />
+
+	<property name="ui.psm.transformation.entry" location="${transformations.dir}/ui/psmToUi.etl" />
+	<property name="ui.psm.generation.entry" location="${generators.dir}/main.egl" />
+	<property name="uitypes.model.validation" location="${validations.dir}/validation.evl" />
+
+	<property name="psm.meta.location" location="${meta.psm.project.dir}/model/psm.ecore" />
+	<property name="transformed.model.name" value="transformedModelFromAnt.model" />
+
+	<target name="prepare">
+		<delete dir="${gen.dir}" failonerror="false" />
+		<mkdir dir="${gen.dir}/ui" />
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${gen.dir}" />
+		<mkdir dir="${transformed.dir}" />
+		<delete file="${ui.psm.model.location}" failonerror="false" />
+		<touch file="${ui.psm.model.location}" />
+	</target>
+
+	<target name="prepareForMaven">
+		<mkdir dir="${transformed.dir}" />
+		<delete file="${ui.psm.model.location}" failonerror="false" />
+		<touch file="${ui.psm.model.location}" />
+	</target>
+
+	<target name="loadModels">
+		<epsilon.emf.register file="${ui.psm.meta.location}" />
+		<epsilon.emf.register file="${psm.meta.location}" />
+		<epsilon.emf.register file="${typemapping.ui.psm.meta.location}" />
+		<epsilon.emf.loadModel name="${psm.model.name}" modelfile="${psm.model.location}" metamodeluri="${psm.meta.uri}" read="true" store="false" expand="true" />
+		<epsilon.emf.loadModel name="${ui.psm.model.name}" modelfile="${ui.psm.model.location}" metamodeluri="${ui.psm.meta.uri}" read="${readUiPsmModel}" store="true" expand="true" />
+		<epsilon.emf.loadModel name="${uitypes.model.name}" modelfile="${uitypes.model.location}" metamodeluri="${ui.psm.meta.uri}" />
+		<epsilon.emf.loadModel name="${psmtypes.model.name}" modelfile="${psmtypes.model.location}" metamodeluri="${psm.meta.uri}" />
+		<epsilon.emf.loadModel name="${typemapping.ui.psm.model.name}" modelfile="${typemapping.ui.psm.model.location}" metamodeluri="${typemapping.ui.psm.meta.uri}" expand="true" />
+	</target>
+
+	<target name="validate">
+		<epsilon.evl src="${uitypes.model.validation}">
+			<model ref="${psm.model.name}" />
+			<model ref="${uitypes.model.name}" />
+			<model ref="${psmtypes.model.name}" />
+			<model ref="${typemapping.ui.psm.model.name}" />
+		</epsilon.evl>
+	</target>
+
+	<target name="transform">
+		<epsilon.etl src="${ui.psm.transformation.entry}">
+			<model ref="${psm.model.name}" />
+			<model ref="${ui.psm.model.name}" />
+			<model ref="${uitypes.model.name}" />
+			<model ref="${psmtypes.model.name}" />
+			<model ref="${typemapping.ui.psm.model.name}" />
+		</epsilon.etl>
+	</target>
+
+	<target name="generate">
+		<epsilon.egl src="${ui.psm.generation.entry}" outputRoot="${gen.dir}">
+			<model ref="${uitypes.model.name}" />	
+			<model ref="${ui.psm.model.name}" />
+		</epsilon.egl>
+	</target>
+
+	<target name="mainFromMaven" depends="prepareForMaven, loadModels, validate, transform, generate" />
+	<target name="mainFromCommandLine" depends="prepare, loadModels, validate, transform, generate" />
+	<target name="main" depends="doGenerate"/>
+	<target name="pre" depends="prepare, loadModels, validate" />
+	
+	<target name="transformInTransaction" >
+			<trycatch>
+				<try>
+					<epsilon.startTransaction name="TransforTransaction" />
+					<runtarget target="transform" />
+					<epsilon.commitTransaction name="TransforTransaction" />
+				</try>
+				<catch>
+					<epsilon.rollbackTransaction name="TransforTransaction" />
+				</catch>
+			</trycatch>
+		</target>
+
+	<target name="doTransform" depends="pre, transformInTransaction" />
+
+	<target name="doGenerate" depends="doTransform">
+		<trycatch>
+			<try>
+				<epsilon.startTransaction name="GenerateTransaction" />
+				<runtarget target="generate" />
+				<epsilon.commitTransaction name="GenerateTransaction" />
+			</try>
+			<catch>
+				<epsilon.rollbackTransaction name="GenerateTransaction" />
+			</catch>
+		</trycatch>
+	</target>
+
+</project>
