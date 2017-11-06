@@ -19,13 +19,13 @@ public class Model {
     List<String> aliases;
 
     @Parameter(name = "readOnLoad", defaultValue = "true", readonly = true)
-    boolean readOnLoad;
+    boolean readOnLoad = true;
 
     @Parameter(name = "storeOnDisposal", defaultValue = "true", readonly = true)
-    boolean storeOnDisposal;
+    boolean storeOnDisposal = false;
 
     @Parameter(name = "cached", defaultValue = "true", readonly = true)
-    boolean cached;
+    boolean cached = true;
 
     @Parameter(name = "metaModelFile", readonly = true)
     File metaModelFile;

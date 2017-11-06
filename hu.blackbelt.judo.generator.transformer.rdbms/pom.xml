@@ -48,6 +48,7 @@
                         <metaModelUris>
                             <param>http://blackbelt.hu/judo/meta/psm</param>
                         </metaModelUris>
+                        <expand>true</expand>
                     </model>
 
                     <model>
@@ -65,6 +66,7 @@
                         <metaModelUris>
                             <param>http://blackbelt.hu/judo/meta/psm/rdbms/mapping</param>
                         </metaModelUris>
+                        <expand>true</expand>
                     </model>
 
                     <!--  Target -->
@@ -78,7 +80,14 @@
                        </metaModelUris>
                     </model>
                 </models>
-
+                <eolPrograms>
+                    <Evl>
+                        <source>src/validations/validation.evl</source>
+                    </Evl>
+                    <Etl>
+                        <source>src/transformations/rdbms/psmToRdbms.etl</source>
+                    </Etl>
+                </eolPrograms>
             </configuration>
           </execution>
         </executions>
