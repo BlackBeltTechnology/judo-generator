@@ -1,3 +1,5 @@
+import "../../../operations/_importAll.eol";
+
 rule UICLass
 	transform jclass : PSM!JClass
 	to uiclass : UI!UIClass {
@@ -9,7 +11,7 @@ rule UICLass
 	uiclass.abstract = jclass.abstract;
 	uiclass.enumClass = jclass.representsEnum;
 	uiclass.singleton = jclass.businessSingleton;
-	if (jclass.visibility = PSM!JVisibility.PROTECTED or jclass.visibility = PSM!JVisibility.PRIVATE or jclass.visibility = PSM!JVisibility.PACKAGE) {
+	if (jclass.visibility = PSM!JVisibility#PROTECTED or jclass.visibility = PSM!JVisibility#PRIVATE or jclass.visibility = PSM!JVisibility#PACKAGE) {
 		uiclass.readonly = true;
 	} else {
 		uiclass.readonly = false;
@@ -20,12 +22,12 @@ rule UICLass
 	uiclass.super ::= jclass.supertype;
 	
 	//create Actions
-	inherited = false;
-	currentClass = jclass;
+	var inherited = false;
+	var currentClass = jclass;
 	while (true) {
-		for (op in currentClass.operations) {
-			if (op.visibility = PUBLIC) {
-				var action = op.equivalent();
+		for (op : PSM!JOperation in currentClass.operations) {
+			if (op.visibility = PSM!JVisibility#PUBLIC) {
+				var action : UI!UIAction = op.equivalent("UIAction");
 				action.inherited = inherited;
 				uiclass.actions.add(action);
 			}	
@@ -39,14 +41,14 @@ rule UICLass
 		}
 	}
 	
-	//create Attributes
+	//create Fields
 	var inherited = false;
 	var currentClass = jclass;
 	while (true) {
 		for (attr in currentClass.attributes) {
 			var attribute = attr.equivalent();
 			attribute.inherited = inherited;
-			if (uiclass.representation.uuid = attribute.uuid) {
+			if (uiclass.representation.isDefined() and uiclass.representation.uuid = attribute.uuid) {
 				attribute.representation = true;
 			}
 			uiclass.fields.add(attribute);
@@ -70,7 +72,7 @@ rule UICLass
 	var objectView = createObjectView(uiclass, uiclass.name, uiclass.uuid + '_oview_default', true);
 	var listView = createListView(uiclass, uiclass.name, uiclass.uuid + '_lview_default', objectView, true);
 	uiclass.classViews.add(objectView);
-	uiclass.listViews.add(listView);
+	//uiclass.listViews.add(listView);
 	/*for (alias uiclass) {
 		objectView = createObjectView(uiclass, alias.name, uiclass.uuid + '_oview_' + alias.name, false);
 		listView =  createListView(uiclass, alias.name, uiclass.uuid + '_lview_' + alias.name, objectView, false);
@@ -81,8 +83,8 @@ rule UICLass
 }
 	
 	
-operation createObjectView(container: UIContainer, name: String, uuid: String, isDefault: Boolean) : UIView {
-	var objectView = new UIView();
+operation createObjectView(container: UI!UIContainer, name: String, uuid: String, isDefault: Boolean) : UI!UIClassView {
+	var objectView = new UI!UIClassView();
 	objectView.uuid = uuid;
 	objectView.name = name;
 	objectView.isDefault = isDefault;
@@ -90,18 +92,19 @@ operation createObjectView(container: UIContainer, name: String, uuid: String, i
 	objectView.columns = 2;
 	
 	var position = 1;
+	
 	for (field in container.fields) {
-		if ((field.association and field.navigable and not field.private) or (not field.association and not field.private)) {
-			viewFieldSet = new UIViewFieldSet();
+		if ((field.isTypeOf(UI!UIReference) and field.navigable and not field.private) or (not field.isTypeOf(UI!UIReference) and not field.private)) {
+			var viewFieldSet = new UI!UIViewFieldSet();
 			viewFieldSet.name = field.name;
 			viewFieldSet.uuid = objectView.id + "_viewfieldset_" + field.name;
 			viewFieldSet.position = position;
 			
-			viewField = new UIViewField();
+			var viewField = new UI!UIViewField();
 			viewField.name = field.name;
 			viewField.uuid = field.id + name;
 			viewField.field = field;
-			viewfield.searchable = 
+			viewField.searchable = 
 			viewField.position = 1;
 			
 			position++;
@@ -113,14 +116,14 @@ operation createObjectView(container: UIContainer, name: String, uuid: String, i
 	return objectView;
 }
 
-operation createListView(container: UIContainer, name: String, uuid: String, objectView: UIView, isDefault: Boolean) : UIView {
-	var listView = new UIView();
+operation createListView(container: UI!UIContainer, name: String, uuid: String, objectView: UI!UIClassView, isDefault: Boolean) : UI!UIListView {
+	var listView = new UI!UIListView();
 	listView.uuid = uuid;
 	listView.name = name;
 	listView.isDefault = isDefault;
 	listView.pageSize = 20;
-	listView.columns = 2;
 	listView.detailView = objectView;
 	
+	//TODO
 	
 }

@@ -1,20 +1,73 @@
+import "../../../operations/_importAll.eol";
+
 rule UIAction
 	transform joperation : PSM!JOperation
 	to uiaction : UI!UIAction {
+		"UIAction".println();
 		//inherited from Identifiable
 		uiaction.uuid = joperation.uuid;
 		uiaction.name = joperation.name;
 		//Attributes
 		uiaction.classBased = joperation.classBased;
-		uiaction.toBeConfirmed = not (joperation.stereotype = "nonconfirmed");
+		//uiaction.toBeConfirmed = not (joperation.stereotype = "nonconfirmed");
+		uiaction.toBeConfirmed = false;
 		uiaction.notBulk = not joperation.bulk;
-		uiaction.isQuery = (joperation.kind = QUERY);
+		uiaction.isQuery = (joperation.kind = PSM!JOperationKind#QUERY);
 		//Fields
 		for (param in joperation.parameters) {
 			if (not param.input) {
 				uiaction.result = param.equivalent();
+				uiaction.resultView = createResultView(uiaction);
+				
 			} else {
 				uiaction.fields.add(param.equivalent());
 			}
 		}
-	} 
+		
+		uiaction.paramView = createParamView(uiaction);
+} 
+	
+operation createParamView(uiaction : UIAction) : UIParamView {
+	var paramView = new UIParamView();
+	paramView.name = uiaction.name;
+	paramView.uuid = uiaction.uuid + uiaction.name;
+	
+	var viewFieldSet = new UIViewFieldSet();
+	viewFieldSet.name = uiaction.name;
+	viewFieldSet.uuid = paramView.uuid + '_viewfieldset_' + uiaction.name;
+	
+	var position = 1;
+	
+	for (field in uiaction.fields) {
+		var viewField = new UIViewField();
+		viewField.name = field.name;
+		viewField.uuid = field.uuid + uiaction.name;
+		viewField.position = position;
+		viewFieldSet.viewFields.add(viewField);
+		
+		position++;
+	}
+	
+	paramView.viewFieldSets.append(viewFieldSet);
+	return paramView;
+}
+
+operation createResultView(uiaction : UIAction) : UIResultView {
+	var resultView = new UIResultView();
+	resultView.name = uiaction.name;
+	resultView.uuid = uiaction.uuid + uiaction.name + 'result';
+	resultView.pageSize = 1000;
+	
+	var viewFieldSet = new UIViewFieldSet();
+	viewFieldSet.name = uiaction.name;
+	viewFieldSet.uuid = resultView.uuid + '_viewfieldset_' + uiaction.name;
+	
+	var viewField = new UIViewField();
+	viewField.name = uiaction.result.name;
+	viewField.uuid = resultView.uuid + uiaction.result.uuid;
+	viewField.position = 1;
+	viewFieldSet.viewFields.add(viewField);
+	
+	resultView.viewFieldSets.append(viewFieldSet);
+	return resultView;
+}
