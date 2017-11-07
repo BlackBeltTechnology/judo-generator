@@ -143,6 +143,25 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											hu.blackbelt.judo.generator
+										</groupId>
+										<artifactId>
+											epsilon-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.0.0-SNAPSHOT,)
+										</versionRange>
+										<goals>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
