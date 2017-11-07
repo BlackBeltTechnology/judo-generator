@@ -3,7 +3,8 @@
 	<property name="target.dir" location="target-ant" />
 
 	<property name="hutn.file.location" location="../../engine//hu.blackbelt.judo.generator.transformer.psm/src/model/test_car.hutn" />
-	<property name="psm.meta.location" location="../../engine//hu.blackbelt.judo.generator.meta.psm/model/psm.ecore" />
+	<property name="meta.psm.project.dir" location="../../engine//hu.blackbelt.judo.generator.meta.psm/" />
+	<property name="psm.meta.location" location="${meta.psm.project.dir}/model/psm.ecore" />
 	<property name="psm.types.location" location="../../engine/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model" />
 	<property name="transformed.model.name" value="transformedModelFromAnt.model" />
 	<property name="transformed.base.dir" value="${target.dir}" />
@@ -33,6 +34,10 @@
 	</target>
 
 	<target name="run" depends="build">
+		<pathconvert targetos="unix" property="meta.psm.project.dir.fixed">
+					<path location="${meta.psm.project.dir}"/>
+				</pathconvert>
+				<replace token="@@@PSM_TYPES_TOKEN@@@" value="${meta.psm.project.dir.fixed}" file="${hutn.file.location}" />
 		<java fork="true" classname="${main.class.name}" failonerror="true">
 			<!--jvmarg line="-XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:+UnlockDiagnosticVMOptions -XX:FlightRecorderOptions=defaultrecording=true,dumponexit=true,dumponexitpath=jmcStatistics.jfr"/-->
 			<classpath>

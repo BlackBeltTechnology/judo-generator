@@ -61,7 +61,7 @@
 	
 	<!-- TypeMapping Model -->
 	<property name="typemapping.ui.psm.model.name" value="UTM" />
-	<property name="typemapping.ui.psm.model.location" location="${meta.psm.ui.project.dir}/library/typeMapping.model" />
+	<property name="typemapping.ui.psm.model.location" location="${meta.psm.ui.project.dir}/library/psmToUiTypeMapping.model" />
 	<property name="typemapping.ui.psm.meta.location" location="${meta.psm.ui.project.dir}/model/psmToUiTypeMapping.ecore" />
 	<property name="typemapping.ui.psm.meta.uri" value="http://blackbelt.hu/judo/meta/psm/ui/mapping" />
 

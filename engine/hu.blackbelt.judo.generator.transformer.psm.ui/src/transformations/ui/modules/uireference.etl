@@ -5,33 +5,29 @@ rule UIReference
 		uireference.uuid = jrole.uuid;
 		uireference.name = jrole.name;
 		//attributes
-		if (jrole.visibility = PSM!JVisibility.PUBLIC) {
-			uireference.readonly = false;
-		}	else {
+		if (jrole.visibility <> PSM!JVisibility#PUBLIC) {
 			uireference.readonly = true;
 		}
-		if (jrole.visibility = PSM!JVisibility.PRIVATE) {
+		if (jrole.visibility = PSM!JVisibility#PRIVATE) {
 			uireference.private = true;
 		}
-		if (jrole.derived or jrole.calculated or jrole.visibility = PSM!JVisibility.PROTECTED) {
+		if (jrole.ownerRelationship.derived or jrole.calculated or jrole.visibility = PSM!JVisibility#PROTECTED) {
 			uireference.value = "";
 		} else {
-			uireference.value = jattribute.value;
+			uireference.value = jrole.value;
 		}
-		uireference.derived = jrole.derived;
+		uireference.derived = jrole.ownerRelationship.derived;
 		uireference.lower = jrole.lower;
 		uireference.upper = jrole.upper;
 		uireference.type = jrole.class.name;
 		uireference.navigable = jrole.navigable;
-		uireference.kind = jrole.kind;
+		uireference.kind = jrole.kind.name;
 		//references
-		uireference.componentType = jattribute.type.equivalent();
+		uireference.componentHack = jrole.ownerClass.name;
 		var index = jrole.ownerRelationship.roles.indexOf(jrole);
 		if (index = 1) {
-			uireference.other = jrole.ownerRelationship.roles[0];
+			uireference.opposite = jrole.ownerRelationship.roles[0].equivalent();
 		} else {
-			uireference.other = jrole.ownerRelationship.roles[1];
-		}
-		
-		
+			uireference.opposite = jrole.ownerRelationship.roles[1].equivalent();
+		}		
 	}

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="psmToComponentTypeMapping" nsURI="http://blackbelt.hu/judo/meta/psm/ui/mapping"
-    nsPrefix="psmToComponentType">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="psmToUiTypeMapping" nsURI="http://blackbelt.hu/judo/meta/psm/ui/mapping"
+    nsPrefix="psmToUiTypeMapping">
   <eClassifiers xsi:type="ecore:EClass" name="Mapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="psmType" lowerBound="1"
         eType="ecore:EClass http://blackbelt.hu/judo/meta/psm#//JPrimitive"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="componentType" lowerBound="1"
-        eType="ecore:EClass http://blackbelt.hu/judo/meta/ui#//ComponentType"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="ecore:EClass http://blackbelt.hu/judo/meta/psm/ui#//UIComponentType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mappings">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"

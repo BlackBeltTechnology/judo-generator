@@ -9,7 +9,7 @@ rule UICLass
 	uiclass.abstract = jclass.abstract;
 	uiclass.enumClass = jclass.representsEnum;
 	uiclass.singleton = jclass.businessSingleton;
-	if (jclass.visibility = PSM!JVisibility.PROTECTED or jclass.visibility = PSM!JVisibility.PRIVATE or jclass.visibility = PSM!JVisibility.PACKAGE) {
+	if (jclass.visibility = PSM!JVisibility#PROTECTED or jclass.visibility = PSM!JVisibility#PRIVATE or jclass.visibility = PSM!JVisibility#PACKAGE) {
 		uiclass.readonly = true;
 	} else {
 		uiclass.readonly = false;
@@ -20,8 +20,8 @@ rule UICLass
 	uiclass.super ::= jclass.supertype;
 	
 	//create Actions
-	inherited = false;
-	currentClass = jclass;
+	var inherited = false;
+	var currentClass = jclass;
 	while (true) {
 		for (op in currentClass.operations) {
 			if (op.visibility = PUBLIC) {
@@ -39,14 +39,14 @@ rule UICLass
 		}
 	}
 	
-	//create Attributes
+	//create Fields
 	var inherited = false;
 	var currentClass = jclass;
 	while (true) {
 		for (attr in currentClass.attributes) {
 			var attribute = attr.equivalent();
 			attribute.inherited = inherited;
-			if (uiclass.representation.uuid = attribute.uuid) {
+			if (uiclass.representation.isDefined() and uiclass.representation.uuid = attribute.uuid) {
 				attribute.representation = true;
 			}
 			uiclass.fields.add(attribute);
@@ -81,8 +81,8 @@ rule UICLass
 }
 	
 	
-operation createObjectView(container: UIContainer, name: String, uuid: String, isDefault: Boolean) : UIView {
-	var objectView = new UIView();
+operation createObjectView(container: UI!UIContainer, name: String, uuid: String, isDefault: Boolean) : UIClassView {
+	var objectView = new UI!UIClassView();
 	objectView.uuid = uuid;
 	objectView.name = name;
 	objectView.isDefault = isDefault;
@@ -113,14 +113,14 @@ operation createObjectView(container: UIContainer, name: String, uuid: String, i
 	return objectView;
 }
 
-operation createListView(container: UIContainer, name: String, uuid: String, objectView: UIView, isDefault: Boolean) : UIView {
-	var listView = new UIView();
+operation createListView(container: UI!UIContainer, name: String, uuid: String, objectView: UI!UIClassView, isDefault: Boolean) : UI!UIListView {
+	var listView = new UI!UIListView();
 	listView.uuid = uuid;
 	listView.name = name;
 	listView.isDefault = isDefault;
 	listView.pageSize = 20;
-	listView.columns = 2;
 	listView.detailView = objectView;
 	
+	//TODO
 	
 }
