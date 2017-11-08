@@ -1,6 +1,6 @@
 import "../../../operations/_importAll.eol";
 
-rule UICLass
+rule UIClass
 	transform jclass : PSM!JClass
 	to uiclass : UI!UIClass {
 	//inherited from Identifiable
@@ -18,12 +18,12 @@ rule UICLass
 	}
 	
 	//References
-	uiclass.representation ::= jclass.representation;
-	uiclass.super ::= jclass.supertype;
+	uiclass.representation = jclass.representation.equivalent("UIBaseComponentType");
+	uiclass.super = jclass.supertype.equivalent("UIClass");
 	
 	//create Actions
-	var inherited = false;
-	var currentClass = jclass;
+	var inherited : Boolean = false;
+	var currentClass : PSM!JClass = jclass;
 	while (true) {
 		for (op : PSM!JOperation in currentClass.operations) {
 			if (op.visibility = PSM!JVisibility#PUBLIC) {
@@ -40,24 +40,23 @@ rule UICLass
 			break;
 		}
 	}
-	
-	//create Fields
-	var inherited = false;
-	var currentClass = jclass;
+
+	//create ComponentTypes
+	inherited = false;
+	currentClass = jclass;
 	while (true) {
-		for (attr in currentClass.attributes) {
-			var attribute = attr.equivalent();
+		for (attr : PSM!JAttribute in currentClass.attributes) {
+			var attribute : UI!UIBaseComponentType = attr.equivalent("UIBaseComponentType");
 			attribute.inherited = inherited;
 			if (uiclass.representation.isDefined() and uiclass.representation.uuid = attribute.uuid) {
 				attribute.representation = true;
 			}
-			uiclass.fields.add(attribute);
+			uiclass.attributes.add(attribute);
 			}
-		
-		for (role in currentClass.roles) {
-			var reference = role.equivalent();
+		for (role : PSM!JRole in currentClass.roles) {
+			var reference : UI!UIReferenceComponentType = role.equivalent();
 			reference.inherited = inherited;
-			uiclass.fields.add(reference);
+			uiclass.attributes.add(reference);
 		}
 		
 		if (currentClass.supertype.isDefined()) {
@@ -66,57 +65,59 @@ rule UICLass
 		}	else {
 			break;
 		}
+		
 	}
-	
+
 	//create Views
-	var objectView = createObjectView(uiclass, uiclass.name, uiclass.uuid + '_oview_default', true);
+	var classView = createClassView(uiclass, uiclass.name, uiclass.uuid + '_oview_default', true);
 	var listView = createListView(uiclass, uiclass.name, uiclass.uuid + '_lview_default', objectView, true);
 	uiclass.classViews.add(objectView);
-	//uiclass.listViews.add(listView);
-	/*for (alias uiclass) {
-		objectView = createObjectView(uiclass, alias.name, uiclass.uuid + '_oview_' + alias.name, false);
-		listView =  createListView(uiclass, alias.name, uiclass.uuid + '_lview_' + alias.name, objectView, false);
-		uiclass.classViews.add(objectView);
+	uiclass.listViews.add(listView);
+	for (al in jclass.aliases) {
+		classView = createClassView(uiclass, al.name, uiclass.uuid + '_oview_' + al.name, false);
+		listView =  createListView(uiclass, al.name, uiclass.uuid + '_lview_' + al.name, classView, false);
+		uiclass.classViews.add(classView);
 		uiclass.listViews.add(listView);
-	}*/
+	}
 		
 }
 	
 	
-operation createObjectView(container: UI!UIContainer, name: String, uuid: String, isDefault: Boolean) : UI!UIClassView {
-	var objectView = new UI!UIClassView();
-	objectView.uuid = uuid;
-	objectView.name = name;
-	objectView.isDefault = isDefault;
-	objectView.pageSize = 1;
-	objectView.columns = 2;
+operation createClassView(ownerClass: UI!UIClass, name: String, uuid: String, isDefault: Boolean) : UI!UIClassView {
+	var classView : UI!UIClassView = new UI!UIClassView();
+	classView.uuid = uuid;
+	classView.name = name;
+	classView.isDefault = isDefault;
+	classView.pageSize = 1;
+	classView.columns = 2;
 	
 	var position = 1;
 	
-	for (field in container.fields) {
-		if ((field.isTypeOf(UI!UIReference) and field.navigable and not field.private) or (not field.isTypeOf(UI!UIReference) and not field.private)) {
-			var viewFieldSet = new UI!UIViewFieldSet();
-			viewFieldSet.name = field.name;
-			viewFieldSet.uuid = objectView.id + "_viewfieldset_" + field.name;
+	for (attribute in ownerClass.attributes) {
+		if ((attribute.isTypeOf(UI!UIReferenceComponentType) and attribute.navigable and not attribute.private) 
+													or (not attribute.isTypeOf(UI!UIReference) and not attribute.private)) {
+			var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
+			viewFieldSet.name = attribute.name;
+			viewFieldSet.uuid = objectView.id + "_viewfieldset_" + attribute.name;
 			viewFieldSet.position = position;
 			
-			var viewField = new UI!UIViewField();
-			viewField.name = field.name;
-			viewField.uuid = field.id + name;
-			viewField.field = field;
-			viewField.searchable = 
+			var viewField : UI!UIViewField = new UI!UIViewField();
+			viewField.name = attribute.name;
+			viewField.uuid = attribute.id + name;
+			viewField.componentType = attribute;
+			viewField.searchable = true;
 			viewField.position = 1;
 			
 			position++;
 			viewFieldSet.viewFields.add(viewField);
-			objectView.viewFieldSets.add(viewFieldSet);
+			classView.viewFieldSets.add(viewFieldSet);
 		}
 	}
 	
-	return objectView;
+	return classView;
 }
 
-operation createListView(container: UI!UIContainer, name: String, uuid: String, objectView: UI!UIClassView, isDefault: Boolean) : UI!UIListView {
+operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, classView: UI!UIClassView, isDefault: Boolean) : UI!UIListView {
 	var listView = new UI!UIListView();
 	listView.uuid = uuid;
 	listView.name = name;
@@ -124,6 +125,5 @@ operation createListView(container: UI!UIContainer, name: String, uuid: String, 
 	listView.pageSize = 20;
 	listView.detailView = objectView;
 	
-	//TODO
-	
+	return listView;
 }

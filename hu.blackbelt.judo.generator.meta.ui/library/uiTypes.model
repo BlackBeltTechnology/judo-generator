@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="ASCII"?>
-<ui:UIBase xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ui="http://blackbelt.hu/judo/meta/psm/ui" xmi:id="_oA-XkMCmEeegEfX2iPMubA">
-  <menu xmi:id="_vsY-YMMHEeejcr-wxemCrQ" uuid="uuid-mm" name="main menu"/>
-  <info xmi:id="_vE5gkMMHEeejcr-wxemCrQ"/>
-  <types xmi:id="_pNXSMMCmEeegEfX2iPMubA" uuid="ui-component-void" name="void"/>
-  <types xmi:id="_qLAmMMCmEeegEfX2iPMubA" uuid="ui-component-date" name="date"/>
-  <types xmi:id="_2ACTcMCmEeegEfX2iPMubA" uuid="ui-component-datetime" name="datetime"/>
-  <types xmi:id="_5Pn04MCmEeegEfX2iPMubA" uuid="ui-component-time" name="time"/>
-  <types xmi:id="_6ebxYMCmEeegEfX2iPMubA" uuid="ui-component-boolean" name="boolean"/>
-  <types xmi:id="_79yrUMCmEeegEfX2iPMubA" uuid="ui-component-integer" name="integer"/>
-  <types xmi:id="_8_4acMCmEeegEfX2iPMubA" uuid="ui-component-string" name="string"/>
-  <types xmi:id="_-NWTIMCmEeegEfX2iPMubA" uuid="ui-component-text" name="text"/>
-  <types xmi:id="__p37gMCmEeegEfX2iPMubA" uuid="ui-component-float" name="float"/>
-  <types xmi:id="_AlTB8MCnEeegEfX2iPMubA" uuid="ui-component-uuid" name="uuid"/>
-  <types xmi:id="_CAaVEMCnEeegEfX2iPMubA" uuid="ui-component-file" name="file"/>
-  <types xmi:id="_DGqygMCnEeegEfX2iPMubA" uuid="ui-component-object" name="object"/>
-</ui:UIBase>
+<ui:UIClass xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="http://blackbelt.hu/judo/meta/psm/ui" xmi:id="_5jjgoMPfEeehI5I5hnUh6Q" uuid="class-ui-uuid" name="ui class" selector="_f0z1EMPgEeehI5I5hnUh6Q">
+  <classViews xmi:id="_D8JsIMPgEeehI5I5hnUh6Q" uuid="view-uuid" name="view-name"/>
+  <listViews xmi:id="_f0z1EMPgEeehI5I5hnUh6Q" uuid="listview-uuid" name="listview-name" detailView="_D8JsIMPgEeehI5I5hnUh6Q" ownerClass="_5jjgoMPfEeehI5I5hnUh6Q"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_PmPUsMPgEeehI5I5hnUh6Q" uuid="comp-ui-void" name="void" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_YDcKgMPgEeehI5I5hnUh6Q" uuid="comp-ui-date" name="date" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_lfI6oMPgEeehI5I5hnUh6Q" uuid="comp-ui-datetime" name="datetime" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_q3A-QMPgEeehI5I5hnUh6Q" uuid="comp-ui-boolean" name="boolean" regexp="&quot;&quot;" placeholder=""/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_vh_foMPgEeehI5I5hnUh6Q" uuid="comp-ui-integer" name="integer" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_ziBmkMPgEeehI5I5hnUh6Q" uuid="comp-ui-string" name="string" value="" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_3mQ4EMPgEeehI5I5hnUh6Q" uuid="comp-ui-text" name="text" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_9XP_QMPgEeehI5I5hnUh6Q" uuid="comp-ui-float" name="float" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_AyGVgMPhEeehI5I5hnUh6Q" uuid="comp-ui-uuid" name="uuid" regexp="&quot;&quot;" placeholder=""/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_H6vzMMPhEeehI5I5hnUh6Q" uuid="comp-ui-file" name="file" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_K-ScsMPhEeehI5I5hnUh6Q" uuid="comp-ui-object" name="object" regexp="&quot;&quot;"/>
+  <attributes xsi:type="ui:UIBaseComponentType" xmi:id="_j129wMPiEeetyPeBwSeKjA" uuid="comp-ui-time" name="time" regexp="&quot;&quot;"/>
+</ui:UIClass>

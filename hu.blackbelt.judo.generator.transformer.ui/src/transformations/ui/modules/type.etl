@@ -1,10 +1,10 @@
 import "../../../operations/_importAll.eol";
  
-operation PSM!JPrimitive componentType () : UITYPES!UIComponentType {
+operation PSM!JPrimitive componentType () : UITYPES!UIBaseComponentType {
 	// return  UTM!Mapping.all.select(m | m.psmType.name = self.name).first().componentType;
 	// HACKL! Without it the generator unable to access the instance;s attributes.
 	var name = UTM!Mapping.all.select(m | m.psmType.name = self.name).first().componentType.name;
-	var ret =  UITYPES!ComponentType.all.select( p | p.name = name).first();
+	var ret =  UITYPES!UIBaseComponentType.all.select( p | p.name = name).first();
 	return ret;
 }
 

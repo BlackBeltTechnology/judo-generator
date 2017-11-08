@@ -3,7 +3,6 @@ import "../../../operations/_importAll.eol";
 rule UIAction
 	transform joperation : PSM!JOperation
 	to uiaction : UI!UIAction {
-		"UIAction".println();
 		//inherited from Identifiable
 		uiaction.uuid = joperation.uuid;
 		uiaction.name = joperation.name;
@@ -14,60 +13,59 @@ rule UIAction
 		uiaction.notBulk = not joperation.bulk;
 		uiaction.isQuery = (joperation.kind = PSM!JOperationKind#QUERY);
 		//Fields
-		for (param in joperation.parameters) {
+		for (param : PSM!JParameter in joperation.parameters) {
 			if (not param.input) {
-				uiaction.result = param.equivalent();
+				uiaction.result = param.equivalent("UI!UIParameterComponentType");
 				uiaction.resultView = createResultView(uiaction);
-				
 			} else {
-				uiaction.fields.add(param.equivalent());
+				uiaction.parameters.add(param.equivalent("UI!UIParameterComponentType"));
 			}
 		}
 		
 		uiaction.paramView = createParamView(uiaction);
 } 
 	
-operation createParamView(uiaction : UIAction) : UIParamView {
-	var paramView = new UIParamView();
+operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
+	var paramView : UI!UIParamView = new UI!UIParamView();
 	paramView.name = uiaction.name;
 	paramView.uuid = uiaction.uuid + uiaction.name;
 	
-	var viewFieldSet = new UIViewFieldSet();
+	var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 	viewFieldSet.name = uiaction.name;
 	viewFieldSet.uuid = paramView.uuid + '_viewfieldset_' + uiaction.name;
 	
 	var position = 1;
 	
-	for (field in uiaction.fields) {
-		var viewField = new UIViewField();
-		viewField.name = field.name;
-		viewField.uuid = field.uuid + uiaction.name;
+	for (parameter in uiaction.parameters) {
+		var viewField : UI!UIViewField = new UI!UIViewField();
+		viewField.name = parameter.name;
+		viewField.uuid = parameter.uuid + uiaction.name;
 		viewField.position = position;
 		viewFieldSet.viewFields.add(viewField);
 		
 		position++;
 	}
 	
-	paramView.viewFieldSets.append(viewFieldSet);
+	paramView.viewFieldSets.add(viewFieldSet);
 	return paramView;
 }
 
-operation createResultView(uiaction : UIAction) : UIResultView {
-	var resultView = new UIResultView();
+operation createResultView(uiaction : UI!UIAction) : UI!UIResultView {
+	var resultView : UI!UIResultView = new UI!UIResultView();
 	resultView.name = uiaction.name;
 	resultView.uuid = uiaction.uuid + uiaction.name + 'result';
 	resultView.pageSize = 1000;
 	
-	var viewFieldSet = new UIViewFieldSet();
+	var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 	viewFieldSet.name = uiaction.name;
 	viewFieldSet.uuid = resultView.uuid + '_viewfieldset_' + uiaction.name;
 	
-	var viewField = new UIViewField();
+	var viewField : UI!UIViewField = new UI!UIViewField();
 	viewField.name = uiaction.result.name;
 	viewField.uuid = resultView.uuid + uiaction.result.uuid;
 	viewField.position = 1;
 	viewFieldSet.viewFields.add(viewField);
 	
-	resultView.viewFieldSets.append(viewFieldSet);
+	resultView.viewFieldSets.add(viewFieldSet);
 	return resultView;
 }

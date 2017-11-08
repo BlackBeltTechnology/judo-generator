@@ -1,5 +1,85 @@
-rule UIComponentType
-	transform jtype : PSM!JType
-	to uicomponenttype : UI!UIComponentType {
-		uicomponenttype.name = jtype.name;
+import "../../../operations/_importAll.eol";
+
+rule UIReferenceComponentType
+	transform jrole : PSM!JRole
+	to uireference : UI!UIReferenceComponentType {
+		//inherited from Identifiable
+		uireference.uuid = jrole.uuid;
+		uireference.name = jrole.name;
+		//attributes
+		if (jrole.visibility <> PSM!JVisibility#PUBLIC) {
+			uireference.readonly = true;
+		}
+		if (jrole.visibility = PSM!JVisibility#PRIVATE) {
+			uireference.private = true;
+		}
+		if (jrole.ownerRelationship.derived or jrole.calculated or jrole.visibility = PSM!JVisibility#PROTECTED) {
+			uireference.value = "";
+		} else {
+			uireference.value = jrole.value;
+		}
+		uireference.derived = jrole.ownerRelationship.derived;
+		uireference.lower = jrole.lower;
+		uireference.upper = jrole.upper;
+		uireference.navigable = jrole.navigable;
+		uireference.kind = jrole.kind.name;
+		//references
+		var index = jrole.ownerRelationship.roles.indexOf(jrole);
+		if (index = 1) {
+			uireference.opposite = jrole.ownerRelationship.roles[0].equivalent("UIReferenceComponentType");
+			uireference.referenced = jrole.ownerRelationship.roles[0].ownerClass.equivalent("UIClass");
+			uireference.type = jrole.ownerRelationship.roles[0].ownerClass.equivalent("UIClass").name;
+		} else {
+			uireference.opposite = jrole.ownerRelationship.roles[1].equivalent("UIReferenceComponentType");
+			uireference.referenced = jrole.ownerRelationship.roles[1].ownerClass.equivalent("UIClass");
+			uireference.type = jrole.ownerRelationship.roles[1].ownerClass.equivalent("UIClass").name;
+		}	
+	}
+
+rule UIBaseComponentType
+	transform jattribute : PSM!JAttribute
+	to uibasetype : UI!UIBaseComponentType {
+		//inherited from Identifiable
+		uibasetype.uuid = jattribute.uuid;
+		uibasetype.name = jattribute.name;
+		//attributes
+		if (jattribute.visibility = PSM!JVisibility#PUBLIC) {
+			uibasetype.readonly = false;
+		}	else {
+			uibasetype.readonly = true;
+		}
+		if (jattribute.visibility = PSM!JVisibility#PRIVATE) {
+			uibasetype.private = true;
+		}
+		if (jattribute.derived or jattribute.calculated or jattribute.visibility = PSM!JVisibility#PROTECTED) {
+			uibasetype.value = "";
+		} else {
+			uibasetype.value = jattribute.value;
+		}
+		uibasetype.derived = jattribute.derived;
+		uibasetype.lower = jattribute.lower;
+		uibasetype.upper = jattribute.upper;
+		uibasetype.regexp = jattribute.regexp;
+		uibasetype.decimals = jattribute.decimals;
+		uibasetype.placeholder = jattribute.placeholder;
+		uibasetype.type = jattribute.type.componentType().name;
+	} 
+
+rule UIParameterComponentType
+	transform jparameter : PSM!JParameter
+	to uiparameter : UI!UIParameterComponentType {
+		//inherited from Identifiable
+		uiparameter.uuid = jparameter.uuid;
+		uiparameter.name = jparameter.name;
+		//attributes
+		uiparameter.value = "";
+		uiparameter.lower = jparameter.lower;
+		uiparameter.upper = jparameter.upper;
+		//references
+		if (jparameter.type.isTypeOf(PSM!JClass)) {
+			uiparameter.referenced = jparameter.type.equivalent("UIReferenceComponentType");
+			uiparameter.type = jparameter.type.equivalent("UIReferenceComponentType").name;
+		} else {
+			uiparameter.type = jparameter.type.componentType().name;
+		}
 	}

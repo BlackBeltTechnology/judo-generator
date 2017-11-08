@@ -1,7 +1,7 @@
 rule UIBase
 	transform jmodel: PSM!JModel
 	to uibase : UI!UIBase {
-	uibase.modules = jmodel.packages.equivalents();
+	uibase.modules = jmodel.packages.equivalents("UIModule");
 	uibase.menu = new UIMenuItem();
 	uibase.menu.name = "main_menu";
 	uibase.menu.id = "main_menu";
