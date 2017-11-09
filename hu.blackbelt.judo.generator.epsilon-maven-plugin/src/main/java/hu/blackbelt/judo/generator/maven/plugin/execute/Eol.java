@@ -1,5 +1,6 @@
 package hu.blackbelt.judo.generator.maven.plugin.execute;
 
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolExecutableModule;
@@ -16,7 +17,7 @@ public class Eol {
 
     private EolModule module = new EolModule();
 
-    IEolExecutableModule getModule() {
+    IEolExecutableModule getModule() throws MojoExecutionException {
         return module;
     };
 

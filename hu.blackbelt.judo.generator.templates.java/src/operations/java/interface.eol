@@ -1,0 +1,4 @@
+@cached
+operation JAVA!JvmInterface methods () : Collection {
+	return self.methods.sortBy(m | m.name);
+}

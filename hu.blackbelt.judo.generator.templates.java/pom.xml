@@ -9,7 +9,7 @@
 		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
 	</parent>
 
-	<artifactId>hu.blackbelt.judo.generator.templates.rdbms</artifactId>
+	<artifactId>hu.blackbelt.judo.generator.templates.java</artifactId>
 	<packaging>jar</packaging>
 
 	<build>
@@ -26,16 +26,33 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbms:${project.version}</artifact>
-									<name>RDBMS</name>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:model:frameworkElements:${project.version}</artifact>
+									<name>FWELEMENTS</name>
 									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+										<param>http://blackbelt.hu/judo/meta/psm/java</param>
 									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/frameworkElements.model</platformAlias>
+								</model>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
+									<name>JAVATYPES</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/java</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
+								</model>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.java:model:java:${project.version}</artifact>
+									<name>JAVA</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/java</param>
+									</metaModelUris>
+									<expand>true</expand>
 								</model>
 							</models>
 							<eolPrograms>

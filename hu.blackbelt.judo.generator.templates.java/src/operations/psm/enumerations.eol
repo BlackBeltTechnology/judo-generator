@@ -1,0 +1,14 @@
+//unfortunately EEunm ecore meta class type can not be used in epsilon transformation as a parameter or operation context
+
+operation Any toJava () : Any {
+	var name = self.eEnum.name;
+	if ( name = "JLayer") {
+		return JAVA!JvmLayer#ALL.eEnum.eLiterals.select(l | l.name = self.name).first();
+	} else if (name = "JAssociationKind") {
+		return JAVA!JvmReferenceKind#COMPOSITION.eEnum.eLiterals.select(l | l.name = self.name).first();
+	} else if (name = "JOperationKind") {
+	 	return JAVA!JvmMethodKind#CUSTOM.eEnum.eLiterals.select(l | l.name = self.name).first();
+	} else {
+		throw "toJava call reach enumeration mapping, and no appropriate enum found";
+	}
+}

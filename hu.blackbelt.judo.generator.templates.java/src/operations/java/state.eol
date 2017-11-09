@@ -1,0 +1,35 @@
+@cached
+operation JAVA!JvmState getOutgoingTransitionsGroupedByExecutingMethod () : Map {
+	var ret = new Map;
+	for (tr in self.outgoingTransitions) {
+		if (tr.executingMethod.isDefined()) {
+			var val = ret.get(tr.executingMethod);
+			if (val.isUndefined()) {
+				val = new Set;
+				ret.put(tr.executingMethod, val);
+			}
+			val.add(tr);
+		}
+	}
+	return ret;
+}
+
+operation JAVA!JvmState getDecideMethodFor (method : JAVA!JvmMethod) : JAVA!JvmMethod {
+	var transitions = self.getOutgoingTransitionsGroupedByExecutingMethod().get(method);
+	if (transitions.isDefined() and transitions.notEmpty()) {
+		var guards = transitions.guard;
+		if (guards.isDefined() and guards.notEmpty() and guards.size() > 0) {
+			return guards.select(g | g.isDefined()).implementingMethod.first();
+		}
+	}
+}
+
+
+operation JAVA!JvmState toStateViaExecutingMethod (executingMethod : JAVA!JvmMethod) : JAVA!JvmState {
+	var  ret =  self.outgoingTransitions.select(t | t.executingMethod = executingMethod).toState;
+	if (ret.size() == 1) {
+		return ret.first();
+	} else {
+		throw "Illegal model, from one state via an executingMethod there must be one and only one toState!";
+	}
+}

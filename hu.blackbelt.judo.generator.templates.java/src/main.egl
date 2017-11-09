@@ -1,5 +1,5 @@
 [%
-import "../operations/_importAll.eol";
+import "operations/_importAll.eol";
 
 var COORDINATE_TO_TEMPLATE = Map {
 		JAVA!JvmJudoCoordinate#PO = "po",
@@ -52,7 +52,7 @@ operation getJavaTemplate (templateName : String) : Any {
 }
 
 operation getTemplate (intermediateDir : String, templateName : String) : Any {
-	return TemplateFactory.load("../templates/" + intermediateDir + "/" + templateName + ".egl");
+	return TemplateFactory.load("templates/" + intermediateDir + "/" + templateName + ".egl");
 }
 
 operation filterBy (coordinate : Any) : Collection {

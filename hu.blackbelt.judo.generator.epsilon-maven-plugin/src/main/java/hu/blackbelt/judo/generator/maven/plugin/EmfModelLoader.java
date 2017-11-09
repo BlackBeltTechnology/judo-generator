@@ -49,13 +49,17 @@ public final class EmfModelLoader {
             properties.put(EmfModel.PROPERTY_MODEL_URI, convertFileToUri(modelFile));
         }
         */
-        properties.put(EmfModel.PROPERTY_MODEL_URI, convertFileToUri(modelFile));
+        URI convertFileToUri = convertFileToUri(modelFile);
+		properties.put(EmfModel.PROPERTY_MODEL_URI, convertFileToUri);
+        System.out.println("Registering MODEL_URI:" + convertFileToUri);
 
         if (metamodelFile != null) {
             properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI, convertFileToUri(metamodelFile));
         }
 
         if (emfModel.getPlatformAlias() != null && emfModel.getPlatformAlias().trim() != "") {
+        	properties.put(EmfModel.PROPERTY_MODEL_URI, emfModel.getPlatformAlias());
+            System.out.println("Registering MODEL_URI:" + emfModel.getPlatformAlias());
             URIConverter.URI_MAP.put(URI.createURI(emfModel.getPlatformAlias()), URI.createFileURI(modelFile.getAbsolutePath()));
         }
 

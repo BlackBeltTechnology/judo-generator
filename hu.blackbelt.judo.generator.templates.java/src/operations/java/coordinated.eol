@@ -1,0 +1,73 @@
+@cached
+operation JAVA!JvmCoordinated po () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#PO);
+}
+
+@cached
+operation JAVA!JvmCoordinated bo () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO);
+}
+
+@cached
+operation JAVA!JvmCoordinated boInterface () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_INTERFACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated boBuilder () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_BUILDER);
+}
+
+@cached
+operation JAVA!JvmCoordinated boBuilderInterface () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_BUILDER_INTERFACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated bql () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_BQL);
+}
+
+@cached
+operation JAVA!JvmCoordinated bqlInterface () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_BQL_INTERFACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated daoMinimal () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#DAO_MINIMAL);
+}
+
+@cached
+operation JAVA!JvmCoordinated daoQClass () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#DAO_Q_CLASS);
+}
+
+@cached
+operation JAVA!JvmCoordinated boServiceInterface () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated boServiceDefault () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT);
+}
+
+@cached
+operation JAVA!JvmCoordinated boServiceAbstract () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_SERVICE_ABSTRACT);
+}
+
+@cached
+operation JAVA!JvmCoordinated origin() : JAVA!JvmCoordinated {
+	if (self.coordinate == JAVA!JvmJudoCoordinate#ORIGIN) {
+		return self;
+	} else {
+		return self.origin;
+	}
+}
+
+operation JAVA!JvmCoordinated find (jvmJudoCoordinate : Any) : JAVA!JvmCoordinated {
+	var ret =  JAVA!JvmCoordinated.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().uuid = self.origin().uuid)).first();
+	return ret;
+}

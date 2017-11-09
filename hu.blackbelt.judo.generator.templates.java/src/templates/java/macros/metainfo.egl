@@ -1,6 +1,6 @@
 [%
   import "../../../operations/_importAll.eol";
-  import "../../../generators/main.egl";
+  import "../../../main.egl";
   
   var multiplicity = Map{ -1 = "Meta.Multiplicity.Star", 0 = "Meta.Multiplicity.Zero", 1 = "Meta.Multiplicity.One"};
   var kind = Map{ JvmReferenceKind#ASSOCIATION = "Meta.Kind.Association", JvmReferenceKind#AGGREGATION = "Meta.Kind.Aggregation", JvmReferenceKind#COMPOSITION = "Meta.Kind.Composition"};

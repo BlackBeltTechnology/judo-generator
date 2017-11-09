@@ -83,6 +83,7 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
             getLog().error("Parse errors occured...");
             for (ParseProblem problem : eolModule.getParseProblems()) {
                 getLog().error(problem.toString());
+                throw new MojoExecutionException("Parse error");
             }
             return;
         }
