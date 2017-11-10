@@ -44,6 +44,13 @@
     <genClasses image="false" ecoreClass="psm.ecore#//JType"/>
     <genClasses image="false" ecoreClass="psm.ecore#//JTypedElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JTypedElement/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/derived"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/calculated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/lower"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/upper"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/ordered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/unique"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JPrimitive">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JPrimitive/package"/>
@@ -75,18 +82,18 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JClass/businessSingleton"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/unique"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/ordered"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/placeholder"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/regexp"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/mandatory"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/derived"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/calculated"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/decimals"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/interval"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/technical"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JAttribute/ownerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/unique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/ordered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/derived"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/calculated"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JOperation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/classBased"/>
@@ -95,14 +102,15 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JOperation/transition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/bulk"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/uiMustConfirm"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JParameter">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/ordered"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/unique"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/lower"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/upper"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JParameter/ownerOperation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/input"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/ordered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/unique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/lower"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/upper"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JRelationship">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JRelationship/package"/>
@@ -123,6 +131,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JRole/ownerClass"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/calculated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/interval"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JLiteral">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JLiteral/enumeration"/>
@@ -166,6 +175,17 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JModel/version"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JModel/packagePrefix"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JModel/applicationTop"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JModel/uimenuitem"/>
+    </genClasses>
+    <genClasses ecoreClass="psm.ecore#//JUIMenuItem">
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JUIMenuItem/children"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JUIMenuItem/parent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JUIMenuItem/menuRoot"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JUIMenuItem/filter"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JUIMenuItem/menuElements"/>
+    </genClasses>
+    <genClasses ecoreClass="psm.ecore#//JAttributeGroup">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JAttributeGroup/jattribute"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
