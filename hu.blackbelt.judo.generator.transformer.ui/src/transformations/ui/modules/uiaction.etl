@@ -12,18 +12,38 @@ rule UIAction
 		uiaction.toBeConfirmed = false;
 		uiaction.notBulk = not joperation.bulk;
 		uiaction.isQuery = (joperation.kind = PSM!JOperationKind#QUERY);
-		//Fields
+		//Parameters
+		//Equivalent not working
 		for (param : PSM!JParameter in joperation.parameters) {
 			if (not param.input) {
-				uiaction.result = param.equivalent("UI!UIParameterComponentType");
+				uiaction.result = param.equivalent("UIParameterComponentType");
 				uiaction.resultView = createResultView(uiaction);
 			} else {
-				uiaction.parameters.add(param.equivalent("UI!UIParameterComponentType"));
+				uiaction.parameters.add(param.equivalent("UIParameterComponentType"));
 			}
 		}
 		
 		uiaction.paramView = createParamView(uiaction);
 } 
+
+rule UIParameterComponentType
+	transform jparameter : PSM!JParameter
+	to uiparameter : UI!UIParameterComponentType {
+		//inherited from Identifiable
+		uiparameter.uuid = jparameter.uuid;
+		uiparameter.name = jparameter.name;
+		//attributes
+		uiparameter.value = "";
+		uiparameter.lower = jparameter.lower;
+		uiparameter.upper = jparameter.upper;
+		//references
+		if (jparameter.type.isTypeOf(PSM!JClass)) {
+			uiparameter.referenced = jparameter.type.equivalent("UIClass");
+			uiparameter.type = jparameter.type.equivalent("UIClass").name;
+		} else {
+			uiparameter.type = jparameter.type.componentType().name;
+		}
+	}
 	
 operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
 	var paramView : UI!UIParamView = new UI!UIParamView();
@@ -40,6 +60,7 @@ operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
 		var viewField : UI!UIViewField = new UI!UIViewField();
 		viewField.name = parameter.name;
 		viewField.uuid = parameter.uuid + uiaction.name;
+		viewField.componentType = parameter;
 		viewField.position = position;
 		viewFieldSet.viewFields.add(viewField);
 		
@@ -63,6 +84,7 @@ operation createResultView(uiaction : UI!UIAction) : UI!UIResultView {
 	var viewField : UI!UIViewField = new UI!UIViewField();
 	viewField.name = uiaction.result.name;
 	viewField.uuid = resultView.uuid + uiaction.result.uuid;
+	viewField.componentType = uiaction.result;
 	viewField.position = 1;
 	viewFieldSet.viewFields.add(viewField);
 	

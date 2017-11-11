@@ -1,9 +1,14 @@
 rule UIBase
 	transform jmodel: PSM!JModel
 	to uibase : UI!UIBase {
-	uibase.modules = jmodel.packages.equivalents("UIModule");
-	uibase.menu = new UIMenuItem();
+	for (package : PSM!JPackage in jmodel.packages) {
+		var currentPackage : UI!UIModule = package.equivalent("UIModule");
+		if (currentPackage <> null) {
+			uibase.modules.add(currentPackage);
+		}
+	}
+	uibase.menu = new UI!UIMenuItem();
 	uibase.menu.name = "main_menu";
-	uibase.menu.id = "main_menu";
+	uibase.menu.uuid = "main_menu";
 	//uibase.menu.menuItems = createMenuItems(jmodel.applicationTop);
 }

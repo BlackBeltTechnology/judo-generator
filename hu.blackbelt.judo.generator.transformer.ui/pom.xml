@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>hu.blackbelt.judo.generator.transformer.ui</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
   <build>
     <plugins>
@@ -89,6 +89,45 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-resource</id>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src</directory>
+								</resource>
+							</resources>
+						</configuration>
+						
+					</execution>
+
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.build.directory}/ui.model</file>
+									<type>model</type>
+									<classifier>ui</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
     </plugins>
   </build>
 </project>

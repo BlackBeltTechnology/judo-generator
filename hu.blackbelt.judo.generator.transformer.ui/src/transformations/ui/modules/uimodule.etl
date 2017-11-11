@@ -6,9 +6,11 @@ rule UIModule
 	guard : jpackage.participates(PSM!JLayer#OPERATION)
 		uimodule.name = jpackage.name;
 		uimodule.uuid = jpackage.uuid;
-		uimodule.classes = jpackage.classes.equivalents("UIClass");
-		uimodule.fullyQualifiedName = jpackage.fullname;
+		for (jclass : PSM!JClass in jpackage.classes) {
+			uimodule.classes.add(jclass.equivalent("UIClass"));
+		}
+		uimodule.fullyQualifiedName = jpackage.fullName;
 		if (jpackage.ownerModel.isDefined()) {
-			uimodule.version = jpackage.ownerModule.version;
-		} 
+			uimodule.version = jpackage.ownerModel.version;
+		}
 	}

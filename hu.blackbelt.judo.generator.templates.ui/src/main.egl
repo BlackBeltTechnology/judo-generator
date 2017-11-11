@@ -1,0 +1,4 @@
+[%
+	var json : Template = TemplateFactory.load("templates/JsonMain.egl");
+	json.generate("uimeta.txt");
+%]

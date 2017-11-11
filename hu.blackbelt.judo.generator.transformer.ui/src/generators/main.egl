@@ -1,7 +1,0 @@
-[%
-import "../operations/_importAll.eol";
-
-TemplateFactory.setOutputRoot("/home/balazs/work/JsonOutput/");
-var json : Template = TemplateFactory.load("JsonMain.egl");
-json.generate("test.json");	 
-%]

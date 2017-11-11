@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ui" nsURI="http://blackbelt.hu/judo/meta/psm/ui" nsPrefix="ui">
-  <eClassifiers xsi:type="ecore:EClass" name="UIRule" eSuperTypes="#//Identifiable">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rule" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="vocabularyKey" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Nyelvesítéshez azonosító."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inherited" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIModule" eSuperTypes="#//Identifiable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullyQualifiedName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -74,7 +63,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="show" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="componentType" lowerBound="1"
-        eType="#//UIAttributeComponentType"/>
+        eType="#//UIComponentType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIViewFieldSet" eSuperTypes="#//Identifiable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="viewFields" upperBound="-1"
@@ -146,10 +135,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//UIClass"
         eOpposite="#//UIClass/selector"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UIClassView" eSuperTypes="#//UIView">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
-        eType="#//UIRule" containment="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UIClassView" eSuperTypes="#//UIView"/>
   <eClassifiers xsi:type="ecore:EClass" name="UIResultView" eSuperTypes="#//UIView"/>
   <eClassifiers xsi:type="ecore:EClass" name="UIParamView" eSuperTypes="#//UIView"/>
   <eClassifiers xsi:type="ecore:EClass" name="UIBaseComponentType" eSuperTypes="#//UIAttributeComponentType">
@@ -184,5 +170,7 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="readonly" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="disableOnCreate" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
 </ecore:EPackage>

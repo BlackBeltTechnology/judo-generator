@@ -54,7 +54,7 @@ rule UIClass
 			uiclass.attributes.add(attribute);
 			}
 		for (role : PSM!JRole in currentClass.roles) {
-			var reference : UI!UIReferenceComponentType = role.equivalent();
+			var reference : UI!UIReferenceComponentType = role.equivalent("UIReferenceComponentType");
 			reference.inherited = inherited;
 			uiclass.attributes.add(reference);
 		}
@@ -70,15 +70,15 @@ rule UIClass
 
 	//create Views
 	var classView = createClassView(uiclass, uiclass.name, uiclass.uuid + '_oview_default', true);
-	var listView = createListView(uiclass, uiclass.name, uiclass.uuid + '_lview_default', objectView, true);
-	uiclass.classViews.add(objectView);
-	uiclass.listViews.add(listView);
-	for (al in jclass.aliases) {
+	uiclass.selector = createListView(uiclass, uiclass.name, uiclass.uuid + '_lview_default', classView, true);
+	uiclass.classViews.add(classView);
+	uiclass.listViews.add(uiclass.selector);
+	/*for (al in jclass.aliases) {
 		classView = createClassView(uiclass, al.name, uiclass.uuid + '_oview_' + al.name, false);
 		listView =  createListView(uiclass, al.name, uiclass.uuid + '_lview_' + al.name, classView, false);
 		uiclass.classViews.add(classView);
 		uiclass.listViews.add(listView);
-	}
+	}*/
 		
 }
 	
@@ -95,10 +95,10 @@ operation createClassView(ownerClass: UI!UIClass, name: String, uuid: String, is
 	
 	for (attribute in ownerClass.attributes) {
 		if ((attribute.isTypeOf(UI!UIReferenceComponentType) and attribute.navigable and not attribute.private) 
-													or (not attribute.isTypeOf(UI!UIReference) and not attribute.private)) {
+													or (not attribute.isTypeOf(UI!UIReferenceComponentType) and not attribute.private)) {
 			var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 			viewFieldSet.name = attribute.name;
-			viewFieldSet.uuid = objectView.id + "_viewfieldset_" + attribute.name;
+			viewFieldSet.uuid = classView.id + "_viewfieldset_" + attribute.name;
 			viewFieldSet.position = position;
 			
 			var viewField : UI!UIViewField = new UI!UIViewField();
@@ -123,7 +123,7 @@ operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, cla
 	listView.name = name;
 	listView.isDefault = isDefault;
 	listView.pageSize = 20;
-	listView.detailView = objectView;
+	listView.detailView = classView;
 	
 	return listView;
 }

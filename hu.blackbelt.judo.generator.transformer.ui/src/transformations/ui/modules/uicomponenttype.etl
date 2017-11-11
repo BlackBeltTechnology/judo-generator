@@ -22,7 +22,7 @@ rule UIReferenceComponentType
 		uireference.lower = jrole.lower;
 		uireference.upper = jrole.upper;
 		uireference.navigable = jrole.navigable;
-		uireference.kind = jrole.kind.name;
+		uireference.kind = jrole.kind.name; 
 		//references
 		var index = jrole.ownerRelationship.roles.indexOf(jrole);
 		if (index = 1) {
@@ -77,8 +77,8 @@ rule UIParameterComponentType
 		uiparameter.upper = jparameter.upper;
 		//references
 		if (jparameter.type.isTypeOf(PSM!JClass)) {
-			uiparameter.referenced = jparameter.type.equivalent("UIReferenceComponentType");
-			uiparameter.type = jparameter.type.equivalent("UIReferenceComponentType").name;
+			uiparameter.referenced = jparameter.type.equivalent("UIClass");
+			uiparameter.type = jparameter.type.equivalent("UIClass").name;
 		} else {
 			uiparameter.type = jparameter.type.componentType().name;
 		}
