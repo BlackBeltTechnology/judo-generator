@@ -73,12 +73,12 @@ rule UIClass
 	uiclass.selector = createListView(uiclass, uiclass.name, uiclass.uuid + '_lview_default', classView, true);
 	uiclass.classViews.add(classView);
 	uiclass.listViews.add(uiclass.selector);
-	/*for (al in jclass.aliases) {
+	for (al in jclass.aliases) {
 		classView = createClassView(uiclass, al.name, uiclass.uuid + '_oview_' + al.name, false);
 		listView =  createListView(uiclass, al.name, uiclass.uuid + '_lview_' + al.name, classView, false);
 		uiclass.classViews.add(classView);
 		uiclass.listViews.add(listView);
-	}*/
+	}
 		
 }
 	
@@ -88,14 +88,46 @@ operation createClassView(ownerClass: UI!UIClass, name: String, uuid: String, is
 	classView.uuid = uuid;
 	classView.name = name;
 	classView.isDefault = isDefault;
-	classView.pageSize = 1;
-	classView.columns = 2;
 	
 	var position = 1;
+	var remaining = ownerClass.attributes;
+	var vfsName : String;
 	
-	for (attribute in ownerClass.attributes) {
+	for (attrGroup in ownerClass.attributeOrder) {
+		if (attrGroup.attributes.first().name.startsWith("-")) {
+			vfsName = attrGroup.attributes.first().name.substring(1);
+			attrGroup.attributes.remove(attrGroup.attributes.first());
+		} else {
+			vfsName = attrGroup.attributes.first().name;
+		}
+		
+		var viewFieldSet = new UI!UIViewFieldSet();
+		viewFieldSet.name = vfsName;
+		viewFieldSet.uuid = classView.uuid + "_viewfieldset_" + vfsName;
+		viewFieldSet.position = position;
+		
+		var viewFieldPosition = 1;
+		for (attribute in attrGroup.attributes) {
+			var viewField = new UI!UIViewField();
+			viewField.componentType = attribute;
+			viewField.name = attribute.name;
+			viewField.uuid = attribute.uuid + name;
+			viewField.searchable = true;
+			viewField.position = viewFieldPosition;
+			viewFieldPosition++;
+			
+			remaining.remove(attribute);
+			
+			viewFieldSet.viewFields.add(viewField);
+		}
+		
+		position++;
+		classView.viewFieldSets.add(viewFieldSet);
+	}
+	
+	for (attribute in remaining) {
 		if ((attribute.isTypeOf(UI!UIReferenceComponentType) and attribute.navigable and not attribute.private) 
-													or (not attribute.isTypeOf(UI!UIReferenceComponentType) and not attribute.private)) {
+													or (attribute.isTypeOf(UI!UIBaseComponentType) and not attribute.private)) {
 			var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 			viewFieldSet.name = attribute.name;
 			viewFieldSet.uuid = classView.id + "_viewfieldset_" + attribute.name;
@@ -106,7 +138,6 @@ operation createClassView(ownerClass: UI!UIClass, name: String, uuid: String, is
 			viewField.uuid = attribute.id + name;
 			viewField.componentType = attribute;
 			viewField.searchable = true;
-			viewField.position = 1;
 			
 			position++;
 			viewFieldSet.viewFields.add(viewField);
@@ -124,6 +155,38 @@ operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, cla
 	listView.isDefault = isDefault;
 	listView.pageSize = 20;
 	listView.detailView = classView;
+	
+	var viewFieldSet = new UI!UIViewFieldSet();
+	viewFieldSet.name = listView.name;
+	viewFieldSet.uuid = listView.uuid + "_viewfieldset_" + listView.name;
+	
+	var position = ownerClass.attributesForListing.length();
+	
+	for (attribute in ownerClass.attributes) {
+		if ((attribute.isTypeOf(UI!UIReferenceComponentType) and attribute.upper = 1 and attribute.navigable and not attribute.private) or 
+				(attrbiute.isTypeOf(UI!UIBaseComponentType) and not attrbiute.private)) {
+				
+				var viewField = new UI!UIViewField();
+				viewField.uuid = attribute.uuid + ownerClass.name;
+				viewField.name = attribute.name;
+				viewField.searchable = true;
+				viewField.componentType = attribute;
+				
+				if (ownerClass.attributesForListing.includes(attribute)) {
+					viewField.position = ownerClass.attributesForListing.indexOf(attribute) + 1;
+				} else {
+					if (ownerClass.attributesForListing.length() > 0) {
+						viewField.show = false;
+					}
+					position += 1;
+					viewField.position = position;
+				}
+				
+				viewFieldSet.viewFields.add(viewField);
+		}
+	}
+	
+	listView.viewFieldSets.add(viewFieldSet);
 	
 	return listView;
 }

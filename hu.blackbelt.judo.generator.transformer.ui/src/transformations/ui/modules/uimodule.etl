@@ -3,7 +3,7 @@ import "../../../operations/_importAll.eol";
 rule UIModule
 	transform jpackage : PSM!JPackage
 	to uimodule : UI!UIModule {
-	guard : jpackage.participates(PSM!JLayer#OPERATION)
+	guard : jpackage.participates(PSM!JLayer#OPERATION) or jpackage.participates(PSM!JLayer#SCREEN)
 		uimodule.name = jpackage.name;
 		uimodule.uuid = jpackage.uuid;
 		for (jclass : PSM!JClass in jpackage.classes) {

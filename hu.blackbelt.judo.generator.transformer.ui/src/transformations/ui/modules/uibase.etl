@@ -8,7 +8,5 @@ rule UIBase
 		}
 	}
 	uibase.menu = new UI!UIMenuItem();
-	uibase.menu.name = "main_menu";
-	uibase.menu.uuid = "main_menu";
-	//uibase.menu.menuItems = createMenuItems(jmodel.applicationTop);
+	
 }
