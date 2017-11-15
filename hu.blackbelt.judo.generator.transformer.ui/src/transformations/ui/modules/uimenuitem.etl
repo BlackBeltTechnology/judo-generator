@@ -1,0 +1,21 @@
+rule UIMenuItem
+	transform jUiMenuItem: PSM!JUIMenuItem
+	to uiMenuItem : UI!UIMenuItem {
+		uiMenuItem.uuid = jUiMenuItem.uuid;
+		uiMenuItem.name = jUiMenuItem.name;
+		var menuView;
+		if (jUiMenuItem.type = PSM!JMenuItemType#LIST) {
+			menuView = new UI!UIListView();
+			menuView.uuid = jUIMenuItem.represent.uuid + "_lview_" + "default";
+			
+			for (filter in JUIMenuItem.uifilters) {
+				uiMenuItem.filters.add(filter.equivalent("UIFilter"));
+			}
+		} 
+		if (jUiMenuItem.type = PSM!JMenuItemType#OBJECT) {
+			menuView = new UI!UIClassView();
+			//menuView.uuid = jUIMenuItem.alias.ownerClass.uuid + "_oview_" + "default";
+		}
+		
+		uiMenuItem.menuView = menuView;
+	}

@@ -1546,14 +1546,12 @@
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
       </ownedElements>
     </ownedDiagramElements>
-    <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_vT_e8KhMEeewXONo54bgNA" name="[1..1] menu" sourceNode="_PXqOkKgzEeewXONo54bgNA" targetNode="_xAZfwKgzEeewXONo54bgNA">
-      <target xmi:type="ecore:EReference" href="ui.ecore#//UIBase/menu"/>
-      <semanticElements xmi:type="ecore:EReference" href="ui.ecore#//UIBase/menu"/>
-      <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_r7opkMMHEeejcr-wxemCrQ" description="_1DOaEKeFEeewXONo54bgNA" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_r7opkcMHEeejcr-wxemCrQ" showIcon="false">
-          <labelFormat>bold</labelFormat>
-        </centerLabelStyle>
-        <endLabelStyle xmi:type="diagram:EndLabelStyle" xmi:id="_r7opksMHEeejcr-wxemCrQ" labelSize="6" showIcon="false" labelColor="39,76,114"/>
+    <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_vT_e8KhMEeewXONo54bgNA" name="[0..*] menuRoots" sourceNode="_PXqOkKgzEeewXONo54bgNA" targetNode="_xAZfwKgzEeewXONo54bgNA">
+      <target xmi:type="ecore:EReference" href="ui.ecore#//UIBase/menuRoots"/>
+      <semanticElements xmi:type="ecore:EReference" href="ui.ecore#//UIBase/menuRoots"/>
+      <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_Ge_v8MoNEeeyEM1Xf7BfEA" description="_qb4eYKd5EeewXONo54bgNA" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_Ge_v8coNEeeyEM1Xf7BfEA" showIcon="false"/>
+        <endLabelStyle xmi:type="diagram:EndLabelStyle" xmi:id="_Ge_v8soNEeeyEM1Xf7BfEA" labelSize="6" showIcon="false" labelColor="39,76,114"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC_EReference']"/>
     </ownedDiagramElements>

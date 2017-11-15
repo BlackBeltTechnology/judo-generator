@@ -84,8 +84,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="UIBase">
     <eStructuralFeatures xsi:type="ecore:EReference" name="modules" upperBound="-1"
         eType="#//UIModule" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="menu" lowerBound="1" eType="#//UIMenuItem"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="menuRoots" upperBound="-1"
+        eType="#//UIMenuItem" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="info" lowerBound="1" eType="#//UIInfo"
         containment="true"/>
   </eClassifiers>

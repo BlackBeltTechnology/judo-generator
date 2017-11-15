@@ -7,6 +7,12 @@ rule UIBase
 			uibase.modules.add(currentPackage);
 		}
 	}
-	uibase.menu = new UI!UIMenuItem();
 	
+	for (menuRoots in jmodel.rootMenuItems) {
+		uibase.menuRoots.add(menuRoots.equivalent("UIMenuItem"));	
+	}
+	
+	if (uibase.menuRoots.isEmpty()) {
+		
+	}	
 }
