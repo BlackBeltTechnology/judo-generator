@@ -20792,19 +20792,19 @@ package  {
                         name : "Administration" 
                         uuid : "79e87a32-be3c-32ea-b365-6895775cac8b" 
                         framework : "False" 
-                        type : LIST 
+                        type : NONE 
                         children :
                             JUIMenuItem "ad6182c5-2d43-3f3b-9817-f0bb3d339c0c" {
                                 name : "Protocol management" 
                                 uuid : "ad6182c5-2d43-3f3b-9817-f0bb3d339c0c" 
                                 framework : "False" 
-                                type : LIST 
+                                type : NONE 
                                 children :
                                     JUIMenuItem "9229a37d-d901-34ec-9707-9c925ab865db" {
                                         name : "PrimaryDataTypes" 
                                         uuid : "9229a37d-d901-34ec-9707-9c925ab865db" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "7ba3d2ae-399c-39ab-b6a0-3a2be102a13c" {
                                                 name : "PrimerDataType" 
@@ -20818,13 +20818,13 @@ package  {
                                         name : "BasicDataTypes" 
                                         uuid : "39f915e0-8e43-3a9d-9f7f-c1d7c159f749" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "bbd58746-ad79-3c22-ac66-b7c6a5669b4a" {
                                                 name : "IntegerDataType" 
                                                 uuid : "bbd58746-ad79-3c22-ac66-b7c6a5669b4a" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "9797c90c-7e12-37a1-be7c-f87f6f28d65c" {
                                                         name : "IntegerType" 
@@ -20838,7 +20838,7 @@ package  {
                                                 name : "RealDataType" 
                                                 uuid : "8f2c4a8f-9407-3855-ae4e-44688aff666e" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "87ac6ed8-0f23-30a4-9f0e-e38ace6a28f5" {
                                                         name : "RealType" 
@@ -20852,7 +20852,7 @@ package  {
                                                 name : "DateType" 
                                                 uuid : "03c2a782-c0af-3823-8437-55358b95cae5" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "d20e501e-9563-3af6-ba40-20980877b167" {
                                                         name : "DateType" 
@@ -20866,7 +20866,7 @@ package  {
                                                 name : "ChoiceType" 
                                                 uuid : "a7c2870f-ca75-3a20-901d-bb9b8b42c5ef" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "2ea129bb-60e2-3735-9d07-5e64358d731f" {
                                                         name : "ChoiceType" 
@@ -20880,7 +20880,7 @@ package  {
                                                 name : "CompositeType" 
                                                 uuid : "c9444dcf-fef8-3555-9d48-52fba57a2247" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "39aa5bbe-d08b-3a0c-b179-4368addc5254" {
                                                         name : "ChoiceType" 
@@ -20902,7 +20902,7 @@ package  {
                                         name : "Protocols" 
                                         uuid : "4708c973-f7be-390e-9202-40141a8a14d9" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "8513b4ba-a59e-3452-ac5a-878f3da9b338" {
                                                 name : "IntegerType" 
@@ -20923,7 +20923,7 @@ package  {
                                         name : "ArithmeticalSDT" 
                                         uuid : "5ac14a8e-a4c8-30bf-98bf-3b0d248acbe3" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "30a83b9a-c566-345b-8d36-4ec111120a98" {
                                                 name : "PrimerDataType" 
@@ -20944,7 +20944,7 @@ package  {
                                         name : "ClassifierSDT" 
                                         uuid : "1aedab93-2841-3f24-8f27-b21ad6e6a1c2" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "e63fa682-872d-350b-8083-112de1e7b557" {
                                                 name : "PrimerDataType" 
@@ -20966,13 +20966,13 @@ package  {
                                 name : "User management" 
                                 uuid : "f085284a-c0f7-3f67-af3d-c246e4f3f66f" 
                                 framework : "False" 
-                                type : LIST 
+                                type : NONE 
                                 children :
                                     JUIMenuItem "3a613f88-bc6e-3426-a189-de14daaed012" {
                                         name : "PrimaryDataTypes" 
                                         uuid : "3a613f88-bc6e-3426-a189-de14daaed012" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "f115f904-12dd-33f3-bc8a-59ef7e5cb1b5" {
                                                 name : "PrimerDataType" 
@@ -20986,13 +20986,13 @@ package  {
                                         name : "BasicDataTypes" 
                                         uuid : "1ff8833e-0baf-3ffd-bc27-5f4d7b80bb5f" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "96f0bce6-899c-3753-b3ec-7ad9149c1562" {
                                                 name : "IntegerDataType" 
                                                 uuid : "96f0bce6-899c-3753-b3ec-7ad9149c1562" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "538c13d8-f289-316d-93d8-2619fb491a87" {
                                                         name : "IntegerType" 
@@ -21006,7 +21006,7 @@ package  {
                                                 name : "RealDataType" 
                                                 uuid : "3d99d0cc-f6e6-3bc3-9344-81b4137502bc" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "786df750-9e19-3aee-8834-65f4c1bbd839" {
                                                         name : "RealType" 
@@ -21020,7 +21020,7 @@ package  {
                                                 name : "DateType" 
                                                 uuid : "da0b88f1-8a31-3278-b7e2-f67b81e52707" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "60e56806-da9a-3c94-a346-7ac7c5266668" {
                                                         name : "DateType" 
@@ -21034,7 +21034,7 @@ package  {
                                                 name : "ChoiceType" 
                                                 uuid : "c31de050-450d-31a1-a8ba-c8424bd794e8" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "db1f41f8-6020-3b89-b6bc-926f7e7877da" {
                                                         name : "ChoiceType" 
@@ -21048,7 +21048,7 @@ package  {
                                                 name : "CompositeType" 
                                                 uuid : "98054853-81a2-3189-b9f5-a8c3aaa22ffa" 
                                                 framework : "False" 
-                                                type : LIST 
+                                                type : NONE 
                                                 children :
                                                     JUIMenuItem "56a53146-5a4f-391e-aa23-7c3a7d87eeac" {
                                                         name : "ChoiceType" 
@@ -21070,7 +21070,7 @@ package  {
                                         name : "All users" 
                                         uuid : "16483a67-6a4f-33d5-8ad1-92fea0c7f246" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "c0238060-b02f-3464-b79b-6fc5b2623716" {
                                                 name : "OpmUser" 
@@ -21084,7 +21084,7 @@ package  {
                                         name : "Doctors" 
                                         uuid : "49f7895d-2200-314b-9a75-0a1d98d92478" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "36c41008-484e-3b43-b554-70b83d621685" {
                                                 name : "OpmUser" 
@@ -21105,7 +21105,7 @@ package  {
                                         name : "Assistants" 
                                         uuid : "f33d4d3a-e8c4-3a3b-b71f-cbf3a1f94e13" 
                                         framework : "False" 
-                                        type : LIST 
+                                        type : NONE 
                                         children :
                                             JUIMenuItem "9d4235dc-eb7c-3f20-b027-da5f3695c597" {
                                                 name : "OpmUser" 
@@ -21135,13 +21135,13 @@ package  {
                         name : "Treatment management" 
                         uuid : "66583e15-24fe-39a0-96af-1b0e52bed7c5" 
                         framework : "False" 
-                        type : LIST 
+                        type : NONE 
                         children :
                             JUIMenuItem "81c82918-8a13-39c6-9d52-d35141ba7c93" {
                                 name : "Patients" 
                                 uuid : "81c82918-8a13-39c6-9d52-d35141ba7c93" 
                                 framework : "False" 
-                                type : LIST 
+                                type : NONE 
                                 children :
                                     JUIMenuItem "43eb16ee-d884-3f78-be70-cfd6f6c69314" {
                                         name : "OpmUser" 
