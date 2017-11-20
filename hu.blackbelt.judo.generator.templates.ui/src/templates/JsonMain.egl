@@ -60,7 +60,7 @@
 	"childObjectViews" : [
 	[% if(not self.childObjectViews.isEmpty())  { %]
 		[%for (objectView in self.childObjectViews) { %]
-			[%objectView.generateJson();%]
+			[%=objectView.uuid%]
 			[%if (objectView <> self.childObjectViews.last) { %]
 			,
 			[%}%]
@@ -115,7 +115,7 @@
 	"pageSize" : [%=self.pageSize%],
 	"default" : [%=self.isDefault%],
 	[% if(self.isTypeOf(UI!UIListView)) {%]
-		"detail" : "[%=self.detailView.id%]",
+		"detail" : "[%=self.detailView.uuid%]",
 	[%}%]
 	[% if(self.isTypeOf(UI!UIClassView)) {%]
 		"rules" : [],
@@ -148,9 +148,9 @@
 	"order" : [%=self.order%],
 	"field" : "[%=self.componentType.id%]",
 	[% if (self.componentType.upper = 1) {%]
-	"single" : false,
-	[%} else {%]
 	"single" : true,
+	[%} else {%]
+	"single" : false,
 	[% } %]
 	"position" : [%=self.position%],
 	"id" : "[%=self.id%]"
@@ -407,16 +407,6 @@
 }
 [% } %]
 
-[% operation UI!UIRule generateJson() { %]
-{
-	"id" : "[%=self.id%]",
-	"name" : "[%=self.name%]",
-	"rule" : "[%=self.rule%]",
-	"vockey" : "[%=self.vockey%]",
-	"inherited" : [%=self.inherited%]
-}
-[% } %]
-
 [% operation UI!UIInfo generateJson() { %]
 {
 	[% if(self.userClass.isDefined())  { %]
@@ -441,7 +431,7 @@
 [% operation UI!UIBase generateJson() { %]
 {
   [*  "info" : [%self.info.generateJson(); %] *] 
-	"menu" : [%self.menu.generateJson();%],
+	"menu" : [%self.mainMenu.generateJson();%],
 	"modules": [
 	[% if(not self.modules.isEmpty())  { %]
 		[%for (module in self.modules) { %]
@@ -466,16 +456,16 @@
 
 [% operation UI!UIInterval generateJson() { %]
 {
-	[% if(self.min.isDefined())  { %]
-	"min" : [%=self.min%],
-	[% } else {%]
-	"min" : null,
-	[% } %]
 	[% if(self.max.isDefined())  { %]
 	"max" : [%=self.max%],
 	[% } else {%]
 	"max" : null,
 	[% } %]
-	"step" : [%=self.step%]
+	"step" : [%=self.step%],
+	[% if(self.min.isDefined())  { %]
+	"min" : [%=self.min%]
+	[% } else {%]
+	"min" : null
+	[% } %]
 }
 [% } %]

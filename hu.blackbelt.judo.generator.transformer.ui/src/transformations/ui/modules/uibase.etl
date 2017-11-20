@@ -1,18 +1,19 @@
 rule UIBase
 	transform jmodel: PSM!JModel
 	to uibase : UI!UIBase {
-	for (package : PSM!JPackage in jmodel.packages) {
+	for (package : PSM!JPackage in PSM!JPackage.all) {
 		var currentPackage : UI!UIModule = package.equivalent("UIModule");
 		if (currentPackage <> null) {
 			uibase.modules.add(currentPackage);
 		}
 	}
 	
-	for (menuRoots in jmodel.rootMenuItems) {
-		uibase.menuRoots.add(menuRoots.equivalent("UIMenuItem"));	
-	}
+	var mainMenu = new UI!UIMenuItem();
+	mainMenu.uuid = "main_menu";
+	mainMenu.name = "main_menu";
+	uibase.mainMenu = mainMenu;
 	
-	if (uibase.menuRoots.isEmpty()) {
-		
+	for (menuRoot in jmodel.rootMenuItems) {
+		uibase.mainMenu.menuItems.add(menuRoot.equivalent("UIMenuItem"));	
 	}	
 }

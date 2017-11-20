@@ -4,6 +4,8 @@ import "modules/uiaction.etl";
 import "modules/uibase.etl";
 import "modules/uicomponenttype.etl";
 import "modules/uimodule.etl";
+import "modules/uifilter.etl";
+import "modules/uimenuitem.etl";
 
 import "pre/addParticipateToAllElement.eol";
 import "pre/addIdToEntities.eol";
@@ -17,6 +19,31 @@ pre {
 
 post {
 
+	if (UI!UIMenuItem.all.size = 0) {
+		var mainMenu = UI!UIBase.all.first().mainMenu;
+		for (package in PSM!JPackage.all) {
+			if (package.participates(PSM!JLayer#OPERATION)) {
+				var menuItem = new UI!UIMenuItem();
+				menuItem.uuid = package.uuid + "_menuitem";
+				menuItem.name = package.name;
+				
+				for (class in package.classes) {
+					var classMenuItem = new UI!UIMenuItem();
+					classMenuItem.uuid = class.uuid + "_menuitem";
+					classMenuItem.name = class.name;
+					var menuView = new UI!UIListView();
+					menuView.uuid = class.uuid + "_lview_default";
+					menuView.name = class.name;
+					classMenuItem.menuView = menuView;
+					
+					menuItem.menuItems.add(classMenuItem); 
+				}
+				
+				mainMenu.menuItems.add(menuItem);
+			}
+		}
+	}
+	
 }
 
 

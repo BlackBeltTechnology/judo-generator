@@ -3,6 +3,7 @@ import "../../../operations/_importAll.eol";
 rule UIClass
 	transform jclass : PSM!JClass
 	to uiclass : UI!UIClass {
+	guard : jclass.package.participates(PSM!JLayer#OPERATION) or jclass.package.participates(PSM!JLayer#SCREEN) 
 	//inherited from Identifiable
 	uiclass.uuid = jclass.uuid;
 	uiclass.name = jclass.name;
@@ -69,13 +70,13 @@ rule UIClass
 	}
 
 	//create Views
-	var classView = createClassView(uiclass, uiclass.name, uiclass.uuid + '_oview_default', true);
-	uiclass.selector = createListView(uiclass, uiclass.name, uiclass.uuid + '_lview_default', classView, true);
+	var classView = createClassView(uiclass, jclass, uiclass.name, uiclass.uuid + '_oview_default', true);
+	uiclass.selector = createListView(uiclass, jclass, uiclass.name, uiclass.uuid + '_lview_default', classView, true);
 	uiclass.classViews.add(classView);
 	uiclass.listViews.add(uiclass.selector);
 	for (al in jclass.aliases) {
-		classView = createClassView(uiclass, al.name, uiclass.uuid + '_oview_' + al.name, false);
-		listView =  createListView(uiclass, al.name, uiclass.uuid + '_lview_' + al.name, classView, false);
+		classView = createClassView(uiclass, jclass, al.name, uiclass.uuid + '_oview_' + al.name, false);
+		var listView =  createListView(uiclass, jclass, al.name, uiclass.uuid + '_lview_' + al.name, classView, false);
 		uiclass.classViews.add(classView);
 		uiclass.listViews.add(listView);
 	}
@@ -83,7 +84,7 @@ rule UIClass
 }
 	
 	
-operation createClassView(ownerClass: UI!UIClass, name: String, uuid: String, isDefault: Boolean) : UI!UIClassView {
+operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name: String, uuid: String, isDefault: Boolean) : UI!UIClassView {
 	var classView : UI!UIClassView = new UI!UIClassView();
 	classView.uuid = uuid;
 	classView.name = name;
@@ -93,7 +94,7 @@ operation createClassView(ownerClass: UI!UIClass, name: String, uuid: String, is
 	var remaining = ownerClass.attributes;
 	var vfsName : String;
 	
-	for (attrGroup in ownerClass.attributeOrder) {
+	for (attrGroup in originClass.attributeOrder) {
 		if (attrGroup.attributes.first().name.startsWith("-")) {
 			vfsName = attrGroup.attributes.first().name.substring(1);
 			attrGroup.attributes.remove(attrGroup.attributes.first());
@@ -109,7 +110,7 @@ operation createClassView(ownerClass: UI!UIClass, name: String, uuid: String, is
 		var viewFieldPosition = 1;
 		for (attribute in attrGroup.attributes) {
 			var viewField = new UI!UIViewField();
-			viewField.componentType = attribute;
+			viewField.componentType = attribute.equivalent();
 			viewField.name = attribute.name;
 			viewField.uuid = attribute.uuid + name;
 			viewField.searchable = true;
@@ -148,7 +149,7 @@ operation createClassView(ownerClass: UI!UIClass, name: String, uuid: String, is
 	return classView;
 }
 
-operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, classView: UI!UIClassView, isDefault: Boolean) : UI!UIListView {
+operation createListView(ownerClass: UI!UIClass, originClass: PSM!JClass, name: String, uuid: String, classView: UI!UIClassView, isDefault: Boolean) : UI!UIListView {
 	var listView = new UI!UIListView();
 	listView.uuid = uuid;
 	listView.name = name;
@@ -160,22 +161,23 @@ operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, cla
 	viewFieldSet.name = listView.name;
 	viewFieldSet.uuid = listView.uuid + "_viewfieldset_" + listView.name;
 	
-	var position = ownerClass.attributesForListing.length();
+	var position = originClass.attributesForListing.size();
 	
-	for (attribute in ownerClass.attributes) {
-		if ((attribute.isTypeOf(UI!UIReferenceComponentType) and attribute.upper = 1 and attribute.navigable and not attribute.private) or 
-				(attrbiute.isTypeOf(UI!UIBaseComponentType) and not attrbiute.private)) {
+	for (attribute in originClass.attributes) {
+		var uiType = attribute.equivalent();
+		if ((uiType.isTypeOf(UI!UIReferenceComponentType) and uiType.upper = 1 and uiType.navigable and not uiType.private) or 
+				(uiType.isTypeOf(UI!UIBaseComponentType) and not uiType.private)) {
 				
 				var viewField = new UI!UIViewField();
-				viewField.uuid = attribute.uuid + ownerClass.name;
-				viewField.name = attribute.name;
+				viewField.uuid = uiType.uuid + ownerClass.name;
+				viewField.name = uiType.name;
 				viewField.searchable = true;
-				viewField.componentType = attribute;
+				viewField.componentType = uiType;
 				
-				if (ownerClass.attributesForListing.includes(attribute)) {
-					viewField.position = ownerClass.attributesForListing.indexOf(attribute) + 1;
+				if (originClass.attributesForListing.includes(attribute)) {
+					viewField.position = originClass.attributesForListing.indexOf(attribute) + 1;
 				} else {
-					if (ownerClass.attributesForListing.length() > 0) {
+					if (originClass.attributesForListing.size() > 0) {
 						viewField.show = false;
 					}
 					position += 1;

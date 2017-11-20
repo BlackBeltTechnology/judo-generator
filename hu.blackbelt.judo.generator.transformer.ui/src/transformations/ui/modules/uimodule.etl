@@ -9,8 +9,13 @@ rule UIModule
 		for (jclass : PSM!JClass in jpackage.classes) {
 			uimodule.classes.add(jclass.equivalent("UIClass"));
 		}
-		uimodule.fullyQualifiedName = jpackage.fullName;
-		if (jpackage.ownerModel.isDefined()) {
-			uimodule.version = jpackage.ownerModel.version;
+		
+		if (jpackage.parent.isDefined()) {
+			uimodule.fullyQualifiedName = jpackage.parent.name + "." + jpackage.name;
+		} else {
+			uimodule.fullyQualifiedName = jpackage.name;
 		}
+		/*if (jpackage.ownerModel.isDefined()) {
+			uimodule.version = jpackage.ownerModel.version;
+		}*/
 	}

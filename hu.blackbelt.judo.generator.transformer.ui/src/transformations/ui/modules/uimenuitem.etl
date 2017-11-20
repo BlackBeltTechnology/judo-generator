@@ -1,21 +1,30 @@
 rule UIMenuItem
-	transform jUiMenuItem: PSM!JUIMenuItem
+	transform jUIMenuItem: PSM!JUIMenuItem
 	to uiMenuItem : UI!UIMenuItem {
-		uiMenuItem.uuid = jUiMenuItem.uuid;
-		uiMenuItem.name = jUiMenuItem.name;
+		uiMenuItem.uuid = jUIMenuItem.uuid;
+		uiMenuItem.name = jUIMenuItem.name;
 		var menuView;
-		if (jUiMenuItem.type = PSM!JMenuItemType#LIST) {
+		
+		if (jUIMenuItem.type = PSM!JMenuItemType#LIST) {
 			menuView = new UI!UIListView();
 			menuView.uuid = jUIMenuItem.represent.uuid + "_lview_" + "default";
 			
-			for (filter in JUIMenuItem.uifilters) {
+			for (filter in jUIMenuItem.uifilters) {
 				uiMenuItem.filters.add(filter.equivalent("UIFilter"));
 			}
-		} 
-		if (jUiMenuItem.type = PSM!JMenuItemType#OBJECT) {
+		} else if (jUIMenuItem.type = PSM!JMenuItemType#OBJECT) {
 			menuView = new UI!UIClassView();
-			//menuView.uuid = jUIMenuItem.alias.ownerClass.uuid + "_oview_" + "default";
+			
+			if (jUIMenuItem.`alias`.isDefined()) {
+				menuView.uuid = jUIMenuItem.represent.uuid + "_oview_" + jUIMenuItem.`alias`.name;
+			} else {
+				menuView.uuid = jUIMenuItem.represent.uuid + "_oview_" + "default";				
+			}
 		}
 		
 		uiMenuItem.menuView = menuView;
+		
+		for (menuItem in jUIMenuItem.children) {
+			uiMenuItem.menuItems.add(menuItem.equivalent("UIMenuItem"));
+		}
 	}

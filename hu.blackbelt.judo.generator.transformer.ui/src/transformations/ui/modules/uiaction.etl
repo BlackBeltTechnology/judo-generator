@@ -8,12 +8,10 @@ rule UIAction
 		uiaction.name = joperation.name;
 		//Attributes
 		uiaction.classBased = joperation.classBased;
-		//uiaction.toBeConfirmed = not (joperation.stereotype = "nonconfirmed");
-		uiaction.toBeConfirmed = false;
+		uiaction.toBeConfirmed = joperation.uiMustConfirm;
 		uiaction.notBulk = not joperation.bulk;
 		uiaction.isQuery = (joperation.kind = PSM!JOperationKind#QUERY);
 		//Parameters
-		//Equivalent not working
 		for (param : PSM!JParameter in joperation.parameters) {
 			if (not param.input) {
 				uiaction.result = param.equivalent("UIParameterComponentType");
@@ -25,25 +23,6 @@ rule UIAction
 		
 		uiaction.paramView = createParamView(uiaction);
 } 
-
-rule UIParameterComponentType
-	transform jparameter : PSM!JParameter
-	to uiparameter : UI!UIParameterComponentType {
-		//inherited from Identifiable
-		uiparameter.uuid = jparameter.uuid;
-		uiparameter.name = jparameter.name;
-		//attributes
-		uiparameter.value = "";
-		uiparameter.lower = jparameter.lower;
-		uiparameter.upper = jparameter.upper;
-		//references
-		if (jparameter.type.isTypeOf(PSM!JClass)) {
-			uiparameter.referenced = jparameter.type.equivalent("UIClass");
-			uiparameter.type = jparameter.type.equivalent("UIClass").name;
-		} else {
-			uiparameter.type = jparameter.type.componentType().name;
-		}
-	}
 	
 operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
 	var paramView : UI!UIParamView = new UI!UIParamView();
