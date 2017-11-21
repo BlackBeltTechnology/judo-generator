@@ -82,6 +82,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="technical" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JClass"
         eOpposite="#//JClass/attributes"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uiNoSearch" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JOperation" eSuperTypes="#//JElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="classBased" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -101,6 +103,7 @@
         eOpposite="#//JOperation/parameters"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="input" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interval" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JRelationship" eSuperTypes="#//JElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="#//JPackage"
@@ -150,7 +153,6 @@
         eOpposite="#//JModel/packages"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="classes" upperBound="-1"
         eType="#//JClass" containment="true" eOpposite="#//JClass/package"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JStateMachine" eSuperTypes="#//JElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JClass"
@@ -204,6 +206,8 @@
         eType="#//JPackage"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rootMenuItems" upperBound="-1"
         eType="#//JUIMenuItem" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="info" eType="#//JInfo"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="JAssociationKind">
     <eLiterals name="ASSOCIATION"/>
@@ -264,5 +268,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="JUIAlias" eSuperTypes="#//JElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" lowerBound="1"
         eType="#//JClass" eOpposite="#//JClass/aliases"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JInfo" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="submodels" upperBound="-1"
+        eType="#//JSubmodel" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JSubmodel" eSuperTypes="#//JElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
