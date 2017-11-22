@@ -1,0 +1,104 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+@primary
+rule Class
+	transform s : Class
+	to        t : tgtPSM!JClass
+	extends NamedElement, PackageableElement {
+	
+	guard: s.owner.equivalent("Package").isDefined()
+	
+	
+	s.owner.equivalent("Package").classes.add( t);
+	
+	"".println("RULE::Class");
+	
+	if ( s.superClass.isDefined() ) {
+		t.supertype ::= s.superClass.first();
+		s.superClass.println("RULE::Class - SUPERCLASS : ");
+		s.superClass.equivalent("Class").println("RULE::Class - SUPERCLASS EQUIV : ");
+	}
+
+	t.`abstract` = s.`abstract`;
+	
+	
+	t.representsTenant 		= stereotypeApplications.get("tenant").includes(s);
+	t.tenantMember 			= stereotypeApplications.get("TenantMembers").includes(s);
+	t.representsTenantUser 	= stereotypeApplications.get("tenantuser").includes(s);
+	t.representsUser 		= stereotypeApplications.get("user").includes(s);
+	t.businessSingleton 	= stereotypeApplications.get("singleton").includes(s);
+	
+	// set aliases
+	for (aljas in stereotypeApplications.get("alias").get(s) ) {
+	//	aljas.println("RULE:Class - Alias : ");
+		aljas.println("ALJAS: ");
+		if (aljas.isDefined()) {
+			var jUIAlias = new tgtPSM!JUIAlias();
+			jUIAlias.uuid = uuid3(mdId2Uuid(s.id), aljas);
+			t.aliases.add( jUIAlias );
+		}
+	}
+	
+	// add generalization to User
+	if ( stereotypeApplications.get("user").includes(s) ) {
+		var userClass = inpPIM!Class.allInstances()->select(c | c.name = "User" and 
+																c.package.name = "framework").first().equivalent("Class");
+		userClass.println("Rule::Class - ADD supertype 'User' to Class " + t.name);
+		t.supertype = userClass;
+	}
+
+	// add generalization to TenantUser
+	if ( stereotypeApplications.get("tenantuser").includes(s) ) {
+		var tenantUserClass = inpPIM!Class.allInstances()->select(c | c.name = "TenantUser" and 
+																	  c.package.name = "framework").first().equivalent("Class");
+		tenantUserClass.println("Rule::Class - ADD supertype 'TenantUser' to Class " + t.name);
+		t.supertype = tenantUserClass;
+	}
+
+	// add generalization to Tenant
+	if ( stereotypeApplications.get("tenant").includes(s) ) {
+		var tenantClass = inpPIM!Class.allInstances()->select(c | c.name = "Tenant" and 
+																  c.package.name = "framework").first().equivalent("Class");
+		tenantClass.println("Rule::Class - ADD supertype 'Tenant' to Class " + t.name);
+		t.supertype = tenantClass;
+	}
+	
+	// add <<bo>> equiv enums
+	if ( stereotypeApplications.get("boClasses").includes(s) or
+		 stereotypeApplications.get("boPackages").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#SERVICE, JLayer#PERSISTENCE to Class");
+		 t.participates.add( tgtPSM!JLayer#SERVICE);
+		 t.participates.add( tgtPSM!JLayer#PERSISTENCE);
+	}
+
+	// add <<dto>> equiv enums
+	if ( stereotypeApplications.get("dtoClasses").includes(s) or
+		 stereotypeApplications.get("dtoPackages").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#OPERATION to Class");
+		 t.participates.add( tgtPSM!JLayer#OPERATION);
+	}
+
+	// add <<rest>> equiv enums
+	if ( stereotypeApplications.get("restClasses").includes(s) or
+		 stereotypeApplications.get("restPackages").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#REST to Class");
+		 t.participates.add( tgtPSM!JLayer#REST);
+	}
+
+	// add <<document>> equiv enums
+	if ( stereotypeApplications.get("documentClasses").includes(s) or
+		 stereotypeApplications.get("documentPackages").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#DOCUMENT to Class");
+		 t.participates.add( tgtPSM!JLayer#DOCUMENT);
+	}
+	
+	// add <<permission>> equiv enums
+	if ( stereotypeApplications.get("permission").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#PERMISSION to Class");
+		 t.participates.add( tgtPSM!JLayer#PERMISSION);
+	}
+	
+}
+
+

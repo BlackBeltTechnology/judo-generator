@@ -1,0 +1,29 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+@primary
+rule Relationship
+	transform s : Association
+	to        t : tgtPSM!JRelationship
+	extends NamedElement {
+	
+	guard: s.owner.equivalent("Package").isDefined()
+	
+	"MAPPING ASSOCIATION: ".println();
+	
+	s.owner.equivalent("Package").relationships.add(t);
+	
+	var name : String = s.memberEnd.at(1).name.concat("-").concat(s.memberEnd.at(0).name);
+	t.name = name; // rewrite the default name set by rule "NamedElement"
+	
+	s.memberEnd.println("FEATURE ==>  ");
+
+	t.derived = s.memberEnd->exists(p | stereotypeApplications.get("derived").includes(p));
+	
+	if (t.derived) {
+		t.println("Rule::Relationship - Association has at least one member, flagged as <<derived>> ");
+	}
+	
+	t.println("RULE::Relationship - RESULT : ");
+}
+

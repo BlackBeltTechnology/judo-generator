@@ -1,0 +1,17 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+rule Model
+	transform s : Model
+	to        t : tgtPSM!JModel 
+	extends NamedElement {
+	
+	guard : (s.name.endsWith("pim"))
+	
+	tgtModel = t;
+	
+	tgtModel.println("tgtModel ==> ");
+	
+	s.fullyQualifiedPath().println("On MODEL :: ");
+	"".println("RULE::Model");
+}

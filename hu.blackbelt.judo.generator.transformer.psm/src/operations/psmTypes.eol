@@ -1,0 +1,22 @@
+
+operation PrimitiveType getEquivalentPrimType() : psmTypes!JPrimitive {
+	var jType : psmTypes!JPrimitive;
+
+	switch (self.name) {
+		case "Boolean" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Boolean").first();
+		case "date" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Date").first();
+		case "datetime" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "DateTime").first();
+		case "duration" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Integer").first();
+		case "email" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+		case "file" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "File").first();
+		case "Float" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Float").first();
+		case "Integer" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Integer").first();
+		case "memo" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Memo").first();
+		case "phone" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+		case "String" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+		case "text" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Text").first();
+		default:		self.name.println("TYPE IS NOT HANDLED: ");
+	}
+	
+	return jType;
+}
