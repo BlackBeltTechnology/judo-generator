@@ -24,8 +24,6 @@ operation createIntervals(intervalString : String, classUuid : String, typeUuid 
 				uiInterval.uuid = uuid3(uuid3(classUuid, typeUuid), n.asString);
 				n++;
 				
-				uiInterval.uuid.println("Interval: ");
-				
 				intervalSequence.add(uiInterval);
 			}
 		}

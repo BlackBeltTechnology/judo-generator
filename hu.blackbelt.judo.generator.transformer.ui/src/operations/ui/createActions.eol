@@ -27,9 +27,6 @@ operation createActions(joperation : PSM!JOperation, inherited : Boolean, classU
 				}
 				
 				uiaction.result.intervals = createIntervals(param.interval, classUuid, uiaction.result.uuid);
-				for (interval in uiaction.result.intervals) {
-					interval.ownerComponentType = uiaction.result;
-				}
 				uiaction.resultView = createResultView(uiaction);
 			} else {
 				var uiparam : UI!UIParameterComponentType;
@@ -50,9 +47,6 @@ operation createActions(joperation : PSM!JOperation, inherited : Boolean, classU
 				}
 
 				uiparam.intervals = createIntervals(param.interval, classUuid, uiparam.uuid);
-				for (interval in uiparam.intervals) {
-					interval.ownerComponentType = uiparam;
-				}
 			}
 		}
 		

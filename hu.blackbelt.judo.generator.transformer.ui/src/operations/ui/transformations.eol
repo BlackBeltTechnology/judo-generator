@@ -9,13 +9,7 @@ operation transformJAttribute(uiClass : UI!UIClass, jAttribute : PSM!JAttribute,
 	attribute.inherited = inherited;
 	attribute.uuid = uuid3(uiClass.uuid, jAttribute.uuid);
 	
-	attribute.name.println("BaseType name: ");
-	attribute.uuid.println("BaseType uuid: ");
-	
 	attribute.intervals = createIntervals(jAttribute.interval, uiClass.uuid, attribute.uuid);
-	for (interval in attribute.intervals) {
-		interval.ownerComponentType = attribute;
-	}
 }
 
 operation transformJRole(uiClass : UI!UIClass, jRole : PSM!JRole, inherited : Boolean, emfTool) {
@@ -29,22 +23,9 @@ operation transformJRole(uiClass : UI!UIClass, jRole : PSM!JRole, inherited : Bo
 	reference.inherited = inherited;
 	reference.uuid = uuid3(uiClass.uuid, jRole.uuid);
 			
-	var index = jRole.ownerRelationship.roles.indexOf(jRole);
-	if (index = 1) {
-		reference.opposite = jRole.ownerRelationship.roles[0].equivalent("UIReferenceComponentType");
-		reference.referenced = jRole.ownerRelationship.roles[0].ownerClass.equivalent("UIClass");
-		reference.type = jRole.ownerRelationship.roles[0].ownerClass.equivalent("UIClass").name;
-	} else {
-		reference.opposite = jRole.ownerRelationship.roles[1].equivalent("UIReferenceComponentType");
-		reference.referenced = jRole.ownerRelationship.roles[1].ownerClass.equivalent("UIClass");
-		reference.type = jRole.ownerRelationship.roles[1].ownerClass.equivalent("UIClass").name;
-	}
-	
-	reference.name.println("Reference name: ");
-	reference.uuid.println("Reference uuid: ");
+	reference.opposite = jRole.opposite().equivalent("UIReferenceComponentType");
+	reference.referenced = jRole.opposite().ownerClass.equivalent("UIClass");
+	reference.type = reference.referenced.name;
 		
-	reference.intervals = createIntervals(jRole.interval, uiClass.uuid, reference.uuid);
-	for (interval in reference.intervals) {
-		interval.ownerComponentType = reference;
-	}	
+	reference.intervals = createIntervals(jRole.interval, uiClass.uuid, reference.uuid);	
 }
