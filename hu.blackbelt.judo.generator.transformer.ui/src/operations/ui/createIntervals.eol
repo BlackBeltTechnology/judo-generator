@@ -1,0 +1,57 @@
+operation createIntervals(intervalString : String, classUuid : String, typeUuid : String) : Sequence(UI!UIInterval) {
+	var intervalSequence : Sequence(UI!UIInterval) = new Sequence(UI!UIInterval);
+	
+	if (intervalString.isDefined()) {
+		var intervalList = intervalString.replace(" ", "").split("\\],\\[");
+		var n = 1;
+		if (intervalList.first() <> "") {
+			for (interval in intervalList) {
+				interval = interval.substring(1, interval.length()-2);
+				var splitInterval = interval.split(",");
+				
+				var uiInterval = new UI!UIInterval();
+				if (splitInterval.first() <> "") {
+					uiInterval.min = splitInterval.first().asInteger();
+				}
+				if (splitInterval.size() = 2 and splitInterval.second() <> "") {
+					uiInterval.max = splitInterval.second().asInteger();
+				}
+				if (splitInterval.size() = 3 and splitInterval.third() <> "") {
+					uiInterval.step = splitInterval.third().asInteger();
+				}
+				
+				uiInterval.name = "UIInterval";
+				uiInterval.uuid = uuid3(uuid3(classUuid, typeUuid), n.asString);
+				n++;
+				
+				uiInterval.uuid.println("Interval: ");
+				
+				intervalSequence.add(uiInterval);
+			}
+		}
+	}
+	return intervalSequence;	
+}
+
+//hack balaton style :-) this method should have been in an epsilon Tool, but I did not managed to make it work
+operation uuid3 (namespace : String, name : String) : String {
+	var nameSpace_OID_uuid = getUuidNativeStub().fromString(namespace);
+
+	var msb = nameSpace_OID_uuid.getMostSignificantBits();
+	var lsb = nameSpace_OID_uuid.getLeastSignificantBits();
+
+	var outputStreamString = new Native("java.io.ByteArrayOutputStream");
+	var i = 0;
+	while (i < 8) {
+		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(msb, 8 * (7 - i))).intValue());
+		i++;
+	}
+	while (i < 16) {
+		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(lsb, 8 * (7 - i))).intValue());
+		i++;
+	}
+	
+	outputStreamString.write(name.getBytes());
+
+	return getUuidNativeStub().nameUUIDFromBytes(outputStreamString.toByteArray()).toString();
+}

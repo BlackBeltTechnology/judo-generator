@@ -28,14 +28,14 @@ package  {
                     name : "UML Types" 
                     uuid : "0ff38637-8ec7-3075-b926-99e01643a965" 
                     framework : "False" 
-                    version : "" 
+                    version : "3.2.00" 
                     visibility : PUBLIC 
                 },
                 JSubmodel "3c4396a1-9504-3526-8282-fc1cdd1a70d6" {
                     name : "opm pim" 
                     uuid : "3c4396a1-9504-3526-8282-fc1cdd1a70d6" 
                     framework : "False" 
-                    version : "" 
+                    version : "0.15.00" 
                     visibility : PUBLIC 
                 },
                 JSubmodel "d48653f9-d82a-3d83-9515-6796eea10416" {
@@ -1026,7 +1026,7 @@ package  {
                                         classBased : "True" 
                                         bulk : "False" 
                                         uiMustConfirm : "True" 
-                                        visibility : PUBLIC 
+                                        visibility : PROTECTED 
                                         kind : CUSTOM 
                                         parameters :
                                             JParameter "1078ae34-2de2-4657-be47-18db68631fd6" {
@@ -1049,7 +1049,7 @@ package  {
                                         classBased : "True" 
                                         bulk : "False" 
                                         uiMustConfirm : "True" 
-                                        visibility : PUBLIC 
+                                        visibility : PROTECTED 
                                         kind : CUSTOM 
                                         parameters :
                                             JParameter "cb1bcc6a-f1b1-4d2e-932f-0c1949326c1d" {
@@ -1072,7 +1072,7 @@ package  {
                                         classBased : "True" 
                                         bulk : "False" 
                                         uiMustConfirm : "True" 
-                                        visibility : PUBLIC 
+                                        visibility : PROTECTED 
                                         kind : CUSTOM 
                                         parameters :
                                             JParameter "02292619-d2ae-4b10-9b42-7527a1b40eb9" {
@@ -1118,7 +1118,7 @@ package  {
                                         classBased : "True" 
                                         bulk : "False" 
                                         uiMustConfirm : "True" 
-                                        visibility : PUBLIC 
+                                        visibility : PROTECTED 
                                         kind : CUSTOM 
                                     },
                                     JOperation "87004898-5197-4bed-b82d-27c8a3367692" {
@@ -1128,7 +1128,7 @@ package  {
                                         classBased : "True" 
                                         bulk : "False" 
                                         uiMustConfirm : "True" 
-                                        visibility : PUBLIC 
+                                        visibility : PROTECTED 
                                         kind : CUSTOM 
                                         parameters :
                                             JParameter "56781c0d-1b36-4b68-aa63-90e892a1e653" {

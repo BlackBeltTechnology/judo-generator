@@ -1,0 +1,50 @@
+operation transformJAttribute(uiClass : UI!UIClass, jAttribute : PSM!JAttribute, inherited : Boolean, emfTool) {
+	var attribute : UI!UIBaseComponentType;
+	if (inherited) {
+		attribute = emfTool.getECoreUtil().copy(jAttribute.equivalent("UIBaseComponentType"));
+	} else {
+		attribute = jAttribute.equivalent("UIBaseComponentType");
+	}
+	uiClass.attributes.add(attribute);
+	attribute.inherited = inherited;
+	attribute.uuid = uuid3(uiClass.uuid, jAttribute.uuid);
+	
+	attribute.name.println("BaseType name: ");
+	attribute.uuid.println("BaseType uuid: ");
+	
+	attribute.intervals = createIntervals(jAttribute.interval, uiClass.uuid, attribute.uuid);
+	for (interval in attribute.intervals) {
+		interval.ownerComponentType = attribute;
+	}
+}
+
+operation transformJRole(uiClass : UI!UIClass, jRole : PSM!JRole, inherited : Boolean, emfTool) {
+	var reference : UI!UIReferenceComponentType;
+	if (inherited) {
+		reference = emfTool.getECoreUtil().copy(jRole.equivalent("UIReferenceComponentType"));		
+	} else {
+		reference = jRole.equivalent("UIReferenceComponentType");
+	}
+	uiClass.attributes.add(reference);
+	reference.inherited = inherited;
+	reference.uuid = uuid3(uiClass.uuid, jRole.uuid);
+			
+	var index = jRole.ownerRelationship.roles.indexOf(jRole);
+	if (index = 1) {
+		reference.opposite = jRole.ownerRelationship.roles[0].equivalent("UIReferenceComponentType");
+		reference.referenced = jRole.ownerRelationship.roles[0].ownerClass.equivalent("UIClass");
+		reference.type = jRole.ownerRelationship.roles[0].ownerClass.equivalent("UIClass").name;
+	} else {
+		reference.opposite = jRole.ownerRelationship.roles[1].equivalent("UIReferenceComponentType");
+		reference.referenced = jRole.ownerRelationship.roles[1].ownerClass.equivalent("UIClass");
+		reference.type = jRole.ownerRelationship.roles[1].ownerClass.equivalent("UIClass").name;
+	}
+	
+	reference.name.println("Reference name: ");
+	reference.uuid.println("Reference uuid: ");
+		
+	reference.intervals = createIntervals(jRole.interval, uiClass.uuid, reference.uuid);
+	for (interval in reference.intervals) {
+		interval.ownerComponentType = reference;
+	}	
+}

@@ -1,6 +1,5 @@
 import "modules/type.etl";
-import "modules/uiclass.etl";
-import "modules/uiaction.etl";
+import "modules/uiclass.etl";	
 import "modules/uibase.etl";
 import "modules/uicomponenttype.etl";
 import "modules/uimodule.etl";
@@ -12,7 +11,7 @@ import "pre/addIdToEntities.eol";
 
 pre {
 	addParticipateToAllElement();
-	addIdToEntities();	
+	//addIdToEntities();	
 }
 
 
@@ -40,6 +39,28 @@ post {
 				}
 				
 				mainMenu.menuItems.add(menuItem);
+			}
+		}
+	}
+	
+	for (class in UI!UIClass.all) {
+		var childClassViews : Sequence(UI!UIView) = new Sequence(UI!UIView);
+		
+		while (true) {
+			if (class.super.isDefined()) {
+				if (not class.`abstract`) {
+					for (classView in class.classViews) {
+						if (classView.uuid.endsWith("_oview_default")) {
+							childClassViews.add(classView);
+						}
+					}
+				}
+				
+				
+				class.super.childClassViews.addAll(childClassViews);
+				class = class.super;
+			} else {
+				break;
 			}
 		}
 	}
