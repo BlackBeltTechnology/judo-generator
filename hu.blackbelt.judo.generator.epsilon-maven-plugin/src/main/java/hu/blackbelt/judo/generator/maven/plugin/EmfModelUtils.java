@@ -2,21 +2,37 @@ package hu.blackbelt.judo.generator.maven.plugin;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import org.eclipse.epsilon.common.util.StringProperties;
+import org.eclipse.epsilon.emc.emf.CachedResourceSet;
+import org.eclipse.epsilon.emc.emf.DefaultXMIResource;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.emf.EmfUtil;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.ModelRepository;
+import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
+
+import com.google.common.collect.Maps;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static hu.blackbelt.judo.generator.maven.plugin.EmfModelUtils.load;
 import static java.util.stream.Collectors.joining;
 
-public final class EmfModelLoader {
+public final class EmfModelUtils {
 
-    public static EmfModel load(ModelRepository repository, Model emfModel, File modelFile) throws MojoExecutionException {
+    public static EmfModel load(ResourceSet resourceSet, ModelRepository repository, Model emfModel, File modelFile) throws MojoExecutionException {
 
-        final EmfModel model = createEmfModel();
+        final EmfModel model = createEmfModel(resourceSet);
 
         final StringProperties properties = new StringProperties();
         properties.put(EmfModel.PROPERTY_NAME, emfModel.getName() + "");
@@ -76,9 +92,35 @@ public final class EmfModelLoader {
         return file == null ? null : URI.createFileURI(file.getAbsolutePath());
     }
 
-    // This logic has been extracted so that it can be stubbed out in tests
-    protected static EmfModel createEmfModel() {
-        return new EmfModel();
+    public static List<EPackage> registerMetamodel(ResourceSet resourceSet, HashMap<String, List<EPackage>> managedMetamodels, String fileName) throws Exception {
+        // List<EPackage> ePackages = EmfUtil.register(URI.createPlatformResourceURI(fileName, true), EPackage.Registry.INSTANCE);
+        List<EPackage> ePackages = EmfUtil.register(URI.createFileURI(fileName), resourceSet.getPackageRegistry());
+        managedMetamodels.put(fileName, ePackages);
+        return ePackages;
     }
+
+    public static ResourceSet initResourceSet() {
+    	ResourceSet rs = new CachedResourceSet();
+    	/*rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("library", new XMIResourceFactoryImpl());
+    	rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("model", new XMIResourceFactoryImpl());
+    	rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMLResourceFactoryImpl()); */
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("model", new DefaultXMIResource.Factory());
+
+		if (rs.getPackageRegistry().getEPackage(EcorePackage.eNS_URI) == null) {
+			rs.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+		}
+
+    	UMLResourcesUtil.initLocalRegistries(rs);
+
+
+    	return rs;
+    }
+    
+    public static EmfModel createEmfModel(ResourceSet resourceSet) {
+        // return new EmfModel();
+    	return new ResourceSetBasedEmfModel(resourceSet);
+    }
+
+
 
 }

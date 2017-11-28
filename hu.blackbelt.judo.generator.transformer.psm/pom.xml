@@ -14,6 +14,7 @@
 
     <build>
         <plugins>
+        	<!-- 
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>epsilon-maven-plugin</artifactId>
@@ -44,33 +45,70 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- plugin> <groupId>${project.groupId}</groupId> <artifactId>epsilon-maven-plugin</artifactId> 
-                <version>${project.version}</version> <executions> <execution> <phase>generate-resources</phase> 
-                <goals> <goal>execute</goal> </goals> <configuration> <metaModels> <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml2_5:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml_standard_profile:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization_Appl:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Validation_Profile.Appl:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel> 
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:judoProfile:${project.version}</metaModel> 
-                </metaModels> <models> <model> <artifact>file:${basedir}/src/model/opm_pim_-_Modelio_import.uml</artifact> 
-                <name>inpPIM</name> <metaModelUris> <param>http\://www.eclipse.org/uml2/5.0.0/UML</param> 
-                </metaModelUris> <expand>true</expand> </model> <model> <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact> 
-                <name>psmTypes</name> <metaModelUris> <param>http://blackbelt.hu/judo/meta/psm</param> 
-                </metaModelUris> <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias> 
-                </model -->
-
-            <!-- Target -->
-            <!-- model> <artifact>${project.build.directory}/pimToPsm.model</artifact> 
-                <name>tgtPSM</name> <readOnLoad>false</readOnLoad> <storeOnDisposal>true</storeOnDisposal> 
-                <metaModelUris> <param>http://blackbelt.hu/judo/meta/psm/java</param> </metaModelUris> 
-                </model> </models> <eolPrograms> <Etl> <source>src/transformations/pimToJUDOPsm.etl</source> 
-                </Etl> </eolPrograms> </configuration> </execution> </executions> </plugin -->
+            -->
+		
+			<plugin>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>epsilon-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml2_5:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml_standard_profile:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization_Appl:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Validation_Profile.Appl:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:judoProfile:${project.version}</metaModel>
+							</metaModels>
+							<models>
+								<model>
+									<artifact>file:${basedir}/src/model/opm_pim_-_Modelio_import.uml</artifact>
+									<name>inpPIM</name>
+									<metaModelUris>
+										<param>http\://www.eclipse.org/uml2/5.0.0/UML</param>
+									</metaModelUris>
+									<expand>true</expand>
+								</model>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<name>psmTypes</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
+								</model>
+		
+								<!-- Target -->
+								<model>
+									<artifact>${project.build.directory}/pimToPsm.model</artifact>
+									<name>tgtPSM</name>
+									<readOnLoad>false</readOnLoad>
+									<storeOnDisposal>true</storeOnDisposal>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/java</param>
+									</metaModelUris>
+								</model>
+							</models>
+							<eolPrograms>
+								<Etl>
+									<source>src/transformations/pimToJUDOPsm.etl</source>
+								</Etl>
+							</eolPrograms>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

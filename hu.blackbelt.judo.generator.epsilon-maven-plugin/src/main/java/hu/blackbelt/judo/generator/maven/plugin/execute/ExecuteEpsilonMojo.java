@@ -3,18 +3,25 @@ package hu.blackbelt.judo.generator.maven.plugin.execute;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import hu.blackbelt.judo.generator.maven.plugin.AbstractEpsilonMojo;
+import hu.blackbelt.judo.generator.maven.plugin.EmfModelUtils;
+import hu.blackbelt.judo.generator.maven.plugin.Model;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
+import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.IEolExecutableModule;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.eol.models.ModelRepository;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Mojo(
@@ -29,13 +36,15 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
     public ExecuteEpsilonMojo() {
     }
     synchronized public void execute() throws MojoExecutionException, MojoFailureException {
-        emfModels = Maps.newConcurrentMap();
+        Map<Model, EmfModel> emfModels = Maps.newConcurrentMap();
+        ResourceSet resourceSet = EmfModelUtils.initResourceSet();
+        ModelRepository modelRepository = new ModelRepository();
+        
         try {
-
             Exception ex = null;
             try {
-                addMetaModels();
-                addModels();
+                addMetaModels(resourceSet);
+                addModels(resourceSet, modelRepository, emfModels);
 
                 if (eolPrograms != null) {
                     for (Eol eolProgram : eolPrograms) {

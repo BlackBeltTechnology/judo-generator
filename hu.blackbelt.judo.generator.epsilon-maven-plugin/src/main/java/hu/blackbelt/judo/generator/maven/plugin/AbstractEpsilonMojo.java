@@ -17,10 +17,14 @@ import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.EmfUtil;
 import org.eclipse.epsilon.eol.models.ModelRepository;
+import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -31,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static hu.blackbelt.judo.generator.maven.plugin.EmfModelLoader.load;
+import static hu.blackbelt.judo.generator.maven.plugin.EmfModelUtils.load;
 
 public abstract class AbstractEpsilonMojo extends AbstractMojo{
 
@@ -54,11 +58,7 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
     public List<Model> models;
 
 
-    public Map<Model, EmfModel> emfModels;
-
     public HashMap<String, List<EPackage>> managedMetamodels = new HashMap<String, List<EPackage>>();
-
-    public ModelRepository modelRepository;
 
 
     public File getArtifact(String name) throws MojoExecutionException {
@@ -94,35 +94,27 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
         }
     }
 
-    public List<EPackage> registerMetamodel(String fileName) throws Exception {
-        // List<EPackage> ePackages = EmfUtil.register(URI.createPlatformResourceURI(fileName, true), EPackage.Registry.INSTANCE);
-        List<EPackage> ePackages = EmfUtil.register(URI.createFileURI(fileName), EPackage.Registry.INSTANCE);
-        managedMetamodels.put(fileName, ePackages);
-        return ePackages;
-    }
-
-    public void addMetaModels() throws Exception {
-        modelRepository = new ModelRepository();
+    public void addMetaModels(ResourceSet resourceSet) throws Exception {
         if (metaModels != null) {
             for (String metaModel : metaModels) {
                 getLog().info("Registering ecore: " + metaModel);
                 File metaModelFile = getArtifact(metaModel);
                 getLog().info("    Meta model: " + metaModelFile.getAbsolutePath());
-                List<EPackage> ePackages = registerMetamodel(metaModelFile.getAbsolutePath());
+                List<EPackage> ePackages = EmfModelUtils.registerMetamodel(resourceSet, managedMetamodels, metaModelFile.getAbsolutePath());
                 getLog().info("    EPackages: " + ePackages.stream().map(e -> e.getNsURI()).collect(Collectors.joining(", ")));
             }
         }
 
     }
 
-    public void addModels() throws MojoExecutionException {
+    public void addModels(ResourceSet resourceSet, ModelRepository modelRepository, Map<Model, EmfModel> emfModels) throws MojoExecutionException {
         emfModels = Maps.newConcurrentMap();
         if (models != null) {
             for (Model emf : models) {
                 getLog().info("Model: " + emf.toString());
                 File artifactFile = getArtifact(emf.getArtifact());
                 getLog().info("    Artifact file: : " + artifactFile.toString());
-                emfModels.put(emf, load(modelRepository, emf, artifactFile));
+                emfModels.put(emf, load(resourceSet, modelRepository, emf, artifactFile));
 
                 /*if (emf.getPlatformAlias() != null && emf.getPlatformAlias().trim() != "") {
                     EclipsePlatformStreamHandlerFactory.urlMapping.put(emf.getPlatformAlias().trim(), artifactFile);
@@ -131,18 +123,6 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
         }
 
     }
-
-
-    public void initfactories() {
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xml", new XMLResourceFactoryImpl());
-
-    }
-
-    // This logic has been extracted so that it can be stubbed out in tests
-    protected EmfModel createEmfModel() {
-        return new EmfModel();
-    }
-
 
     public boolean isValidURL(String url) {
 
