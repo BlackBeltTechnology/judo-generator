@@ -14,7 +14,7 @@
 
     <build>
         <plugins>
-        	<!-- 
+            <!--
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>epsilon-maven-plugin</artifactId>
@@ -46,7 +46,7 @@
                 </executions>
             </plugin>
             -->
-		
+
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>epsilon-maven-plugin</artifactId>
@@ -60,13 +60,14 @@
 						<configuration>
 							<metaModels>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml2_5:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml_standard_profile:${project.version}</metaModel>
+								<!-- <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml2_5:${project.version}</metaModel> -->
+								<!-- <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml_standard_profile:${project.version}</metaModel> -->
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
+
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization_Appl:${project.version}</metaModel>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Validation_Profile.Appl:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:judoProfile:${project.version}</metaModel>
@@ -76,7 +77,13 @@
 									<artifact>file:${basedir}/src/model/opm_pim_-_Modelio_import.uml</artifact>
 									<name>inpPIM</name>
 									<metaModelUris>
-										<param>http\://www.eclipse.org/uml2/5.0.0/UML</param>
+										<param>http://www.eclipse.org/uml2/5.0.0/UML</param>
+										<param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
+										<param>http://www.omg.org/spec/UML/20131001/MagicDrawProfile</param>
+										<param>http://www.eclipse.org/uml2/5.0.0/UML</param>
+										<param>http:///schemas/ValidationProfile/_apwLgIDvEeePbrcCa2jZwg/0</param>
+										<param>http:///schemas/DSLCustomization/_ap58gIDvEeePbrcCa2jZwg/0</param>
+										<param>http:///schemas/JudoProfile/_apWi4IDvEeePbrcCa2jZwg/0</param>
 									</metaModelUris>
 									<expand>true</expand>
 								</model>
@@ -96,7 +103,7 @@
 									<readOnLoad>false</readOnLoad>
 									<storeOnDisposal>true</storeOnDisposal>
 									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm/java</param>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
 									</metaModelUris>
 								</model>
 							</models>
@@ -109,7 +116,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -124,7 +130,7 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>${project.build.directory}/target.model</file>
+                                    <file>${project.build.directory}/pimToPsm.model</file>
                                     <type>model</type>
                                     <classifier>psm</classifier>
                                 </artifact>

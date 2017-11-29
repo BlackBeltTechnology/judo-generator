@@ -16,21 +16,15 @@ import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import org.eclipse.epsilon.emc.emf.EmfModel;
-import org.eclipse.epsilon.emc.emf.EmfUtil;
 import org.eclipse.epsilon.eol.models.ModelRepository;
-import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
+import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,52 +50,47 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
 
     @Parameter(readonly = true)
     public List<Model> models;
+    
+    private Log log = new MavenLog(getLog());
+
+    static {
+        SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
+    }
 
 
-    public HashMap<String, List<EPackage>> managedMetamodels = new HashMap<String, List<EPackage>>();
-
-
-    public File getArtifact(String name) throws MojoExecutionException {
-        if (name.startsWith("mvn:")) {
-            Artifact artifact = new DefaultArtifact(name.substring(4));
+    public URI getArtifact(String url) throws MojoExecutionException {
+        if (url.startsWith("mvn:")) {
+            Artifact artifact = new DefaultArtifact(url.toString().substring(4));
             ArtifactRequest req = new ArtifactRequest().setRepositories(this.repositories).setArtifact(artifact);
             ArtifactResult resolutionResult;
             try {
                 resolutionResult = this.repoSystem.resolveArtifact(this.repoSession, req);
 
             } catch (ArtifactResolutionException e) {
-                throw new MojoExecutionException("Artifact " + name + " could not be resolved.", e);
+                throw new MojoExecutionException("Artifact " + url.toString() + " could not be resolved.", e);
             }
 
             // The file should exists, but we never know.
             File file = resolutionResult.getArtifact().getFile();
             if (file == null || !file.exists()) {
-                getLog().warn("Artifact " + name + " has no attached file. Its content will not be copied in the target model directory.");
+                log.warn("Artifact " + url.toString() + " has no attached file. Its content will not be copied in the target model directory.");
             }
-            return file;
-        } else if (isValidURL(name)) {
-            throw new MojoExecutionException("STandard URL is not supported yet. Only mvn: or file");
+            return URI.createFileURI(file.getAbsolutePath());
+        } else if (isValidURL(url)) {
+        	return URI.createURI(url);
         } else {
-            /*
-            File file = new File(name);
-            if (file.exists()) {
-                return file;
-            } else {
-                throw new MojoExecutionException("artifact reference have to be mvn: artifact or existing file.");
-            }
-            */
-            return new File(name);
+            return URI.createFileURI(new File(url).getAbsolutePath());
         }
     }
 
     public void addMetaModels(ResourceSet resourceSet) throws Exception {
         if (metaModels != null) {
             for (String metaModel : metaModels) {
-                getLog().info("Registering ecore: " + metaModel);
-                File metaModelFile = getArtifact(metaModel);
-                getLog().info("    Meta model: " + metaModelFile.getAbsolutePath());
-                List<EPackage> ePackages = EmfModelUtils.registerMetamodel(resourceSet, managedMetamodels, metaModelFile.getAbsolutePath());
-                getLog().info("    EPackages: " + ePackages.stream().map(e -> e.getNsURI()).collect(Collectors.joining(", ")));
+        		log.info("Registering ecore: " + metaModel);
+        		URI uri = getArtifact(metaModel);
+        		log.info("    Meta model: " + uri);
+                List<EPackage> ePackages = EmfModelUtils.register(resourceSet, uri, true);
+                log.info("    EPackages: " + ePackages.stream().map(e -> e.getNsURI()).collect(Collectors.joining(", ")));
             }
         }
 
@@ -111,14 +100,10 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
         emfModels = Maps.newConcurrentMap();
         if (models != null) {
             for (Model emf : models) {
-                getLog().info("Model: " + emf.toString());
-                File artifactFile = getArtifact(emf.getArtifact());
-                getLog().info("    Artifact file: : " + artifactFile.toString());
-                emfModels.put(emf, load(resourceSet, modelRepository, emf, artifactFile));
-
-                /*if (emf.getPlatformAlias() != null && emf.getPlatformAlias().trim() != "") {
-                    EclipsePlatformStreamHandlerFactory.urlMapping.put(emf.getPlatformAlias().trim(), artifactFile);
-                }*/
+                log.info("Model: " + emf.toString());
+                URI artifactFile = getArtifact(emf.getArtifact());
+                log.info("    Artifact file: : " + artifactFile.toString());
+                emfModels.put(emf, load(log, resourceSet, modelRepository, emf, artifactFile));
             }
         }
 
