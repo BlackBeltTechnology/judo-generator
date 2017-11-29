@@ -1,0 +1,12 @@
+[% 		
+	for (module in UI!UIModule.all) {
+		module.generateResource();
+	} 
+%]
+
+[% operation UI!UIModule generateResource() { %]
+
+
+
+
+[% } %]

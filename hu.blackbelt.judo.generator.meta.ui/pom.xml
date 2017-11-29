@@ -39,6 +39,11 @@
                   <classifier>psmToUiTypeMapping</classifier>
                 </artifact>
                 <artifact>
+                  <file>model/resources.ecore</file>
+                  <type>ecore</type>
+                  <classifier>resources</classifier>
+                </artifact>
+                <artifact>
                   <file>library/uiTypes.model</file>
                   <type>model</type>
                   <classifier>uiTypes</classifier>
