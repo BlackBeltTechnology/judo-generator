@@ -1,17 +1,19 @@
 [%
 import "operations/_importAll.eol";
 
-getTemplate("create-table").genCreateTables(getTables());
+getCreateTableTemplate("create-table").genCreateTables(getTables());
 
 operation Template genCreateTables(tables : Collection) : Any {
 	self.populate("tables", tables);
-	tables.println();
 	self.generate("sql/" + RDBMS!RdbmsConfiguration.all.first().dialect.toLowercase() + "/" + "create_tables.sql");
 	self.reset();
 }
 
-operation getTemplate (templateName : String) : Any {
-	return TemplateFactory.load("templates/sql/" + templateName + ".egl");
+operation getCreateTableTemplate (templateName : String) : Any {
+    var formatter = new Native("hu.blackbelt.judo.generator.formatter.sql.SqlCreateTableFormatter");
+	var tf = TemplateFactory.load("templates/sql/" + templateName + ".egl");
+	tf.setFormatter(formatter);
+	return tf;
 }
 
 operation getTables () : Collection {

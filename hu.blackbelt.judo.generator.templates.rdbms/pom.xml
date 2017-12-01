@@ -47,6 +47,13 @@
 						</configuration>
 					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>hu.blackbelt.judo.generator.formatter.sql</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<plugin>
