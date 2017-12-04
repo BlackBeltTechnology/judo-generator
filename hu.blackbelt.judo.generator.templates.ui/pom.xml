@@ -20,6 +20,7 @@
 				<version>${project.version}</version>
 				<executions>
 					<execution>
+						<id>templateModel</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>execute</goal>
@@ -27,6 +28,7 @@
 						<configuration>
 							<metaModels>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:ui:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:resources:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
@@ -46,6 +48,14 @@
 									</metaModelUris>
 									<expand>true</expand>
 								</model>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.ui:model:resources:${project.version}</artifact>
+									<name>Resources</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/ui/resources</param>
+									</metaModelUris>
+									<expand>true</expand>
+								</model>
 							</models>
 							<eolPrograms>
 								<Egl>
@@ -53,6 +63,21 @@
 									<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
 								</Egl>
 							</eolPrograms>
+						</configuration>
+					</execution>
+					<execution>
+						<id>mergeJson</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>mergeJson</goal>
+						</goals>				
+						<configuration>
+							<modifiedJson>
+								${project.build.directory}/classes/resources.txt
+							</modifiedJson>
+							<newJson>
+								${project.build.directory}/generated-sources/resources.txt
+							</newJson>
 						</configuration>
 					</execution>
 				</executions>

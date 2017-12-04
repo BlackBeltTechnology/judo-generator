@@ -136,7 +136,11 @@
 									<type>model</type>
 									<classifier>ui</classifier>
 								</artifact>
-								
+								<artifact>
+									<file>${project.build.directory}/resources.model</file>
+									<type>model</type>
+									<classifier>resources</classifier>
+								</artifact>
 							</artifacts>
 						</configuration>
 					</execution>

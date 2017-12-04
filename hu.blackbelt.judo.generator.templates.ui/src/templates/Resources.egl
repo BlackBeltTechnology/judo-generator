@@ -1,12 +1,15 @@
-[% 		
-	for (module in UI!UIModule.all) {
-		module.generateResource();
-	} 
-%]
+{
+	"resources": [
+		[% 	for (resource in Resources!Resource.all) { %]
+		{
+			"key": "[%=resource.key%]",
+			"id": "[%=resource.uuid%]",
+			"value": "[%=resource.value%]"
+		}
+		[% if(resource <> Resources!Resource.all.last) { %]
+			,
+		[% } %]
+		[% } %]
+	]
+}
 
-[% operation UI!UIModule generateResource() { %]
-
-
-
-
-[% } %]

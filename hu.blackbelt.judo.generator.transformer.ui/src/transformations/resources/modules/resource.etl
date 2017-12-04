@@ -10,7 +10,7 @@ operation ModuleToResource(base : Resources!ResourceBase, module : UI!UIModule) 
 	var resource = new Resources!Resource();
 	resource.uuid = module.uuid;
 	resource.key = module.fullyQualifiedName;
-	resource.name = module.name;
+	resource.value = module.name;
 	base.resources.add(resource);
 	for (class in module.classes) {
 		ClassToResource(base, class, module.fullyQualifiedName);
@@ -21,10 +21,10 @@ operation ClassToResource(base : Resources!ResourceBase, class : UI!UIClass, fqN
 	var resource = new Resources!Resource();
 	resource.uuid = class.uuid;
 	resource.key = fqName + "." + class.name;
-	resource.name = class.name;
+	resource.value = class.name;
 	base.resources.add(resource);
 	for (attribute in class.attributes) {
-		AttributeToResouce(base, attribute, class.name, fqName);
+		AttributeToResource(base, attribute, class.name, fqName);
 	}
 	for (action in class.actions) {
 		ActionToResource(base, action, class.name, fqName);
@@ -35,7 +35,7 @@ operation AttributeToResource(base : Resources!ResourceBase, attribute : UI!UIAt
 	var resource = new Resources!Resource();
 	resource.uuid = attribute.uuid;
 	resource.key = fqName + "." + className + "." + attribute.name;
-	resource.name = attribute.name;
+	resource.value = attribute.name;
 	base.resources.add(resource);
 }
 
@@ -43,7 +43,7 @@ operation ActionToResource(base : Resources!ResourceBase, action : UI!UIAction, 
 	var resource = new Resources!Resource();
 	resource.uuid = action.uuid;
 	resource.key = fqName + "." + className + "." + action.name;
-	resource.name = action.name;
+	resource.value = action.name;
 	base.resources.add(resource);
 	for (parameter in action.parameters) {
 		ParameterToResource(base, parameter, action.name, className, fqName);
@@ -54,6 +54,6 @@ operation ParameterToResource(base : Resources!ResourceBase, parameter : UI!UIPa
 	var resource = new Resources!Resource();
 	resource.uuid = parameter.uuid;
 	resource.key = fqName + "." + className + "." + actionName + "." + parameter.name;
-	resource.name = parameter.name;
+	resource.value = parameter.name;
 	base.resources.add(resource);
 }
