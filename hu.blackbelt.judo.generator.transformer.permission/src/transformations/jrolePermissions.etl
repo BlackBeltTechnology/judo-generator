@@ -1,0 +1,41 @@
+rule JRoleToPermissions
+	transform jrole : PSM!JRole
+	to readPerm : Permission!RelPermission, writePerm : Permission!RelPermission, 
+	   attachPerm : Permission!RelPermission, detachPerm : Permission!RelPermission {
+	guard : jrole.navigable
+		readPerm.hostClassName = jrole.ownerClass.package.name + "." + jrole.ownerClass.name;
+		readPerm.resource = readPerm.hostClassName + "." + jrole.name;
+		readPerm.otherType = jrole.ownerClass.name;
+		readPerm.hostClassUuid = jrole.ownerClass.uuid;
+		readPerm.resourceUuid = readPerm.hostClassUuid + "." + jrole.opposite().uuid;
+		readPerm.action = "read";
+		readPerm.permissionType = "relation";
+		readPerm.uuid = uuid3(readPerm.hostClassUuid, readPerm.resourceUuid + readPerm.action);
+		
+		writePerm.hostClassName = jrole.ownerClass.package.name + "." + jrole.ownerClass.name;
+		writePerm.resource = writePerm.hostClassName + "." + jrole.name;
+		writePerm.otherType = jrole.ownerClass.name;
+		writePerm.hostClassUuid = jrole.ownerClass.uuid;
+		writePerm.resourceUuid = writePerm.hostClassUuid + "." + jrole.opposite().uuid;
+		writePerm.action = "write";
+		writePerm.permissionType = "relation";
+		writePerm.uuid = uuid3(writePerm.hostClassUuid, writePerm.resourceUuid + writePerm.action);
+		
+		attachPerm.hostClassName = jrole.ownerClass.package.name + "." + jrole.ownerClass.name;
+		attachPerm.resource = attachPerm.hostClassName + "." + jrole.name;
+		attachPerm.otherType = jrole.ownerClass.name;
+		attachPerm.hostClassUuid = jrole.ownerClass.uuid;
+		attachPerm.resourceUuid = attachPerm.hostClassUuid + "." + jrole.opposite().uuid;
+		attachPerm.action = "attach";
+		attachPerm.permissionType = "relation";
+		attachPerm.uuid = uuid3(attachPerm.hostClassUuid, attachPerm.resourceUuid + attachPerm.action);
+		
+		detachPerm.hostClassName = jrole.ownerClass.package.name + "." + jrole.ownerClass.name;
+		detachPerm.resource = detachPerm.hostClassName + "." + jrole.name;
+		detachPerm.otherType = jrole.ownerClass.name;
+		detachPerm.hostClassUuid = jrole.ownerClass.uuid;
+		detachPerm.resourceUuid = detachPerm.hostClassUuid + "." + jrole.opposite().uuid;
+		detachPerm.action = "detach";
+		detachPerm.permissionType = "relation";
+		detachPerm.uuid = uuid3(detachPerm.hostClassUuid, detachPerm.resourceUuid + detachPerm.action);
+	} 

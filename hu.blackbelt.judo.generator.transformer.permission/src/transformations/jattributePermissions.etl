@@ -1,0 +1,19 @@
+rule JAttributeToPermissions
+	transform jattribute : PSM!JAttribute
+	to readPerm : Permission!Permission, writePerm : Permission!Permission {
+		readPerm.hostClassName = jattribute.ownerClass.package.name + "." + jattribute.ownerClass.name;
+		readPerm.resource = readPerm.hostClassName + jattribute.name;
+		readPerm.hostClassUuid = jattribute.ownerClass.uuid;
+		readPerm.resourceUuid = readPerm.hostClassUuid + "." + jattribute.uuid;
+		readPerm.action = "read";
+		readPerm.permissionType = "attribute";
+		readPerm.uuid = uuid3(readPerm.hostClassUuid, readPerm.resourceUuid + readPerm.action);
+		
+		writePerm.hostClassName = jattribute.ownerClass.package.name + "." + jattribute.ownerClass.name;
+		writePerm.resource = readPerm.hostClassName + jattribute.name;
+		writePerm.hostClassUuid = jattribute.ownerClass.uuid;
+		writePerm.resourceUuid = writePerm.hostClassUuid + "." + jattribute.uuid;
+		writePerm.action = "write";
+		writePerm.permissionType = "attribute";
+		writePerm.uuid = uuid3(writePerm.hostClassUuid, writePerm.resourceUuid + writePerm.action);
+	}
