@@ -55,13 +55,13 @@
                        <readOnLoad>false</readOnLoad>
                        <storeOnDisposal>true</storeOnDisposal>
                        <metaModelUris>
-                           <param>http://blackbelt.hu/judo/meta/permission</param>
+                           <param>http://blackbelt.hu/judo/meta/psm/permission</param>
                        </metaModelUris>
                     </model>
                 </models>  
                 <eolPrograms>
                     <Etl>
-                        <source>src/transformations/ui/psmToPermissions.etl</source>
+                        <source>src/transformations/psmToPermissions.etl</source>
                     </Etl>
                 </eolPrograms>
             </configuration>

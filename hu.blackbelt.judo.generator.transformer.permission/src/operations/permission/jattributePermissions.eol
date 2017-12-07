@@ -1,0 +1,26 @@
+operation JAttributeToPermissions(jattribute : PSM!JAttribute, package : PSM!JPackage, class : PSM!JClass) : Sequence(Permission!Permission) {
+	var perms : Sequence(Permission!Permission) = new Sequence(Permission!Permission);
+	
+	var readPerm : Permission!Permission = new Permission!Permission();
+	readPerm.hostClassName = package.name + "." + class.name;
+	readPerm.resource = readPerm.hostClassName + "." + jattribute.name;
+	readPerm.hostClassUuid = class.uuid;
+	readPerm.resourceUuid = readPerm.hostClassUuid + "." + jattribute.uuid;
+	readPerm.action = "read";
+	readPerm.type = "attribute";
+	readPerm.uuid = uuid3(readPerm.hostClassUuid, readPerm.resourceUuid + readPerm.action);
+	
+	var writePerm : Permission!Permission = new Permission!Permission();
+	writePerm.hostClassName = package.name + "." + class.name;
+	writePerm.resource = writePerm.hostClassName + "." + jattribute.name;
+	writePerm.hostClassUuid = class.uuid;
+	writePerm.resourceUuid = writePerm.hostClassUuid + "." + jattribute.uuid;
+	writePerm.action = "write";
+	writePerm.type = "attribute";
+	writePerm.uuid = uuid3(writePerm.hostClassUuid, writePerm.resourceUuid + writePerm.action);
+	
+	perms.add(readPerm);
+	perms.add(writePerm);
+	
+	return perms;
+}

@@ -1,0 +1,4 @@
+[%
+	var permissionProp : Template = TemplateFactory.load("templates/permissions_properties_tmpl.egl");
+	permissionProp.generate("permissionProp.txt");
+%]

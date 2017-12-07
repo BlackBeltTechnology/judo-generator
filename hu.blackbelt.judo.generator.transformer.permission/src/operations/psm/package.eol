@@ -1,0 +1,12 @@
+@cached
+operation PSM!JPackage fqName () : String {
+	return fqNameInternal(self);
+}
+
+operation fqNameInternal (pe : PSM!JPackage) : String {
+	if (pe.parent.isDefined()) {
+		return pe.parent.fqName() + "." + pe.name;
+	} else {
+		return pe.name;
+	}
+}

@@ -8,7 +8,7 @@ rule JClassToPermissions
 		createPerm.hostClassUuid = jclass.uuid;
 		createPerm.resourceUuid = jclass.uuid;
 		createPerm.action = "create";
-		createPerm.permissionType = "object";
+		createPerm.type = "object";
 		createPerm.uuid = uuid3(createPerm.hostClassUuid, createPerm.resourceUuid + createPerm.action);
 	   
 		updatePerm.hostClassName = jclass.package.name + "." + jclass.name;
@@ -16,7 +16,7 @@ rule JClassToPermissions
 		updatePerm.hostClassUuid = jclass.uuid;
 		updatePerm.resourceUuid = jclass.uuid;
 		updatePerm.action = "update";
-		updatePerm.permissionType = "object";
+		updatePerm.type = "object";
 		updatePerm.uuid = uuid3(updatePerm.hostClassUuid, updatePerm.resourceUuid + updatePerm.action);
 		
 		listPerm.hostClassName = jclass.package.name + "." + jclass.name;
@@ -24,7 +24,7 @@ rule JClassToPermissions
 		listPerm.hostClassUuid = jclass.uuid;
 		listPerm.resourceUuid = jclass.uuid;
 		listPerm.action = "list";
-		listPerm.permissionType = "object";
+		listPerm.type = "object";
 		listPerm.uuid = uuid3(listPerm.hostClassUuid, listPerm.resourceUuid + listPerm.action);
 		
 		deletePerm.hostClassName = jclass.package.name + "." + jclass.name;
@@ -32,7 +32,7 @@ rule JClassToPermissions
 		deletePerm.hostClassUuid = jclass.uuid;
 		deletePerm.resourceUuid = jclass.uuid;
 		deletePerm.action = "delete";
-		deletePerm.permissionType = "object";
+		deletePerm.type = "object";
 		deletePerm.uuid = uuid3(deletePerm.hostClassUuid, deletePerm.resourceUuid + deletePerm.action);
 		
 		modifyviewPerm.hostClassName = jclass.package.name + "." + jclass.name;
@@ -40,6 +40,6 @@ rule JClassToPermissions
 		modifyviewPerm.hostClassUuid = jclass.uuid;
 		modifyviewPerm.resourceUuid = jclass.uuid;
 		modifyviewPerm.action = "modifyview";
-		modifyviewPerm.permissionType = "object";
+		modifyviewPerm.type = "object";
 		modifyviewPerm.uuid = uuid3(modifyviewPerm.hostClassUuid, modifyviewPerm.resourceUuid + modifyviewPerm.action);
 	} 

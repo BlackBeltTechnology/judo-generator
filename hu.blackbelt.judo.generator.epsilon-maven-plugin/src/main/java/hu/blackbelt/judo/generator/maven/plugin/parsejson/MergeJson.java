@@ -13,6 +13,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -29,6 +30,7 @@ public class MergeJson extends AbstractMojo {
     @Parameter(defaultValue = "/hu.blackbelt.judo.generator.transformer.ui/target/resources.model", readonly = true, required = true)
     private File newJson;
 	
+	@SuppressWarnings("resource")
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
@@ -39,17 +41,31 @@ public class MergeJson extends AbstractMojo {
 			HashMap<String, JSONObject> newJsonMap = new HashMap<String, JSONObject>();
 			
 			while (newJsonTokener.more()) {
-				JSONObject object = (JSONObject) newJsonTokener.nextValue();
-				newJsonMap.put((String) object.get("uuid"), object);
+				JSONObject object;
+				try {
+					object = (JSONObject) newJsonTokener.nextValue();
+				} catch(JSONException e) {
+					break;
+				}
+				try {
+					newJsonMap.put((String) object.get("uuid"), object);
+				} catch(JSONException e) {}
 			}
 			
 			JSONTokener modifiedJsonTokener = new JSONTokener(modifiedJsonStream);
 			HashMap<String, JSONObject> modifiedJsonMap = new HashMap<String, JSONObject>();
 			HashMap<String, Boolean> modifiedJsonExistsMap = new HashMap<String, Boolean>();
 			while (modifiedJsonTokener.more()) {
-				JSONObject object = (JSONObject) modifiedJsonTokener.nextValue();
-				modifiedJsonMap.put((String) object.get("uuid"), object);
-				modifiedJsonExistsMap.put((String) object.get("uuid"), false);
+				JSONObject object;
+				try {
+					object = (JSONObject) modifiedJsonTokener.nextValue();
+				} catch (JSONException e) {
+					break;
+				}
+				try {
+					modifiedJsonMap.put((String) object.get("uuid"), object);
+					modifiedJsonExistsMap.put((String) object.get("uuid"), false);
+				} catch(JSONException e) {}
 			}
 			
 			for (String uuid : newJsonMap.keySet()) {
@@ -79,8 +95,8 @@ public class MergeJson extends AbstractMojo {
 				builder.append(modifiedJsonMap.get(uuid).toString());
 			}
 			
-			/*PrintWriter outputStream = new PrintWriter(newJson);
-			outputStream.println(builder.toString());*/
+			PrintWriter outputStream = new PrintWriter(modifiedJson);
+			outputStream.println(builder.toString());
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");

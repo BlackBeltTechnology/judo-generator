@@ -1,4 +1,0 @@
-operation buildObjectRoles(classPermissions : Sequence(Permission!Permission)) : Sequence(Permission!Role) {
-	var readRole : Permission!Role = new Permission!Role;
-	
-}

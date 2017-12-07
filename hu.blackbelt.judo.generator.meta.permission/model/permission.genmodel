@@ -15,7 +15,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//Permission/type"/>
     </genClasses>
     <genClasses ecoreClass="permission.ecore#//PermissionModel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference permission.ecore#//PermissionModel/permission"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference permission.ecore#//PermissionModel/permissions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference permission.ecore#//PermissionModel/roles"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//PermissionModel/javaPackage"/>
     </genClasses>
