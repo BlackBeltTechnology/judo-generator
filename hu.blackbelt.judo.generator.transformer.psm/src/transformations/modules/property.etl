@@ -29,7 +29,7 @@ rule ClassProperty
 	}
 
 	// check if interpreted on association owned properties also	
-	if ( stereotypeApplications.get("interval").containsKey(s) ) {
+	if ( stereotypeApplications.get("interval").containsKey(s) and stereotypeApplications.get("interval").get(s).isDefined() ) {
 		t.interval = stereotypeApplications.get("interval").get(s);
 		t.println("RULE::ClassProperty - ADD interval specification - " + t.interval + " ");
 	}

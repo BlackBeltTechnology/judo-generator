@@ -15,7 +15,4 @@ rule UIModule
 		} else {
 			uimodule.fullyQualifiedName = jpackage.name;
 		}
-		/*if (jpackage.ownerModel.isDefined()) {
-			uimodule.version = jpackage.ownerModel.version;
-		}*/
 	}

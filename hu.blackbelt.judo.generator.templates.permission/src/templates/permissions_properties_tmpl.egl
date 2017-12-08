@@ -1,0 +1,5 @@
+[% for (perm in Permission!Permission.all) { %]
+[%=perm.resource%]\:[%=perm.action.toUpperCase()%] = [%=perm.resourceUuid%]
+[% } %]
+
+

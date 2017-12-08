@@ -1,0 +1,75 @@
+package hu.blackbelt.common.permissions;
+
+import com.google.common.collect.Maps;
+import fj.data.List;
+import fj.data.Option;
+
+import hu.blackbelt.judo.common.security.api.permission.Permission;
+import hu.blackbelt.judo.common.security.api.permission.RootUserDescriptor;
+import hu.blackbelt.judo.common.security.api.permission.PermissionRegistry;
+import hu.blackbelt.judo.common.security.api.permission.StaticPermissionsHelper;
+import org.apache.felix.scr.annotations.Activate;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
+import org.osgi.framework.BundleContext;
+
+import java.net.URL;
+import java.util.Map;
+
+import static hu.blackbelt.judo.common.security.api.permission.StaticPermissionsHelper.BY_RESOURCE_PREFIX_AND_ACTION;
+import static hu.blackbelt.judo.common.security.api.permission.StaticPermissionsHelper.BY_ID_AND_ACTION;
+import static hu.blackbelt.judo.common.security.api.permission.StaticPermissionsHelper.key;
+
+
+
+@Component(metatype = false, immediate = true)
+@Service
+public final class StaticPermissionRegistry implements PermissionRegistry {
+
+
+    private List<Permission> permissions;
+    private Map<String, List<Permission>> prefixAndActionMap;
+    private Map<String, Permission> idAndActionMap;
+
+    public StaticPermissionRegistry() {
+
+    }
+
+    @Activate
+    protected void activate(BundleContext context) {
+        final URL permissionsUrl = context.getBundle().getResource("/permissions.properties");
+        permissions = StaticPermissionsHelper.readFromUrl(permissionsUrl);
+        prefixAndActionMap = permissions.groupBy(BY_RESOURCE_PREFIX_AND_ACTION).toMutableMap();
+        idAndActionMap = Maps.uniqueIndex(permissions, BY_ID_AND_ACTION);
+    }
+
+    @Override
+    public List<Permission> getAll() {
+        return permissions;
+    }
+
+    @Override
+    public List<Permission> forResourcePrefixAndAction(String prefix, Permission.Action action) {
+        return prefixAndActionMap.get(key(prefix, action));
+    }
+
+    @Override
+    public Option<Permission> forIdAndAction(String permissionId, Permission.Action action) {
+        return Option.fromNull(idAndActionMap.get(key(permissionId, action)));
+    }
+
+    public RootUserDescriptor rootDescriptor() {
+        return new RootUserDescriptor(){
+            @Override
+            public String getGuid() {
+                return "62feb4ab-1080-460b-b613-18128b159e28";
+            }
+
+            @Override
+            public String getInfoGuid() {
+                return "c1271e6e-f585-11e5-9ce9-5e5517507c66";
+            }
+        };
+    }
+
+}

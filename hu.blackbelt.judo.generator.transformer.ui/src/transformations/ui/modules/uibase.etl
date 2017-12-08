@@ -1,6 +1,10 @@
 rule UIBase
 	transform jmodel: PSM!JModel
 	to uibase : UI!UIBase {
+	
+	uibase.name = jmodel.name;
+	uibase.uuid = jmodel.uuid;
+	
 	for (package : PSM!JPackage in PSM!JPackage.all) {
 		var currentPackage : UI!UIModule = package.equivalent("UIModule");
 		if (currentPackage <> null) {
@@ -11,9 +15,35 @@ rule UIBase
 	var mainMenu = new UI!UIMenuItem();
 	mainMenu.uuid = "main_menu";
 	mainMenu.name = "main_menu";
-	uibase.mainMenu = mainMenu;
 	
 	for (menuRoot in jmodel.rootMenuItems) {
-		uibase.mainMenu.menuItems.add(menuRoot.equivalent("UIMenuItem"));	
-	}	
+		for (menu in menuRoot.children) {
+			mainMenu.menuItems.add(menu.equivalent("UIMenuItem"));
+		}
+	}
+	
+	uibase.mainMenu = mainMenu;
+	
+	var uiInfo = new UI!UIInfo();
+	if (jmodel.info.isDefined()) {
+		for (submodel in jmodel.info.submodels) {
+			if (submodel.version.isDefined()) {
+				uiInfo.versions.add(submodel.version);
+			} else {
+				uiInfo.versions.add("");
+			}
+			
+			uiInfo.submodels.add(submodel.name);
+		}
+		for (jclass in PSM!JClass.all) {
+			if (jclass.representsUser) {
+				uiInfo.userClass = jclass.uuid;
+			}
+		}
+	}
+	
+	uiInfo.name = "main_info";
+	uiInfo.uuid = "main_info";
+	
+	uibase.info = uiInfo;
 }

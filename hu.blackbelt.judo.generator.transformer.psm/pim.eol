@@ -1,0 +1,312 @@
+
+
+
+	var JUDOStereotypeInstances : Map;
+
+	// some housekeeping.. 	
+	// stereotypes - collect - TODO (pickup list):
+	// 								Status for as-is	Elmts w. St 	Transformation
+	//													are collected	is implemented
+	// alias Constraint					TODO			COLL
+	// application Package				TODO			COLL
+	// attach Dependency				POSTPONE		COLL
+	// attr_read Dependency				POSTPONE		COLL
+	// attr_write Dependency			POSTPONE		COLL
+	// bo Class							TODO			COLL
+	// bo Package						TODO			COLL
+	// calculated Property				TODO			COLL
+	// call Dependency					POSTPONE		COLL
+	// decimals Constraint				TODO			COLL
+	// derived Association (!!Property)	TODO			COLL
+	// derivedDescription Constraint	TODO			COLL
+	// derivedExpression Constraint		TODO			COLL
+	// detach Dependency				POSTPONE		COLL
+	// document Class					TODO			COLL
+	// document Package					TODO			COLL
+	// dto Class						TODO			COLL
+	// dto Package						TODO			COLL
+	// filter Constraint				TODO			COLL
+	// fixed Enumeration				TODO			COLL
+	// guard Constraint					TODO			COLL
+	// implementation Class				POSTPONE		COLL
+	// interval Constraint				TODO			COLL
+	// list Constraint					POSTPONE (?)	COLL
+	// menuitem Class					TODO			COLL
+	// menuroot Class					TODO			COLL
+	// new ElementImport				POSTPONE		COLL
+	// nonconfirmed Operation			POSTPONE		COLL
+	// nosearch Property				POSTPONE		COLL
+	// object_create Dependency			POSTPONE		COLL
+	// object_full Dependency			POSTPONE		COLL
+	// object_read Dependency			POSTPONE		COLL
+	// object_update Dependency			POSTPONE		COLL
+	// options Constraint				POSTPONE		COLL
+	// order Constraint					POSTPONE (?)	COLL
+	// package Package					TODO			COLL
+	// permission Package				POSTPONE		COLL
+	// placeholder Constraint			TODO			COLL
+	// private StateMachine				TODO			COLL
+	// protected StateMachine			TODO			COLL
+	// query Operation					TODO			COLL
+	// regexp Constraint				TODO			COLL
+	// representation Constraint		TODO			COLL
+	// representation Property			TODO			COLL
+	// rest Class						TODO			COLL
+	// rest Package						TODO			COLL
+	// screen Element					POSTPONE		COLL
+	// tenant_role - Actor				NO_TRANSF		-
+	// to Class							POSTPONE		COLL
+	// ui Package						POSTPONE		COLL
+	// validation Constraint			POSTPONE		COLL
+	// watch Class						POSTPONE		COLL
+	// watch Property					POSTPONE		COLL
+
+	// <<rest>>
+	JUDOStereotypeInstances.put("restPackages", 		
+								inpPIM!rest.allInstances()->select(c | c.base_Package.isDefined())->collect(c | c.base_Package).asSet());
+	JUDOStereotypeInstances.put("restClasses",		
+								inpPIM!rest.allInstances()->select(c | c.base_Class.isDefined())->collect(c | c.base_Class).asSet());
+
+	// <<bo>>
+	JUDOStereotypeInstances.put("boPackages", 		
+								inpPIM!bo.allInstances()->select(c | c.base_Package.isDefined())->collect(c | c.base_Package).asSet());
+	JUDOStereotypeInstances.put("boClasses",		
+								inpPIM!bo.allInstances()->select(c | c.base_Class.isDefined())->collect(c | c.base_Class).asSet());
+
+	// <<document>>
+	JUDOStereotypeInstances.put("documentPackages", 		
+								inpPIM!document.allInstances()->select(c | c.base_Package.isDefined())->collect(c | c.base_Package).asSet());
+	JUDOStereotypeInstances.put("documentClasses",		
+								inpPIM!document.allInstances()->select(c | c.base_Class.isDefined())->collect(c | c.base_Class).asSet());
+
+	// <<dto>>
+	JUDOStereotypeInstances.put("dtoPackages", 		
+								inpPIM!dto.allInstances()->select(c | c.base_Package.isDefined())->collect(c | c.base_Package).asSet());
+	JUDOStereotypeInstances.put("dtoClasses",		
+								inpPIM!dto.allInstances()->select(c | c.base_Class.isDefined())->collect(c | c.base_Class).asSet());
+
+	// <<nonconfirmed>>
+	JUDOStereotypeInstances.put("nonconfirmedOperation",		
+								inpPIM!nonconfirmed	.allInstances()->select(c | c.base_Operation.isDefined())->collect(c | c.base_Operation).asSet());
+	JUDOStereotypeInstances.put("nonconfirmedReception",		// does really exist?
+								inpPIM!nonconfirmed	.allInstances()->select(c | c.base_Reception.isDefined())->collect(c | c.base_Reception).asSet());
+	JUDOStereotypeInstances.put("nonconfirmedRedefinableTemplateSignature",		// does really exist?
+								inpPIM!nonconfirmed	.allInstances()->select(c | c.base_RedefinableTemplateSignature.isDefined())->collect(c | c.base_RedefinableTemplateSignature).asSet());
+	JUDOStereotypeInstances.put("nonconfirmedTemplateSignature",		// does really exist?
+								inpPIM!nonconfirmed	.allInstances()->select(c | c.base_TemplateSignature.isDefined())->collect(c | c.base_TemplateSignature).asSet());
+	
+
+	JUDOStereotypeInstances.put("application",		inpPIM!application	.allInstances()->collect(c | c.base_Package).asSet());
+	JUDOStereotypeInstances.put("attach",			inpPIM!attach		.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("attr_read",		inpPIM!attr_read	.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("attr_write",		inpPIM!attr_write	.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("call",				inpPIM!call			.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("detach",			inpPIM!detach		.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("derived", 			inpPIM!derived		.allInstances()->collect(c | c.base_Property).asSet());
+	JUDOStereotypeInstances.put("implementation",	inpPIM!implementation.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("menuitem",			inpPIM!menuitem		.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("menuroot",			inpPIM!menuroot		.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("new",				inpPIM!`new`		.allInstances()->collect(c | c.base_ElementImport).asSet());
+	JUDOStereotypeInstances.put("nosearch",			inpPIM!nosearch		.allInstances()->collect(c | c.base_Property).asSet());
+	JUDOStereotypeInstances.put("object_read",		inpPIM!object_read	.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("object_full",		inpPIM!object_full	.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("object_create",	inpPIM!object_create.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("object_update",	inpPIM!object_update.allInstances()->collect(c | c.base_Dependency).asSet());
+	JUDOStereotypeInstances.put("permission",		inpPIM!permission	.allInstances()->collect(c | c.base_Package).asSet());
+	JUDOStereotypeInstances.put("private",			inpPIM!private		.allInstances()->collect(c | c.base_StateMachine).asSet());
+	JUDOStereotypeInstances.put("protected",		inpPIM!protected	.allInstances()->collect(c | c.base_StateMachine).asSet());
+	JUDOStereotypeInstances.put("query",			inpPIM!query		.allInstances()->collect(c | c.base_Operation).asSet());
+	JUDOStereotypeInstances.put("representationProperty",	inpPIM!representation.allInstances()->collect(c | c.base_Property).asSet());
+	JUDOStereotypeInstances.put("screen",			inpPIM!screen		.allInstances()->collect(c | c.base_Element).asSet());
+	JUDOStereotypeInstances.put("tenant", 			inpPIM!tenant		.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("TenantMembers", 	inpPIM!tenantmember	.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("tenantuser", 		inpPIM!tenantuser	.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("to",	 			inpPIM!`to`			.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("ui",				inpPIM!ui			.allInstances()->collect(c | c.base_Package).asSet());
+	JUDOStereotypeInstances.put("user", 			inpPIM!user			.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("singleton", 		inpPIM!singleton	.allInstances()->collect(c | c.base_Class).asSet());
+	JUDOStereotypeInstances.put("packages", 		inpPIM!package		.allInstances()->collect(p | p.base_Package).asSet());
+	JUDOStereotypeInstances.put("fixedEnum", 		inpPIM!fixed		.allInstances()->collect(p | p.base_Enumeration).asSet());
+	JUDOStereotypeInstances.put("watchProperties", 		
+								inpPIM!watch.allInstances()->select(c | c.base_Property.isDefined())->collect(c | c.base_Property).asSet());
+	JUDOStereotypeInstances.put("watchClasses",		
+								inpPIM!watch.allInstances()->select(c | c.base_Class.isDefined())->collect(c | c.base_Class).asSet());
+	
+	JUDOStereotypeInstances.put("calculated", inpPIM!calculated.allInstances()->collect(p | p.base_Property).asSet());
+			
+	// Constraints 
+	JUDOStereotypeInstances.put("alias", 			inpPIM!`alias`.allInstances().collectMValuedConstrainedElements());
+	JUDOStereotypeInstances.put("decimals", 		inpPIM!decimals.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("derivedDescription", inpPIM!derivedDescription.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("derivedExpression", inpPIM!derivedExpression.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("filter", 			inpPIM!filter.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("guard", 			inpPIM!`guard`.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("interval", 		inpPIM!interval.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("list", 			inpPIM!list.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("options", 			inpPIM!options.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("order", 			inpPIM!order.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("placeholder",		inpPIM!placeholder.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("regexp", 			inpPIM!regexp.allInstances().collectConstrainedElements());
+	// <<representation>> can appear on Property also, so here we select only the Constraints: 
+	JUDOStereotypeInstances.put("representation",	inpPIM!representation.allInstances()->select(e | e.base_Constraint.isDefined()).collectConstrainedElements()); 
+	JUDOStereotypeInstances.put("shortname", 		inpPIM!shortname.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("validation", 		inpPIM!validation.allInstances().collectConstrainedElements());
+
+	// dump result Map
+	dumpStereotypeInstances( JUDOStereotypeInstances );
+	
+
+operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
+	"DUMP >> JUDOStereotypeInstances".println();
+	
+	dumpSetAt( JUDOStereotypeInstances, "watchProperties");
+	dumpSetAt( JUDOStereotypeInstances, "watchClasses");
+	dumpSetAt( JUDOStereotypeInstances, "boPackages");
+	dumpSetAt( JUDOStereotypeInstances, "boClasses");
+	dumpSetAt( JUDOStereotypeInstances, "documentPackages");
+	dumpSetAt( JUDOStereotypeInstances, "documentClasses");
+	dumpSetAt( JUDOStereotypeInstances, "dtoPackages");
+	dumpSetAt( JUDOStereotypeInstances, "dtoClasses");
+	dumpSetAt( JUDOStereotypeInstances, "restPackages");
+	dumpSetAt( JUDOStereotypeInstances, "restClasses");
+
+	dumpSetAt( JUDOStereotypeInstances, "application");
+	dumpSetAt( JUDOStereotypeInstances, "attach");
+	dumpSetAt( JUDOStereotypeInstances, "attr_read");
+	dumpSetAt( JUDOStereotypeInstances, "attr_write");
+	dumpSetAt( JUDOStereotypeInstances, "call");
+	dumpSetAt( JUDOStereotypeInstances, "detach");
+	dumpSetAt( JUDOStereotypeInstances, "derived");
+	dumpSetAt( JUDOStereotypeInstances, "implementation");
+	dumpSetAt( JUDOStereotypeInstances, "menuitem");
+	dumpSetAt( JUDOStereotypeInstances, "menuroot");
+	dumpSetAt( JUDOStereotypeInstances, "new");
+	dumpSetAt( JUDOStereotypeInstances, "nonconfirmedOperation");
+	dumpSetAt( JUDOStereotypeInstances, "nonconfirmedReception");
+	dumpSetAt( JUDOStereotypeInstances, "nonconfirmedRedefinableTemplateSignature");
+	dumpSetAt( JUDOStereotypeInstances, "nonconfirmedTemplateSignature");
+	dumpSetAt( JUDOStereotypeInstances, "nosearch");
+	dumpSetAt( JUDOStereotypeInstances, "object_read");
+	dumpSetAt( JUDOStereotypeInstances, "object_create");
+	dumpSetAt( JUDOStereotypeInstances, "object_update");
+	dumpSetAt( JUDOStereotypeInstances, "object_full");
+	dumpSetAt( JUDOStereotypeInstances, "permission");
+	dumpSetAt( JUDOStereotypeInstances, "private");
+	dumpSetAt( JUDOStereotypeInstances, "protected");
+	dumpSetAt( JUDOStereotypeInstances, "query");
+	dumpSetAt( JUDOStereotypeInstances, "representationProperty");
+	dumpSetAt( JUDOStereotypeInstances, "screen");
+	dumpSetAt( JUDOStereotypeInstances, "tenant");
+	dumpSetAt( JUDOStereotypeInstances, "TenantMembers");
+	dumpSetAt( JUDOStereotypeInstances, "tenantuser");
+	dumpSetAt( JUDOStereotypeInstances, "to");
+	dumpSetAt( JUDOStereotypeInstances, "ui");
+	dumpSetAt( JUDOStereotypeInstances, "user");
+	dumpSetAt( JUDOStereotypeInstances, "singleton");
+	dumpSetAt( JUDOStereotypeInstances, "packages");
+	dumpSetAt( JUDOStereotypeInstances, "fixedEnum");
+	dumpSetAt( JUDOStereotypeInstances, "calculated");
+
+	dumpMapAt( JUDOStereotypeInstances, "alias");
+	dumpMapAt( JUDOStereotypeInstances, "decimals");
+	dumpMapAt( JUDOStereotypeInstances, "derivedDescription");
+	dumpMapAt( JUDOStereotypeInstances, "derivedExpression");
+	dumpMapAt( JUDOStereotypeInstances, "filter");
+	dumpMapAt( JUDOStereotypeInstances, "guard");
+	dumpMapAt( JUDOStereotypeInstances, "interval");
+	dumpMapAt( JUDOStereotypeInstances, "list");
+	dumpMapAt( JUDOStereotypeInstances, "options");
+	dumpMapAt( JUDOStereotypeInstances, "order");
+	dumpMapAt( JUDOStereotypeInstances, "placeholder");
+	dumpMapAt( JUDOStereotypeInstances, "regexp");
+	dumpMapAt( JUDOStereotypeInstances, "representation");
+	dumpMapAt( JUDOStereotypeInstances, "shortname");
+	dumpMapAt( JUDOStereotypeInstances, "validation");
+}
+
+operation seqOfMapsToMap( seqOfMaps : Sequence ) : Map {
+	var r : Map = new Map;
+	
+	for (m in seqOfMaps) {
+		r.putAll( m );
+	}
+	
+	r.println("FullMAP : ");
+
+	return r;
+}
+
+operation LiteralString getSpecification() : String {
+	return self.value;
+}
+
+operation OpaqueExpression getSpecification() : String {
+	if ( self.body.first().isDefined() ) {
+		return self.body.first();
+	} 
+}
+
+operation Sequence collectConstrainedElements() : Map {
+	return seqOfMapsToMap( self->select(sttype | sttype.base_Constraint.specification.getSpecification().isDefined())
+									->collect(sttype | sttype.base_Constraint
+														.constrainedElement->aggregate(ce | ce, sttype.base_Constraint
+																								  	  .specification
+																								   	  .getSpecification())));
+}
+
+// get a Sequence of Stereotypes - constraining even multiple elements, w. only one Specification
+// this operation presumes that one Element can have multiple Constraints w. the provided Stereotype
+// Map returns Sequence of Specification values for Constrained Elements
+operation Sequence collectMValuedConstrainedElements() : Map {
+	var result = new Map;
+
+	for (sttype in self) {
+		var constrainedElements = sttype.base_Constraint.constrainedElement;
+		var specification = sttype.base_Constraint.specification.getSpecification();
+		
+		for (e in constrainedElements) {
+			if ( result.containsKey(e) ) {
+				result.put(e, result.get(c).add(specification));
+			} else {
+				result.put(e, specification);
+			}
+		}
+	}
+	
+	return result;
+}
+
+operation Element shortDumpElmntStr( ) : String {
+	var dmpStr = self.type().name + "\t : ";
+	
+	if (self.qualifiedName.isUndefined() or self.qualifiedName.length() == 0) {
+		dmpStr += self.id;
+	} else {
+		dmpStr += self.qualifiedName;
+	}
+	
+	return dmpStr;
+}
+
+operation dumpMapAt( m : Map, key : String) {
+	var map2dump : Map = m.get( key ); 
+	map2dump.size().println("\t" + key + " : ");
+	
+	for (e in map2dump.keySet()) {
+		e.shortDumpElmntStr().print("\t\t");
+		map2dump.get( e ).println("  ~~~> ");
+	}
+}
+
+operation dumpSetAt( m : Map, key : String) {
+	var set2dump : Set = m.get( key ).asSet(); 
+	set2dump.size().println("\t" + key + " : ");
+	
+	for (e in set2dump) {
+		e.shortDumpElmntStr().println("\t\t");
+	}
+}
+
+dumpStereotypeInstances();
+
+"VÉGE".println();

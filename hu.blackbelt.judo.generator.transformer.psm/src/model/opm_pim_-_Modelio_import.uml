@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:JudoProfile="http:///schemas/JudoProfile/_apWi4IDvEeePbrcCa2jZwg/0" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/JudoProfile/v0.90/0 JudoProfile.profile.uml#_aqB4c4DvEeePbrcCa2jZwg http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_aqFisoDvEeePbrcCa2jZwg">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:JudoProfile="http:///schemas/JudoProfile/_apWi4IDvEeePbrcCa2jZwg/0" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.omg.org/spec/UML/20131001/MagicDrawProfile http:///MagicDrawProfile/PredefinedMetricSuites.ecore#_aqFisoDvEeePbrcCa2jZwg">
   <uml:Model xmi:id="_cyG4wGruEeeJzdLAONIxYA" name="opm pim" visibility="public" URI="" viewpoint="">
-    <ownedComment xmi:id="_18_1beta_8c90288_1415101994820_370998_4336" annotatedElement="_cyG4wGruEeeJzdLAONIxYA" body="Author:ferenczi.&#xA;Created:7/17/17 3:55 PM.&#xA;Title:.&#xA;Comment:.&#xA;"/>
+    <ownedComment xmi:id="_18_1beta_8c90288_1415101994820_370998_4336" annotatedElement="_cyG4wGruEeeJzdLAONIxYA">
+      <body>Author:ferenczi.
+Created:7/17/17 3:55 PM.
+Title:.
+Comment:.
+</body>
+    </ownedComment>
     <packageImport xmi:id="_0primitiveTypesopm_pim">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
     </packageImport>
@@ -67,7 +73,9 @@
         <elementImport xmi:id="_cyG5tmruEeeJzdLAONIxYA" alias="ElementImport" importedElement="_cyHiLWruEeeJzdLAONIxYA" visibility="private"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="_cyG5t2ruEeeJzdLAONIxYA" name="Treatment management" visibility="public">
-        <ownedComment xmi:id="_cyG5uGruEeeJzdLAONIxYA" body="Ld. még a modellen kívül definiált 'Treated PatientUsers list' képernyőt."/>
+        <ownedComment xmi:id="_cyG5uGruEeeJzdLAONIxYA">
+          <body>Ld. még a modellen kívül definiált 'Treated PatientUsers list' képernyőt.</body>
+        </ownedComment>
         <elementImport xmi:id="_cyG5uWruEeeJzdLAONIxYA" alias="ElementImport" importedElement="_cyG5s2ruEeeJzdLAONIxYA" visibility="private"/>
         <elementImport xmi:id="_cyG5umruEeeJzdLAONIxYA" alias="ElementImport" importedElement="_cyG5u2ruEeeJzdLAONIxYA" visibility="private"/>
       </packagedElement>
@@ -211,7 +219,12 @@
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cyG6G2ruEeeJzdLAONIxYA" name="" visibility="public"/>
         </ownedAttribute>
         <ownedAttribute xmi:id="_cyG6HGruEeeJzdLAONIxYA" name="repLabel" visibility="protected" isUnique="false" isReadOnly="true">
-          <ownedComment xmi:id="_cyG6HWruEeeJzdLAONIxYA" body="Az attribútum képzett értéke a BasicDataValueSpecification.value-tól és BasicDataValueSpecification.typeDef fajtájától függ:&#xA;- DateType, IntegerType vagy RealType esetén az eredmény a datetime, integer ill. float adattípusok standard szöveges megjelenítése szerint alakul kiegészítve a self.typeDef.unitName értékkel (self.value + &quot; &quot; + self.typeDef.unitName)&#xA;- ChoiceType esetén az eredmény azon ChoiceValueSpecification.title attribútum értékével azonos, amely ChoiceValueSpecification példányt azonosítani lehet a BasicDataValueSpecification.value értéke alapján.&#xA;- CompositeType esetén az eredmény: &quot;N/A&quot; "/>
+          <ownedComment xmi:id="_cyG6HWruEeeJzdLAONIxYA">
+            <body>Az attribútum képzett értéke a BasicDataValueSpecification.value-tól és BasicDataValueSpecification.typeDef fajtájától függ:
+- DateType, IntegerType vagy RealType esetén az eredmény a datetime, integer ill. float adattípusok standard szöveges megjelenítése szerint alakul kiegészítve a self.typeDef.unitName értékkel (self.value + &quot; &quot; + self.typeDef.unitName)
+- ChoiceType esetén az eredmény azon ChoiceValueSpecification.title attribútum értékével azonos, amely ChoiceValueSpecification példányt azonosítani lehet a BasicDataValueSpecification.value értéke alapján.
+- CompositeType esetén az eredmény: &quot;N/A&quot; </body>
+          </ownedComment>
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
         </ownedAttribute>
         <ownedOperation xmi:id="_cyG6HmruEeeJzdLAONIxYA" name="createCustom" visibility="public" isStatic="true">
@@ -556,7 +569,9 @@
         </ownedRule>
         <generalization xmi:id="_cyHgl2ruEeeJzdLAONIxYA" general="_cyG52GruEeeJzdLAONIxYA"/>
         <ownedAttribute xmi:id="_cyHgmGruEeeJzdLAONIxYA" name="reqDataTypeDef" visibility="protected" type="_cyHhbmruEeeJzdLAONIxYA" association="_cyHhHWruEeeJzdLAONIxYA">
-          <ownedComment xmi:id="_cyHgmWruEeeJzdLAONIxYA" body="Az érték-korlátozó megszorítást nem lehet &lt;&lt;option>> -al megoldani, mert a választható értékkészlet az engedélyezett &quot;2 osztály mélységnél&quot; messzebb van (self.protocolCfg.protocol.mrTypeBindings.mrType)."/>
+          <ownedComment xmi:id="_cyHgmWruEeeJzdLAONIxYA">
+            <body>Az érték-korlátozó megszorítást nem lehet &lt;&lt;option>> -al megoldani, mert a választható értékkészlet az engedélyezett &quot;2 osztály mélységnél&quot; messzebb van (self.protocolCfg.protocol.mrTypeBindings.mrType).</body>
+          </ownedComment>
         </ownedAttribute>
         <ownedAttribute xmi:id="_cyHgmmruEeeJzdLAONIxYA" name="firstOccurence" visibility="public" type="_cyIHY2ruEeeJzdLAONIxYA" isUnique="false"/>
         <ownedAttribute xmi:id="_cyHgm2ruEeeJzdLAONIxYA" name="repetitionRate" visibility="public" isUnique="false">
@@ -569,7 +584,9 @@
         </ownedAttribute>
         <ownedAttribute xmi:id="_cyHgn2ruEeeJzdLAONIxYA" name="completionTimeLimit" visibility="public" type="_cyIHZWruEeeJzdLAONIxYA" isUnique="false"/>
         <ownedAttribute xmi:id="_cyHgoGruEeeJzdLAONIxYA" name="repetitionDuration" visibility="protected" type="_cyIHZWruEeeJzdLAONIxYA" isUnique="false" isReadOnly="true">
-          <ownedComment xmi:id="_cyHgoWruEeeJzdLAONIxYA" body="A repetitionRate és repetitionUnit értékek alapján számolt 'duration' típusú érték."/>
+          <ownedComment xmi:id="_cyHgoWruEeeJzdLAONIxYA">
+            <body>A repetitionRate és repetitionUnit értékek alapján számolt 'duration' típusú érték.</body>
+          </ownedComment>
         </ownedAttribute>
         <ownedOperation xmi:id="_cyHgomruEeeJzdLAONIxYA" name="setSimpleDefaultValue" visibility="public" redefinedOperation="_cyHgjGruEeeJzdLAONIxYA">
           <ownedParameter xmi:id="_cyHgo2ruEeeJzdLAONIxYA" name="pValue" visibility="public" isUnique="false" effect="create">
@@ -641,7 +658,9 @@
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cyHgyWruEeeJzdLAONIxYA" name="" visibility="public"/>
           </ownedAttribute>
           <ownedAttribute xmi:id="_cyHgymruEeeJzdLAONIxYA" name="isUsed" visibility="protected" isUnique="false">
-            <ownedComment xmi:id="_cyHgy2ruEeeJzdLAONIxYA" body="Arra vonatkozó jellemző, hogy az BasicDataType-ot illetve az esetlegesen azt befoglaló CompositeType példányt hivatkozza-e már egy MedicalRecordType példány."/>
+            <ownedComment xmi:id="_cyHgy2ruEeeJzdLAONIxYA">
+              <body>Arra vonatkozó jellemző, hogy az BasicDataType-ot illetve az esetlegesen azt befoglaló CompositeType példányt hivatkozza-e már egy MedicalRecordType példány.</body>
+            </ownedComment>
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
           </ownedAttribute>
         </packagedElement>
@@ -712,7 +731,9 @@
           </ownedRule>
           <ownedAttribute xmi:id="_cyHg6mruEeeJzdLAONIxYA" name="choice" visibility="protected" type="_cyHgzWruEeeJzdLAONIxYA" association="_cyHg0mruEeeJzdLAONIxYA"/>
           <ownedAttribute xmi:id="_cyHg62ruEeeJzdLAONIxYA" name="title" visibility="public" isUnique="false">
-            <ownedComment xmi:id="_cyHg7GruEeeJzdLAONIxYA" body="Az az alapértelmezett szövegérték, amelyet mindazon ponton (pl. UI, export állomány) használni kell, ahol a választási lehetőséget valahogy meg kell jeleníteni."/>
+            <ownedComment xmi:id="_cyHg7GruEeeJzdLAONIxYA">
+              <body>Az az alapértelmezett szövegérték, amelyet mindazon ponton (pl. UI, export állomány) használni kell, ahol a választási lehetőséget valahogy meg kell jeleníteni.</body>
+            </ownedComment>
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
           </ownedAttribute>
           <ownedAttribute xmi:id="_cyHg7WruEeeJzdLAONIxYA" name="scoreValue" visibility="public" isUnique="false">
@@ -723,7 +744,9 @@
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cyHg8GruEeeJzdLAONIxYA" name="" visibility="public"/>
           </ownedAttribute>
           <ownedAttribute xmi:id="_cyHg8WruEeeJzdLAONIxYA" name="mnemonicCode" visibility="protected" isUnique="false">
-            <ownedComment xmi:id="_cyHg8mruEeeJzdLAONIxYA" body="Olyan kód érték, amelyet a kifejezésekben (pl. Szekunder Adatok számítása) lehet hivatkozni az adott opciót (azaz az adott ChoiceValueSpecification példányt)."/>
+            <ownedComment xmi:id="_cyHg8mruEeeJzdLAONIxYA">
+              <body>Olyan kód érték, amelyet a kifejezésekben (pl. Szekunder Adatok számítása) lehet hivatkozni az adott opciót (azaz az adott ChoiceValueSpecification példányt).</body>
+            </ownedComment>
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
           </ownedAttribute>
           <ownedOperation xmi:id="_cyHg82ruEeeJzdLAONIxYA" name="createCustom" visibility="public" isStatic="true">
@@ -1183,7 +1206,9 @@
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cyHiFWruEeeJzdLAONIxYA" name="" visibility="public" value="*"/>
         </ownedAttribute>
         <ownedAttribute xmi:id="_cyHiF2ruEeeJzdLAONIxYA" name="consultingHours" visibility="public" type="_cyIHcWruEeeJzdLAONIxYA" isUnique="false">
-          <ownedComment xmi:id="_cyHiGGruEeeJzdLAONIxYA" body="A hét egyes napjaira (H-V) vonatkozóan megjelenítendő rendelélsi időszakok."/>
+          <ownedComment xmi:id="_cyHiGGruEeeJzdLAONIxYA">
+            <body>A hét egyes napjaira (H-V) vonatkozóan megjelenítendő rendelélsi időszakok.</body>
+          </ownedComment>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cyHiGWruEeeJzdLAONIxYA" name="" visibility="public"/>
         </ownedAttribute>
         <ownedAttribute xmi:id="_cyHiGmruEeeJzdLAONIxYA" name="sealNumber" visibility="public" isUnique="false">
@@ -1287,7 +1312,19 @@
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
         </ownedAttribute>
         <ownedAttribute xmi:id="_cyHiSmruEeeJzdLAONIxYA" name="soFTemplate" visibility="public" isStatic="true" type="_cyIHbmruEeeJzdLAONIxYA" isUnique="false">
-          <ownedComment xmi:id="_cyHiS2ruEeeJzdLAONIxYA" body="Az sablon dokumentum, amelyet felhasználva készül a Pácienssel aláíratni kívánt Hozzájárulási Nyilatkozat.&#xA;&#xA;A sablon változóneveket tartalmaz, amelyek egy adott Páciensre vonatkozó végleges Nyilatkozat dokumentum elkészítése során behelyettesítésre kerülnek az adott PatientUser példánynak a változó által hivatkozott PaitentUser attribútumértékeivel.&#xA;&#xA;A sablonban használható változók:&#xA;- PatientUser.userInfo.firstName&#xA;- PatientUser.userInfo.lastName&#xA;- PatientUser.patientId&#xA;- PatientUser.registrationCode&#xA;- PatientUser.emailAddressOptional&#xA;- PatientUser.mobileNumber"/>
+          <ownedComment xmi:id="_cyHiS2ruEeeJzdLAONIxYA">
+            <body>Az sablon dokumentum, amelyet felhasználva készül a Pácienssel aláíratni kívánt Hozzájárulási Nyilatkozat.
+
+A sablon változóneveket tartalmaz, amelyek egy adott Páciensre vonatkozó végleges Nyilatkozat dokumentum elkészítése során behelyettesítésre kerülnek az adott PatientUser példánynak a változó által hivatkozott PaitentUser attribútumértékeivel.
+
+A sablonban használható változók:
+- PatientUser.userInfo.firstName
+- PatientUser.userInfo.lastName
+- PatientUser.patientId
+- PatientUser.registrationCode
+- PatientUser.emailAddressOptional
+- PatientUser.mobileNumber</body>
+          </ownedComment>
         </ownedAttribute>
         <ownedAttribute xmi:id="_cyHiTGruEeeJzdLAONIxYA" name="birthDate" visibility="protected" type="_cyIHY2ruEeeJzdLAONIxYA" isUnique="false" isReadOnly="true">
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cyHiTWruEeeJzdLAONIxYA" name="" visibility="public"/>
@@ -3014,7 +3051,9 @@
       </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="magicdraw_uml_standard_profile_v_0001" name="UML Standard Profile" visibility="public" URI="">
-      <ownedComment xmi:id="_be00301_1078843546940_242228_131" annotatedElement="magicdraw_uml_standard_profile_v_0001" body="UML Standard Profile contains a UML metamodel (metaclasses without properties and associations), Standard UML stereotypes defined in the annex C of UML specification, validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally."/>
+      <ownedComment xmi:id="_be00301_1078843546940_242228_131" annotatedElement="magicdraw_uml_standard_profile_v_0001">
+        <body>UML Standard Profile contains a UML metamodel (metaclasses without properties and associations), Standard UML stereotypes defined in the annex C of UML specification, validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally.</body>
+      </ownedComment>
     </packagedElement>
     <profileApplication xmi:id="_czZSMGruEeeJzdLAONIxYAprofileApplicationopm_pim">
       <eAnnotations xmi:id="_aqH_44DvEeePbrcCa2jZwg" source="http://www.eclipse.org/uml2/2.0.0/UML">

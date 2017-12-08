@@ -1,0 +1,57 @@
+operation createActions(joperation : PSM!JOperation, inherited : Boolean, classUuid : String) : UI!UIAction {
+		var uiaction : UI!UIAction = new UI!UIAction();
+		var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");	
+		//inherited from Identifiable
+		uiaction.uuid = joperation.uuid;
+		uiaction.name = joperation.name;
+		//Attributes
+		uiaction.classBased = joperation.classBased;
+		uiaction.toBeConfirmed = joperation.uiMustConfirm;
+		uiaction.notBulk = joperation.bulk;
+		uiaction.isQuery = (joperation.kind = PSM!JOperationKind#QUERY);
+		//Parameters		
+		for (param : PSM!JParameter in joperation.parameters) {
+			if (not param.input) {
+				if (inherited) {
+					uiaction.result = emfTool.getECoreUtil().copy(param.equivalent("UIParameterComponentType"));
+					uiaction.result.uuid = uuid3(classUuid, uuid3(joperation.uuid, param.uuid));
+				} else {
+					uiaction.result = param.equivalent("UIParameterComponentType");
+				}
+				
+				if (param.type.isTypeOf(PSM!JClass)) {
+					uiaction.result.referenced = param.type.equivalent("UIClass");
+					uiaction.result.type = param.type.equivalent("UIClass").name;
+				} else {
+					uiaction.result.type = param.type.componentType().name;
+				}
+				
+				uiaction.result.intervals = createIntervals(param.interval, classUuid, uiaction.result.uuid);
+				uiaction.resultView = createResultView(uiaction);
+			} else {
+				var uiparam : UI!UIParameterComponentType;
+				if (inherited) {
+					uiparam = emfTool.getECoreUtil().copy(param.equivalent("UIParameterComponentType"));
+					uiaction.parameters.add(uiparam);
+					uiparam.uuid = uuid3(classUuid, uuid3(joperation.uuid, param.uuid));
+				} else {
+					uiparam = param.equivalent("UIParameterComponentType");
+					uiaction.parameters.add(uiparam);
+				}
+				
+				if (param.type.isTypeOf(PSM!JClass)) {
+					uiparam.referenced = param.type.equivalent("UIClass");
+					uiparam.type = param.type.equivalent("UIClass").name;
+				} else {
+					uiparam.type = param.type.componentType().name;
+				}
+
+				uiparam.intervals = createIntervals(param.interval, classUuid, uiparam.uuid);
+			}
+		}
+		
+		uiaction.paramView = createParamView(uiaction);
+		
+		
+		return uiaction;
+}

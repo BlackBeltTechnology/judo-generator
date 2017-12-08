@@ -30,6 +30,7 @@
                 <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
                 <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:ui:${project.version}</metaModel>
                 <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:psmToUiTypeMapping:${project.version}</metaModel>
+                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:resources:${project.version}</metaModel>
               </metaModels>
 
                 <models>
@@ -79,10 +80,22 @@
                            <param>http://blackbelt.hu/judo/meta/psm/ui</param>
                        </metaModelUris>
                     </model>
+                    <model>
+                       <artifact>${project.build.directory}/resources.model</artifact>
+                       <name>Resources</name>
+                       <readOnLoad>false</readOnLoad>
+                       <storeOnDisposal>true</storeOnDisposal>
+                       <metaModelUris>
+                           <param>http://blackbelt.hu/judo/meta/psm/ui/resources</param>
+                       </metaModelUris>
+                    </model>
                 </models>
                 <eolPrograms>
                     <Etl>
                         <source>src/transformations/ui/psmToUi.etl</source>
+                    </Etl>
+                    <Etl>
+                    	<source>src/transformations/resources/modules/resource.etl</source>
                     </Etl>
                 </eolPrograms>
             </configuration>
@@ -122,6 +135,11 @@
 									<file>${project.build.directory}/ui.model</file>
 									<type>model</type>
 									<classifier>ui</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/resources.model</file>
+									<type>model</type>
+									<classifier>resources</classifier>
 								</artifact>
 							</artifacts>
 						</configuration>

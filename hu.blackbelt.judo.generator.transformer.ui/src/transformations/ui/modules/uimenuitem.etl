@@ -1,6 +1,7 @@
 rule UIMenuItem
 	transform jUIMenuItem: PSM!JUIMenuItem
 	to uiMenuItem : UI!UIMenuItem {
+	guard : jUIMenuItem.parent.isDefined()
 		uiMenuItem.uuid = jUIMenuItem.uuid;
 		uiMenuItem.name = jUIMenuItem.name;
 		var menuView;

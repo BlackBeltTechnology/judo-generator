@@ -246,13 +246,9 @@ operation LiteralString getSpecification() : String {
 }
 
 operation OpaqueExpression getSpecification() : String {
-	var s = "<<UNDEFINED>>";
-
 	if ( self.body.first().isDefined() ) {
-		s = self.body.first();
+		return self.body.first();
 	} 
-	
-	return s;
 }
 
 operation Sequence collectConstrainedElements() : Map {

@@ -43,9 +43,9 @@
 	"selector" : "[%=self.selector.id%]",
 	"readonly" : [%=self.readonly%],
 	[% if (self.representation.isDefined()) { %]
-	"representation" : "<%= [%=self.representation.name%] %",
+	"representation" : "<%= [%=self.representation.name%] %>",
 	[% } else {%]
-	"representation" : null,
+	"representation" : "",
 	[% } %]
 	"objectViews" : [
 	[% if(not self.classViews.isEmpty())  { %]
@@ -58,10 +58,10 @@
 	[% } %]
 	],
 	"childObjectViews" : [
-	[% if(not self.childObjectViews.isEmpty())  { %]
-		[%for (objectView in self.childObjectViews) { %]
-			[%=objectView.uuid%]
-			[%if (objectView <> self.childObjectViews.last) { %]
+	[% if(not self.childClassViews.isEmpty())  { %]
+		[%for (classView in self.childClassViews) { %]
+			"[%=classView.uuid%]"
+			[%if (classView <> self.childClassViews.last) { %]
 			,
 			[%}%]
 		[%}%]	
@@ -140,14 +140,14 @@
 	"search" : [%=self.searchable%],
 	"name" : "[%=self.name%]",
 	"show" : [%=self.show%],
-	[% if (self.componentType.upper > 1) {%]
+	[% if (self.componentType.upper > 1 or self.componentType.upper = -1) {%]
 	"list" : true,
 	[%} else {%]
 	"list" : false,
 	[% } %]
 	"order" : [%=self.order%],
 	"field" : "[%=self.componentType.id%]",
-	[% if (self.componentType.upper = 1) {%]
+	[% if (not self.componentType.isTypeOf(UI!UIBaseComponentType) and self.componentType.upper = 1) {%]
 	"single" : true,
 	[%} else {%]
 	"single" : false,
@@ -228,7 +228,11 @@
 
 [% operation UI!UIBaseComponentType generateJson() { %]
 {
+	[% if (self.upper = -1) { %]
+	"upper" : "*",
+	[% } else { %]
 	"upper" : "[%=self.upper%]",
+	[% } %]
 	"referenced" : null,
 	
 	[% if(self.lower > 0)  { %]
@@ -266,7 +270,11 @@
 	"association" : false,
 	"lower" : "[%=self.lower%]",
 	"name" : "[%=self.name%]",
+	[% if (self.interval.isDefined()) {%]
+	"interval" : "[%=self.interval%]",
+	[% } else { %]
 	"interval" : "",
+	[% } %]
 	"list" : false,
 	[% if(self.value.isDefined())  { %]
 	"value" : "[%=self.value%]",
@@ -285,8 +293,12 @@
 
 [% operation UI!UIReferenceComponentType generateJson() { %]
 {
+	[% if (self.upper = -1) { %]
+	"upper" : "*",
+	[% } else { %]
 	"upper" : "[%=self.upper%]",
-	"referenced" : "[%=self.referenced.id%]",
+	[% } %]
+	"referenced" : "[%=self.referenced.uuid%]",
 	[% if(self.lower > 0)  { %]
 	"mandatory" : true,
 	[% } else {%]
@@ -328,9 +340,13 @@
 	"association" : true,
 	"lower" : "[%=self.lower%]",
 	"name" : "[%=self.name%]",
+	[% if (self.interval.isDefined()) {%]
+	"interval" : "[%=self.interval%]",
+	[% } else { %]
 	"interval" : "",
+	[% } %]
 	
-	[% if (self.upper > 1) {%]
+	[% if (self.upper > 1 or self.upper = -1) {%]
 	"list" : true,
 	[% } else {%]
 	"list" : false,
@@ -349,7 +365,11 @@
 
 [% operation UI!UIParameterComponentType generateJson() { %]
 {
+	[% if (self.upper = -1) { %]
+	"upper" : "*",
+	[% } else { %]
 	"upper" : "[%=self.upper%]",
+	[% } %]
 	[% if (self.referenced.isDefined()) { %] 
 	"referenced" : "[%=self.referenced.id%]",
 	[% } else {%]
@@ -362,7 +382,7 @@
 	[% } %]
 	
 	"private" : false,
-	[% if (self.upper = 1) {%]
+	[% if (self.referenced.isDefined() and self.upper = 1) {%]
 	"single" : true,
 	[% } else {%]
 	"single" : false,
@@ -390,8 +410,12 @@
 	"association" : false,
 	"lower" : "[%=self.lower%]",
 	"name" : "[%=self.name%]",
+	[% if (self.interval.isDefined()) {%]
+	"interval" : "[%=self.interval%]",
+	[% } else { %]
 	"interval" : "",
-	[% if (self.upper > 1) {%]
+	[% } %]
+	[% if (self.referenced.isDefined() and self.upper > 1) {%]
 	"list" : true,
 	[% } else {%]
 	"list" : false,
@@ -410,27 +434,24 @@
 [% operation UI!UIInfo generateJson() { %]
 {
 	[% if(self.userClass.isDefined())  { %]
-	"userClass" : "[%=self.userClass.id%]",
+	"userClass" : "[%=self.userClass%]",
 	[% } %]
-	
-	[% if(not self.versions.isEmpty())  { %]
-	"versions" : [
-	[%for (version in self.versions) { %]
-	{
-	"Test project" : "[%=version%]"
-	}
-		[%if (version <> self.versions.last) { %]
+	"versions" : {
+	[% if(not self.submodels.isEmpty())  { %]
+	[%for (submodel in self.submodels) { %]
+		"[%=submodel%]": "[%=self.versions.at(self.submodels.indexOf(submodel))%]"
+		[%if (submodel <> self.submodels.last) { %]
 		,
 		[%}%]
 	[% }%]
-	]
+	}
 	[% }%]
 }	
 [% } %]
 
 [% operation UI!UIBase generateJson() { %]
 {
-  [*  "info" : [%self.info.generateJson(); %] *] 
+    "info" : [%self.info.generateJson(); %], 
 	"menu" : [%self.mainMenu.generateJson();%],
 	"modules": [
 	[% if(not self.modules.isEmpty())  { %]
