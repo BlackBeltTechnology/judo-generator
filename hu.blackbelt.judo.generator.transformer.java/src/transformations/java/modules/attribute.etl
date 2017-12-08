@@ -96,15 +96,17 @@ rule RestOperationAttribute
 operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule : String) : Any {
 	self.uuid = uuid3(source.uuid, correspondingRule);
 	self.ownerClass = source.ownerClass.equivalent(correspondingRule);
-	self.type = source.type.equivalent(correspondingRule);
 	self.unique = source.unique;
 	self.mandatory = source.mandatory;
 	self.technical = source.technical;
     self.regexp = source.regexp;
     self.derived = source.derived;
+
+	self.type = source.type.equivalent(correspondingRule);
 	if (self.type.isUndefined()) {
 		self.type = source.type.findJavaPrimitive();
 	}
+
 	if (source.value.isDefined() and not source.derived) {
 		if (source.calculated) {
 			self.calculationScript = source.value;

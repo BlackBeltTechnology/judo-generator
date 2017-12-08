@@ -1,0 +1,226 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+@primary
+rule Class
+	transform s : Class
+	to        t : tgtPSM!JClass
+	extends NamedElement, PackageableElement {
+	
+	guard: s.owner.equivalent("Package").isDefined() and not stereotypeApplications.get("ui").includes(s.owner)
+	
+	
+	s.owner.equivalent("Package").classes.add( t);
+	
+	"".println("RULE::Class");
+	s.name.println("RULE::Class: ");
+	
+	if ( s.superClass.isDefined() ) {
+		t.supertype ::= s.superClass.first();
+		s.superClass.println("RULE::Class - SUPERCLASS : ");
+		s.superClass.equivalent("Class").println("RULE::Class - SUPERCLASS EQUIV : ");
+	}
+
+	t.`abstract` = s.`abstract`;
+	
+	
+	t.representsTenant 		= stereotypeApplications.get("tenant").includes(s);
+	t.tenantMember 			= stereotypeApplications.get("TenantMembers").includes(s);
+	t.representsTenantUser 	= stereotypeApplications.get("tenantuser").includes(s);
+	t.representsUser 		= stereotypeApplications.get("user").includes(s);
+	t.businessSingleton 	= stereotypeApplications.get("singleton").includes(s);
+	
+	// set aliases
+	for (aljas in stereotypeApplications.get("alias").get(s) ) {
+	//	aljas.println("RULE:Class - Alias : ");
+		aljas.println("ALJAS: ");
+		if (aljas.isDefined()) {
+			var jUIAlias = new tgtPSM!JUIAlias();
+			jUIAlias.uuid = uuid3(mdId2Uuid(s.id), aljas);
+			t.aliases.add( jUIAlias );
+		}
+	}
+	
+	// add generalization to User
+	if ( stereotypeApplications.get("user").includes(s) ) {
+		var userClass = inpPIM!Class.allInstances()->select(c | c.name = "User" and 
+																c.package.name = "framework").first().equivalent("Class");
+		userClass.println("Rule::Class - ADD supertype 'User' to Class " + t.name);
+		t.supertype = userClass;
+	}
+
+	// add generalization to TenantUser
+	if ( stereotypeApplications.get("tenantuser").includes(s) ) {
+		var tenantUserClass = inpPIM!Class.allInstances()->select(c | c.name = "TenantUser" and 
+																	  c.package.name = "framework").first().equivalent("Class");
+		tenantUserClass.println("Rule::Class - ADD supertype 'TenantUser' to Class " + t.name);
+		t.supertype = tenantUserClass;
+	}
+
+	// add generalization to Tenant
+	if ( stereotypeApplications.get("tenant").includes(s) ) {
+		var tenantClass = inpPIM!Class.allInstances()->select(c | c.name = "Tenant" and 
+																  c.package.name = "framework").first().equivalent("Class");
+		tenantClass.println("Rule::Class - ADD supertype 'Tenant' to Class " + t.name);
+		t.supertype = tenantClass;
+	}
+	
+	// add <<bo>> equiv enums
+	if ( stereotypeApplications.get("boClasses").includes(s) or
+		 stereotypeApplications.get("boPackages").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#SERVICE, JLayer#PERSISTENCE to Class");
+		 t.participates.add( tgtPSM!JLayer#SERVICE);
+		 t.participates.add( tgtPSM!JLayer#PERSISTENCE);
+	}
+
+	// add <<dto>> equiv enums
+	if ( stereotypeApplications.get("dtoClasses").includes(s) or
+		 stereotypeApplications.get("dtoPackages").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#OPERATION to Class");
+		 t.participates.add( tgtPSM!JLayer#OPERATION);
+	}
+
+	// add <<rest>> equiv enums
+	if ( stereotypeApplications.get("restClasses").includes(s) or
+		 stereotypeApplications.get("restPackages").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#REST to Class");
+		 t.participates.add( tgtPSM!JLayer#REST);
+	}
+
+	// add <<document>> equiv enums
+	if ( stereotypeApplications.get("documentClasses").includes(s) or
+		 stereotypeApplications.get("documentPackages").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#DOCUMENT to Class");
+		 t.participates.add( tgtPSM!JLayer#DOCUMENT);
+	}
+	
+	// add <<permission>> equiv enums
+	if ( stereotypeApplications.get("permission").includes(s.package)) {
+		 t.println("Rule::Class - ADD 'participate' --> JLayer#PERMISSION to Class");
+		 t.participates.add( tgtPSM!JLayer#PERMISSION);
+	}
+	
+	if ( stereotypeApplications.get("watchClasses").includes(s)) {
+		 t.watched = true;
+	}
+	
+}
+
+rule UIMenu
+	transform s : Class
+	to        t : tgtPSM!JUIMenuItem
+	extends NamedElement {
+	
+	guard: stereotypeApplications.get("ui").includes(s.owner) and stereotypeApplications.get("menuroot").includes(s)
+    t.type = tgtPSM!JMenuItemType#NONE;
+    tgtModel.rootMenuItems.add(t);
+    transformMenuItem(t, s);
+}
+
+operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : inpPIM!Class) : Any {
+	for (imp in sourceClass.elementImport) {
+	    var menuClass = imp.importedElement;
+	    
+	    if (menuClass.isTypeOf(inpPIM!InstanceSpecification) and not stereotypeApplications.get("alias").get(menuClass).includes(menuClass)) {
+	        continue;
+	    }
+	
+	    if (menuClass.stereotype("menuitem")) {
+	        var mi = new tgtPSM!JUIMenuItem;
+	        mi.uuid = uuid3(uuid3(parentMenuItem.uuid, menuClass.id), imp.id);
+	        mi.name = menuClass.name;
+	        mi.type = tgtPSM!JMenuItemType#NONE;
+	        parentMenuItem.children.add(mi);
+	        transformMenuItem(mi, menuClass);
+	    }
+	
+	    if (menuClass.isTypeOf(inpPIM!InstanceSpecification) or (menuClass.isTypeOf(Class) and (menuClass.stereotype("dtoClasses") or menuClass.owner.stereotype("dtoPackages")))) {
+	        var mi = new tgtPSM!JUIMenuItem;
+	        mi.uuid = uuid3(uuid3(parentMenuItem.uuid, menuClass.id), imp.id);
+	        mi.name = menuClass.name;
+	
+			
+	        if (menuClass.isTypeOf(inpPIM!InstanceSpecification)) {
+	            mi.represent = menuClass.base_class.equivalent("Class");
+	        }
+	
+	        if (menuClass.isTypeOf(Class)) {
+	            mi.represent = menuClass.equivalent("Class");
+	        }
+	
+	        if (imp.stereotype("new")) {
+	            mi.type = tgtPSM!JMenuItemType#OBJECT;
+	        } else {
+	            mi.type = tgtPSM!JMenuItemType#LIST;
+	
+	            if (stereotypeApplications.get("filter").get(imp).isDefined()) {
+	                if (menuClass.isTypeOf(inpPIM!InstanceSpecification)) {
+	                    mi.uifilters.addAll(transformFilter(mi.represent, stereotypeApplications.get("filter").get(imp)));
+	                } else {
+	                    mi.uifilters.addAll(transformFilter(mi.represent, stereotypeApplications.get("filter").get(imp)));
+	                }
+	            }
+	        }
+	        
+	        
+	        if (menuClass.isTypeOf(inpPIM!InstanceSpecification)) {
+	            mi.`alias` = mi.represent.aliases.select(a | a.uuid = uuid3(mdId2Uuid(menuClass.id), menuClass.name) );
+	        }
+	
+	        parentMenuItem.children.add(mi);
+	    }
+	
+	    if (menuClass.isTypeOf(Package) and menuClass.stereotype("dtoPackages")) {
+	        for (childMenuClass in menuClass.classes) {
+	            mi = JUIMenuItem;
+	            mi.uuid = uuid3(uuid3(parentMenuItem.uuid, childMenuClass.id), imp.id);
+	            mi.name = childMenuClass.name;
+	
+	            mi.represent = childMenuClass.equivalent("Class");
+	            if (imp.stereotype("new")) {
+	                mi.type = tgtPSM!JMenuItemType#OBJECT;
+	            } else {
+	                mi.type = tgtPSM!JMenuItemType#LIST;
+	            }
+	
+	            parentMenuItem.children.add(mi);
+	         }
+	    }
+	}
+}
+
+operation transformFilter(class : tgtPSM!JClass, txt : String) : Sequence {
+	var rets = Sequence;
+    var tests = txt.trim().split("\\s+and\\s+");
+
+    for (test in tests) {
+    	var mr = Native("java.util.regex.matcher.Pattern").compile('^\\s*{(\\S+)}\\s*(<|=|>|>=|<=|<>)\\s*"?([^"]+)"?\\s*$').matcher(test).toMatchResult();
+        //var expr = test.trim().match('^\s*{(\S+)}\s*(<|=|>|>=|<=|<>)\s*"?([^"]+)"?\s*$')
+        //attrid = classnode.getAttrIdByName();
+        //jattribute = findAttribute(attrid);
+        jattribute = class.findAttribute(mr.`group`(1));
+        
+        ret = JUIFilter("JFilter" + jattribute.name);
+        ret.uuid = uuid3(class.uuid, jattribute.uuid);
+        ret.operator = mapOperator(expr.`group`(2));
+        ret.value = expr.`group`(3);
+        ret.attribute = jattribute;
+
+        rets.add(ret);
+    }
+    return rets;
+}
+
+
+operation mapOperator(op) :Any {
+	var ops = Map{
+			'='  = 'EQ',
+      		'>'  = 'GT',
+       		'>=' = 'GTE',
+       		'<'  = 'LT',
+       		'<=' = 'LTE',
+       		'<>' = 'NE'};
+    return tgtPSM!JOperator#ALL.eEnum.eLiterals.select(l | l.name = ops.get(op)).first();
+}
+
+

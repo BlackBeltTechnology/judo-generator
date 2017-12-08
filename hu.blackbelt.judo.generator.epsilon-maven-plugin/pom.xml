@@ -172,11 +172,49 @@
 			<artifactId>mojo-executor</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.mapping.ecore2xml -->
+		<dependency>
+		    <groupId>org.eclipse.emf</groupId>
+		    <artifactId>org.eclipse.emf.mapping.ecore2xml</artifactId>
+		    <version>2.9.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.uml2.uml/resources -->
+		<dependency>
+		    <groupId>org.eclipse.uml2.uml</groupId>
+		    <artifactId>resources</artifactId>
+		    <version>5.0.0-v20140602-0749</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.emf</groupId>
+					<artifactId>ecore</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.emf.ecore</groupId>
+					<artifactId>xmi</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.emf.mapping</groupId>
+					<artifactId>ecore2xml</artifactId>
+				</exclusion>
+
+			</exclusions>
+		</dependency>
+
+
+		<dependency>
+		    <groupId>uk.org.lidalia</groupId>
+		    <artifactId>sysout-over-slf4j</artifactId>
+		    <version>1.0.2</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 		    <groupId>org.json</groupId>
 		    <artifactId>json</artifactId>
 		    <version>20171018</version>
 		</dependency>
+
 	</dependencies>
 </project>

@@ -102,7 +102,9 @@ operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : 
 	self.uuid = uuid3(source.uuid, rulPrefix + "Role");
 	self.ownerClass = source.ownerClass.equivalent(rulPrefix + "Class");
 	self.opposite = source.ownerRelationship.roles.select(r | r <> source).first().equivalent(rulPrefix + "Role");
-	self.virtualExpressionScript = source.derivedExpression.replace("\n", " ");
+	if (source.derivedExpression.isDefined()) {
+		self.virtualExpressionScript = source.derivedExpression.replace("\n", " ");
+	}
 	self.derived = source.ownerRelationship.derived;
 	self.derivedDescription = source.derivedDescription;
 	if (self.derivedDescription.isDefined() and self.derivedDescription = "") {

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.etl.eclipse.dt.launching.EtlLaunchConfigurationDelegate">
+<booleanAttribute key="fine_grained_profiling" value="false"/>
+<listAttribute key="models">
+<listEntry value="isMetamodelFileBased=false&#10;name=inpPIM&#10;readOnLoad=true&#10;storeOnDisposal=false&#10;aliases=&#10;cached=true&#10;fileBasedMetamodelUri=&#10;metamodelUri=http\://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard,http\://www.omg.org/spec/UML/20131001/MagicDrawProfile,http\://www.eclipse.org/uml2/5.0.0/UML,http\:///schemas/ValidationProfile/_apwLgIDvEeePbrcCa2jZwg/0,http\:///schemas/DSLCustomization/_ap58gIDvEeePbrcCa2jZwg/0,http\:///schemas/JudoProfile/_apWi4IDvEeePbrcCa2jZwg/0&#10;modelUri=platform\:/resource/hu.blackbelt.judo.generator.transformer.psm/src/model/opm_pim_-_Modelio_import.uml&#10;reuseUnmodifiedFileBasedMetamodels=true&#10;type=UML&#10;modelFile=/hu.blackbelt.judo.generator.transformer.psm/src/model/opm_pim_-_Modelio_import.uml&#10;expand=true&#10;metamodelFile="/>
+<listEntry value="isMetamodelFileBased=false&#10;name=tgtPSM&#10;readOnLoad=false&#10;storeOnDisposal=true&#10;aliases=&#10;cached=true&#10;fileBasedMetamodelUri=&#10;metamodelUri=http\://blackbelt.hu/judo/meta/psm&#10;modelUri=platform\:/resource/hu.blackbelt.judo.generator.transformer.psm/target/OPM_PSM.model&#10;reuseUnmodifiedFileBasedMetamodels=true&#10;type=EMF&#10;modelFile=/hu.blackbelt.judo.generator.transformer.psm/target/OPM_PSM.model&#10;expand=true&#10;metamodelFile="/>
+<listEntry value="isMetamodelFileBased=false&#10;name=psmTypes&#10;readOnLoad=true&#10;storeOnDisposal=false&#10;aliases=&#10;cached=true&#10;fileBasedMetamodelUri=&#10;metamodelUri=http\://blackbelt.hu/judo/meta/psm&#10;modelUri=platform\:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model&#10;reuseUnmodifiedFileBasedMetamodels=true&#10;type=EMF&#10;modelFile=/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model&#10;expand=true&#10;metamodelFile="/>
+</listAttribute>
+<listAttribute key="parameters"/>
+<booleanAttribute key="profile_model_loading" value="false"/>
+<booleanAttribute key="profiling_enabled" value="false"/>
+<booleanAttribute key="reset_profiler" value="false"/>
+<stringAttribute key="source" value="/hu.blackbelt.judo.generator.transformer.psm/src/transformations/pimToJUDOPsm.etl"/>
+</launchConfiguration>

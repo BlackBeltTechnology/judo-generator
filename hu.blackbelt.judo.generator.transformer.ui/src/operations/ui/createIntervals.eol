@@ -2,13 +2,15 @@ operation createIntervals(intervalString : String, classUuid : String, typeUuid 
 	var intervalSequence : Sequence(UI!UIInterval) = new Sequence(UI!UIInterval);
 	
 	if (intervalString.isDefined()) {
+		intervalString.println("STRING: ");
 		var intervalList = intervalString.replace(" ", "").split("\\],\\[");
 		var n = 1;
 		if (intervalList.first() <> "") {
 			for (interval in intervalList) {
 				interval = interval.substring(1, interval.length()-2);
 				var splitInterval = interval.split(",");
-				
+				splitInterval.println("SPLIT: ");
+				splitInterval.first().println("FRIST: ");
 				var uiInterval = new UI!UIInterval();
 				if (splitInterval.first() <> "") {
 					uiInterval.min = splitInterval.first().asInteger();
