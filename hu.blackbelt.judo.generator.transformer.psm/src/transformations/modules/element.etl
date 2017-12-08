@@ -6,6 +6,10 @@ rule Element
 	to		  t : tgtPSM!JElement {
 	
 	t.uuid = mdId2Uuid(s.id);
+	
+	if ( stereotypeApplications.get("screen").includes(s)) {
+		 t.participates.add( tgtPSM!JLayer#SCREEN);
+	}
 
 	s.println("RULE::Element - SOURCE : ");
 }
@@ -45,7 +49,6 @@ rule NamedElement
 		}
 	}
 	
-	
 	s.fullyQualifiedPath().println("RULE::NamedElement ON ==> ");
 }
 
@@ -74,10 +77,17 @@ rule TypedElement
 		t.type ::= s.type;
 	} else if (s.type.isTypeOf(PrimitiveType)) {
 		t.type = s.type.getEquivalentPrimType();
+	} else if (s.type.isTypeOf(Enumeration)) {
+		t.type = s.type.equivalent("Enum2CorrespondingValueClass");
 	} else {
 		s.type.println("RULE::TypedElement -- TYPE is undefined: ");
+
 	}
 
 	"".println("RULE::TypedElement");
+}
+
+operation transformTypedElement (s : TypedElement) : tgtPSM!JTypedElement {
+	
 }
 

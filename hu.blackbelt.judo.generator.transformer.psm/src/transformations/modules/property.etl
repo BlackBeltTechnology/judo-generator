@@ -9,12 +9,17 @@ rule ClassProperty
 	to        t : tgtPSM!JAttribute
 	extends TypedElement {
 	
-	guard : s.owner.equivalent("Class").isDefined() and s.owner.isTypeOf(Class)
+	guard : s.owner.equivalent("Class").isDefined() 
+			and s.owner.isTypeOf(Class) 
+			and not s.association.isDefined() 
+			and not s.type.isTypeOf(Class) 
+			and not s.type.isTypeOf(Enumeration)
 	
 	s.owner.equivalent("Class").attributes.add(t);
 	t.ordered = s.ordered;
 	t.unique = s.unique;
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
+	t.uiNoSearch = stereotypeApplications.get("nosearch").includes(s);
 	
 	t.mandatory = s.lower = 1 and s.upper = 1;
 	
@@ -45,6 +50,10 @@ rule ClassProperty
 		t.println("RULE::ClassProperty - ADD this property to Class " + s.owner.equivalent("Class").name + "::representation ~~> ");
 	}
 	
+	if ( stereotypeApplications.get("watchProperties").includes(s)) {
+		 t.watched = true;
+	}
+	
 	"".println("RULE::ClassProperty");
 }
 
@@ -58,7 +67,8 @@ rule ClassPropertyRole
 			s.association.isDefined()
 	
 	s.println("RULE::ClassPropertyRole ROLE: ");	
-	s.association.println("RULE::ClassPropertyRole");	
+	s.association.println("RULE::ClassPropertyRole");
+	s.association.memberEnd.println("MEBER ENDS ==>  ");
 	s.association.isDefined().println("RULE::ClassPropertyRole Association on Role EXISTS: ");	
 	s.association.equivalent("Relationship").println("RULE::ClassPropertyRole");	
 	s.association.equivalent("Relationship").isDefined().println("RULE::ClassPropertyRole Association on Role EQUIV EXISTS: ");
@@ -90,18 +100,42 @@ rule ClassPropertyRole
 
 }
 
+/*
+@lazy
+rule ClassPropertyRole
+	transform s : Property
+	to        t : tgtPSM!JRole 
+	extends NamedElement {
+
+	guard : s.owner.equivalent("Class").isDefined() 
+			and s.owner.isTypeOf(Class) 
+			and ( s.type.isTypeOf(Class) or s.type.isTypeOf(Enumeration) )
+	var t;
+	if (s.type.isTypeOf(Class) and s.type.equivalent().isDefined()) {
+		t = s.type.equivalent();
+	} else if (s.type.isTypeOf(Enumeration)) {
+		t = s.type.equivalent("Enum2CorrespondingValueClass");
+	}
+	//createRelationWithRoles(s.owner.package.equivalent(), s.owner.equivalent().name, t.name, s.owner.equivalent(), t);
+
+}
+*/
+
+@lazy
 rule RelationProperty
 	transform s : Property
 	to        t : tgtPSM!JRole
 	extends NamedElement {
 	
 	//guard : s.owner.equivalent("Relationship").isDefined() and
-	guard:	s.owner.isTypeOf(Association)
+	guard:	s.owner.isTypeOf(Association) 
 	
-	t.name = s.name;
 	s.owner.println("s.owner: ");
 	s.owner.owner.println("s.owner.owner: ");
+	s.otherEnd.println("ASSOC OTHER END: ");
+	
 	s.owner.equivalent("Relationship").roles.add(t);
+	t.name = s.name;
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.ordered = s.ordered;
 	t.unique = s.unique;
@@ -109,6 +143,16 @@ rule RelationProperty
 	t.upper = s.upper;
 	t.navigable = s.navigable;
 	t.ownerClass ::= s.type;
-
+	
+	var ops = stereotypeApplications.get("options").get(s);
+	var otherOps = stereotypeApplications.get("options").get(s.otherEnd);
+	for (op in ops + otherOps) {
+        var parts = op.split(":");
+        if (parts.at(0) == self.name) {
+        	t.optionScript = parts.at(1);
+            break;
+        }
+    }
+    
 	"".println("RULE::RelationProperty");
 }

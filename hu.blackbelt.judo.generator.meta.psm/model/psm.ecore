@@ -72,6 +72,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="businessSingleton" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="aliases" upperBound="-1"
         eType="#//JUIAlias" containment="true" eOpposite="#//JUIAlias/ownerClass"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="watched" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JAttribute" eSuperTypes="#//JTypedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="placeholder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -83,6 +85,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JClass"
         eOpposite="#//JClass/attributes"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="uiNoSearch" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="watched" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JOperation" eSuperTypes="#//JElement">
@@ -121,8 +125,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordered" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerRelationship" eType="#//JRelationship"
-        eOpposite="#//JRelationship/roles"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerRelationship" lowerBound="1"
+        eType="#//JRelationship" eOpposite="#//JRelationship/roles"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="derivedExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="derivedDescription" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//JAssociationKind"

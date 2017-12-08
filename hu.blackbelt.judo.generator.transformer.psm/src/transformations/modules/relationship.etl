@@ -17,6 +17,15 @@ rule Relationship
 	t.name = name; // rewrite the default name set by rule "NamedElement"
 	
 	s.memberEnd.println("FEATURE ==>  ");
+	s.memberEnd.size.println("ENDS IN ASSOCIATION: ");
+	for (me in s.memberEnd) {
+		me.println("ME: ");
+		me.owner.println("ME OWNER: ");
+		var eqiv = me.equivalent().println("ME EQUIV: ");
+		if (eqiv.isDefined()) {
+			t.roles.add(eqiv);
+		}
+	}
 
 	t.derived = s.memberEnd->exists(p | stereotypeApplications.get("derived").includes(p));
 	

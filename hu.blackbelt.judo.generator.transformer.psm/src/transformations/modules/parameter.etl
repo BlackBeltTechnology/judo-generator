@@ -4,7 +4,7 @@ import "element.etl";
 rule Parameter
 	transform s : Parameter
 	to 		  t : tgtPSM!JParameter 
-	extends NamedElement {
+	extends TypedElement {
 	
 	guard: s.owner.equivalent("Operation").isDefined()
 	
@@ -25,11 +25,12 @@ rule Parameter
 	t.upper = s.upper;
 	t.lower = s.lower;
 	
-	s.type.println("TYPE ::==> ");
-	s.type.equivalent().println("TYPE-EQUIV ::==> ");
+	//s.type.println("TYPE ::==> ");
+	//s.type.equivalent().println("TYPE-EQUIV ::==> ");
 	
 	// TODO refactor to EOL operation
 	// suspect that we can not defnie rule on parameter type...
+	/*
 	if ( s.type.isTypeOf(Class) and s.type.isUndefined()) {
 		println("Class TYPE EQUIV is UNDEFINED!!!");
 	} else {
@@ -53,5 +54,5 @@ rule Parameter
 		} else {
 			t.type ::= s.type;
 		}
-	}	
+	}*/
 }

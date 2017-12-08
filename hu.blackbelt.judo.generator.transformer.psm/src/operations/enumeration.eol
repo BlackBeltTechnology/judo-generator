@@ -1,3 +1,4 @@
+
 operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : String,
 														  supplierRoleName : String,
 														  clientRoleOwner : tgtPSM!JClass,
@@ -9,10 +10,12 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	var relationName = clientRoleName + "-" + supplierRoleName;
  	
  	relation.name = relationName;
+ 	relation.uuid = uuid3(clientRoleOwner.uuid, supplierRoleOwner.uuid);
  	pkg.relationships.add( relation );
  	
  	// clientRole
  	var clientRole : tgtPSM!JRole = new tgtPSM!JRole; 
+ 	clientRole.uuid = uuid3(relation.uuid, "clientRole");
  	clientRole.name = clientRoleName;
  	relation.roles.add( clientRole );
  	
@@ -21,6 +24,7 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	
  	// supplierRole
  	var supplierRole : tgtPSM!JRole = new tgtPSM!JRole; 
+ 	supplierRole.uuid = uuid3(supplierRoleOwner.uuid, "suppolierRole");
  	supplierRole.name = supplierRoleName;
  	relation.roles.add( supplierRole );
 

@@ -1,8 +1,11 @@
 
 operation PrimitiveType getEquivalentPrimType() : psmTypes!JPrimitive {
-	var jType : psmTypes!JPrimitive;
+	return getPSMPrimitiveType(self.name);
+}
+operation getPSMPrimitiveType(name : String) : psmTypes!JPrimitive {
+	var jType;
 
-	switch (self.name) {
+	switch (name) {
 		case "Boolean" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Boolean").first();
 		case "date" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Date").first();
 		case "datetime" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "DateTime").first();

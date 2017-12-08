@@ -1,8 +1,16 @@
+operation inpPIM!Element stereotype(st : String) : Boolean {
+	return stereotypeApplications.get(st).includes(self);
+}
+
 
 operation createDefaultJClass() : tgtPSM!JClass {
 	var aJClass : tgtPSM!JClass = new tgtPSM!JClass;
 	
 	return aClass.initClassDefaults();
+}
+
+operation findAttribute(name : String) : tgtPSM!JAttribute {
+	return self.attributes.select(a | a.name = name).first();
 }
 
 operation tgtPSM!JClass initClassDefaults() : tgtPSM!JClass {

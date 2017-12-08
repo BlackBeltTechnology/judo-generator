@@ -1,4 +1,3 @@
-
 operation collectPersistenceRelatedStInstances() {
 }
 
@@ -231,7 +230,7 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 }
 
 operation seqOfMapsToMap( seqOfMaps : Sequence ) : Map {
-	var r : Map;
+	var r : Map = new Map;
 	
 	for (m in seqOfMaps) {
 		r.putAll( m );

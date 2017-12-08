@@ -18,12 +18,19 @@ rule StateMachine
 	ownerPackage.println("OWNERPACKAGE ==> ");
 	
 	stateMachineEnum.name = ownerClass.name.concat( s.name.firstToUpperCase() );
+	stateMachineEnum.uuid = uuid3(t.uuid, "StateEnum");
 	
 	ownerPackage.enumerations.add(stateMachineEnum);
 	 
 	t.correspondingEnum = stateMachineEnum; 
 	
 	t.createEnumImplInfrastucture();
+	
+	if (s.stereotype("private")) {
+		t.visibility = tgtPSM!JVisibility#PRIVATE;
+	} else if (s.stereotype("protected")) {
+		t.visibility = tgtPSM!JVisibility#PROTECTED;
+	}
 
 	s.println("STATEMACHINE ==> ");
 	s.equivalent().println("STATEMACHINE ==> ");
@@ -49,6 +56,7 @@ rule State
 	var stateEnumLiteral : tgtPSM!JLiteral = new tgtPSM!JLiteral;
 	
 	stateEnumLiteral.name = s.name;
+	stateEnumLiteral.uuid = uuid3(t.uuid, s.name + "StateLiteral");
 	s.owner.owner.equivalent("StateMachine").correspondingEnum.literals.add( stateEnumLiteral );
 	
 	s.owner.owner.equivalent("StateMachine").println("SM ==> ");
@@ -132,7 +140,8 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	// Def Class for Enum
 	var enumClass : tgtPSM!JClass = new tgtPSM!JClass;
 	enumClass.name = corrEnum.name;
-	enumClass.uuid = self.uuid + "Cls";
+	enumClass.fixedEnum = corrEnum; 
+	enumClass.uuid = uuid3(self.uuid, "Cls");
 	
 		// ownerships
 		enumClass.package = tgtPkg;
@@ -141,7 +150,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	// Def Class for EnumLiterals - Values
 	var enumValueClass : tgtPSM!JClass = new tgtPSM!JClass;
 	enumValueClass.name = enumClass.name + "Values"; 
-	enumValueClass.uuid = self.uuid + "ValCls";
+	enumValueClass.uuid = uuid3(self.uuid, "ValCls");
 	
 		// ownerships
 		enumValueClass.package = tgtPkg;

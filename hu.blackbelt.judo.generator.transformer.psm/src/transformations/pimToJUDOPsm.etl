@@ -14,15 +14,16 @@ import "pre/collectJUDOStereotypes.etl";
 
 pre {
 
-var modelName = "opm pim";
-var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
-var tgtModel;
-inpPIM!rest.allInstances().size().println();
-var stereotypeApplications : Map = collectJUDOStereotypeInstances(); 
-var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
-
-frameworkPkgPath.println();
-frameworkQName.println();
+	var modelName = "opm pim";
+	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
+	var tgtModel;
+	inpPIM!rest.allInstances().size().println();
+	var stereotypeApplications : Map = collectJUDOStereotypeInstances(); 
+	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
+	
+	frameworkPkgPath.println();
+	frameworkQName.println();
+	
 }
 
 post {
@@ -33,6 +34,12 @@ post {
 	
 	// set attributeOrder on all Classes
 	stereotypeApplications.get("order").setAttrOrderAssocs();
+	
+	for (je in tgtPSM!JElement.all) {
+		if (je.participates.size = 0) {
+			je.participates.add(tgtPSM!JLayer#ALL);
+		}
+	}
 	
 	"POST processing FINISHED.".println();
 }
@@ -58,14 +65,27 @@ operation Map setAttrForListingAssocs() {
 // RETAINS ATTRIBUTE ORDER
 operation Map setAttrOrderAssocs() {
 	var classes = self.keySet();
+	for (c in classes) {
+		var position = 1;
+		var groupName;
+	    for (g in self.get(c).split("\n")) {
+	        if (g.at(0) == "-") {
+	            groupName = g.at(0).substring(1);
+	            g = g.substring(1);
+	        } else {
+	            groupName = g.at(0);
+	        }
 	
-	for (c in classes) { // classes, constrained by <<order>>
-		var ordering = self.get(c).split("\n");
-		
-		ordering.println("Ordering for " + c.name + " : ");
-		
-		for (a in ordering) {
-			c.attributeOrder.add( c.attribute->selectOne( attr | attr.name = a));
-		}
+	        var attrGroup = hutn.JUIAttributeGroup(groupName);
+	        ret.attributeOrder.append(attrGroup);
+	        attrGroup.uuid = str(uuid.uuid3(uuid.UUID(clazz.xmiid), groupName));
+	        attrGroup.position = position;
+	
+	        for (fieldname in g) {
+	            attrGroup.attributes.append(c.attribute->selectOne( attr | attr.name = fieldname));
+	        }
+	
+	        position += 1;
+	    }
 	}
 }

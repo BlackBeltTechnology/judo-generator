@@ -15,6 +15,7 @@ rule Operation
 	} else {
 		t.kind = tgtPSM!JOperationKind#CUSTOM;
 	}
+	t.uiMustConfirm = not s.stereotype("nonconfirmedOperation");
 	
 	t.classBased = s.static;
 	
