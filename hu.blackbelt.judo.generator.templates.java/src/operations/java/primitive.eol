@@ -5,3 +5,8 @@ operation JAVA!JvmPrimitive fqName () : String {
 	}
 	return fqNameInternal(self);
 }
+
+@cached
+operation JAVA!JvmPrimitive isPrimitive () : Boolean {
+    return true;
+}

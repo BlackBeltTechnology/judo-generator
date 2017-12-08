@@ -1,6 +1,7 @@
 import "../../../operations/_importAll.eol";
 import "element.etl";
 
+@primary
 rule JEnumeration 
 	transform s : PSM!JEnumeration
 	to t : JAVA!JvmEnum
@@ -28,6 +29,26 @@ rule BoEnum
 		t.package ::= s.package;
 		t.fillFrom(s, JAVA!JvmJudoCoordinate#BO_ENUM);
 		t.classRepresentation = s.classRepresentation.equivalent("BoClass");
+}
+
+rule DtoEnum
+    transform s : PSM!JEnumeration
+    to t : JAVA!JvmEnum
+    extends JElement {
+    guard : s.participates(PSM!JLayer#OPERATION)
+        t.package ::= s.package;
+        t.fillFrom(s, JAVA!JvmJudoCoordinate#DTO_ENUM);
+        t.classRepresentation = s.classRepresentation.equivalent("DtoClass");
+}
+
+rule RestDtoEnum
+    transform s : PSM!JEnumeration
+    to t : JAVA!JvmEnum
+    extends JElement {
+    guard : s.participates(PSM!JLayer#REST)
+        t.package ::= s.package;
+        t.fillFrom(s, JAVA!JvmJudoCoordinate#REST_DTO_ENUM);
+        t.classRepresentation = s.classRepresentation.equivalent("RestDtoClass");
 }
 
 rule JLiteral 

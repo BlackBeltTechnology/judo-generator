@@ -1,0 +1,117 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import com.google.common.collect.ImmutableMap;
+import hu.blackbelt.judo.business.dto.api.DtoAccessor;
+
+import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Set;
+
+public final class [%=class.name%] implements DtoAccessor<[%=class.dto().fqName()%]> {
+
+    @Override
+    public Set<String> relations() {
+        return gettersForRelations.keySet();
+    }
+
+    @Override
+    public Set<String> attributes() {
+        return gettersForAttributes.keySet();
+    }
+
+    private static final Map<String, Getter<[%=class.dto().fqName()%], ?>> gettersForAttributes = ImmutableMap.<String, Getter<[%=class.dto().fqName()%], ?>>builder()
+        [% for (attr in class.allAttributes()) { %]
+            .put("[%=attr.name%]", new Getter<[%=class.dto().fqName()%], [%=attr.type.fqName()%]>() {
+                    @Nullable
+                    @Override
+                    public [%=attr.type.fqName()%] get(@Nullable [%=class.dto().fqName()%] input) {
+                        return input.get[%=attr.name.firstToUpperCase()%]();
+                    }
+            })
+        [%}%]
+        .build();
+
+    private static final Map<String, Getter<[%=class.dto().fqName()%], ?>> gettersForRelations = ImmutableMap.<String, Getter<[%=class.dto().fqName()%], ?>>builder()
+        [% for (ref in class.allReferences().select(r | r.navigable)) { %]
+            .put("[%=ref.name%]", new Getter<[%=class.dto().fqName()%], [%=ref.type.dto().fqName()%]>() {
+                    @Nullable
+                    @Override
+                    public [%=ref.type.dto().fqName()%] get(@Nullable [%=class.dto().fqName()%] input) {
+                        return input.get[%=ref.name.firstToUpperCase()%]();
+                    }
+            })
+        [%}%]
+        .build();
+
+    private static final Map<String, Setter<[%=class.dto().fqName()%], Object>> settersForAttributes = ImmutableMap.<String, Setter<[%=class.dto().fqName()%], Object>>builder()
+        [% for (attr in class.allAttributes()) { %]
+            .put("[%=attr.name%]", new Setter<[%=class.dto().fqName()%], Object>() {
+                @Nullable
+                @Override
+                public void set(@Nullable [%=class.dto().fqName()%] instance, @Nullable Object value) {
+                    instance.set[%=attr.name.firstToUpperCase()%](([%=attr.type.fqName()%]) value);
+                }
+            })
+        [%}%]
+        .build();
+
+
+    private static final Map<String, Setter<[%=class.dto().fqName()%], Object>> settersForRelations = ImmutableMap.<String, Setter<[%=class.dto().fqName()%], Object>>builder()
+        [% for (ref in class.allReferences().select(r | r.navigable)) { %]
+            .put("[%=ref.name%]", new Setter<[%=class.dto().fqName()%], Object>() {
+                @Nullable
+                @Override
+                public void set(@Nullable [%=class.dto().fqName()%] instance, @Nullable Object value) {
+                    instance.set[%=ref.name.firstToUpperCase()%](([%=ref.type.dto().fqName()%]) value);
+                }
+            })
+        [%}%]
+        .build();
+
+    private static final Map<String, DtoAccessor<?>> accessorsForRelations = ImmutableMap.<String, DtoAccessor<?>>builder()
+        [% for (ref in class.allReferences()) { %]
+            .put("[%=ref.name%]", new [%=ref.type.bare().fqName()%]())
+        [%}%]
+        .build();
+
+
+    @Override
+    public <R> DtoAccessor<R> accessor(String memberName) {
+        if (accessorsForRelations.containsKey(memberName)) {
+            return (DtoAccessor<R>) accessorsForRelations.get(memberName);
+        } else {
+            throw new IllegalArgumentException("Unknown member: " + memberName);
+        }
+    }
+
+    @Override
+    public Object get([%=class.dto().name%] obj, String memberName) {
+        if (memberName.startsWith("$")) {
+            return null;
+        } else if (gettersForAttributes.containsKey(memberName)) {
+            return gettersForAttributes.get(memberName).get(obj);
+        } else if (gettersForRelations.containsKey(memberName)) {
+           return gettersForRelations.get(memberName).get(obj);
+        } else {
+            throw new IllegalArgumentException("Unknown member: " + memberName);
+        }
+    }
+
+    @Override
+    public void set([%=class.dto().name%] obj, String memberName, Object value) {
+        if (memberName.startsWith("$")) {
+        } else if (settersForAttributes.containsKey(memberName)) {
+            settersForAttributes.get(memberName).set(obj, value);
+        } else if (settersForRelations.containsKey(memberName)) {
+            settersForRelations.get(memberName).set(obj, value);
+        } else {
+            throw new IllegalArgumentException("Unknown member: " + memberName);
+        }
+    }
+}

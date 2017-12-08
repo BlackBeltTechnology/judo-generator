@@ -1,4 +1,19 @@
 @cached
+operation JAVA!JvmCoordinated dto () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#DTO);
+}
+
+@cached
+operation JAVA!JvmCoordinated restDto () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#REST_DTO);
+}
+
+@cached
+operation JAVA!JvmCoordinated filterRestDto () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#FILTER_REST_DTO);
+}
+
+@cached
 operation JAVA!JvmCoordinated po () : JAVA!JvmCoordinated {
 	return self.find(JAVA!JvmJudoCoordinate#PO);
 }

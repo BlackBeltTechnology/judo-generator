@@ -1,0 +1,3 @@
+operation JAVA!JvmElement nameToRest() {
+	return self.name.toLowerCase();
+}
