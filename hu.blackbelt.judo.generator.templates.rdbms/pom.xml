@@ -20,6 +20,7 @@
 				<version>${project.version}</version>
 				<executions>
 					<execution>
+						<id>template-model-hsqldb</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>execute</goal>
@@ -31,7 +32,7 @@
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbms:${project.version}</artifact>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsHsqldb:${project.version}</artifact>
 									<name>RDBMS</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -46,6 +47,65 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
+
+					<execution>
+						<id>template-model-postgres</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+							</metaModels>
+
+							<models>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsPostgres:${project.version}</artifact>
+									<name>RDBMS</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+									</metaModelUris>
+								</model>
+							</models>
+							<eolPrograms>
+								<Egl>
+									<source>src/main.egl</source>
+									<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+								</Egl>
+							</eolPrograms>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>template-model-oracle</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+							</metaModels>
+
+							<models>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsOracle:${project.version}</artifact>
+									<name>RDBMS</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+									</metaModelUris>
+								</model>
+							</models>
+							<eolPrograms>
+								<Egl>
+									<source>src/main.egl</source>
+									<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+								</Egl>
+							</eolPrograms>
+						</configuration>
+					</execution>
+
 				</executions>
 				<dependencies>
 					<dependency>

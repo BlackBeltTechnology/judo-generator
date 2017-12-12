@@ -14,7 +14,6 @@
 
     <build>
         <plugins>
-            <!--
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>epsilon-maven-plugin</artifactId>
@@ -45,8 +44,7 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
-
+			<!-- 
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>epsilon-maven-plugin</artifactId>
@@ -60,8 +58,6 @@
 						<configuration>
 							<metaModels>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<!-- <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml2_5:${project.version}</metaModel> -->
-								<!-- <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml_standard_profile:${project.version}</metaModel> -->
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
 
@@ -96,7 +92,6 @@
 									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
 								</model>
 		
-								<!-- Target -->
 								<model>
 									<artifact>${project.build.directory}/pimToPsm.model</artifact>
 									<name>tgtPSM</name>
@@ -116,6 +111,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -129,13 +125,20 @@
                         </goals>
                         <configuration>
                             <artifacts>
+                            	 
                                 <artifact>
-                                    <file>${project.build.directory}/pimToPsm.model</file>
+                                    <file>${project.build.directory}/target.model</file>
                                     <type>model</type>
                                     <classifier>psm</classifier>
                                 </artifact>
-                                <!-- artifact> <file>${project.build.directory}/pimToPsm.model</file> 
-                                    <type>model</type> <classifier>pimToPsm</classifier> </artifact -->
+                                
+                                <!-- 
+                                <artifact> 
+                                	<file>${project.build.directory}/pimToPsm.model</file> 
+                                    <type>model</type>
+                                    <classifier>pimToPsm</classifier>
+                                </artifact>
+                                -->
                             </artifacts>
                         </configuration>
                     </execution>

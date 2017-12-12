@@ -20,6 +20,7 @@
 				<version>${project.version}</version>
 				<executions>
 					<execution>
+						<id>transform-hsqldb</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>execute</goal>
@@ -51,6 +52,78 @@
 								</model>
 
 								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesHsqldb:${project.version}</artifact>
+									<name>RDBMSTYPES</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesHsqldb.model</platformAlias>
+								</model>
+
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:typeMappingHsqldb:${project.version}</artifact>
+									<name>RTM</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms/mapping</param>
+									</metaModelUris>
+									<expand>true</expand>
+								</model>
+								<!-- Target -->
+								<model>
+									<artifact>${project.build.directory}/rdbmsHsqldb.model</artifact>
+									<name>RDBMS</name>
+									<readOnLoad>false</readOnLoad>
+									<storeOnDisposal>true</storeOnDisposal>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+									</metaModelUris>
+								</model>
+							</models>
+							<eolPrograms>
+								<Evl>
+									<source>src/validations/validation.evl</source>
+								</Evl>
+								<Etl>
+									<source>src/transformations/rdbms/psmToRdbms.etl</source>
+								</Etl>
+							</eolPrograms>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>transform-postgresql</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
+							</metaModels>
+
+							<models>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<name>PSMTYPES</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
+								</model>
+
+								<model>
+
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+									<name>PSM</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<expand>true</expand>
+								</model>
+
+								<model>
 									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesPostgres:${project.version}</artifact>
 									<name>RDBMSTYPES</name>
 									<metaModelUris>
@@ -70,7 +143,7 @@
 
 								<!-- Target -->
 								<model>
-									<artifact>${project.build.directory}/rdbms.model</artifact>
+									<artifact>${project.build.directory}/rdbmsPostgres.model</artifact>
 									<name>RDBMS</name>
 									<readOnLoad>false</readOnLoad>
 									<storeOnDisposal>true</storeOnDisposal>
@@ -89,6 +162,80 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
+
+					<execution>
+						<id>transform-oracle</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
+							</metaModels>
+
+							<models>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<name>PSMTYPES</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
+								</model>
+
+								<model>
+
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+									<name>PSM</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<expand>true</expand>
+								</model>
+
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesOracle:${project.version}</artifact>
+									<name>RDBMSTYPES</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model</platformAlias>
+								</model>
+
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:typeMappingOracle:${project.version}</artifact>
+									<name>RTM</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms/mapping</param>
+									</metaModelUris>
+									<expand>true</expand>
+								</model>
+
+								<!-- Target -->
+								<model>
+									<artifact>${project.build.directory}/rdbmsOracle.model</artifact>
+									<name>RDBMS</name>
+									<readOnLoad>false</readOnLoad>
+									<storeOnDisposal>true</storeOnDisposal>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+									</metaModelUris>
+								</model>
+							</models>
+							<eolPrograms>
+								<Evl>
+									<source>src/validations/validation.evl</source>
+								</Evl>
+								<Etl>
+									<source>src/transformations/rdbms/psmToRdbms.etl</source>
+								</Etl>
+							</eolPrograms>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
 
@@ -122,9 +269,19 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>${project.build.directory}/rdbms.model</file>
+									<file>${project.build.directory}/rdbmsHsqldb.model</file>
 									<type>model</type>
-									<classifier>rdbms</classifier>
+									<classifier>rdbmsHsqldb</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/rdbmsPostgres.model</file>
+									<type>model</type>
+									<classifier>rdbmsPostgres</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/rdbmsOracle.model</file>
+									<type>model</type>
+									<classifier>rdbmsOracle</classifier>
 								</artifact>
 							</artifacts>
 						</configuration>

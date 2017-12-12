@@ -59,6 +59,17 @@
                   <type>model</type>
                   <classifier>typeMappingHsqldb</classifier>
                 </artifact>
+                <artifact>
+                  <file>library/rdbmsTypesOracle.model</file>
+                  <type>model</type>
+                  <classifier>rdbmsTypesOracle</classifier>
+                </artifact>
+                <artifact>
+                  <file>library/typeMappingOracle.model</file>
+                  <type>model</type>
+                  <classifier>typeMappingOracle</classifier>
+                </artifact>
+
               </artifacts>
             </configuration>
           </execution>

@@ -75,7 +75,7 @@ public final class EmfModelUtils {
             properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI, convertFileToUri(metamodelFile));
         }
 
-        if (emfModel.getPlatformAlias() != null && emfModel.getPlatformAlias().trim() != "") {
+        if (emfModel.getPlatformAlias() != null && !emfModel.getPlatformAlias().trim().equals("")) {
         	properties.put(EmfModel.PROPERTY_MODEL_URI, emfModel.getPlatformAlias());
             log.info(String.format("Registering MODEL_URI: %s Alias URI: %s" , uri.toString(), emfModel.getPlatformAlias()));
             URIConverter.INSTANCE.URI_MAP.put(URI.createURI(emfModel.getPlatformAlias()), uri);
@@ -83,6 +83,17 @@ public final class EmfModelUtils {
             log.info(String.format("Registering MODEL_URI: %s", uri.toString()));        	
         }
 
+        /* TODO: Find a way to handle relative pathes on models */
+        /*
+        if (emfModel.getUrlAliases() != null) {
+        	for (String urlAlias : emfModel.getUrlAliases()) {
+        		if (!urlAlias.trim().equals("")) {
+                    log.info(String.format("Adding URL alias: %s", urlAlias));
+                    URIConverter.INSTANCE.URI_MAP.put(URI.createFileURI(urlAlias), uri);       		        			
+        		}
+        	}       	
+        } */
+        
         try {
             model.load(properties);
             repository.addModel(model);

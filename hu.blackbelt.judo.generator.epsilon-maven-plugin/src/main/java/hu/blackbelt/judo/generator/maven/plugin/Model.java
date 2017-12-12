@@ -33,7 +33,6 @@ public class Model {
     @Parameter(name = "platformAlias", readonly = true)
     String platformAlias;
 
-
     /**
      * One of the keys used to construct the first argument to {@link org.eclipse.epsilon.emc.emf.EmfModel#load(StringProperties, String)}.
      *
@@ -192,8 +191,8 @@ public class Model {
     public void setArtifact(String artifact) {
         this.artifact = artifact;
     }
-
-    @Override
+        
+	@Override
     public String toString() {
         return "Model{" +
                 "artifact='" + artifact + '\'' +
@@ -211,6 +210,4 @@ public class Model {
                 ", reuseUnmodifiedFileBasedMetamodels=" + reuseUnmodifiedFileBasedMetamodels +
                 '}';
     }
-
-
 }

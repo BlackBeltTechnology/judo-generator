@@ -12,6 +12,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.IEolExecutableModule;
@@ -45,6 +46,8 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
             try {
                 addMetaModels(resourceSet);
                 addModels(resourceSet, modelRepository, emfModels);
+                
+                getLog().info("URL converters: \n\t" + URIConverter.URI_MAP.entrySet().stream().map(e -> e.getKey() + "->" + e.getValue()).collect(Collectors.joining("\n\t")));
 
                 if (eolPrograms != null) {
                     for (Eol eolProgram : eolPrograms) {
