@@ -52,6 +52,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewField" abstract="true" eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="view" lowerBound="1" eType="#//RdbmsView"
         eOpposite="#//RdbmsView/fields"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tableAlias" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewValueField" eSuperTypes="#//RdbmsViewField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
@@ -64,7 +65,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsExpression" eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parts" upperBound="-1"
-        eType="#//RdbmsValueField"/>
+        eType="#//RdbmsViewField"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsFieldType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
