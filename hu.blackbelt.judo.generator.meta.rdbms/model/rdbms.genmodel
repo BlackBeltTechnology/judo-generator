@@ -6,6 +6,16 @@
     operationReflection="true" importOrganizing="true">
   <foreignModel>rdbms.ecore</foreignModel>
   <genPackages prefix="Rdbms" disposableProviderFactory="true" ecorePackage="rdbms.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="rdbms.ecore#//RdbmsTableOperationType">
+      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsTableOperationType/CREATE"/>
+      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsTableOperationType/DELETE"/>
+      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsTableOperationType/MODIFY"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="rdbms.ecore#//RdbmsFieldOperationType">
+      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsFieldOperationType/CREATE"/>
+      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsFieldOperationType/DELETE"/>
+      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsFieldOperationType/MODIFY"/>
+    </genEnums>
     <genClasses image="false" ecoreClass="rdbms.ecore#//RdbmsElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsElement/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsElement/uuid"/>
@@ -39,15 +49,15 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsIdentifierField/foreignKeys"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsView">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsView/baseTable"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsView/fields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsView/tables"/>
     </genClasses>
     <genClasses image="false" ecoreClass="rdbms.ecore#//RdbmsViewField">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewField/view"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsViewField/tableAlias"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsViewValueField">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewValueField/tableField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewValueField/alias"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsViewExpressionField">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewExpressionField/expression"/>
@@ -77,6 +87,7 @@
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsViewIdentifierField">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewIdentifierField/tableField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewIdentifierField/alias"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsConfiguration">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsConfiguration/dialect"/>
@@ -84,6 +95,20 @@
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsFeature">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsFeature/name"/>
+    </genClasses>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsTableAlias">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTableAlias/table"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsTableAlias/aliasName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsTableAlias/primaryTable"/>
+    </genClasses>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsTableOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTableOperation/fieldOperations"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTableOperation/table"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsTableOperation/operationType"/>
+    </genClasses>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsFieldOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsFieldOperation/operationType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsFieldOperation/field"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -45,18 +45,19 @@
         eType="#//RdbmsForeignKey" eOpposite="#//RdbmsForeignKey/referenceKey"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsView" eSuperTypes="#//RdbmsElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="baseTable" eType="#//RdbmsTable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
         eType="#//RdbmsViewField" containment="true" eOpposite="#//RdbmsViewField/view"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tables" upperBound="-1"
+        eType="#//RdbmsTableAlias" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewField" abstract="true" eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="view" lowerBound="1" eType="#//RdbmsView"
         eOpposite="#//RdbmsView/fields"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tableAlias" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewValueField" eSuperTypes="#//RdbmsViewField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
         eType="#//RdbmsValueField"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alias" eType="#//RdbmsTableAlias"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewExpressionField" eSuperTypes="#//RdbmsViewField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
@@ -94,6 +95,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewIdentifierField" eSuperTypes="#//RdbmsViewField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
         eType="#//RdbmsIdentifierField"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alias" eType="#//RdbmsTableAlias"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsConfiguration">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="dialect" lowerBound="1"
@@ -103,5 +105,34 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsFeature">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsTableAlias">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aliasName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="primaryTable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsTableOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fieldOperations" upperBound="-1"
+        eType="#//RdbmsFieldOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operationType" lowerBound="1"
+        eType="#//RdbmsTableOperationType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsFieldOperation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operationType" lowerBound="1"
+        eType="#//RdbmsFieldOperationType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="field" lowerBound="1" eType="#//RdbmsField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RdbmsTableOperationType">
+    <eLiterals name="CREATE"/>
+    <eLiterals name="DELETE" value="1" literal="DELETE"/>
+    <eLiterals name="MODIFY" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RdbmsFieldOperationType">
+    <eLiterals name="CREATE"/>
+    <eLiterals name="DELETE" value="1"/>
+    <eLiterals name="MODIFY" value="2"/>
   </eClassifiers>
 </ecore:EPackage>

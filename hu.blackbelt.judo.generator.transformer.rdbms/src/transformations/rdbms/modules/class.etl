@@ -30,8 +30,16 @@ rule JClassToRdbmsView
 	guard : s.participates(PSM!JLayer#PERSISTENCE)
 	    v.name = s.package.name + " " + s.name;
 	    v.sqlName = s.viewSqlName();
-	    v.baseTable = s.equivalent("JClassToRdbmsTable");
+	    
+	    // v.baseTable = s.equivalent("JClassToRdbmsTable");
+	    var baseAlias : RDBMS!RdbmsTableAlias = new RDBMS!RdbmsTableAlias();
+	    baseAlias.table = s.equivalent("JClassToRdbmsTable");
+	    baseAlias.aliasName = "B_" + s.tableSqlName();
+	    v.tables.add(baseAlias);
+	    
 	    for (a : PSM!JAttribute in s.allSupertypesAttributes()) {
+	    	// Find table alias in tables. When not found create new one
+	    
 	   		var f : RDBMS!RdbmsViewValueField = a.equivalent("JAttributeToViewValueField");
 
 	    	var created : RDBMS!RdbmsViewValueField = new RDBMS!RdbmsViewValueField();
@@ -44,6 +52,7 @@ rule JClassToRdbmsView
 	    	created.name = f.name;
 			
 	    	created.view = v;
+	    	
 	    	v.fields.add(created);
 
 	    }
