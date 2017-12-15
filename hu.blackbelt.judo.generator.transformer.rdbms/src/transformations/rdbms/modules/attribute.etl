@@ -63,6 +63,7 @@ rule JAttributeToViewIdField
 	extends JAttributeToViewIdFieldWithoutView {
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
 		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+		v.`alias` = v.view.primaryTable;
 }
 
 @lazy
@@ -83,4 +84,5 @@ rule JAttributeToViewValueField
 	extends JAttributeToViewValueFieldWithoutView { 
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey()
 		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+		v.`alias` = v.view.primaryTable;
 }

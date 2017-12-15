@@ -34,13 +34,26 @@ rule JClassToRdbmsView
 	    // v.baseTable = s.equivalent("JClassToRdbmsTable");
 	    var baseAlias : RDBMS!RdbmsTableAlias = new RDBMS!RdbmsTableAlias();
 	    baseAlias.table = s.equivalent("JClassToRdbmsTable");
-	    baseAlias.aliasName = "B_" + s.tableSqlName();
+	    baseAlias.aliasName = "BASE_" + baseAlias.table.sqlName;
 	    v.tables.add(baseAlias);
+	    v.primaryTable = baseAlias;
 	    
 	    for (a : PSM!JAttribute in s.allSupertypesAttributes()) {
-	    	// Find table alias in tables. When not found create new one
-	    
 	   		var f : RDBMS!RdbmsViewValueField = a.equivalent("JAttributeToViewValueField");
+	   		var supertypeTable =  a.ownerClass.equivalent("JClassToRdbmsTable");
+
+	    	var aliasName = "SUP_" + supertypeTable.sqlName;
+	    	// Find table alias in tables. When not found create new one
+			var supertypeAlias : RDBMS!RdbmsTableAlias;
+	    	if (v.tables.exists(e | e.aliasName = aliasName)) {
+	    		supertypeAlias = v.tables.select(e | e.aliasName = aliasName).first();
+	    	} else {
+	    		supertypeAlias = new RDBMS!RdbmsTableAlias();
+	    		supertypeAlias.table = supertypeTable;
+	    		supertypeAlias.aliasName = aliasName;
+	    		v.tables.add(supertypeAlias);
+	    	}
+	    	
 
 	    	var created : RDBMS!RdbmsViewValueField = new RDBMS!RdbmsViewValueField();
 	    	created.uuid = uuid3(f.uuid, v.name);
@@ -50,7 +63,7 @@ rule JClassToRdbmsView
 	    	created.sqlName = f.sqlName;
 	    	created.tableField = f.tableField;
 	    	created.name = f.name;
-			
+	    	created.`alias` = supertypeAlias;
 	    	created.view = v;
 	    	
 	    	v.fields.add(created);

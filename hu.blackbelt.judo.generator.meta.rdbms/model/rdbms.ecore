@@ -47,8 +47,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsView" eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
         eType="#//RdbmsViewField" containment="true" eOpposite="#//RdbmsViewField/view"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tables" upperBound="-1"
-        eType="#//RdbmsTableAlias" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tables" lowerBound="1"
+        upperBound="-1" eType="#//RdbmsTableAlias" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="primaryTable" lowerBound="1"
+        eType="#//RdbmsTableAlias"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewField" abstract="true" eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="view" lowerBound="1" eType="#//RdbmsView"
@@ -57,7 +59,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewValueField" eSuperTypes="#//RdbmsViewField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
         eType="#//RdbmsValueField"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="alias" eType="#//RdbmsTableAlias"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alias" lowerBound="1" eType="#//RdbmsTableAlias"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewExpressionField" eSuperTypes="#//RdbmsViewField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
@@ -95,7 +97,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewIdentifierField" eSuperTypes="#//RdbmsViewField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
         eType="#//RdbmsIdentifierField"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="alias" eType="#//RdbmsTableAlias"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alias" lowerBound="1" eType="#//RdbmsTableAlias"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsConfiguration">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="dialect" lowerBound="1"
