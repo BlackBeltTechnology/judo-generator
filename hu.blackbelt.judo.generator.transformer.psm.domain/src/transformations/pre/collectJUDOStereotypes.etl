@@ -1,5 +1,8 @@
+operation collectPersistenceRelatedStInstances() {
+}
 
-
+// TODO: outsource Model as parameter
+operation collectJUDOStereotypeInstances() : Map {
 
 	var JUDOStereotypeInstances : Map;
 
@@ -139,7 +142,7 @@
 	JUDOStereotypeInstances.put("decimals", 		inpPIM!decimals.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("derivedDescription", inpPIM!derivedDescription.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("derivedExpression", inpPIM!derivedExpression.allInstances().collectConstrainedElements());
-	JUDOStereotypeInstances.put("filter", 			inpPIM!filter.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("filter", 			inpPIM!filter.allInstances().collectConstrainedElements().println("FILTER: "));
 	JUDOStereotypeInstances.put("guard", 			inpPIM!`guard`.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("interval", 		inpPIM!interval.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("list", 			inpPIM!list.allInstances().collectConstrainedElements());
@@ -155,6 +158,8 @@
 	// dump result Map
 	dumpStereotypeInstances( JUDOStereotypeInstances );
 	
+	return JUDOStereotypeInstances;
+}
 
 operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	"DUMP >> JUDOStereotypeInstances".println();
@@ -247,8 +252,7 @@ operation OpaqueExpression getSpecification() : String {
 }
 
 operation Sequence collectConstrainedElements() : Map {
-	return seqOfMapsToMap( self->select(sttype | sttype.base_Constraint.specification.getSpecification().isDefined())
-									->collect(sttype | sttype.base_Constraint
+	return seqOfMapsToMap( self->collect(sttype | sttype.base_Constraint
 														.constrainedElement->aggregate(ce | ce, sttype.base_Constraint
 																								  	  .specification
 																								   	  .getSpecification())));
@@ -274,6 +278,10 @@ operation Sequence collectMValuedConstrainedElements() : Map {
 	}
 	
 	return result;
+}
+
+operation ElementImport shortDumpElmntStr( ) : String {
+	return self.importedElement.shortDumpElmntStr();
 }
 
 operation Element shortDumpElmntStr( ) : String {
@@ -303,10 +311,9 @@ operation dumpSetAt( m : Map, key : String) {
 	set2dump.size().println("\t" + key + " : ");
 	
 	for (e in set2dump) {
-		e.shortDumpElmntStr().println("\t\t");
+		if (e.isDefined()) {
+			e.shortDumpElmntStr().println("\t\t");
+		}
 	}
 }
 
-dumpStereotypeInstances();
-
-"VÉGE".println();

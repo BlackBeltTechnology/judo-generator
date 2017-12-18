@@ -43,21 +43,24 @@ rule Class
 	
 	// add generalization to User
 	if ( stereotypeApplications.get("user").includes(s) ) {
-		var userClass = DOMAINPSM!JClass.allInstances()->selectOne(c | c.name = "User");
+		var userClass = inpPIM!Class.allInstances()->select(c | c.name = "User" and 
+																c.package.name = "framework").first().equivalent("Class");
 		userClass.println("Rule::Class - ADD supertype 'User' to Class " + t.name);
 		t.supertype = userClass;
 	}
 
 	// add generalization to TenantUser
 	if ( stereotypeApplications.get("tenantuser").includes(s) ) {
-		var tenantUserClass = DOMAINPSM!JClass.allInstances()->selectOne(c | c.name = "TenantUser");
+		var tenantUserClass = inpPIM!Class.allInstances()->select(c | c.name = "TenantUser" and 
+																	  c.package.name = "framework").first().equivalent("Class");
 		tenantUserClass.println("Rule::Class - ADD supertype 'TenantUser' to Class " + t.name);
 		t.supertype = tenantUserClass;
 	}
 
 	// add generalization to Tenant
 	if ( stereotypeApplications.get("tenant").includes(s) ) {
-		var tenantClass = DOMAINPSM!JClass.allInstances()->selectOne(c | c.name = "Tenant");
+		var tenantClass = inpPIM!Class.allInstances()->select(c | c.name = "Tenant" and 
+																  c.package.name = "framework").first().equivalent("Class");
 		tenantClass.println("Rule::Class - ADD supertype 'Tenant' to Class " + t.name);
 		t.supertype = tenantClass;
 	}

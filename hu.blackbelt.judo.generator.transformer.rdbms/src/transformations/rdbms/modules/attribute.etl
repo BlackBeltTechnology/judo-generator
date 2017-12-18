@@ -13,6 +13,9 @@ rule JAttributeToRdbmsField
 	        t.uuid = s.uuid;
 	    }
 		t.table = s.ownerClass.equivalent("JClassToRdbmsTable");
+		s.ownerClass.println("OWNER CLASS: ");
+		s.name.println("ATTR NAME: ");
+		s.type.println("SOURCE TYPE: ");
 		t.type = s.type.rdbmsType();
 		t.sqlName = s.fieldSqlName(); // fieldSqlName(s);
 		t.name = s.name;

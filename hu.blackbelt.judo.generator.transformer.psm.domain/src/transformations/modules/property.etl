@@ -38,19 +38,9 @@ rule ClassProperty
 		t.placeholder = stereotypeApplications.get("placeholder").get(s);
 		t.println("RULE::ClassProperty - ADD placeholder specification - " + t.placeholder + " ");
 	}
-	
-	if ( stereotypeApplications.get("placeholder").containsKey(s.type) ) {
-		t.placeholder = stereotypeApplications.get("placeholder").get(s.type);
-		t.println("RULE::ClassProperty - ADD placeholder specification - " + t.placeholder + " ");
-	}
 
 	if ( stereotypeApplications.get("regexp").containsKey(s) ) {
 		t.regexp = stereotypeApplications.get("regexp").get(s);
-		t.println("RULE::ClassProperty - ADD regexp specification - " + t.regexp + " ");
-	}
-	
-	if ( stereotypeApplications.get("regexp").containsKey(s.type) ) {
-		t.regexp = stereotypeApplications.get("regexp").get(s.type);
 		t.println("RULE::ClassProperty - ADD regexp specification - " + t.regexp + " ");
 	}
 

@@ -162,7 +162,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 									 enumClass, enumValueClass);
 
 	// TODO: refactor to a cached operation 
-	var langClass = DOMAINPSM!JClass.allInstances()->select(c | c.name = "Language" and c.package.name = "framework").first();
+	var langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and c.package.name = "framework").first();
 	langClass.println("RULE::STATEMACHINE - LANGCLASS : ");
 
 // add relation : enumValueClass - Language - First part of Relation name should coume first!

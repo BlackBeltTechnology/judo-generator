@@ -2,17 +2,6 @@ operation inpPIM!Element stereotype(st : String) : Boolean {
 	return stereotypeApplications.get(st).includes(self);
 }
 
-operation inpPIM!Class allAttributes() : Sequence {
-	var ret = new Sequence;
-	ret.addAll(self.attribute);
-	var c = self;
-	while (c.general.isDefined() and c.general.notEmpty()) {
-		c = c.general.first();
-		ret.addAll(c.attribute);
-	}
-	return ret;
-}
-
 
 operation createDefaultJClass() : tgtPSM!JClass {
 	var aJClass : tgtPSM!JClass = new tgtPSM!JClass;

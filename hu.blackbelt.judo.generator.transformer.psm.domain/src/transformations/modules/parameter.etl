@@ -1,0 +1,58 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+rule Parameter
+	transform s : Parameter
+	to 		  t : tgtPSM!JParameter 
+	extends TypedElement {
+	
+	guard: s.owner.equivalent("Operation").isDefined()
+	
+	s.owner.equivalent("Operation").parameters.add(t);
+	s.direction.println("PARAMETER DIRECTION ==> ");
+	
+	t.ownerOperation = s.owner.equivalent("Operation");
+
+	if ( s.direction = ParameterDirectionKind#`in` or
+		 s.direction = ParameterDirectionKind#inout) {
+		t.input = true;
+	} else {
+		t.input = false;
+	}
+	
+	t.ordered = s.ordered;
+	t.unique = s.unique;
+	t.upper = s.upper;
+	t.lower = s.lower;
+	
+	//s.type.println("TYPE ::==> ");
+	//s.type.equivalent().println("TYPE-EQUIV ::==> ");
+	
+	// TODO refactor to EOL operation
+	// suspect that we can not defnie rule on parameter type...
+	/*
+	if ( s.type.isTypeOf(Class) and s.type.isUndefined()) {
+		println("Class TYPE EQUIV is UNDEFINED!!!");
+	} else {
+		if (s.type.isTypeOf(PrimitiveType)) {
+			switch (s.type.name) {
+				case "Boolean" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Boolean").first();
+				case "date" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Date").first();
+				case "datetime" : t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "DateTime").first();
+				case "duration" : t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Integer").first();
+				case "email" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+				case "file" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "File").first();
+				case "Float" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Float").first();
+				case "Integer" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Integer").first();
+				case "memo" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Memo").first();
+				case "phone" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+				case "String" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+				case "text" 	: t.type = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Text").first();
+				default			: s.type.name.println("TYPE IS NOT HANDLED: ");
+			}
+				
+		} else {
+			t.type ::= s.type;
+		}
+	}*/
+}
