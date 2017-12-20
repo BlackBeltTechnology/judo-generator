@@ -55,6 +55,37 @@
             </plugin>
             -->
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-domain-psm-model</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>hu.blackbelt.judo.generator.transformer.psm.domain</artifactId>
+                            <version>${project.version}</version>
+                            <type>model</type>
+                            <classifier>psm</classifier>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <destFileName>carPsm.model</destFileName>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+            </plugin>
+
+
+
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>epsilon-maven-plugin</artifactId>
@@ -103,22 +134,12 @@
 									</metaModelUris>
 									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
 								</model>
-                                <model>
-                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm.domain:model:psm:${project.version}</artifact>
-                                    <name>DOMAINPSM</name>
-                                    <readOnLoad>true</readOnLoad>
-                                    <storeOnDisposal>false</storeOnDisposal>
-                                    <metaModelUris>
-                                        <param>http://blackbelt.hu/judo/meta/psm</param>
-                                    </metaModelUris>
-                                    <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.psm.domain/target/domainPsm.model</platformAlias>
-                                </model>
 		
 								<!-- Target -->
 								<model>
 									<artifact>${project.build.directory}/carPsm.model</artifact>
 									<name>tgtPSM</name>
-									<readOnLoad>false</readOnLoad>
+									<readOnLoad>true</readOnLoad>
 									<storeOnDisposal>true</storeOnDisposal>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>

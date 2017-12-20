@@ -79,8 +79,7 @@ rule Enum2CorrespondingValueClass
 											  								  c.name = s.name ).first();
 	enumValueClassRole.ownerClass.roles.add( enumValueClassRole );
 	
-	var langClass = DOMAINPSM!JClass.allInstances()->select(c | c.name = "Language" and 
-															 c.package.name ="framework").first(); // TODO: make it fully specified via Qualified name
+	var langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and c.framework).first(); // TODO: make it fully specified via Qualified name
 
 	// reassignment - adding "Values" to the end of the yet defined name
 	enumValueClassRoleName = enumValueClassRoleName.concat("Values"); 

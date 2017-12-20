@@ -39,6 +39,7 @@ post {
 		if (je.participates.size = 0) {
 			je.participates.add(tgtPSM!JLayer#ALL);
 		}
+		je.framework = true;
 	}
 	
 	"POST processing FINISHED.".println();
