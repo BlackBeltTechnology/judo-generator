@@ -24,7 +24,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 		var viewFieldPosition = 1;
 		for (attribute in attrGroup.attributes) {
 			var viewField = new UI!UIViewField();
-			viewField.componentType = attribute.equivalent();
+			viewField.componentType = attribute.equivalent("UIBaseComponentType");
 			viewField.name = attribute.name;
 			viewField.uuid = uuid3(attribute.uuid, name);
 			viewField.searchable = true;

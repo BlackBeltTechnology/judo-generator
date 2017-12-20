@@ -56,7 +56,7 @@ rule UIClass
 	}
 	uiclass.~attributesForListing = new Sequence(UI!UIComponentType);
 	for (attribute in jclass.attributesForListing) {
-		uiclass.~attributesForListing.add(attribute.equivalent());
+		uiclass.~attributesForListing.add(attribute.equivalent("UIBaseComponentType"));
 	}
 
 	//create Views
