@@ -31,7 +31,7 @@
               </metaModels>
                 <models>
                     <model>
-						<artifact>/home/balazs/work/git/judo-generator/hu.blackbelt.judo.generator.merger.rdbms/src/model/rdbmsPostgres_modify.model</artifact>
+						<artifact>${basedir}/src/model/rdbmsPostgres_modify.model</artifact>
 						<name>MODIFIED</name>
 						<metaModelUris>
 							<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -39,7 +39,7 @@
 						<platformAlias>platform:/resource/hu.blackbelt.judo.generator.merger.rdbms/src/model/rdbmsPostgres_modify.model</platformAlias>
 					</model>
 					<model>
-						<artifact>/home/balazs/work/git/judo-generator/hu.blackbelt.judo.generator.merger.rdbms/src/model/rdbmsPostgres.model</artifact>
+						<artifact>${basedir}/src/model/rdbmsPostgres.model</artifact>
 						<name>ORIGINAL</name>
 						<metaModelUris>
 							<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -60,9 +60,11 @@
                 <eolPrograms>
                     <Ecl>
                         <source>src/compare/compareElements.ecl</source>
+                        <exportMatchTrace>matchTrace</exportMatchTrace>
                     </Ecl>
                     <Eml>
                         <source>src/merge/mergeElements.eml</source>
+                        <useMatchTrace>matchTrace</useMatchTrace>
                     </Eml>
                     <Egl>
                         <source>src/templates/mainIncremental.egl</source>

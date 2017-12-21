@@ -21,6 +21,7 @@ import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.ModelRepository;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
         Map<Model, EmfModel> emfModels = Maps.newConcurrentMap();
         ResourceSet resourceSet = EmfModelUtils.initResourceSet();
         ModelRepository modelRepository = new ModelRepository();
+        Map<Object, Object> context = new HashMap();
         
         try {
             Exception ex = null;
@@ -51,7 +53,7 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
 
                 if (eolPrograms != null) {
                     for (Eol eolProgram : eolPrograms) {
-                        IEolExecutableModule eolModule = eolProgram.getModule();
+                        IEolExecutableModule eolModule = eolProgram.getModule(context);
                         eolModule.getContext().setModelRepository(modelRepository);
                         List<EolProgramParameter> params = eolProgram.parameters;
                         if (params == null) {
@@ -95,9 +97,8 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
             getLog().error("Parse errors occured...");
             for (ParseProblem problem : eolModule.getParseProblems()) {
                 getLog().error(problem.toString());
-                throw new MojoExecutionException("Parse error");
             }
-            return;
+            throw new MojoExecutionException("Parse error");
         }
         for (Variable parameter : parameters) {
             eolModule.getContext().getFrameStack().put(parameter);

@@ -1,6 +1,7 @@
 package hu.blackbelt.judo.generator.maven.plugin.execute;
 
 import java.io.File;
+import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -17,7 +18,7 @@ public class Egl extends Eol {
 	@Parameter(property = "outputRoot", defaultValue = "${project.basedir}/target/generated-sources")
 	private String outputRoot;
 
-	IEolExecutableModule getModule() throws MojoExecutionException {
+	IEolExecutableModule getModule(Map<Object, Object> context) throws MojoExecutionException {
 		EglTemplateFactory templateFactory;
 		try {
 			templateFactory = EglFileGeneratingTemplateFactory.class.newInstance();

@@ -2,6 +2,7 @@ package hu.blackbelt.judo.generator.maven.plugin.execute;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.epsilon.eol.IEolExecutableModule;
@@ -11,7 +12,7 @@ import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 public class Evl extends Eol {
 	private EvlModule module = new EvlModule();
 
-	IEolExecutableModule getModule() {
+	IEolExecutableModule getModule(Map<Object, Object> context) {
 		return module;
 	};
 
