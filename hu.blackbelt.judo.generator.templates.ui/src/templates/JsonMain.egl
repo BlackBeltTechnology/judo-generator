@@ -1,7 +1,15 @@
 [% 		
-	for (ui in UI!UIBase.all) {
-		ui.generateJson();
-	} 
+	if (UI!UIBase.all.size() > 1) {
+		out.println("[");
+		for (ui in UI!UIBase.all) {
+			ui.generateJson();  if (hasMore) { out.println(","); }
+		}
+		out.print("]");
+	} else {
+		for (ui in UI!UIBase.all) {
+			ui.generateJson();
+		}
+	}
 %]
 
 [% operation UI!UIClass generateJson() { %]
@@ -10,10 +18,7 @@
 	"listViews" : [
 	[% if(not self.listViews.isEmpty())  { %]	
 		[%for (listView in self.listViews) { %]
-			[%listView.generateJson();%]
-			[%if (listView <> self.listViews.last) { %]
-			,
-			[%}%]
+			[%listView.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]
 	],
@@ -22,10 +27,7 @@
 	"fields" : [
 	[% if(not self.attributes.isEmpty())  { %]
 		[%for (attribute in self.attributes) { %]
-			[%attribute.generateJson();%]
-			[%if (attribute <> self.attributes.last) { %]
-			,
-			[%}%]
+			[%attribute.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]	
 	[% } %]
 	],
@@ -33,10 +35,7 @@
 	"actions" : [
 	[% if(not self.actions.isEmpty())  { %]		
 		[%for (action in self.actions) { %]
-			[%action.generateJson();%]
-			[%if (action <> self.actions.last) { %]
-			,
-			[%}%]
+			[%action.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]		
 	[% } %]
 	],
@@ -50,20 +49,14 @@
 	"objectViews" : [
 	[% if(not self.classViews.isEmpty())  { %]
 		[%for (classView in self.classViews) { %]
-			[%classView.generateJson();%]
-			[%if (classView <> self.classViews.last) { %]
-			,
-			[%}%]
+			[%classView.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]
 	],
 	"childObjectViews" : [
 	[% if(not self.childClassViews.isEmpty())  { %]
 		[%for (classView in self.childClassViews) { %]
-			"[%=classView.uuid%]"
-			[%if (classView <> self.childClassViews.last) { %]
-			,
-			[%}%]
+			"[%=classView.uuid%]" [% if (hasMore) { out.println(","); } %]
 		[%}%]	
 	[% } %]
 	],
@@ -89,10 +82,7 @@
 	"fields" : [
 	[% if(not self.parameters.isEmpty())  { %]
 		[%for (parameter in self.parameters) { %]
-			[%parameter.generateJson();%]
-			[%if (parameter <> self.parameters.last) { %]
-			,
-			[%}%]
+			[%parameter.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]
 	],
@@ -123,10 +113,7 @@
 	"viewFieldSets" : [
 	[% if(not self.viewFieldSets.isEmpty())  { %]
 		[%for (viewFieldSet in self.viewFieldSets) { %]
-			[%viewFieldSet.generateJson();%]
-			[%if (viewFieldSet <> self.viewFieldSets.last) { %]
-			,
-			[%}%]
+			[%viewFieldSet.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]	
 	[% } %]	
 	],
@@ -163,10 +150,7 @@
 	"viewFields" : [
 	[% if(not self.viewFields.isEmpty())  { %]	
 		[%for (viewField in self.viewFields) { %]
-			[%viewField.generateJson();%]
-			[%if (viewField <> self.viewFields.last) { %]
-			,
-			[%}%]
+			[%viewField.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]	
 	[% } %]
 	],
@@ -181,10 +165,7 @@
 	"menuitems" : [
 	[% if(not self.menuItems.isEmpty())  { %]
 		[%for (menuItem in self.menuItems) { %]
-			[%menuItem.generateJson();%]
-			[%if (menuItem <> self.menuItems.last) { %]
-			,
-			[%}%]
+			[%menuItem.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]
 	],
@@ -192,10 +173,7 @@
 	"filters" : [
 	[% if(not self.filters.isEmpty())  { %]
 		[%for (filter in self.filters) { %]
-			[%filter.generateJson();%]
-			[%if (filter <> self.filters.last) { %]
-			,
-			[%}%]
+			[%filter.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]
 	],
@@ -213,10 +191,7 @@
 	"classes" : [
 	[% if(not self.classes.isEmpty())  { %]		
 		[%for (class in self.classes) { %]
-			[%class.generateJson();%]
-			[%if (class <> self.classes.last) { %]
-			,
-			[%}%]
+			[%class.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]	
 	[% } %]
 	],
@@ -246,10 +221,7 @@
 	"intervals" : [
 	[% if(not self.intervals.isEmpty())  { %]	
 		[%for (interval in self.intervals) { %]
-			[%interval.generateJson();%]
-			[%if (interval <> self.intervals.last) { %]
-			,
-			[%}%]
+			[%interval.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]
 	],
@@ -261,7 +233,11 @@
 	"derived" : [%=self.derived%],
 	"navigable" : false,
 	"component" : "[%=self.type%]",
+	[% if (self.regexp.isDefined()) {%]
+	"regexp" : "[%=self.regexp.asString().replace("\\\\","\\\\\\\\")%]",
+	[% } else {%]
 	"regexp" : "[%=self.regexp%]",
+	[% } %]
 	[% if(self.placeholder.isDefined())  { %]
 	"placeholder" : "[%=self.placeholder%]",
 	[% } else {%]
@@ -314,10 +290,7 @@
 	"intervals" : [
 	[% if(not self.intervals.isEmpty())  { %]	
 		[%for (interval in self.intervals) { %]
-			[%interval.generateJson();%]
-			[%if (interval <> self.intervals.last) { %]
-			,
-			[%}%]
+			[%interval.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]
 	],
@@ -390,10 +363,7 @@
 	"intervals" : [
 	[% if(self.intervals.isDefined() and not self.intervals.isEmpty())  { %]	
 		[%for (interval in self.intervals) { %]
-			[%interval.generateJson();%]
-			[%if (interval <> self.intervals.last) { %]
-			,
-			[%}%]
+			[%interval.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]
 	],
@@ -439,13 +409,10 @@
 	"versions" : {
 	[% if(not self.submodels.isEmpty())  { %]
 	[%for (submodel in self.submodels) { %]
-		"[%=submodel%]": "[%=self.versions.at(self.submodels.indexOf(submodel))%]"
-		[%if (submodel <> self.submodels.last) { %]
-		,
-		[%}%]
+		"[%=submodel%]": "[%=self.versions.at(self.submodels.indexOf(submodel))%]" [% if (hasMore) { out.println(","); } %]
+	[% }%]
 	[% }%]
 	}
-	[% }%]
 }	
 [% } %]
 
@@ -456,10 +423,7 @@
 	"modules": [
 	[% if(not self.modules.isEmpty())  { %]
 		[%for (module in self.modules) { %]
-			[%module.generateJson();%]
-			[%if (module <> self.modules.last) { %]
-			,
-			[%}%]
+			[%module.generateJson();%] [% if (hasMore) { out.println(","); } %]
 		[%}%]
 	[% } %]	
 	]	
