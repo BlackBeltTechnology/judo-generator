@@ -5,10 +5,7 @@
 			"key": "[%=resource.key%]",
 			"id": "[%=resource.uuid%]",
 			"value": "[%=resource.value%]"
-		}
-		[% if(resource <> Resources!Resource.all.last) { %]
-			,
-		[% } %]
+		} [%if (hasMore) { out.print(","); }%]
 		[% } %]
 	]
 }

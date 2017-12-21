@@ -116,25 +116,35 @@
         defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsTableOperation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="fieldOperations" upperBound="-1"
-        eType="#//RdbmsFieldOperation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operationType" lowerBound="1"
         eType="#//RdbmsTableOperationType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createFieldOperations"
+        upperBound="-1" eType="#//RdbmsCreateFieldOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modifyFieldOperations"
+        upperBound="-1" eType="#//RdbmsModifyFieldOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteFieldOperations"
+        upperBound="-1" eType="#//RdbmsDeleteFieldOperation"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RdbmsFieldOperation">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operationType" lowerBound="1"
-        eType="#//RdbmsFieldOperationType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsFieldOperation" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="field" lowerBound="1" eType="#//RdbmsField"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RdbmsTableOperationType">
-    <eLiterals name="CREATE"/>
-    <eLiterals name="DELETE" value="1" literal="DELETE"/>
-    <eLiterals name="MODIFY" value="2"/>
+    <eLiterals name="CREATE" value="1"/>
+    <eLiterals name="DELETE" value="2" literal="DELETE"/>
+    <eLiterals name="MODIFY" value="3"/>
+    <eLiterals name="NONE"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RdbmsFieldOperationType">
-    <eLiterals name="CREATE"/>
-    <eLiterals name="DELETE" value="1"/>
-    <eLiterals name="MODIFY" value="2"/>
+    <eLiterals name="CREATE" value="1"/>
+    <eLiterals name="DELETE" value="2"/>
+    <eLiterals name="MODIFY" value="3"/>
+    <eLiterals name="NONE"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsCreateFieldOperation" eSuperTypes="#//RdbmsFieldOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsModifyFieldOperation" eSuperTypes="#//RdbmsFieldOperation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeChanged" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsDeleteFieldOperation" eSuperTypes="#//RdbmsFieldOperation"/>
 </ecore:EPackage>

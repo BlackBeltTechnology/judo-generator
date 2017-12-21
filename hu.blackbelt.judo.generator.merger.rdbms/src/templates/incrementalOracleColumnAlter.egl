@@ -1,0 +1,16 @@
+[* Oracle *]
+
+[% if (tableOperation.modifyFieldOperations.size() > 0) {%]
+	[% for (fieldOperation in tableOperation.modifyFieldOperations) {%]
+		ALTER TABLE [%=tableOperation.table.sqlName%]
+		ADD temp CLOB;
+			
+		UPDATE [%=tableOperation.table.sqlName%] SET temp = [%=fieldOperation.field.sqlName%];
+		
+		ALTER TABLE [%=tableOperation.table.sqlName%] DROP COLUMN [%=fieldOperation.field.sqlName%];
+		
+		ALTER TABLE [%=tableOperation.table.sqlName%]
+		RENAME COLUMN temp TO  [%=fieldOperation.field.sqlName%];
+		
+	[% } %]
+[% } %]

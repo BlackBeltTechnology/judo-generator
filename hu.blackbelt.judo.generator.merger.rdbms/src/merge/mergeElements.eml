@@ -1,0 +1,34 @@
+import "leftOutElements.etl";
+
+rule MergeTables
+	merge newTable : MODIFIED!RdbmsTable
+	with oldTable : ORIGINAL!RdbmsTable
+	into target : TARGET!RdbmsTableOperation {
+	guard : not oldTable.fields.includesAll(newTable.fields) or not newTable.fields.includesAll(oldTable.fields)
+			target.operationType = TARGET!RdbmsTableOperationType#MODIFY;
+			target.table = newTable;
+			
+			var deletedFields : Sequence(TARGET!RdbmsField) = oldTable.fields().excludingAll(newTable.fields());
+			for (field in deletedFields) {
+				var fieldOperation = new TARGET!RdbmsDeletedFieldOperation();
+				fieldOperation.field = field;
+				target.deleteFieldOperations.add(fieldOperation);
+			}
+			
+			var createdFields : Sequence(TARGET!RdbmsField) = newTable.fields().excludingAll(oldTable.fields());
+			for (field in createdFields) {
+				var fieldOperation = new TARGET!RdbmsCreateFieldOperation();
+				fieldOperation.field = field;
+				target.createFieldOperations.add(fieldOperation);
+			}
+			
+			var remainingFields : Sequence(TARGET!RdbmsField) = newTable.fields().excludingAll(createdFields);
+			for (field in remainingFields) {
+				var oldField = field.matches("compareFields");
+				if (field.type <> oldField.type) {
+					var fieldOperation = new TARGET!RdbmsModifyFieldOperation();
+					fieldOperation.typeChanged = true;
+					target.modifyFieldOperations.add(fieldOperation);
+				}
+			}
+		} 

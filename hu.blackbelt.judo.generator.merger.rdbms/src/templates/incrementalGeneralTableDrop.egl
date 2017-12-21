@@ -1,0 +1,4 @@
+[* Oracle/Postgre/Hsql *]
+
+DROP TABLE [%=tableOperation.table.sqlName%];
+[% out.println("");%]
