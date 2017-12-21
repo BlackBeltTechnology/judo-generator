@@ -20,8 +20,22 @@ var COORDINATE_TO_TEMPLATE = Map {
 		JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT = "boservicedefault",
 		JAVA!JvmJudoCoordinate#BO_ENUM_SERVICE = "boenumservice",
 		JAVA!JvmJudoCoordinate#BO_SERVICE_WRAPPER = "boservicewrapper",
+
+		JAVA!JvmJudoCoordinate#DAO_QUERY_DSL = "daoquerydsl",
+
+		JAVA!JvmJudoCoordinate#DTO = "dto",
+		JAVA!JvmJudoCoordinate#DTO_BUILDER = "dtobuilder",
+		JAVA!JvmJudoCoordinate#DTO_ENUM = "dtoenum",
+		JAVA!JvmJudoCoordinate#DTO_OPERATION = "dtooperation",
+		JAVA!JvmJudoCoordinate#DTO_ACCESSOR = "dtoaccessor",
+		JAVA!JvmJudoCoordinate#DTO_OPERATION_IMPL = "dtooperationimpl",
+
+		JAVA!JvmJudoCoordinate#REST_DTO = "restdto",
+		JAVA!JvmJudoCoordinate#REST_DTO_BUILDER = "restdtobuilder",
+		JAVA!JvmJudoCoordinate#REST_DTO_ENUM = "restdtoenum",
+		JAVA!JvmJudoCoordinate#REST_OPERATION = "restoperation",
+		JAVA!JvmJudoCoordinate#REST_OPERATION_IMPL = "restoperationimpl"
 		
-		JAVA!JvmJudoCoordinate#DAO_QUERY_DSL = "daoquerydsl"
 	};
 
 for (key in COORDINATE_TO_TEMPLATE.keySet()) {

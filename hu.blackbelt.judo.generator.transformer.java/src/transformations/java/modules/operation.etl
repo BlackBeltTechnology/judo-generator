@@ -16,6 +16,7 @@ rule OriginOperation
 	to t : JAVA!JvmMethod
 	extends JOperation {
 		t.fillFrom(s, "OriginClass", "OriginClass");
+		t.uuid = s.uuid;
 }
 
 rule BoOperation 
@@ -44,6 +45,34 @@ rule BoServiceWrapperOperation
 	to t : JAVA!JvmMethod
 	extends JOperation {
 		t.fillFrom(s, "BoServiceWrapper", "BoClass");
+}
+
+rule DtoOperation
+    transform s : PSM!JOperation
+    to t : JAVA!JvmMethod
+    extends JOperation {
+        t.fillFrom(s, "DtoOperationInterface", "DtoClass");
+}
+
+rule RestDtoOperation
+    transform s : PSM!JOperation
+    to t : JAVA!JvmMethod
+    extends JOperation {
+        t.fillFrom(s, "RestOperationClass", "RestDtoClass");
+}
+
+rule DtoImplOperation
+    transform s : PSM!JOperation
+    to t : JAVA!JvmMethod
+    extends JOperation {
+        t.fillFrom(s, "DtoOperationClass", "DtoClass");
+}
+
+rule RestDtoImplOperation
+    transform s : PSM!JOperation
+    to t : JAVA!JvmMethod
+    extends JOperation {
+        t.fillFrom(s, "RestOperationImplClass", "RestDtoClass");
 }
 
 operation JAVA!JvmMethod fillFrom (source : PSM!JOperation, ownerClassRuleName : String, returnTypeRuleName : String) : Any {

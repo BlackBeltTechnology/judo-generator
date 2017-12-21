@@ -5,7 +5,7 @@ operation JAVA!JvmClass attributes () : Collection {
 
 @cached
 operation JAVA!JvmClass allAttributes () : Collection {
-	var all = self.attributes();
+	var all = self.attributes().clone();
 	if (self.supertype.isDefined()) {
 		all.addAll(self.supertype.allAttributes());
 	}
@@ -19,7 +19,7 @@ operation JAVA!JvmClass references () : Collection {
 
 @cached
 operation JAVA!JvmClass allReferences () : Collection {
-	var all = self.references();
+	var all = self.references().clone();
 	if (self.supertype.isDefined()) {
 		all.addAll(self.supertype.allReferences());
 	}
@@ -44,4 +44,12 @@ operation JAVA!JvmClass guardEnums () : Collection {
 @cached
 operation JAVA!JvmClass createAllowed () : Boolean {
 	return not (self.abstract and self.references().size() > 0);
+}
+
+operation JAVA!JvmClass enumValueClass () : JAVA!JvmClass {
+    //TODO: this should be introduced in the meta PSM model
+    var ref = self.origin.allReferences().selectOne(r | Set{self.origin.name + "Value", self.origin.shortName + "Value"}.includes(r.opposite.ownerClass.name));
+    if (ref.isDefined()) {
+        return ref.opposite.ownerClass.find(self.coordinate);
+    }
 }

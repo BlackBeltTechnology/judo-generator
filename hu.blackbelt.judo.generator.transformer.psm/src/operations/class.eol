@@ -2,6 +2,17 @@ operation inpPIM!Element stereotype(st : String) : Boolean {
 	return stereotypeApplications.get(st).includes(self);
 }
 
+operation inpPIM!Class allAttributes() : Sequence {
+	var ret = new Sequence;
+	ret.addAll(self.attribute);
+	var c = self;
+	while (c.general.isDefined() and c.general.notEmpty()) {
+		c = c.general.first();
+		ret.addAll(c.attribute);
+	}
+	return ret;
+}
+
 
 operation createDefaultJClass() : tgtPSM!JClass {
 	var aJClass : tgtPSM!JClass = new tgtPSM!JClass;
@@ -9,8 +20,14 @@ operation createDefaultJClass() : tgtPSM!JClass {
 	return aClass.initClassDefaults();
 }
 
-operation findAttribute(name : String) : tgtPSM!JAttribute {
+operation tgtPSM!JClass findAttribute(name : String) : tgtPSM!JAttribute {
+	name.println("ATTR NAME: ");
 	return self.attributes.select(a | a.name = name).first();
+}
+
+operation inpPIM!Class findAttribute(name : String) : inpPIM!Property {
+	name.println("ATTR NAME: ");
+	return self.ownedAttributes.select(a | a.name = name).first();
 }
 
 operation tgtPSM!JClass initClassDefaults() : tgtPSM!JClass {

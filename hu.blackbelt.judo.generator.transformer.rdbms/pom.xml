@@ -140,6 +140,16 @@
 									</metaModelUris>
 									<expand>true</expand>
 								</model>
+                                <model>
+                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm.domain:model:psm:${project.version}</artifact>
+                                    <name>DOMAINPSM</name>
+                                    <readOnLoad>true</readOnLoad>
+                                    <storeOnDisposal>false</storeOnDisposal>
+                                    <metaModelUris>
+                                        <param>http://blackbelt.hu/judo/meta/psm</param>
+                                    </metaModelUris>
+                                    <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.psm.domain/target/domainPsm.model</platformAlias>
+                                </model>
 
 								<!-- Target -->
 								<model>

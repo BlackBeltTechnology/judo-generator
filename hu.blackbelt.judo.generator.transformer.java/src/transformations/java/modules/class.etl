@@ -34,6 +34,7 @@ rule OriginClass
 	to t : JAVA!JvmClass 
 	extends JClass {
 		t.coordinate = JAVA!JvmJudoCoordinate#ORIGIN;
+		t.supertype = s.supertype.equivalent("OriginClass");
 }
 
 @abstract
@@ -138,7 +139,7 @@ rule BoEnumService
 rule DaoMinimal 
 	transform s : PSM!JClass
 	to t : JAVA!JvmInterface 
-	extends WithOrigin {
+	extends InterfaceWithOrigin {
 	guard : s.participates(PSM!JLayer#PERSISTENCE)
 		t.supertype = s.supertype.equivalent("DaoMinimal");
 		t.fillCoordinated(s, JAVA!JvmJudoCoordinate#DAO_MINIMAL);
@@ -147,7 +148,7 @@ rule DaoMinimal
 rule BoService 
 	transform s : PSM!JClass
 	to t : JAVA!JvmInterface 
-	extends WithOrigin {
+	extends InterfaceWithOrigin {
 	guard : s.participates(PSM!JLayer#SERVICE)
 		t.supertype = s.supertype.equivalent("BoService");
 		t.fillCoordinated(s, JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE);
@@ -196,6 +197,98 @@ rule DaoQClass
 	guard : s.participates(PSM!JLayer#SERVICE)
 		t.supertype = s.supertype.equivalent("DaoQClass");
 		t.fillClass(s, JAVA!JvmJudoCoordinate#DAO_Q_CLASS);
+}
+
+rule DtoClass
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#OPERATION)
+		t.supertype = s.supertype.equivalent("DtoClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#DTO);
+}
+
+rule RestDtoClass
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#REST)
+		t.supertype = s.supertype.equivalent("RestDtoClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#REST_DTO);
+}
+
+rule DtoBuilderClass
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#OPERATION)
+		t.supertype = s.supertype.equivalent("DtoBuilderClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#DTO_BUILDER);
+}
+
+rule RestDtoBuilderClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestDtoBuilderClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_DTO_BUILDER);
+}
+
+rule RestOperationClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmInterface
+    extends InterfaceWithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestOperationClass");
+        t.fillCoordinated(s, JAVA!JvmJudoCoordinate#REST_OPERATION);
+}
+
+rule RestOperationImplClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestOperationImplClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_OPERATION_IMPL);
+        //TODO: We should do this for all coordinates
+        t.representationAttribute = s.representation.equivalent("RestOperationAttribute");
+}
+
+rule DtoOperationInterface
+    transform s : PSM!JClass
+    to t : JAVA!JvmInterface
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#OPERATION)
+        t.supertype = s.supertype.equivalent("DtoOperationInterface");
+        t.fillCoordinated(s, JAVA!JvmJudoCoordinate#DTO_OPERATION);
+}
+
+rule FilterRestDtoClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("FilterRestDtoClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#FILTER_REST_DTO);
+}
+
+rule DtoAccessorClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#OPERATION)
+        t.supertype = s.supertype.equivalent("DtoAccessorClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#DTO_ACCESSOR);
+}
+
+rule DtoOperationClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#OPERATION)
+        t.supertype = s.supertype.equivalent("DtoOperationClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#DTO_OPERATION_IMPL);
 }
 
 operation JAVA!JvmCoordinated fillCoordinated (source : PSM!JClass, coordinate : Any) : Any {

@@ -14,6 +14,11 @@ operation JAVA!JvmMethod isCustom () : Boolean {
 }
 
 @cached
+operation JAVA!JvmMethod isCustomClassBased () : Boolean {
+    return self.isCustom() and self.classBased;
+}
+
+@cached
 operation JAVA!JvmMethod isCustomBulk () : Boolean {
 	return self.kind = JAVA!JvmMethodKind#CUSTOM_BULK;
 }
@@ -39,6 +44,11 @@ operation JAVA!JvmMethod parametersSignature () : String {
 }
 
 @cached
+operation JAVA!JvmMethod parametersSignatureRest () : String {
+    return self.parameters.collect(p | p.restAnnotation() + p.type.fqName() + " " + p.name).concat(", ");
+}
+
+@cached
 operation JAVA!JvmMethod parametersSignatureWithFinalModifier () : String {
 	return self.parameters.collect(p | "final " + p.type.fqName() + " " + p.name).concat(", ");
 }
@@ -51,6 +61,11 @@ operation JAVA!JvmMethod parameterNameSequence () : String {
 @cached
 operation JAVA!JvmMethod parameterTypeSequence () : String {
 	return self.parameters.collect(p | p.type.javaClassName() + ".class").concat(", ");
+}
+
+@cached
+operation JAVA!JvmMethod signature () : String {
+    return self.type.fqName() + " " + self.name + "(" + self.parametersSignature() + ")";
 }
 
 @cached

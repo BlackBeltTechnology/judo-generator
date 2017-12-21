@@ -43,24 +43,21 @@ rule Class
 	
 	// add generalization to User
 	if ( stereotypeApplications.get("user").includes(s) ) {
-		var userClass = inpPIM!Class.allInstances()->select(c | c.name = "User" and 
-																c.package.name = "framework").first().equivalent("Class");
+		var userClass = tgtPSM!JClass.allInstances()->selectOne(c | c.name = "User" and c.framework);
 		userClass.println("Rule::Class - ADD supertype 'User' to Class " + t.name);
 		t.supertype = userClass;
 	}
 
 	// add generalization to TenantUser
 	if ( stereotypeApplications.get("tenantuser").includes(s) ) {
-		var tenantUserClass = inpPIM!Class.allInstances()->select(c | c.name = "TenantUser" and 
-																	  c.package.name = "framework").first().equivalent("Class");
+		var tenantUserClass = tgtPSM!JClass.allInstances()->selectOne(c | c.name = "TenantUser" and c.framework);
 		tenantUserClass.println("Rule::Class - ADD supertype 'TenantUser' to Class " + t.name);
 		t.supertype = tenantUserClass;
 	}
 
 	// add generalization to Tenant
 	if ( stereotypeApplications.get("tenant").includes(s) ) {
-		var tenantClass = inpPIM!Class.allInstances()->select(c | c.name = "Tenant" and 
-																  c.package.name = "framework").first().equivalent("Class");
+		var tenantClass = tgtPSM!JClass.allInstances()->selectOne(c | c.name = "Tenant" and c.framework);
 		tenantClass.println("Rule::Class - ADD supertype 'Tenant' to Class " + t.name);
 		t.supertype = tenantClass;
 	}
@@ -139,12 +136,14 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	        mi.uuid = uuid3(uuid3(parentMenuItem.uuid, menuClass.id), imp.id);
 	        mi.name = menuClass.name;
 	
-			
+			var sourceClass;
 	        if (menuClass.isTypeOf(inpPIM!InstanceSpecification)) {
+	        	sourceClass = menuClass.base_class;
 	            mi.represent = menuClass.base_class.equivalent("Class");
 	        }
 	
 	        if (menuClass.isTypeOf(Class)) {
+	        	sourceClass = menuClass;
 	            mi.represent = menuClass.equivalent("Class");
 	        }
 	
@@ -155,9 +154,9 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	
 	            if (stereotypeApplications.get("filter").get(imp).isDefined()) {
 	                if (menuClass.isTypeOf(inpPIM!InstanceSpecification)) {
-	                    mi.uifilters.addAll(transformFilter(mi.represent, stereotypeApplications.get("filter").get(imp)));
+	                    mi.uifilters.addAll(transformFilter(sourceClass, mi.represent, stereotypeApplications.get("filter").get(imp)));
 	                } else {
-	                    mi.uifilters.addAll(transformFilter(mi.represent, stereotypeApplications.get("filter").get(imp)));
+	                    mi.uifilters.addAll(transformFilter(sourceClass, mi.represent, stereotypeApplications.get("filter").get(imp)));
 	                }
 	            }
 	        }
@@ -171,7 +170,9 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	    }
 	
 	    if (menuClass.isTypeOf(Package) and menuClass.stereotype("dtoPackages")) {
-	        for (childMenuClass in menuClass.classes) {
+	    	var classes = new Sequence;
+	    	menuClass.collectClasses(classes);
+	        for (childMenuClass in classes) {
 	            mi = JUIMenuItem;
 	            mi.uuid = uuid3(uuid3(parentMenuItem.uuid, childMenuClass.id), imp.id);
 	            mi.name = childMenuClass.name;
@@ -189,24 +190,36 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	}
 }
 
-operation transformFilter(class : tgtPSM!JClass, txt : String) : Sequence {
-	var rets = Sequence;
+operation inpPIM!Package collectClasses (classes : Sequence(inpPIM!Class)) : Any {
+	classes.including(self.packagedElements.select(e | e.isTypeOf(inpPIM!Class)));
+	for (p in self.packagedElements.select(e | e.isTypeOf(inpPIM!Package))) {
+		p.collectClasses(classes);
+	}
+}
+
+operation transformFilter(sourceClass : inpPIM!Class, class : tgtPSM!JClass, txt : String) : Sequence {
+	var rets = new Sequence;
     var tests = txt.trim().split("\\s+and\\s+");
 
+	class.uuid.println("CLASS UUID: ");
+
     for (test in tests) {
-    	var mr = Native("java.util.regex.matcher.Pattern").compile('^\\s*{(\\S+)}\\s*(<|=|>|>=|<=|<>)\\s*"?([^"]+)"?\\s*$').matcher(test).toMatchResult();
+    	var regexp = '^\\s*\\{(\\S+)\\}\\s*(<|=|>|>=|<=|<>)\\s*"?([^"]+)"?\\s*$';
+    	var m = Native("java.util.regex.Pattern").compile(regexp).matcher(test);
         //var expr = test.trim().match('^\s*{(\S+)}\s*(<|=|>|>=|<=|<>)\s*"?([^"]+)"?\s*$')
         //attrid = classnode.getAttrIdByName();
         //jattribute = findAttribute(attrid);
-        jattribute = class.findAttribute(mr.`group`(1));
-        
-        ret = JUIFilter("JFilter" + jattribute.name);
-        ret.uuid = uuid3(class.uuid, jattribute.uuid);
-        ret.operator = mapOperator(expr.`group`(2));
-        ret.value = expr.`group`(3);
-        ret.attribute = jattribute;
-
-        rets.add(ret);
+        if (m.matches()) {
+        	var mr = m.toMatchResult();
+        	var jattribute = sourceClass.findAttribute(mr.`group`(1)).equivalent();
+	        var ret = new tgtPSM!JUIFilter("JFilter" + jattribute.name);
+	        ret.uuid = uuid3(class.uuid, jattribute.uuid);
+	        ret.operator = mapOperator(mr.`group`(2));
+	        ret.value = mr.`group`(3);
+	        ret.attribute = jattribute;
+	
+	        rets.add(ret);
+        }
     }
     return rets;
 }
@@ -220,7 +233,7 @@ operation mapOperator(op) :Any {
        		'<'  = 'LT',
        		'<=' = 'LTE',
        		'<>' = 'NE'};
-    return tgtPSM!JOperator#ALL.eEnum.eLiterals.select(l | l.name = ops.get(op)).first();
+    return tgtPSM!JOperator#EQ.eEnum.eLiterals.select(l | l.name = ops.get(op)).first();
 }
 
 

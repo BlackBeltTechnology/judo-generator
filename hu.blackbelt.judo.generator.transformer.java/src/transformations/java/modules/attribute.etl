@@ -44,6 +44,55 @@ rule BoBqlAttribute
 		t.fillFrom(s, "BoBqlClass");
 }
 
+rule DtoAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute
+	extends JAttribute {
+		t.fillFrom(s, "DtoClass");
+}
+
+rule RestDtoAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute
+	extends JAttribute {
+		t.fillFrom(s, "RestDtoClass");
+}
+
+rule DtoBuilderAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute
+	extends JAttribute {
+		t.fillFrom(s, "DtoBuilderClass");
+}
+
+rule RestDtoBuilderAttribute
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "RestDtoBuilderClass");
+}
+
+rule DtoAccessorAttribute
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "DtoAccessorClass");
+}
+
+rule DtoOperationAttribute
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "DtoOperationClass");
+}
+
+rule RestOperationAttribute
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "RestOperationImplClass");
+}
+
 operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule : String) : Any {
 	self.uuid = uuid3(source.uuid, correspondingRule);
 	self.ownerClass = source.ownerClass.equivalent(correspondingRule);

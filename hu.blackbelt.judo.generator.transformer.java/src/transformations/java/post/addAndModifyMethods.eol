@@ -13,12 +13,96 @@ operation addAndModifyMethods () : Any {
 			}
 		}
 	}
+
+	for (interface in JAVA!JvmInterface.allOfType.select(i | i.coordinate = JAVA!JvmJudoCoordinate#DTO_OPERATION)) {
+        for (ref in interface.origin.allReferences().select(r | r.navigable)) {
+            var returnType;
+            var listType;
+            if(ref.type.isCollection()) {
+                returnType = createJvmList(ref.type.bare().dto());
+                listType = returnType;
+            } else {
+                returnType = ref.type.dto();
+                listType = createJvmList(returnType);
+            }
+
+            var countTraverseMethod = createMethodFor(interface, ref, longType(), "countTraverse", JAVA!JvmMethodKind#COUNT_TRAVERSE);
+            countTraverseMethod.addIdParam();
+            countTraverseMethod.addFilterParam();
+
+            var traverseMethod = createMethodFor(interface, ref, returnType, "traverse", JAVA!JvmMethodKind#TRAVERSE);
+            traverseMethod.addIdParam();
+            traverseMethod.addFilterParam();
+            traverseMethod.addPaginationParam();
+
+            if (not ref.derived) {
+                var countAvailableMethod = createMethodFor(interface, ref, longType(), "countAvailable", JAVA!JvmMethodKind#COUNT_AVAILABLE);
+                countAvailableMethod.addIdParam();
+                countAvailableMethod.addFilterParam();
+
+                var availableMethod = createMethodFor(interface, ref, listType, "available", JAVA!JvmMethodKind#AVAILABLE);
+                availableMethod.addIdParam();
+                availableMethod.addFilterParam();
+                availableMethod.addPaginationParam();
+
+                var attachMethod = createMethodFor(interface, ref, returnType, "attach", JAVA!JvmMethodKind#ATTACH);
+                attachMethod.addIdParam();
+                attachMethod.addCustomParam(returnType, ref.name);
+
+                var detachMethod = createMethodFor(interface, ref, returnType, "detach", JAVA!JvmMethodKind#DETACH);
+                detachMethod.addIdParam();
+                detachMethod.addCustomParam(returnType, ref.name);
+            }
+        }
+    }
+
+    for (interface in JAVA!JvmInterface.allOfType.select(i | i.coordinate = JAVA!JvmJudoCoordinate#REST_OPERATION)) {
+        for (ref in interface.origin.allReferences().select(r | r.navigable)) {
+            var returnType;
+            if(ref.type.isCollection()) {
+                returnType = createJvmList(ref.type.bare().restDto());
+            } else {
+                returnType = ref.type.restDto();
+            }
+
+            var traverseMethod = createMethodFor(interface, ref, responseType(), "traverse", JAVA!JvmMethodKind#TRAVERSE);
+            traverseMethod.addIdParam();
+            traverseMethod.addCustomParam(interface.filterRestDto(), "filter");
+            traverseMethod.addPaginationParam();
+
+            var traverseExportMethod = createMethodFor(interface, ref, responseType(), "", JAVA!JvmMethodKind#TRAVERSE_EXPORT);
+            traverseExportMethod.name = "traverse" + ref.name.firstToUpperCase() + "Export";
+            traverseExportMethod.uuid = uuid3(ref.uuid, traverseExportMethod.name);
+            traverseExportMethod.addIdParam();
+            traverseExportMethod.addCustomParam(interface.filterRestDto(), "filter");
+
+            if (not ref.derived) {
+                var availableMethod = createMethodFor(interface, ref, responseType(), "available", JAVA!JvmMethodKind#AVAILABLE);
+                availableMethod.addIdParam();
+                availableMethod.addCustomParam(interface.filterRestDto(), "filter");
+                availableMethod.addPaginationParam();
+
+                var availableAllMethod = createMethodFor(interface, ref, responseType(), "availableAll", JAVA!JvmMethodKind#AVAILABLE_ALL);
+                availableAllMethod.addCustomParam(interface.filterRestDto(), "filter");
+                availableAllMethod.addPaginationParam();
+
+                var attachMethod = createMethodFor(interface, ref, returnType, "attach", JAVA!JvmMethodKind#ATTACH);
+                attachMethod.addIdParam();
+                attachMethod.addCustomParam(returnType, ref.name);
+
+                var detachMethod = createMethodFor(interface, ref, returnType, "detach", JAVA!JvmMethodKind#DETACH);
+                detachMethod.addIdParam();
+                detachMethod.addCustomParam(returnType, ref.name);
+            }
+        }
+    }
 }
 
 operation createQueryCountMethodFor (method : JAVA!JvmMethod) : Any {
 	var countMethod = new JAVA!JvmMethod;
 	countMethod.name = method.name + "Count";
 	countMethod.uuid = uuid3(method.uuid, countMethod.name);
+	countMethod.origin = method.origin;
 	countMethod.ownerClass = method.ownerClass;
 	countMethod.type = intType();
 	countMethod.kind = JAVA!JvmMethodKind#QUERY_COUNT;
@@ -37,11 +121,13 @@ operation createBulkMethodFor (method : JAVA!JvmMethod) : Any {
 	var bulkMethod = new JAVA!JvmMethod;
 	bulkMethod.name = method.name;
 	bulkMethod.classBased = method.classBased;
+	bulkMethod.origin = method.origin;
 	bulkMethod.uuid = uuid3(method.uuid, bulkMethod.name);
 	bulkMethod.ownerClass = method.ownerClass;
 	bulkMethod.addIdsParam();
 	bulkMethod.type = createJvmList(method.type);
 	bulkMethod.kind = JAVA!JvmMethodKind#CUSTOM_BULK;
+	bulkMethod.bulk = true;
 	var allParams = method.parameters.asSequence();
 	for (param in allParams) {
 		var bulkParam = new JAVA!JvmMethodParameter;
@@ -50,4 +136,16 @@ operation createBulkMethodFor (method : JAVA!JvmMethod) : Any {
 		bulkParam.type = param.type;
 		bulkParam.ownerMethod = bulkMethod;
 	}
+}
+
+operation createMethodFor (ownerClass : JAVA!JvmInterface, ref : JAVA!JvmReference, returnType : JAVA!JvmType, mNamePrefix : String, kind : Any) : JAVA!JvmMethod {
+    var newMethod = new JAVA!JvmMethod;
+    newMethod.name = mNamePrefix + ref.name.firstToUpperCase();
+    newMethod.uuid = uuid3(ref.uuid, newMethod.name);
+    newMethod.originReference = ref;
+    newMethod.ownerClass = ownerClass;
+    newMethod.type = returnType;
+    newMethod.kind = kind;
+    newMethod.classBased = false;
+    return newMethod;
 }

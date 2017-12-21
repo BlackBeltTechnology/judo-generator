@@ -49,6 +49,38 @@ rule BoServiceWrapperParameter
 		t.fillFrom(s, "BoServiceWrapperOperation", "BoClass");
 }
 
+rule DtoParameter
+    transform s : PSM!JParameter
+    to t : JAVA!JvmMethodParameter
+    extends JParameter {
+    guard : s.input
+        t.fillFrom(s, "DtoOperation", "DtoClass");
+}
+
+rule RestDtoParameter
+    transform s : PSM!JParameter
+    to t : JAVA!JvmMethodParameter
+    extends JParameter {
+    guard : s.input
+        t.fillFrom(s, "RestDtoOperation", "RestDtoClass");
+    }
+
+rule DtoImplParameter
+    transform s : PSM!JParameter
+    to t : JAVA!JvmMethodParameter
+    extends JParameter {
+    guard : s.input
+        t.fillFrom(s, "DtoImplOperation", "DtoClass");
+}
+
+rule RestDtoImplParameter
+    transform s : PSM!JParameter
+    to t : JAVA!JvmMethodParameter
+    extends JParameter {
+    guard : s.input
+        t.fillFrom(s, "RestDtoImplOperation", "RestDtoClass");
+}
+
 operation JAVA!JvmMethodParameter fillFrom (source : PSM!JParameter, ownerOperationRuleName : String, typeRuleName : String) : Any {
 	self.uuid = uuid3(source.uuid, ownerOperationRuleName);
 	self.ownerMethod = source.ownerOperation.equivalent(ownerOperationRuleName);

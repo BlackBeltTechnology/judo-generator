@@ -1,8 +1,22 @@
 @cached
-operation paginationClass () : FWELEMENTS!JvmClass {
-	return FWELEMENTS!JvmClass.all.select(c | c.name = "Pagination").first();
+operation paginationOrigin () : FWELEMENTS!JvmClass {
+    return FWELEMENTS!JvmClass.all.select(c | c.name = "Pagination" and c.coordinate=JAVA!JvmJudoCoordinate#ORIGIN).first();
 }
 
 operation paginationClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
-	return FWELEMENTS!JvmClass.all.select(c | (c.name = "Pagination" and c.coordinate = jvmJudoCoordinate)).first();
+    return FWELEMENTS!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Pagination" and c.coordinate = jvmJudoCoordinate)).first();
+}
+
+@cached
+operation filterOrigin () : FWELEMENTS!JvmClass {
+    return FWELEMENTS!JvmClass.all.select(c | c.name = "Filter" and c.coordinate=JAVA!JvmJudoCoordinate#ORIGIN).first();
+}
+
+operation filterClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
+    return FWELEMENTS!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Filter" and c.coordinate = jvmJudoCoordinate)).first();
+}
+
+@cached
+operation responseType () : JAVA!JvmType {
+    return FWELEMENTS!JvmClass.all.select(c | c.name = "Response" and c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
 }

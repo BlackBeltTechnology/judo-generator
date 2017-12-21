@@ -17,7 +17,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
         eType="#//JvmPackage" containment="true" eOpposite="#//JvmPackage/ownerModel"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="applicationTop" lowerBound="1"
         eType="#//JvmPackage"/>
   </eClassifiers>
@@ -91,6 +91,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JvmInterface"
         eOpposite="#//JvmInterface/methods"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="origin" eType="#//JvmMethod"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originReference" eType="#//JvmReference"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmMember" abstract="true" eSuperTypes="#//JvmTypedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JvmClass"
@@ -110,6 +111,14 @@
     <eLiterals name="QUERY_COUNT" value="3"/>
     <eLiterals name="SM_DECIDE" value="4"/>
     <eLiterals name="CUSTOM_BULK" value="5"/>
+    <eLiterals name="COUNT_TRAVERSE" value="5"/>
+    <eLiterals name="TRAVERSE" value="6"/>
+    <eLiterals name="COUNT_AVAILABLE" value="7"/>
+    <eLiterals name="AVAILABLE" value="8"/>
+    <eLiterals name="ATTACH" value="9"/>
+    <eLiterals name="DETACH" value="10"/>
+    <eLiterals name="TRAVERSE_EXPORT" value="11"/>
+    <eLiterals name="AVAILABLE_ALL" value="12"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmAttribute" eSuperTypes="#//JvmMember">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -209,6 +218,16 @@
     <eLiterals name="BO_INTERFACE" value="18"/>
     <eLiterals name="BO_BUILDER_INTERFACE" value="19"/>
     <eLiterals name="BO_BQL_INTERFACE" value="20"/>
+    <eLiterals name="REST_OPERATION" value="21"/>
+    <eLiterals name="DTO_BUILDER" value="22"/>
+    <eLiterals name="DTO_ENUM" value="23"/>
+    <eLiterals name="REST_DTO_BUILDER" value="24"/>
+    <eLiterals name="REST_DTO_ENUM" value="25"/>
+    <eLiterals name="DTO_OPERATION" value="26"/>
+    <eLiterals name="FILTER_REST_DTO" value="27"/>
+    <eLiterals name="DTO_ACCESSOR" value="28"/>
+    <eLiterals name="DTO_OPERATION_IMPL" value="29"/>
+    <eLiterals name="REST_OPERATION_IMPL" value="30"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmCoordinated" abstract="true" eSuperTypes="#//JvmType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordinate" eType="#//JvmJudoCoordinate"/>

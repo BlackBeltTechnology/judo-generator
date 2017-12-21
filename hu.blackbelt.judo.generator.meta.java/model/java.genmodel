@@ -12,6 +12,14 @@
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/QUERY_COUNT"/>
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/SM_DECIDE"/>
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/CUSTOM_BULK"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/COUNT_TRAVERSE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/TRAVERSE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/COUNT_AVAILABLE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/AVAILABLE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/ATTACH"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/DETACH"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/TRAVERSE_EXPORT"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/AVAILABLE_ALL"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="java.ecore#//JvmReferenceKind">
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmReferenceKind/ASSOCIATION"/>
@@ -46,6 +54,16 @@
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_INTERFACE"/>
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_BUILDER_INTERFACE"/>
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_BQL_INTERFACE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_OPERATION"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_BUILDER"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_ENUM"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_DTO_BUILDER"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_DTO_ENUM"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_OPERATION"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/FILTER_REST_DTO"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_ACCESSOR"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_OPERATION_IMPL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_OPERATION_IMPL"/>
     </genEnums>
     <genClasses ecoreClass="java.ecore#//JvmElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/name"/>
@@ -114,6 +132,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMethod/kind"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/ownerClass"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/origin"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/originReference"/>
     </genClasses>
     <genClasses ecoreClass="java.ecore#//JvmMember">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMember/ownerClass"/>

@@ -19,6 +19,10 @@ operation idType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.useForJudoId).first();
 }
 
+operation urlType () : JAVA!JvmType {
+    return  JAVATYPES!JvmType.all.select( t | t.name = "URL").first();
+}
+
 operation randomUUID () : String {
 	return Native("java.util.UUID").randomUUID().toString();
 }

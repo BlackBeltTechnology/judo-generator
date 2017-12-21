@@ -1,4 +1,34 @@
 @cached
+operation JAVA!JvmCoordinated dto () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#DTO);
+}
+
+@cached
+operation JAVA!JvmCoordinated dtoAccessor () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#DTO_ACCESSOR);
+}
+
+@cached
+operation JAVA!JvmCoordinated dtoOperation () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#DTO_OPERATION);
+}
+
+@cached
+operation JAVA!JvmCoordinated restDto () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#REST_DTO);
+}
+
+@cached
+operation JAVA!JvmCoordinated filterRestDto () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#FILTER_REST_DTO);
+}
+
+@cached
+operation JAVA!JvmCoordinated restOperation () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#REST_OPERATION);
+}
+
+@cached
 operation JAVA!JvmCoordinated po () : JAVA!JvmCoordinated {
 	return self.find(JAVA!JvmJudoCoordinate#PO);
 }
@@ -70,4 +100,9 @@ operation JAVA!JvmCoordinated origin() : JAVA!JvmCoordinated {
 operation JAVA!JvmCoordinated find (jvmJudoCoordinate : Any) : JAVA!JvmCoordinated {
 	var ret =  JAVA!JvmCoordinated.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().uuid = self.origin().uuid)).first();
 	return ret;
+}
+
+@cached
+operation JAVA!JvmCoordinated isPrimitive () : Boolean {
+    return false;
 }

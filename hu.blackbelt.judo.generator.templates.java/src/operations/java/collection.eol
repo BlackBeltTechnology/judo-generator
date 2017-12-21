@@ -20,3 +20,23 @@ operation JAVA!JvmType javaClassName () : String {
 operation JAVA!JvmCollection isVoid () : Boolean {
 	return self.componentType.isVoid();
 }
+
+@cached
+operation JAVA!JvmCollection isPrimitive () : Boolean {
+    return self.componentType.isPrimitive();
+}
+
+@cached
+operation JAVA!JvmCollection bo () : JAVA!JvmCollection {
+    return createJvmList(self.bare().bo());
+}
+
+@cached
+operation JAVA!JvmCollection dto () : JAVA!JvmCollection {
+    return createJvmList(self.bare().dto());
+}
+
+@cached
+operation JAVA!JvmCollection restDto () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restDto());
+}

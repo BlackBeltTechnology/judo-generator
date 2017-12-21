@@ -49,6 +49,55 @@ rule BoBqlRole
 		t.fillFrom(s, "BoBql");
 }
 
+rule DtoRole
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference
+	extends JRole {
+		t.fillFrom(s, "Dto");
+}
+
+rule RestDtoRole
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference
+	extends JRole {
+		t.fillFrom(s, "RestDto");
+}
+
+rule DtoBuilderRole
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference
+	extends JRole {
+		t.fillFrom(s, "DtoBuilder");
+}
+
+rule RestDtoBuilderRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "RestDtoBuilder");
+}
+
+rule DtoAccessorRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "DtoAccessor");
+}
+
+rule DtoOperationRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "DtoOperation");
+}
+
+rule RestOperationImplRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "RestOperationImpl");
+}
+
 operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : Any {
 	self.uuid = uuid3(source.uuid, rulPrefix + "Role");
 	self.ownerClass = source.ownerClass.equivalent(rulPrefix + "Class");
@@ -58,6 +107,9 @@ operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : 
 	}
 	self.derived = source.ownerRelationship.derived;
 	self.derivedDescription = source.derivedDescription;
+	if (self.derivedDescription.isDefined() and self.derivedDescription = "") {
+	   self.derived = true;
+	}
 	self.referenceType = source.transformToReferenceType();
 	self.optionScript = source.optionScript;
 	if (source.value.isDefined() and not self.derived) {

@@ -15,8 +15,16 @@ operation longType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.name = "Long").first();
 }
 
+operation urlType () : JAVA!JvmType {
+    return JAVATYPES!JvmType.all.select( t | t.name = "URL").first();
+}
+
 operation idType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.useForJudoId).first();
+}
+
+operation JAVA!JvmType isURL() : Boolean {
+    return self.uuid = urlType().uuid;
 }
 
 operation randomUUID () : String {
@@ -31,6 +39,14 @@ operation getUuidNativeStub () : Any {
 @cached
 operation getLongNativeStub () : Any {
 	return Native("java.lang.Long");
+}
+
+operation Boolean ternary(ifTrue : Any, ifFalse : Any) : Any {
+    if (self) {
+        return ifTrue;
+    } else {
+        return ifFalse;
+    }
 }
 
 //hack balaton style :-) this method should have been in an epsilon Tool, but I did not managed to make it work

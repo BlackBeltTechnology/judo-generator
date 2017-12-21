@@ -1,0 +1,44 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+  
+  var t = getJavaMacro("equalsToStringHashCode");
+  t.populate("className", class.name);
+  t.populate("classForEquals", "hu.blackbelt.judo.business.dto.api.IdentifiableDto");
+%]
+
+
+package [%=class.package.fqName()%];
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import hu.blackbelt.judo.common.security.api.permission.PermissionSubject;
+import hu.blackbelt.judo.common.security.api.permission.PermissionSubjectAttribute;
+import hu.blackbelt.judo.common.security.api.permission.PermissionSubjectRelation;
+import hu.blackbelt.judo.common.lang.api.meta.Metadata;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@PermissionSubject(id = "[%=class.origin.uuid %]", resource = "[%= class.origin.package.name %].[%=class.origin.name %]")
+public class [%= class.name %] [% if (class.supertype.isDefined()) { %] extends [%=class.supertype.fqName() %] [% } %] implements hu.blackbelt.judo.business.dto.api.IdentifiableDto {
+
+	private Metadata $judo$meta;
+	
+	[% for (attr in class.attributes()) { %]
+		@PermissionSubjectAttribute(id = "[%=class.origin.uuid %].[%=attr.uuid %]", resource = "[%=class.origin.package %].[%=class.origin.name %].[%=attr.name %]")
+		private [%=attr.type.fqName() %] [%=attr.name %];
+	[%}%]
+	
+	[% for (ref in class.references()) { %]
+		[% if (ref.navigable) { %]
+			@PermissionSubjectRelation(id = "[%=class.origin.uuid %].[%=ref.uuid %]", resource = "[%=class.origin.package %].[%=class.origin.name %].[%=ref.name %]")
+			@PermissionSubjectAttribute(id = "[%=class.origin.uuid %].[%=ref.uuid %]", resource = "[%=class.origin.package %].[%=class.origin.name %].[%=ref.name %]")
+			private [%=ref.type.fqName() %] [%=ref.name %];
+		[%}%]
+	[%}%]
+	
+	[%=t.process()%]
+}
