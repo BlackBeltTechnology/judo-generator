@@ -4,16 +4,6 @@ rule TableCreated
 	to tableOp : TARGET!RdbmsTableOperation {
 		tableOp.operationType = TARGET!RdbmsTableOperationType#CREATE;
 		tableOp.table = table;
-		for (field in table.fields) {
-			tableOp.createFieldOperations.add(field.equivalent("FieldCreated"));
-		}
-	}
-
-@lazy
-rule FieldCreated
-	transform field : MODIFIED!RdbmsField
-	to fieldOp : TARGET!RdbmsCreateFieldOperation {
-		fieldOp.field = field;
 	}
 	
 @lazy
@@ -22,14 +12,4 @@ rule TableDeleted
 	to tableOp : TARGET!RdbmsTableOperation {
 		tableOp.operationType = TARGET!RdbmsTableOperationType#DELETE;
 		tableOp.table = table;
-		for (field in table.fields) {
-			tableOp.deleteFieldOperations.add(field.equivalent("FieldDeleted"));
-		}
-	}
-
-@lazy
-rule FieldDeleted
-	transform field : ORIGINAL!RdbmsField
-	to fieldOp : TARGET!RdbmsDeleteFieldOperation {
-		fieldOp.field = field;
 	}

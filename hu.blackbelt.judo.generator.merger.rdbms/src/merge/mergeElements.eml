@@ -8,6 +8,8 @@ rule MergeTables
 			target.operationType = TARGET!RdbmsTableOperationType#MODIFY;
 			target.table = newTable;
 			
+			oldTable.name.println("MERGE: ");
+			
 			var deletedFields : Sequence(TARGET!RdbmsField) = oldTable.fields().excludingAll(newTable.fields());
 			for (field in deletedFields) {
 				var fieldOperation = new TARGET!RdbmsDeletedFieldOperation();
