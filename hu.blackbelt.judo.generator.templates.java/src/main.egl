@@ -10,7 +10,6 @@ var COORDINATE_TO_TEMPLATE = Map {
 		JAVA!JvmJudoCoordinate#BO_BUILDER = "bobuilder",
 		JAVA!JvmJudoCoordinate#BO_BQL = "bobql",
 		JAVA!JvmJudoCoordinate#DOMAIN_BQL = "domainbql",
-		//JAVA!JvmJudoCoordinate#BO_TYPE_RESOLVER = "botyperesolver"
 
 		JAVA!JvmJudoCoordinate#DAO_MINIMAL = "daominimal",
 
@@ -32,10 +31,31 @@ var COORDINATE_TO_TEMPLATE = Map {
 
 		JAVA!JvmJudoCoordinate#REST_DTO = "restdto",
 		JAVA!JvmJudoCoordinate#REST_DTO_BUILDER = "restdtobuilder",
-		JAVA!JvmJudoCoordinate#REST_DTO_ENUM = "restdtoenum",
+		JAVA!JvmJudoCoordinate#REST_DTO_ENUM = "enum",
 		JAVA!JvmJudoCoordinate#REST_OPERATION = "restoperation",
-		JAVA!JvmJudoCoordinate#REST_OPERATION_IMPL = "restoperationimpl"
-		
+		JAVA!JvmJudoCoordinate#REST_OPERATION_IMPL = "restoperationimpl",
+
+		JAVA!JvmJudoCoordinate#REST_NAMESPACE = "restnamespace",
+		JAVA!JvmJudoCoordinate#REST_NAMESPACE_OPERATION = "restnamespaceoperation",
+		JAVA!JvmJudoCoordinate#REST_NAMESPACE_OPERATION_IMPL = "restnamespaceoperationimpl",
+
+		JAVA!JvmJudoCoordinate#DAO_HEALTH_CHECK = "daohealthcheck",
+		JAVA!JvmJudoCoordinate#BO_SERVICE_HEALTH_CHECK = "boservicehealthcheck",
+		JAVA!JvmJudoCoordinate#DTO_OPERATION_HEALTH_CHECK = "dtooperationhealthcheck",
+		JAVA!JvmJudoCoordinate#REST_OPERATION_HEALTH_CHECK = "restoperationhealthcheck",
+
+		JAVA!JvmJudoCoordinate#FILTER_REST_DTO = "filterrestdto",
+
+		JAVA!JvmJudoCoordinate#BO_TYPE_RESOLVER = "botyperesolver",
+		JAVA!JvmJudoCoordinate#ENUM_CONVERTER_SERVICE = "enumconverterservice",
+
+		JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT = "abstractresttestclient",
+		JAVA!JvmJudoCoordinate#REST_TEST_BASE = "resttestbase",
+		JAVA!JvmJudoCoordinate#REST_TEST_CLIENT = "resttestclient",
+		JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C = "resttestwrapperc",
+		JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_T = "resttestwrappert",
+		JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M = "resttestwrapperm",
+		JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S = "resttestwrappers"
 	};
 
 for (key in COORDINATE_TO_TEMPLATE.keySet()) {
@@ -76,7 +96,8 @@ operation filterBy (coordinate : Any) : Collection {
 									JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT,
 									JAVA!JvmJudoCoordinate#BO_SERVICE_WRAPPER
 									};
-	return JAVA!JvmCoordinated.all.select(c | c.coordinate = coordinate and not (c.framework and toBeRemovedCoordinatesHack.includes(c.coordinate)));
+	return JAVA!JvmCoordinated.all.select(c | c.coordinate = coordinate and not (c.framework and toBeRemovedCoordinatesHack.includes(c.coordinate))
+	           and not (c.coordinate = JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C and (c.abstract or c.hasFixedEnum())));
 }
 
 %]

@@ -17,3 +17,8 @@ operation JAVA!JvmType isCollection () : Boolean {
 operation JAVA!JvmType isVoid () : Boolean {
 	return self.uuid = voidType().uuid;
 }
+
+@cached
+operation JAVA!JvmType hasSuper () : Boolean {
+    return self.supertype.isDefined();
+}

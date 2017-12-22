@@ -1,0 +1,47 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import org.apache.felix.scr.annotations.Activate;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.ConfigurationPolicy;
+import org.apache.felix.scr.annotations.Deactivate;
+import org.apache.felix.scr.annotations.Properties;
+import org.apache.felix.scr.annotations.Property;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+import hu.blackbelt.judo.business.bo.api.BoTypeResolver;
+import hu.blackbelt.judo.business.bo.api.Bo;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
+
+@Component(immediate = true)
+@Service
+@Properties(value = {
+       @Property(name = "persistenceUnitName", value = "[%=JAVA!JvmModel.all.first().applicationTop.fqName()%]")
+})
+public class [%=class.name%] implements BoTypeResolver {
+
+    Map<String, Class<? extends Bo>> packageEntities = Maps.newHashMap();
+
+    public [%=class.name%]() {
+        [% for (class in boClasses()) { %]
+            packageEntities.put("[%=class.origin.package.name%]:[%=class.name%]", [%=class.fqName()%].class);
+        [%}%]
+    }
+
+    public Class<? extends Bo> reolveFullName(String name) {
+        return packageEntities.get(name);
+    }
+}
+
+[%
+operation boClasses () {
+    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO);
+}
+%]

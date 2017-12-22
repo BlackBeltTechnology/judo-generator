@@ -45,7 +45,7 @@ import java.util.List;
 @NoArgsConstructor
 @ProtectedResource
 @ResourceUrl(href = Namespace.REST_BASE_URI + "/[%= class.origin.nameToRest() %]/{id}", rel = "self")
-public class [%=class.name%] [% if (class.supertype.isDefined()) { %] extends [%=class.supertype.fqName() %] [% } %] implements IdentifiableRestDto {
+public class [%=class.name%] [% if (class.hasSuper()) { %] extends [%=class.supertype.fqName() %] [% } %] implements IdentifiableRestDto {
 
 	private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 

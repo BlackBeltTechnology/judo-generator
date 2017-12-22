@@ -14,7 +14,7 @@ import "pre/modifyVoidBusinessMethodsToReturnDeclaringClass.eol";
 import "pre/addIdToEntities.eol";
 
 import "post/addGuardMethodsAndEnum.eol";
-import "post/addDomainBqlClasses.eol";
+import "post/addPackageBasedAndSingleClasses.eol";
 import "post/addAndModifyMethods.eol";
 import "post/addHuBlackbeltPackages.eol";
 import "post/modifyReferenceTypeToInterfaceForFrameworkEntities.eol";
@@ -54,7 +54,13 @@ pre {
 			JAVA!JvmJudoCoordinate#REST_DTO_ENUM = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "", NAME_SUFFIX = "EnumRestDto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
 			JAVA!JvmJudoCoordinate#REST_OPERATION = Map{PACKAGE_NAME = "rest", NAME_PREFIX = "", NAME_SUFFIX = "RestOperation", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
             JAVA!JvmJudoCoordinate#REST_OPERATION_IMPL = Map{PACKAGE_NAME = "rest.regular", NAME_PREFIX = "Default", NAME_SUFFIX = "RestOperation", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
-			JAVA!JvmJudoCoordinate#FILTER_REST_DTO = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "", NAME_SUFFIX = "FilterRestDto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO}
+			JAVA!JvmJudoCoordinate#FILTER_REST_DTO = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "", NAME_SUFFIX = "FilterRestDto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
+			JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT = Map{PACKAGE_NAME = "rest.clients", NAME_PREFIX = "Abstract", NAME_SUFFIX = "Client", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT},
+			JAVA!JvmJudoCoordinate#REST_TEST_CLIENT = Map{PACKAGE_NAME = "rest.clients", NAME_PREFIX = "", NAME_SUFFIX = "Client", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_CLIENT},
+			JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "C", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C},
+			JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_T = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "T", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_T},
+			JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "S", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S},
+			JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "M", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M}
 		};
 
 	addParticipateToAllElement();
@@ -68,9 +74,10 @@ post {
 	hacklongtoPOId();
 	
 	addGuardMethodsAndEnum();
-	addDomainBqlClasses();
+	addPackageBasedClasses();
 	addAndModifyMethods();
 	addHuBlackbeltPackages();
+	addSingleClasses();
 	modifyReferenceTypeToInterfaceForFrameworkEntities();
 	
 }

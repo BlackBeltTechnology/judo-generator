@@ -420,17 +420,6 @@ public class [%=class.name%] extends AbstractCrudRestOperation<[%=class.restDto(
 
 
 [%
-
-@cached
-operation JAVA!JvmClass exportableAttrs () : Collection {
-    return self.allAttributes().select(a | not a.technical).sortBy(a | a.name);
-}
-
-@cached
-operation JAVA!JvmClass exportableTechnicalAttrs () : Collection {
-    return self.allAttributes().select(a | a.technical).sortBy(a | a.name);
-}
-
 @cached
 operation JAVA!JvmClass exportableEnums () : Collection {
     return self.allReferences().select(r | not r.type.isCollection() and r.navigable and r.opposite.ownerClass.representsEnum).sortBy(r | r.name);

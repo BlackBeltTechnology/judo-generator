@@ -132,7 +132,6 @@ rule BoEnumService
 	guard : s.participates(PSM!JLayer#SERVICE) and s.fixedEnum.isDefined()
 		t.supertype = s.supertype.equivalent("BoEnumService");
 		t.fillClass(s, JAVA!JvmJudoCoordinate#BO_ENUM_SERVICE);
-		t.fixedEnum = s.fixedEnum.equivalent("BoEnum");
 }
 
 
@@ -289,6 +288,60 @@ rule DtoOperationClass
     guard : s.participates(PSM!JLayer#OPERATION)
         t.supertype = s.supertype.equivalent("DtoOperationClass");
         t.fillClass(s, JAVA!JvmJudoCoordinate#DTO_OPERATION_IMPL);
+}
+
+rule AbstractRestTestClientClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("AbstractRestTestClientClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT);
+}
+
+rule RestTestClientClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestTestClientClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_TEST_CLIENT);
+}
+
+rule RestTestWrapperCClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestTestWrapperCClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C);
+}
+
+rule RestTestWrapperTClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestTestWrapperTClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_T);
+}
+
+rule RestTestWrapperSClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestTestWrapperSClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S);
+}
+
+rule RestTestWrapperMClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestTestWrapperMClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M);
 }
 
 operation JAVA!JvmCoordinated fillCoordinated (source : PSM!JClass, coordinate : Any) : Any {

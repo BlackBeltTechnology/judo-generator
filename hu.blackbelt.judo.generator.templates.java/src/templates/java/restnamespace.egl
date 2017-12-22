@@ -1,0 +1,49 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import com.google.common.collect.ImmutableList;
+import lombok.Builder;
+import lombok.Data;
+
+import java.util.List;
+
+public final class Namespace {
+    public static final String REST_BASE_URI = "/rest/{{ package.module|replace(".","/") }}"; 
+    private Namespace() {
+    }
+
+    public static final VersionInfo VERSION_INFO = VersionInfo.builder()
+        .version("{{ projectVersion }}")
+        .application("[%=class.package.ownerModel().name.firstToUpperCase()%]")
+        .domain("{{ package.module }}")
+        .commitId("{{ commitId }}")
+        .modules(ImmutableList.<Module>builder()
+            {%- for module in modules|sort(attribute = 'id') %}
+            .add(Module.builder().id("{{ module.id }}").name("{{ module.name }}").version("{{ module.version }}").build())
+            {%- endfor %}
+            .build())
+        .build();
+
+    @Data
+    @Builder
+    public static class VersionInfo {
+        String application;
+        String domain;
+        String version;
+        String commitId;
+        List<Module> modules;
+    }
+
+    @Data
+    @Builder
+    public static class Module {
+        String id;
+        String name;
+        String version;
+    }
+}

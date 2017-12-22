@@ -52,7 +52,7 @@ import java.util.List;
 
 @lombok.Getter
 @lombok.Setter
-public class [%=className%] [%if (class.supertype.isDefined()) {%] extends [%=class.supertype.fqName()%] [%}%] 
+public class [%=className%] [%if (class.hasSuper()) {%] extends [%=class.supertype.fqName()%] [%}%]
 	implements hu.blackbelt.judo.business.bo.api.Entity, hu.blackbelt.judo.business.bo.api.PropertyChangeTracked
 	[%if (class.representsEnum) {%]
 		, hu.blackbelt.judo.business.bo.api.Enumeration
@@ -115,7 +115,7 @@ public class [%=className%] [%if (class.supertype.isDefined()) {%] extends [%=cl
 	
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		$judo$pcs.addPropertyChangeListener(listener);
-		[%if (class.supertype.isDefined()) {%]
+		[%if (class.hasSuper()) {%]
 			super.addPropertyChangeListener(listener);
 		[%}%]
 	}

@@ -1,3 +1,13 @@
-operation JAVA!JvmElement nameToRest() {
+operation JAVA!JvmElement nameToRest() : String {
 	return self.name.toLowerCase();
+}
+
+@cached
+operation JAVA!JvmElement nameToUpperCase () : String {
+    //Converts the name to uppercase and adds underscores as separator
+    var result : String = self.name.characterAt(0);
+    for (ch in self.name.substring(1).toCharSequence()) {
+        result += ch.matches("[A-Z]").ternary("_", "") + ch;
+    }
+    return result.toUpperCase();
 }

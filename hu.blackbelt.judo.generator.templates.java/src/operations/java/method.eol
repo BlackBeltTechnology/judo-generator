@@ -59,6 +59,11 @@ operation JAVA!JvmMethod parameterNameSequence () : String {
 }
 
 @cached
+operation JAVA!JvmMethod parameterNameSequenceWithoutId () : String {
+    return self.parameters.select(p | not p.representsJudoId).collect(p | p.name).concat(", ");
+}
+
+@cached
 operation JAVA!JvmMethod parameterTypeSequence () : String {
 	return self.parameters.collect(p | p.type.javaClassName() + ".class").concat(", ");
 }

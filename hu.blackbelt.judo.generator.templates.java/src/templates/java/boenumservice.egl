@@ -18,7 +18,7 @@ import org.apache.felix.scr.annotations.Service;
 
 @Component(immediate = true)
 @Service
-public class [%=className%] extends AbstractEnumService<[%=class.bo().fqName()%], [%=class.fixedEnum.fqName()%]> {
+public class [%=className%] extends AbstractEnumService<[%=class.bo().fqName()%], [%=class.bo().fixedEnum.fqName()%]> {
 	
 	@org.apache.felix.scr.annotations.Reference(policyOption = org.apache.felix.scr.annotations.ReferencePolicyOption.GREEDY)    
 	private [%=class.origin.daoMinimal().fqName()%] daoMinimal;
@@ -35,7 +35,7 @@ public class [%=className%] extends AbstractEnumService<[%=class.bo().fqName()%]
 	}
 	
 	@Override
-	public Class<[%=class.fixedEnum.fqName()%]> handles() {
-		return [%=class.fixedEnum.fqName()%].class;
+	public Class<[%=class.bo().fixedEnum.fqName()%]> handles() {
+		return [%=class.bo().fixedEnum.fqName()%].class;
 	}
 }

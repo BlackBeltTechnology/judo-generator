@@ -98,6 +98,41 @@ rule RestOperationImplRole
         t.fillFrom(s, "RestOperationImpl");
 }
 
+rule AbstractRestTestClientRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "AbstractRestTestClient");
+}
+
+rule RestTestWrapperCRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "RestTestWrapperC");
+}
+
+rule RestTestWrapperTRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "RestTestWrapperT");
+}
+
+rule RestTestWrapperMRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "RestTestWrapperM");
+}
+
+rule RestTestWrapperSRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "RestTestWrapperS");
+}
+
 operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : Any {
 	self.uuid = uuid3(source.uuid, rulPrefix + "Role");
 	self.ownerClass = source.ownerClass.equivalent(rulPrefix + "Class");

@@ -64,6 +64,25 @@
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_ACCESSOR"/>
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_OPERATION_IMPL"/>
       <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_OPERATION_IMPL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_NAMESPACE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_NAMESPACE_OPERATION"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_NAMESPACE_OPERATION_IMPL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_OPERATION_HEALTH_CHECK"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_OPERATION_HEALTH_CHECK"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DAO_HEALTH_CHECK"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_SERVICE_HEALTH_CHECK"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_TYPE_RESOLVER"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/ENUM_CONVERTER_SERVICE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/QUERY_DSL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/QUERY_DSL_JUNCTION"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/QUERY_DSL_PERSISTENCE_PROVIDER"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/ABSTRACT_REST_TEST_CLIENT"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_TEST_BASE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_TEST_CLIENT"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_TEST_WRAPPER_C"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_TEST_WRAPPER_M"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_TEST_WRAPPER_S"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_TEST_WRAPPER_T"/>
     </genEnums>
     <genClasses ecoreClass="java.ecore#//JvmElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/name"/>
@@ -142,6 +161,7 @@
     </genClasses>
     <genClasses ecoreClass="java.ecore#//JvmMethodParameter">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethodParameter/ownerMethod"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMethodParameter/representsJudoId"/>
     </genClasses>
     <genClasses ecoreClass="java.ecore#//JvmAttribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/mandatory"/>
@@ -149,6 +169,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/regexpForValidation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/calculationScript"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/regexp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/placeholder"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMember/defaultValueExpression"/>
     </genClasses>
     <genClasses ecoreClass="java.ecore#//JvmReference">

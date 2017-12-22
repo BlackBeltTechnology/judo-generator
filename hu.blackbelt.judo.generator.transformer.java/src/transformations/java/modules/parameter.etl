@@ -81,17 +81,49 @@ rule RestDtoImplParameter
         t.fillFrom(s, "RestDtoImplOperation", "RestDtoClass");
 }
 
+rule AbstractRestTestClientParameter
+    transform s : PSM!JParameter
+    to t : JAVA!JvmMethodParameter
+    extends JParameter {
+    guard : s.input
+        t.fillFrom(s, "AbstractRestTestClientOperation", "RestDtoClass");
+}
+
+rule RestTestWrapperTParameter
+    transform s : PSM!JParameter
+    to t : JAVA!JvmMethodParameter
+    extends JParameter {
+    guard : s.input
+        t.fillFrom(s, "RestTestWrapperTOperation", "RestDtoClass");
+}
+
+rule RestTestWrapperMParameter
+    transform s : PSM!JParameter
+    to t : JAVA!JvmMethodParameter
+    extends JParameter {
+    guard : s.input
+        t.fillFrom(s, "RestTestWrapperMOperation", "RestDtoClass");
+}
+
+rule RestTestWrapperSParameter
+    transform s : PSM!JParameter
+    to t : JAVA!JvmMethodParameter
+    extends JParameter {
+    guard : s.input
+        t.fillFrom(s, "RestTestWrapperSOperation", "RestDtoClass");
+}
+
 operation JAVA!JvmMethodParameter fillFrom (source : PSM!JParameter, ownerOperationRuleName : String, typeRuleName : String) : Any {
 	self.uuid = uuid3(source.uuid, ownerOperationRuleName);
 	self.ownerMethod = source.ownerOperation.equivalent(ownerOperationRuleName);
 	if (source.type.isDefined()) {
 		var isCollection = source.upper == -1;
-		if (source.ownerOperation.kind == PSM!JOperationKind#QUERY) {
+		if (source.ownerOperation.kind == PSM!JOperationKind#QUERY and not Set{JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT, JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S}.contains(self.ownerMethod.ownerClass.coordinate)) {
 			if (source.type.isTypeOf(PSM!JPrimitive)){
 				self.type = source.type.transformType(typeRuleName, isCollection);
 			} else {
 				if (isCollection) {
-					self.type = createJvmList(stringType());
+					self.type = createJvmList(idType());
 				} else {
 					self.type = idType();
 				}

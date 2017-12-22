@@ -75,6 +75,34 @@ rule RestDtoImplOperation
         t.fillFrom(s, "RestOperationImplClass", "RestDtoClass");
 }
 
+rule AbstractRestTestClientOperation
+    transform s : PSM!JOperation
+    to t : JAVA!JvmMethod
+    extends JOperation {
+        t.fillFrom(s, "AbstractRestTestClientClass", "RestDtoClass");
+}
+
+rule RestTestWrapperTOperation
+    transform s : PSM!JOperation
+    to t : JAVA!JvmMethod
+    extends JOperation {
+        t.fillFrom(s, "RestTestWrapperTClass", "RestDtoClass");
+}
+
+rule RestTestWrapperMOperation
+    transform s : PSM!JOperation
+    to t : JAVA!JvmMethod
+    extends JOperation {
+        t.fillFrom(s, "RestTestWrapperMClass", "RestDtoClass");
+}
+
+rule RestTestWrapperSOperation
+    transform s : PSM!JOperation
+    to t : JAVA!JvmMethod
+    extends JOperation {
+        t.fillFrom(s, "RestTestWrapperSClass", "RestDtoClass");
+}
+
 operation JAVA!JvmMethod fillFrom (source : PSM!JOperation, ownerClassRuleName : String, returnTypeRuleName : String) : Any {
 	self.uuid = uuid3(source.uuid, ownerClassRuleName);
 	self.ownerClass = source.ownerClass.equivalent(ownerClassRuleName);

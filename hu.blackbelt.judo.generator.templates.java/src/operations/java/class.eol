@@ -13,6 +13,16 @@ operation JAVA!JvmClass allAttributes () : Collection {
 }
 
 @cached
+operation JAVA!JvmClass exportableAttrs () : Collection {
+    return self.allAttributes().select(a | not a.technical);
+}
+
+@cached
+operation JAVA!JvmClass exportableTechnicalAttrs () : Collection {
+    return self.allAttributes().select(a | a.technical);
+}
+
+@cached
 operation JAVA!JvmClass references () : Collection {
 	return self.members.select( m | m.isTypeOf(JAVA!JvmReference)).sortBy(r | r.name);
 }
@@ -29,6 +39,11 @@ operation JAVA!JvmClass allReferences () : Collection {
 @cached
 operation JAVA!JvmClass members () : Collection {
 	return self.members.sortBy(r | r.name);
+}
+
+@cached
+operation JAVA!JvmClass hasFixedEnum () : Boolean {
+    return self.origin().fixedEnum.isDefined();
 }
 
 @cached

@@ -14,7 +14,7 @@ package [%=class.package.fqName()%];
 @lombok.NoArgsConstructor
 @lombok.Getter
 @lombok.Setter
-public class [%=class.name%] [% if (class.supertype.isDefined()) { %] extends [%=class.supertype.fqName() %] [% } %] {
+public class [%=class.name%] [% if (class.hasSuper()) { %] extends [%=class.supertype.fqName() %] [% } %] {
 	
 	[% for (member in class.members()) { %]
 		private [%=member.type.fqName()%] [%=member.name%];
