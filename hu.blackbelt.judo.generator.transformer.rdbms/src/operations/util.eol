@@ -67,3 +67,8 @@ operation idType() : RDBMS!RdbmsFieldType {
 operation hasFeature(feature : String) : Boolean {
     return RDBMS!RdbmsFeature.all.exists(f | f.name = "ForeignKey");
 }
+
+operation parseDerivedExpression(expression : String) : Sequence {
+    var parser = new Native("hu.blackbelt.judo.generator.parser.derived.expression.sql.DerivedAttributeExpressionToRdbmsModelParser");
+	return parser.parseExpression(expression);
+}
