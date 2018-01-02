@@ -29,14 +29,15 @@ operation RDBMS!RdbmsView addField(attribute : PSM!JAttribute) {
    		for (expr in parseDerivedExpression(attribute.value)) {
 	    	if (expr.isExpressionLabelExpression()) {
 	    		var labex : RDBMS!RdbmsLabelExpression = new RDBMS!RdbmsLabelExpression();
-	    		labex.expression = expr.getText();
+	    		labex.expression = expr.getLabelExpression().getText();
 	    		vf.expressions.add(labex);
 	    	} else if (expr.isExpressionRelationExpression()) {
 				var r = expr.getRelationExpression();
 				var c = attribute.ownerClass;
 				var baseTable = c.equivalent("JClassToRdbmsTable");
 				var relName = "";
-								
+						
+						/*		
 				while (r.isDefined()) {
 					// Search for role.
 					if (r.hasChild()) {
@@ -57,7 +58,7 @@ operation RDBMS!RdbmsView addField(attribute : PSM!JAttribute) {
 						var attr : PSM!JAttribute = c.attributes.select(sa | sa.name == r.getRelationName()).first;
 						("Attribute: " + attr).println(); 
 						
-						/*
+						-/-*
 						var nvf : RDBMS!RdbmsViewValueField = attribute.equivalent("JAttributeToViewValueFieldWithoutView");
 						
 						if (not self.fields.includes(nvf)) {
@@ -66,11 +67,12 @@ operation RDBMS!RdbmsView addField(attribute : PSM!JAttribute) {
 						 
 						if (baseTable == self.primaryTable) {
 							
-						} */
+						} *-/
 						r = null;
 
 					}
 				}
+			*/
    		    }
 		}
   	}
