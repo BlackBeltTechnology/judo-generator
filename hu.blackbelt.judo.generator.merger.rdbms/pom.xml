@@ -32,7 +32,7 @@
                 <models>
                     <model>
 						<artifact>${basedir}/src/model/rdbmsPostgres_modify.model</artifact>
-						<name>MODIFIED</name>
+						<name>NEW</name>
 						<metaModelUris>
 							<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 						</metaModelUris>
@@ -40,7 +40,7 @@
 					</model>
 					<model>
 						<artifact>${basedir}/src/model/rdbmsPostgres.model</artifact>
-						<name>ORIGINAL</name>
+						<name>PREVIOUS</name>
 						<metaModelUris>
 							<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 						</metaModelUris>
@@ -61,6 +61,7 @@
                     <Ecl>
                         <source>src/compare/compareElements.ecl</source>
                         <exportMatchTrace>matchTrace</exportMatchTrace>
+                        <useMatchTrace>matchTrace</useMatchTrace>
                     </Ecl>
                     <Eml>
                         <source>src/merge/mergeElements.eml</source>

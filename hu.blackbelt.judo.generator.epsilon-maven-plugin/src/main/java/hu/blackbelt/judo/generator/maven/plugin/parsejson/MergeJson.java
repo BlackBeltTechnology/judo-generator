@@ -27,9 +27,9 @@ public class MergeJson extends AbstractMojo {
 	@Parameter(defaultValue = "", readonly = true, required = true)
     private File modifiedJson;
 
-    @Parameter(defaultValue = "/hu.blackbelt.judo.generator.transformer.ui/target/resources.model", readonly = true, required = true)
+    @Parameter(defaultValue = "", readonly = true, required = true)
     private File newJson;
-	
+    
 	@SuppressWarnings("resource")
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -40,39 +40,48 @@ public class MergeJson extends AbstractMojo {
 			JSONTokener newJsonTokener = new JSONTokener(newJsonStream);
 			HashMap<String, JSONObject> newJsonMap = new HashMap<String, JSONObject>();
 			
+			newJsonTokener.skipTo('[');
 			while (newJsonTokener.more()) {
 				JSONObject object;
+				newJsonTokener.skipTo('{');
 				try {
 					object = (JSONObject) newJsonTokener.nextValue();
 				} catch(JSONException e) {
 					break;
 				}
 				try {
-					newJsonMap.put((String) object.get("uuid"), object);
-				} catch(JSONException e) {}
+					newJsonMap.put((String) object.get("id"), object);
+				} catch(JSONException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			JSONTokener modifiedJsonTokener = new JSONTokener(modifiedJsonStream);
 			HashMap<String, JSONObject> modifiedJsonMap = new HashMap<String, JSONObject>();
 			HashMap<String, Boolean> modifiedJsonExistsMap = new HashMap<String, Boolean>();
+			
+			modifiedJsonTokener.skipTo('[');
 			while (modifiedJsonTokener.more()) {
 				JSONObject object;
+				modifiedJsonTokener.skipTo('{');
 				try {
 					object = (JSONObject) modifiedJsonTokener.nextValue();
 				} catch (JSONException e) {
 					break;
 				}
 				try {
-					modifiedJsonMap.put((String) object.get("uuid"), object);
-					modifiedJsonExistsMap.put((String) object.get("uuid"), false);
-				} catch(JSONException e) {}
+					modifiedJsonMap.put((String) object.get("id"), object);
+					modifiedJsonExistsMap.put((String) object.get("id"), false);
+				} catch(JSONException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			for (String uuid : newJsonMap.keySet()) {
 				JSONObject newObject = newJsonMap.get(uuid);
 				JSONObject modifiedObject = modifiedJsonMap.get(uuid);
 				if (modifiedObject != null) {
-					String[] splitKey = modifiedObject.get("key").toString().split(".");
+					String[] splitKey = modifiedObject.get("key").toString().split("\\.");
 					if (splitKey[splitKey.length-1].equals(modifiedObject.get("value").toString())) {
 						modifiedObject.put("value", newObject.get("value").toString());
 					}
@@ -90,13 +99,20 @@ public class MergeJson extends AbstractMojo {
 				}
 			}
 			
-			StringBuilder builder = new StringBuilder();
-			for (String uuid : modifiedJsonMap.keySet()) {
-				builder.append(modifiedJsonMap.get(uuid).toString());
-			}
-			
 			PrintWriter outputStream = new PrintWriter(modifiedJson);
-			outputStream.println(builder.toString());
+			outputStream.println("{ \"resources\": [");
+			int index = 0;
+			for (String uuid : modifiedJsonMap.keySet()) {
+				outputStream.append(modifiedJsonMap.get(uuid).toString());
+				if (index != modifiedJsonMap.size()-1) {
+					outputStream.append(",\n");
+					index++;
+				}
+			}
+			outputStream.append("] }");
+			
+			outputStream.flush();
+			outputStream.close();
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
