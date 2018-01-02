@@ -8,7 +8,8 @@ operation PSM!JPrimitive rdbmsType () : RDBMS!RdbmsFieldType {
 		t.name.println();
 	} */
 	var name = RTM!Mapping.all.select(m | m.psmType.name = self.name).first().rdbmsFieldType.name;
-	var ret =  RDBMS!RdbmsFieldType.all.select( p | p.name = name).first();
+	// var ret =  RDBMS!RdbmsFieldType.all.select( p | p.name = name).first();
+	var ret =  targetModel.rdbmsFieldTypes.select( p | p.name = name).first();
 	return ret;
     
 }

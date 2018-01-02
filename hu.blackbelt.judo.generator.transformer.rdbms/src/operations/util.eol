@@ -61,7 +61,8 @@ operation abbreviate(text : String, maxLength : Integer) : String {
     }}
 
 operation idType() : RDBMS!RdbmsFieldType {
-	return RDBMS!RdbmsFieldType.all.select( p | p.name = "Id").first();
+	// return RDBMS!RdbmsFieldType.all.select( p | p.name = "Id").first();
+	return targetModel.rdbmsFieldTypes.select( p | p.name = "Id").first();
 }
 
 operation RDBMS!EObject clone() : RDBMS!EObject {
