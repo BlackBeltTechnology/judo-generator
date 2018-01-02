@@ -32,7 +32,7 @@
 									<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
 									<version>${project.version}</version>
 									<type>md5</type>
-									<classifier>psm</classifier>
+									<classifier>psmFromHutn</classifier>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}</outputDirectory>
 									<destFileName>psm.md5</destFileName>
@@ -103,7 +103,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -181,7 +181,7 @@
 
 								<model>
 
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -270,7 +270,7 @@
 
 								<model>
 
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
