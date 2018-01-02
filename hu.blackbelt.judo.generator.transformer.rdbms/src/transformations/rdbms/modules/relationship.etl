@@ -24,4 +24,6 @@ rule JRoleToRdbmsJunctionTable
 		t.fields.add(f1);
 		t.fields.add(f2);
 		t.fields.add(p);
+		
+		targetModel.rdbmsTables.add(p);
 	}

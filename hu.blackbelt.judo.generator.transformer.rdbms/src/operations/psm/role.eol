@@ -21,5 +21,15 @@ operation PSM!JRole isMandatory() : Boolean {
 
 @cached
 operation PSM!JRole roleSqlName() : String {
-    return "C_" + self.sqlName() + "_ID";
+    return self.opposite().sqlName() + "_" + self.ownerClass.classSqlName() + "_" + self.opposite().ownerClass.classSqlName();
+}
+
+@cached
+operation PSM!JRole roleFkSqlName() : String {
+    return "FK_" + uuid3(self.uuid, self.roleSqlName());
+}
+
+@cached
+operation PSM!JRole roleIdSqlName() : String {
+    return "C_" + self.opposite().ownerClass.classSqlName() + "_ID";
 }

@@ -7,7 +7,7 @@ rule JClassToRdbmsTable
 	extends JElementToRdbmsElement {
 	guard : s.participates(PSM!JLayer#PERSISTENCE)
 	    t.sqlName = s.tableSqlName();
-	    t.name = s.package.name + " " + s.name;
+	    t.name = s.package.fqName() + "." + s.name;
 	    t.description = s.name;
 	    for (c : PSM!JClass in s.allDescandences()) {
 			// var table : RDBMS!RdbmsTable = s.equivalent("JClassToRdbmsTable");
@@ -21,6 +21,7 @@ rule JClassToRdbmsTable
 			created.referenceKey = c.primaryKeyAttribute().equivalent("JAttributeToTableIdField");
 			t.fields.add(created);
 	    }
+	    targetModel.rdbmsTables.add(t);
 }
 
 rule JClassToRdbmsView 
@@ -28,46 +29,50 @@ rule JClassToRdbmsView
 	to v : RDBMS!RdbmsView
 	extends JElementToRdbmsElement {
 	guard : s.participates(PSM!JLayer#PERSISTENCE)
-	    v.name = s.package.name + " " + s.name;
+	    v.name = s.package.fqName() + "." + s.name;
 	    v.sqlName = s.viewSqlName();
-	    
-	    // v.baseTable = s.equivalent("JClassToRdbmsTable");
-	    var baseAlias : RDBMS!RdbmsTableAlias = new RDBMS!RdbmsTableAlias();
-	    baseAlias.table = s.equivalent("JClassToRdbmsTable");
-	    baseAlias.aliasName = "BASE_" + baseAlias.table.sqlName;
-	    v.tables.add(baseAlias);
-	    v.primaryTable = baseAlias;
-	    
-	    for (a : PSM!JAttribute in s.allSupertypesAttributes()) {
-	   		var f : RDBMS!RdbmsViewValueField = a.equivalent("JAttributeToViewValueField");
-	   		var supertypeTable =  a.ownerClass.equivalent("JClassToRdbmsTable");
 
-	    	var aliasName = "SUP_" + supertypeTable.sqlName;
-	    	// Find table alias in tables. When not found create new one
-			var supertypeAlias : RDBMS!RdbmsTableAlias;
-	    	if (v.tables.exists(e | e.aliasName = aliasName)) {
-	    		supertypeAlias = v.tables.select(e | e.aliasName = aliasName).first();
-	    	} else {
-	    		supertypeAlias = new RDBMS!RdbmsTableAlias();
-	    		supertypeAlias.table = supertypeTable;
-	    		supertypeAlias.aliasName = aliasName;
-	    		v.tables.add(supertypeAlias);
-	    	}
-	    	
+	    // Base alias is a reference for base table    
+	    v.createBaseAlias(s);
 
-	    	var created : RDBMS!RdbmsViewValueField = new RDBMS!RdbmsViewValueField();
-	    	created.uuid = uuid3(f.uuid, v.name);
-	    	created.shortName = f.shortName;
-	    	created.fullName = f.fullName;
-	    	created.description = f.description;
-	    	created.sqlName = f.sqlName;
-	    	created.tableField = f.tableField;
-	    	created.name = f.name;
-	    	created.`alias` = supertypeAlias;
-	    	created.view = v;
-	    	
-	    	v.fields.add(created);
-
+        // Convert attributes to be able to clone supertypes
+	    for (a : PSM!JAttribute in s.attributes) {
+	   		v.addField(a);	   		
 	    }
+
+		// Iterate all roles contained in base table and add as a field.
+		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
+			v.addRelationField(r);
+		}
+	        
+	    // Inherited aliases and attributes
+	    if (s.supertype.isDefined()) {
+	    	var baseView : RDBMS!RdbmsView = s.supertype.equivalent("JClassToRdbmsView");
+
+			// Clone super types aliases
+	    	for (f : RDBMS!RdbmsTableAlias in baseView.tables.clone()) {
+	    		var created : RDBMS!RdbmsTableAlias = f.clone();
+				v.tables.add(created);
+	    		created.uuid = uuid3(f.uuid, v.name);
+	    		created.description = "Super " + f.table.name;
+	    		created.sqlName = "SUP_" + f.table.sqlName;
+	    	}
+	    
+	    	// Clone attributes
+	    	for (a : RDBMS!RdbmsViewField in baseView.fields) {
+	    		var created : RDBMS!RdbmsViewField = a.clone();
+	    		v.fields.add(created);
+	    		created.view = v;
+
+	    		// Set alias instance link to cloned alias
+	    		if (created.isKindOf(RDBMS!RdbmsViewAliasField)) {
+	    		    if (created.isTypeOf(RDBMS!RdbmsViewIdentifierField)) {
+	    		    	created.sqlName = "C_" + created.`alias`.table.sqlName + "_ID";
+	    		    }
+					created.`alias` = v.tables.select(e | e.name = created.`alias`.name).first();
+	    		}
+	    	}
+	    } 
+        targetModel.rdbmsViews.add(v);
 }
 

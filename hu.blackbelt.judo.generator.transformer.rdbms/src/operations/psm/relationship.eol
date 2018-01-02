@@ -2,14 +2,17 @@
 operation PSM!JRelationship relationReferenceOwnerRole() : PSM!JRole {
 	var role1 : PSM!JRole = self.roles.first();
 	var role2 : PSM!JRole = self.roles.second();
+	
+	// ("RELATIONSHIP: " + self.name + " " + role1.name + " " + role1.kind + " " + role1.lower + " " + role1.upper + " " + role2.navigable + " <--> " + role2.name + " " + role2.kind + " " + role2.lower + " " + role2.upper + " " + role2.navigable).println();
+	
 	if (not self.derived) {
 		if (role1.upper = 1 and role2.upper = -1) {
-			return role1;
+			return role2;
 		} else if (role1.upper = 1 and role2.upper = 1) {
 			if (role2.kind = PSM!JAssociationKind#COMPOSITION or role2.kind = PSM!JAssociationKind#AGGREGATION or role1.lower = 1) {
-				return role1;
+				return role2;
 			} else if (role1.kind = PSM!JAssociationKind#ASSOCIATION and role2.kind = PSM!JAssociationKind#ASSOCIATION and role1.lower = 0 and role2.lower = 0 and role1.name < role2.name) {
-				return role1;
+				return role2;
 			}
 		} else if (self.isJunction()) {
 			return null;
@@ -17,7 +20,7 @@ operation PSM!JRelationship relationReferenceOwnerRole() : PSM!JRole {
 	} else {
 	  return null;
 	}	
-    return role2;	
+    return role1;	
 }
 
 @cached
