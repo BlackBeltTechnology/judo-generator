@@ -9,11 +9,12 @@
   <rdbmsFieldTypes xmi:id="_aMaioNwdEeeNA-CmHjdGOA" name="DateTime" rdbmsTypeName="timestamp" uuid="rdbms-type-datetime-oracle" description="DateTime" size="-1" precision="-1" scale="-1" storageByte="-1"/>
   <rdbmsFieldTypes xmi:id="_lg-AENwdEeeNA-CmHjdGOA" name="Time" rdbmsTypeName="timestamp" uuid="rdbms-type-time-oracle" description="Time" size="-1" precision="-1" scale="-1" storageByte="-1"/>
   <rdbmsFieldTypes xmi:id="_t4zNsNwdEeeNA-CmHjdGOA" name="Text" rdbmsTypeName="varchar2" uuid="rdbms-type-text-oracle" description="Text" size="4000" precision="-1" scale="-1" storageByte="-1"/>
-  <rdbmsFieldTypes xmi:id="_8nJ4gNwdEeeNA-CmHjdGOA" name="Float" rdbmsTypeName="real" uuid="rdbms-type-float-oracle" description="Float" size="-1" precision="-1" scale="-1" storageByte="-1"/>
-  <rdbmsFieldTypes xmi:id="_HnCGcNweEeeNA-CmHjdGOA" name="Percentage" rdbmsTypeName="real" uuid="rdbms-type-percentage-oracle" description="Percentage" size="-1" precision="-1" scale="-1" storageByte="-1"/>
-  <rdbmsFieldTypes xmi:id="_UGmlgNweEeeNA-CmHjdGOA" name="Currency" rdbmsTypeName="numeric" uuid="rdbms-type-currency-oracle" description="Currency" size="-1" precision="2" scale="-1" storageByte="-1"/>
-  <rdbmsFieldTypes xmi:id="_bWfToNweEeeNA-CmHjdGOA" name="Id" rdbmsTypeName="long" uuid="rdbms-type-id-oracle" description="Id" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes xmi:id="_8nJ4gNwdEeeNA-CmHjdGOA" name="Float" rdbmsTypeName="binary_float" uuid="rdbms-type-float-oracle" description="Float" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes xmi:id="_HnCGcNweEeeNA-CmHjdGOA" name="Percentage" rdbmsTypeName="binary_float" uuid="rdbms-type-percentage-oracle" description="Percentage" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes xmi:id="_UGmlgNweEeeNA-CmHjdGOA" name="Currency" rdbmsTypeName="number" uuid="rdbms-type-currency-oracle" description="Currency" size="-1" precision="19" scale="2" storageByte="-1"/>
+  <rdbmsFieldTypes xmi:id="_bWfToNweEeeNA-CmHjdGOA" name="Id" rdbmsTypeName="integer" uuid="rdbms-type-id-oracle" description="Id" size="-1" precision="-1" scale="-1" storageByte="-1"/>
   <configuration xmi:id="_i2MmcNweEeeNA-CmHjdGOA" dialect="Oracle">
     <features xmi:id="_jtk6YNweEeeNA-CmHjdGOA" name="CascadeDeleteOnSuperType"/>
+    <features xmi:id="_cTUScOzsEeer_IHzBpC5uA" name="SupportMultipleColumnModificationInOneStatement"/>
   </configuration>
 </rdbms:RdbmsModel>

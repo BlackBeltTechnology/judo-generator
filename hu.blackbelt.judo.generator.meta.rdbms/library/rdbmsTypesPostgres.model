@@ -11,9 +11,10 @@
   <rdbmsFieldTypes xmi:id="_D0QfYJxXEeeO26D_eQyRGQ" name="Text" rdbmsTypeName="varchar" uuid="rdbms-type-text-postgres" description="Text" size="4000" precision="-1" scale="-1" storageByte="-1"/>
   <rdbmsFieldTypes xmi:id="_bMBQAJxXEeeO26D_eQyRGQ" name="Float" rdbmsTypeName="real" uuid="rdbms-type-float-postgres" description="Float" size="-1" precision="-1" scale="-1" storageByte="-1"/>
   <rdbmsFieldTypes xmi:id="_n6DB0JxXEeeO26D_eQyRGQ" name="Percentage" rdbmsTypeName="real" uuid="rdbms-type-percentage-postgres" description="Percentage" size="-1" precision="-1" scale="-1"/>
-  <rdbmsFieldTypes xmi:id="_yi4BsJxXEeeO26D_eQyRGQ" name="Currency" rdbmsTypeName="numeric" uuid="rdbms-type-currency-postgres" description="Currency" precision="2"/>
-  <rdbmsFieldTypes xmi:id="_CFMDAKqQEeeVGr8G3K7eOw" name="Id" rdbmsTypeName="long" uuid="rdbms-type-id-postgres" description="Id"/>
+  <rdbmsFieldTypes xmi:id="_yi4BsJxXEeeO26D_eQyRGQ" name="Currency" rdbmsTypeName="numeric" uuid="rdbms-type-currency-postgres" description="Currency" size="-1" precision="19" scale="2" storageByte="-1"/>
+  <rdbmsFieldTypes xmi:id="_CFMDAKqQEeeVGr8G3K7eOw" name="Id" rdbmsTypeName="integer" uuid="rdbms-type-id-postgres" description="Id" size="-1" precision="-1" scale="-1" storageByte="-1"/>
   <configuration xmi:id="_0hPwoLpYEeeDOcmqBEhdJQ" dialect="Postgres">
     <features xmi:id="_w1ttkL6LEeedxuqBM4gA-Q" name="CascadeDeleteOnSuperType"/>
+    <features xmi:id="_2pyP4OzsEeer_IHzBpC5uA" name="SupportMultipleColumnModificationInOneStatement"/>
   </configuration>
 </rdbms:RdbmsModel>
