@@ -70,6 +70,7 @@ rule NewForeignKey
 	transform field : NEW!RdbmsForeignKey
 	to target : TARGET!RdbmsForeignKey 
 	extends NewFieldToTargetField {
+		target.foreignKeySqlName = field.foreignKeySqlName;
 	}
 	
 @lazy
@@ -106,6 +107,7 @@ rule NewForeignKey
 	transform field : PREVIOUS!RdbmsForeignKey
 	to target : TARGET!RdbmsForeignKey 
 	extends PreviousFieldToTargetField {
+		target.foreignKeySqlName = field.foreignKeySqlName;
 	}
 	
 @lazy
