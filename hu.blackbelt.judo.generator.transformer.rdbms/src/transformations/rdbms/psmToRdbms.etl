@@ -1,3 +1,4 @@
+import "modules/model.etl";
 import "modules/element.etl";
 import "modules/type.etl";
 import "modules/class.etl";
@@ -7,18 +8,16 @@ import "modules/role.etl";
 
 import "pre/addParticipateToAllElement.eol";
 import "pre/addIdToEntities.eol";
-import "pre/addAllRdbmsTypes.eol";
 
 
 pre {
+	var targetModel : RDBMS!RdbmsModel;
+	var targetConfiguration : RDBMS!RdbmsConfiguration;
+
 	addParticipateToAllElement();
 	addIdToEntities();	
-	addAllRdbmsConfiguration();
-	addAllRdbmsFieldTypes();
-	addAllRdbmsFeature();
 }	
 
 post {
 }
-
 

@@ -64,8 +64,10 @@ operation idType() : RDBMS!RdbmsFieldType {
 	return RDBMS!RdbmsFieldType.all.select( p | p.name = "Id").first();
 }
 
-operation hasFeature(feature : String) : Boolean {
-    return RDBMS!RdbmsFeature.all.exists(f | f.name = "ForeignKey");
+operation RDBMS!EObject clone() : RDBMS!EObject {
+	var emfTool = new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+	var ecoreUtil = emfTool.ecoreUtil;
+	return ecoreUtil.copy(self);
 }
 
 operation parseDerivedExpression(expression : String) : Sequence {
