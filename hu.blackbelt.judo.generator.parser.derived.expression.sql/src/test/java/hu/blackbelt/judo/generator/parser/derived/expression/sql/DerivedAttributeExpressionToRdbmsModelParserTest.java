@@ -20,7 +20,7 @@ public class DerivedAttributeExpressionToRdbmsModelParserTest {
 
         assertThat(ret.get(0), allOf(
                 hasProperty("labelExpression",
-                        hasProperty("text", equalTo("'Part 1:'"))),
+                        hasProperty("text", equalTo("Part 1:"))),
                 hasProperty("relationExpression", nullValue())
         ));
 
@@ -43,7 +43,7 @@ public class DerivedAttributeExpressionToRdbmsModelParserTest {
 
         assertThat(ret.get(2), allOf(
                 hasProperty("labelExpression",
-                        hasProperty("text", equalTo("'Part 2:'"))),
+                        hasProperty("text", equalTo("Part 2:"))),
                 hasProperty("relationExpression", nullValue())
         ));
 
@@ -63,6 +63,7 @@ public class DerivedAttributeExpressionToRdbmsModelParserTest {
     public void testParse() {
         testRet(new DerivedAttributeExpressionToRdbmsModelParser().parseExpression("'Part 1:' {self.a.b.c.d} 'Part 2:' {self.g.h}"));
         testRet(new DerivedAttributeExpressionToRdbmsModelParser().parseExpression("'Part 1:' self.a.b.c.d 'Part 2:' self.g.h"));
+        new DerivedAttributeExpressionToRdbmsModelParser().parseExpression("{self.reqDataTypeDef.name} - {self.firstOccurence}, {self.repetitionRate}, {self.repetitionUnit} \"");
     }
 
 }

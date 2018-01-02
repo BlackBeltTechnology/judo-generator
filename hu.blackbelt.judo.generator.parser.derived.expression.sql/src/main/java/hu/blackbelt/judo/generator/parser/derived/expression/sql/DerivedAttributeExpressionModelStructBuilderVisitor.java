@@ -102,8 +102,16 @@ public class DerivedAttributeExpressionModelStructBuilderVisitor implements Deri
     @Override
     public String visitStringFormula(DerivedAttributeExpressionParser.StringFormulaContext ctx) {
         relationExpressionList = null;
+        String str = ctx.getText();
+        if (str.startsWith("'")) {
+            str = str.substring(1);
+        }
+        if (str.endsWith("'")) {
+            str = str.substring(0, str.length() - 1);
+        }
+
         String ret =  indent() + "[stringFormula]" + n() + visitChildren(ctx) + indent() + "Add Label expression: " + ctx.getText() + "\n";
-        expressionParts.add(new ExpressionPart((new LabelExpression(ctx.getText()))));
+        expressionParts.add(new ExpressionPart((new LabelExpression(str))));
         return ret;
     }
 

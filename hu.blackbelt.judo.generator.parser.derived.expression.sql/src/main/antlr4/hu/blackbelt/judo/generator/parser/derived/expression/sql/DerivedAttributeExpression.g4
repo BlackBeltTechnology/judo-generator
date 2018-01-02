@@ -13,7 +13,7 @@ formulas
 
 formula
   : LQRLYBRACKET? selfEntity (DOT relationChain) RQRLYBRACKET? #expressionFormula
-  | STRING                                                   #stringFormula
+  | STRINGQUOTED                                #stringFormula
   ;
 
 selfEntity
@@ -71,7 +71,7 @@ RQRLYBRACKET : '}' ;
 
 
 DECIMAL : '-'?[0-9]+('.'[0-9]+)? ;
-STRING :  '\'' ( ~'\'' | '\'\'' )* '\'' ;
+STRINGQUOTED :  '\'' ( ~'\'' | '\'\'' )* '\'';
 
 IDENTIFIER : [a-zA-Z_][a-zA-Z_0-9]* ;
 
