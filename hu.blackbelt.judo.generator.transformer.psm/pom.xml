@@ -148,6 +148,27 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+			    <groupId>net.nicoulaj.maven.plugins</groupId>
+			    <artifactId>checksum-maven-plugin</artifactId>
+			    <version>1.6</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>artifacts</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<csvSummary>true</csvSummary>
+					<csvSummaryFile>artifacts-checksums.csv</csvSummaryFile>
+					<xmlSummary>true</xmlSummary>
+					<xmlSummaryFile>artifacts-checksums.xml</xmlSummaryFile>
+					<attachChecksums>true</attachChecksums>
+				</configuration>
+			</plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -167,8 +188,18 @@
                                     <classifier>psm</classifier>
                                 </artifact>
                                 <artifact>
+                                    <file>${project.build.directory}/carPsm.model.md5</file>
+                                    <type>md5</type>
+                                    <classifier>psm</classifier>
+                                </artifact>
+                                <artifact>
                                     <file>${project.build.directory}/target.model</file>
                                     <type>model</type>
+                                    <classifier>psmFromHutn</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>${project.build.directory}/target.model.md5</file>
+                                    <type>md5</type>
                                     <classifier>psmFromHutn</classifier>
                                 </artifact>
                             </artifacts>

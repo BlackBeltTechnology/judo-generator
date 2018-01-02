@@ -19,5 +19,6 @@ pre {
 }	
 
 post {
+	RDBMS!RdbmsModel.all.first().version = psmVersion;
 }
 

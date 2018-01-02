@@ -14,10 +14,70 @@
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-psm-md5</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${groupId}</groupId>
+									<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
+									<version>${project.version}</version>
+									<type>md5</type>
+									<classifier>psm</classifier>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<destFileName>psm.md5</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>gmaven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>read-psm-md5</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<header_file>${project.build.directory}/psm.md5</header_file>
+							</properties>
+							<source>
+								def file = new File(project.properties.header_file)
+								project.properties.psmversion = file.getText()
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>epsilon-maven-plugin</artifactId>
 				<version>${project.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>hu.blackbelt.judo.generator.parser.derived.expression.sql</artifactId>
+						<version>${project.version}</version>
+					</dependency>
+				</dependencies>
 				<executions>
 					<execution>
 						<id>transform-hsqldb</id>
@@ -85,6 +145,12 @@
 								</Evl>
 								<Etl>
 									<source>src/transformations/rdbms/psmToRdbms.etl</source>
+									<parameters>
+										<parameter>
+											<name>psmVersion</name>
+											<value>${project.version}-${psmversion}</value>
+										</parameter>
+									</parameters>
 								</Etl>
 							</eolPrograms>
 						</configuration>
@@ -168,6 +234,12 @@
 								</Evl>
 								<Etl>
 									<source>src/transformations/rdbms/psmToRdbms.etl</source>
+									<parameters>
+										<parameter>
+											<name>psmVersion</name>
+											<value>${project.version}-${psmversion}</value>
+										</parameter>
+									</parameters>
 								</Etl>
 							</eolPrograms>
 						</configuration>
@@ -241,6 +313,12 @@
 								</Evl>
 								<Etl>
 									<source>src/transformations/rdbms/psmToRdbms.etl</source>
+									<parameters>
+										<parameter>
+											<name>psmVersion</name>
+											<value>${project.version}-${psmversion}</value>
+										</parameter>
+									</parameters>
 								</Etl>
 							</eolPrograms>
 						</configuration>
