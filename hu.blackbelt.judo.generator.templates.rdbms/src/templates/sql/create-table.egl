@@ -7,9 +7,11 @@
 
 
 [%for (table in tables) {%]
+--changeset generator:create_table_[%=table.sqlName%]#[%=version()%] logicalFilePath:createTable stripComments:true
 CREATE TABLE [%=table.sqlName%] (
 	[%for (field in table.fields) {%]
-		[%=field.sqlName%] [%=field.type.toString()%] [%if (hasMore) { out.print(","); }%]
+		[%=field.sqlName%] [%=field.type.toString()%] [%if (field.isPrimary()) {%] NOT NULL PRIMARY KEY[%}%] [%if (hasMore) { out.print(","); }%]
+	    [% out.println("");%]
 	[%}%]
-);[% out.println("");%]
+);[% out.println("\n");%]
 [%}%]
