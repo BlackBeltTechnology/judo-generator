@@ -88,6 +88,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="configuration" lowerBound="1"
         eType="#//RdbmsConfiguration" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tableOperations" upperBound="-1"
+        eType="#//RdbmsTableOperation" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsValueField" eSuperTypes="#//RdbmsField">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="technical" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
@@ -122,18 +124,19 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableField" lowerBound="1"
         eType="#//RdbmsField"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RdbmsTableOperation">
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsTableOperation" eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operationType" lowerBound="1"
         eType="#//RdbmsTableOperationType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="createFieldOperations"
-        upperBound="-1" eType="#//RdbmsCreateFieldOperation"/>
+        upperBound="-1" eType="#//RdbmsCreateFieldOperation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="modifyFieldOperations"
-        upperBound="-1" eType="#//RdbmsModifyFieldOperation"/>
+        upperBound="-1" eType="#//RdbmsModifyFieldOperation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteFieldOperations"
-        upperBound="-1" eType="#//RdbmsDeleteFieldOperation"/>
+        upperBound="-1" eType="#//RdbmsDeleteFieldOperation" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RdbmsFieldOperation" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsFieldOperation" abstract="true"
+      eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="field" lowerBound="1" eType="#//RdbmsField"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RdbmsTableOperationType">

@@ -3,6 +3,9 @@ import "../util.eol";
 rule TableCreated
 	transform table : NEW!RdbmsTable
 	to tableOp : TARGET!RdbmsTableOperation {
+	
+		table.sqlName.println("NEm lazy: ");
+		
 		tableOp.uuid = uuid3(table.uuid, "CREATED");
 		tableOp.sqlName = table.sqlName + "_OPERATION_CREATE";
 	
@@ -24,6 +27,9 @@ rule TableDeleted
 rule NewTableToTargetTable
 	transform table : NEW!RdbmsTable
 	to target : TARGET!RdbmsTable {
+	
+		table.sqlName.println("Rule table: ");
+		
 		target.sqlName = table.sqlName;
 		target.uuid = table.uuid;
 		for (field in table.fields) {

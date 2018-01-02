@@ -8,6 +8,8 @@ rule MergeTables
 	into target : TARGET!RdbmsTableOperation {
 	guard : not oldTable.fields.collect(field | field.uuid).includesAll(newTable.fields.collect(field | field.uuid)) 
 				or not newTable.fields.collect(field | field.uuid).includesAll(oldTable.fields.collect(field | field.uuid))
+			newTable.sqlName.println("Tábla: ");
+			newTable.uuid.println("Tábla: ");
 			target.uuid = uuid3(newTable.uuid, "MODIFY");
 			target.sqlName = newTable.sqlName + "_OPERATION_MODIFY";
 			
@@ -34,6 +36,8 @@ rule MergeTables
 			var remainingFields : OrderedSet(TARGET!RdbmsField) = newTable.fields.select(field | createdFieldUuids.excludes(field.uuid));
 			for (field in remainingFields) {
 				var oldField = oldTable.fields.select(oldField | oldField.uuid = field.uuid).first();
+				newTable.sqlName.println("Tábla: ");
+				field.sqlName.println("Field: ");
 				if (field.type.uuid <> oldField.type.uuid) {
 					var fieldOperation = new TARGET!RdbmsModifyFieldOperation();
 					fieldOperation.field = field.equivalent();
@@ -42,3 +46,19 @@ rule MergeTables
 				}
 			}
 		}
+		
+@lazy
+rule NewTableToTargetTable
+	transform table : NEW!RdbmsTable
+	to target : TARGET!RdbmsTable {
+	
+		table.sqlName.println("Rule table: ");
+		
+		target.sqlName = table.sqlName;
+		target.uuid = table.uuid;
+		for (field in table.fields) {
+			target.fields.add(field.equivalent());
+		}
+		target.primaryKey = table.primaryKey.equivalent();
+	}
+	
