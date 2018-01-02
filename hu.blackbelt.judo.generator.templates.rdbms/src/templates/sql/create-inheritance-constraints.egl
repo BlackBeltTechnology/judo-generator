@@ -1,0 +1,26 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+[%for (table in tables) {%]
+
+{%- if table.general %}
+--changeset generator:add_constraint_FK_{{ table.name }}_ID#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true
+ALTER TABLE {{ table.name }}
+ADD CONSTRAINT FK_{{ table.name }}_ID
+FOREIGN KEY (ID)
+REFERENCES {{ table.roottable.name }}(ID) ON DELETE CASCADE;
+
+--changeset generator:add_constraint_FK_SUB_{{ table.name }}_ID#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true
+ALTER TABLE {{ table.roottable.name }}
+ADD CONSTRAINT FK_SUB_{{ table.name }}_ID
+FOREIGN KEY (C_{{ table.name }}_ID)
+REFERENCES {{ table.name }}(ID) ON DELETE CASCADE;
+{% endif %}
+
+
+[%}%]
+
