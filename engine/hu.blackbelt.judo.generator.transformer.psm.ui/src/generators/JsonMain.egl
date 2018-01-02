@@ -5,12 +5,12 @@
 			"toBeConfirmed" = "confirmed", 
 			"isQuery" = "query"};
 			
-	for (ui in UI!UIBase.all) {
+	for (ui in UI.all) {
 		ui.generateJson();
 	} 
 %]
 
-[% operation UI!UIClass generateJson() { %]
+[% operation UIClass generateJson() { %]
 {
 	"singleton" : [%=self.singleton%],
 	"listViews" : [
@@ -78,7 +78,7 @@
 }
 [% } %]
 
-[% operation UI!UIAction generateJson() { %]
+[% operation UIAction generateJson() { %]
 {
 	[%originalNames.get("confirmed");%] : [%=self.confirmed%],
 	"classBased" : [%=self.classBased%],
@@ -111,7 +111,7 @@
 }
 [% } %]
 
-[% operation UI!UIView generateJson() { %]
+[% operation UIView generateJson() { %]
 {
 	"name" : "[%=self.name%]",
 	"pageSize" : [%=self.pageSize%],
@@ -147,7 +147,7 @@
 }
 [% } %]
 
-[% operation UI!UIViewField generateJson() { %]
+[% operation UIViewField generateJson() { %]
 {
 	"search" : [%=self.searchable%],
 	"name" : "[%=self.name%]",
@@ -169,7 +169,7 @@
 }
 [% } %]
 
-[% operation UI!UIViewFieldSet generateJson() { %]
+[% operation UIViewFieldSet generateJson() { %]
 {
 	"position" : [%=self.position%],
 	"viewFields" : [
@@ -187,7 +187,7 @@
 }
 [% } %]
 
-[% operation UI!UIMenuItem generateJson() { %]
+[% operation UIMenuItem generateJson() { %]
 {
 	"name" : "[%=self.name%]",
 	"menuitems" : [
@@ -211,7 +211,7 @@
 		[%}%]
 	[% } %]
 	],
-	[% if(self.menuView.isDefined())  { %]
+	[% if(self.view.isDefined())  { %]
 	"view" : "[%=self.view.id%]"
 	[% } else {%]
 	"view" : null
@@ -219,7 +219,7 @@
 }
 [% } %]
 
-[% operation UI!UIModule generateJson() { %]
+[% operation UIModule generateJson() { %]
 {
 	"fqname" : "[%=self.fqname%]",
 	"classes" : [
@@ -238,7 +238,7 @@
 }
 [% } %]
 
-[% operation UI!UIAttribute generateJson() { %]
+[% operation UIAttribute generateJson() { %]
 {
 	"upper" : "[%=self.upper%]",
 	[% if(self.referenced.isDefined())  { %]
@@ -299,7 +299,7 @@
 }
 [% } %]
 
-[% operation UI!UIReference generateJson() { %]
+[% operation UIReference generateJson() { %]
 {
 	"upper" : "[%=self.upper%]",
 	[% if(self.referenced.isDefined())  { %]
@@ -358,7 +358,7 @@
 }
 [% } %]
 
-[% operation UI!UIRule generateJson() { %]
+[% operation UIRule generateJson() { %]
 {
 	"id" : "[%=self.id%]",
 	"name" : "[%=self.name%]",
@@ -368,7 +368,7 @@
 }
 [% } %]
 
-[% operation UI!UIInfo generateJson() { %]
+[% operation UIInfo generateJson() { %]
 {
 	[% if(self.userClass.isDefined())  { %]
 	"userClass" : "[%=self.userClass.id%]",
@@ -389,7 +389,7 @@
 }	
 [% } %]
 
-[% operation UI!UIBase generateJson() { %]
+[% operation UIBase generateJson() { %]
 {
 	"info" : [%self.info.generateJson();%],
 	"menu" : [%self.menu.generateJson();%],
@@ -406,7 +406,7 @@
 }
 [% } %]
 
-[% operation UI!UIFilter generateJson() { %]
+[% operation UIFilter generateJson() { %]
 {
 	"attribute" : "[%=self.attribute%]",
 	"operator" : "[%=self.operator%]",
@@ -415,7 +415,7 @@
 }
 [% } %]
 
-[% operation UI!UIInterval generateJson() { %]
+[% operation UIInterval generateJson() { %]
 {
 	[% if(self.min.isDefined())  { %]
 	"min" : [%=self.min%],

@@ -98,12 +98,9 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="info" lowerBound="1" eType="#//UIInfo"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
-        eType="#//UIComponentType" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Identifiable" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIMenuItem" eSuperTypes="#//Identifiable">
@@ -133,8 +130,18 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="versions" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UIComponentType" eSuperTypes="#//Identifiable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UIComponentType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="basicTypes" lowerBound="1"
+        upperBound="-1" eType="#//UIBasicType" eOpposite="#//UIBasicType/componentTypes"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UIBasicType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentTypes" lowerBound="1"
+        upperBound="-1" eType="#//UIComponentType" eOpposite="#//UIComponentType/basicTypes"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIField" abstract="true" eSuperTypes="#//Identifiable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentType" lowerBound="1"
+        eType="#//UIComponentType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="intervals" upperBound="-1"
         eType="#//UIInterval" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="readonly" lowerBound="1"
@@ -147,17 +154,15 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="derived" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIAttribute" eSuperTypes="#//UIField">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="regexp" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="decimals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="decimals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="placeholder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="componentType" lowerBound="1"
-        eType="#//UIComponentType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIReference" eSuperTypes="#//UIField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" eType="#//UIReference"/>
@@ -169,7 +174,6 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="referenced" eType="#//UIClass"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="componentHack" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIListView" eSuperTypes="#//UIView">
     <eStructuralFeatures xsi:type="ecore:EReference" name="detailView" lowerBound="1"

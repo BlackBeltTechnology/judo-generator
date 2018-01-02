@@ -1,9 +1,7 @@
-import "../../../operations/_importAll.eol";
-
 rule UIModule
 	transform jpackage : PSM!JPackage
 	to uimodule : UI!UIModule {
-	guard : jpackage.participates(PSM!JLayer#OPERATION)
+	guard : jpackage.stereotype = 'dto' or jpackage.stereotype = 'screen'
 		uimodule.name = jpackage.name;
 		uimodule.uuid = jpackage.uuid;
 		uimodule.classes = jpackage.classes.equivalents();
