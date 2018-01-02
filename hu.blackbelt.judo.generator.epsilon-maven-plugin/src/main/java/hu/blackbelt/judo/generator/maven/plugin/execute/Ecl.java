@@ -21,14 +21,21 @@ public class Ecl extends Eol {
     IEolExecutableModule getModule(Map<Object, Object> context) throws MojoExecutionException {
         eclModule = new EclModule();
         if (useMatchTrace != null) {
-			eclModule.getContext().setMatchTrace((MatchTrace)context.get(useMatchTrace));
+        	if (context.get(useMatchTrace) != null) {
+        		eclModule.getContext().setMatchTrace((MatchTrace)context.get(useMatchTrace));
+        	} else {
+        		eclModule.getContext().setMatchTrace(new MatchTrace());
+        	}
 		}
         
-        if (exportMatchTrace != null) {
-			context.put(
-				exportMatchTrace, 
-				eclModule.getContext().getMatchTrace().getReduced());
-		}
         return eclModule;
     };
+    
+    void exportMatchTrace(Map<Object, Object> context) {
+    	 if (exportMatchTrace != null) {
+ 			context.put(
+ 				exportMatchTrace, 
+ 				eclModule.getContext().getMatchTrace().getReduced());
+ 		}
+    }
 }

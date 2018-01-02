@@ -12,6 +12,7 @@ ALTER TABLE [%=tableOperation.table.sqlName%]
 [% } %]
 		
 [% if (tableOperation.deleteFieldOperations.size() > 0) {%]
+[% tableOperation.sqlName.println("SQLNAME: "); %]
 ALTER TABLE [%=tableOperation.table.sqlName%]
 	[% if (tableOperation.deleteFieldOperations.size() = 1) {%]
 	DROP COLUMN [%=tableOperation.deleteFieldOperations.at(0).field.sqlName%];

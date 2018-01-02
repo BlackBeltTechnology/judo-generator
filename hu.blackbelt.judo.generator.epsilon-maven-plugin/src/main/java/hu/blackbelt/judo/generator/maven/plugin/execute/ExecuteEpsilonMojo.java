@@ -14,6 +14,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
+import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.IEolExecutableModule;
 import org.eclipse.epsilon.eol.execute.context.Variable;
@@ -70,6 +71,9 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
                             getLog().info("Execution result: " + eolProgram.toString());
                         }
 
+                        if (eolProgram instanceof Ecl) {
+                        	((Ecl) eolProgram).exportMatchTrace(context);
+                        }
                     }
                 }
             } catch (Exception e) {

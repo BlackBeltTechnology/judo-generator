@@ -1,0 +1,113 @@
+import "../util.eol";
+
+rule TableCreated
+	transform table : NEW!RdbmsTable
+	to tableOp : TARGET!RdbmsTableOperation {
+		tableOp.uuid = uuid3(table.uuid, "CREATED");
+		tableOp.sqlName = table.sqlName + "_OPERATION_CREATE";
+	
+		tableOp.operationType = TARGET!RdbmsTableOperationType#CREATE;
+		tableOp.table = table.equivalent("NewTableToTargetTable");
+	}
+	
+rule TableDeleted
+	transform table : PREVIOUS!RdbmsTable
+	to tableOp : TARGET!RdbmsTableOperation {
+		tableOp.uuid = uuid3(table.uuid, "DELETED");
+		tableOp.sqlName = table.sqlName + "_OPERATION_DELETE";
+	
+		tableOp.operationType = TARGET!RdbmsTableOperationType#DELETE;
+		tableOp.table = table.equivalent("PreviousTableToTargetTable");
+	}
+
+@lazy
+rule NewTableToTargetTable
+	transform table : NEW!RdbmsTable
+	to target : TARGET!RdbmsTable {
+		target.sqlName = table.sqlName;
+		target.uuid = table.uuid;
+		for (field in table.fields) {
+			target.fields.add(field.equivalent());
+		}
+		target.primaryKey = table.primaryKey.equivalent();
+	}
+	
+@lazy
+rule PreviousTableToTargetTable
+	transform table : PREVIOUS!RdbmsTable
+	to target : TARGET!RdbmsTable {
+		target.sqlName = table.sqlName;
+		target.uuid = table.uuid;
+		for (field in table.fields) {
+			target.fields.add(field.equivalent());
+		}
+		target.primaryKey = table.primaryKey.equivalent();
+	}
+
+@abstract
+rule NewFieldToTargetField
+	transform field : NEW!RdbmsField
+	to target : TARGET!RdbmsField {
+		target.sqlName = field.sqlName;
+		target.uuid = field.uuid;
+		
+		var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+		target.type = emfTool.getECoreUtil().copy(field.type);
+	}
+	
+@lazy
+rule NewForeignKey
+	transform field : NEW!RdbmsForeignKey
+	to target : TARGET!RdbmsForeignKey 
+	extends NewFieldToTargetField {
+	}
+	
+@lazy
+rule NewIdentifierField
+	transform field : NEW!RdbmsIdentifierField
+	to target : TARGET!RdbmsIdentifierField 
+	extends NewFieldToTargetField {
+		
+		field.sqlName.println("Field name: ");	
+	
+	}
+	
+@lazy
+rule NewValueField
+	transform field : NEW!RdbmsValueField
+	to target : TARGET!RdbmsValueField 
+	extends NewFieldToTargetField {
+	}
+
+	
+@abstract
+rule PreviousFieldToTargetField
+	transform field : PREVIOUS!RdbmsField
+	to target : TARGET!RdbmsField {
+		target.sqlName = field.sqlName;
+		target.uuid = field.uuid;
+		
+		var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+		target.type = emfTool.getECoreUtil().copy(field.type);
+	}
+	
+@lazy
+rule NewForeignKey
+	transform field : PREVIOUS!RdbmsForeignKey
+	to target : TARGET!RdbmsForeignKey 
+	extends PreviousFieldToTargetField {
+	}
+	
+@lazy
+rule NewIdentifierField
+	transform field : PREVIOUS!RdbmsIdentifierField
+	to target : TARGET!RdbmsIdentifierField 
+	extends PreviousFieldToTargetField {
+	}
+	
+@lazy
+rule NewValueField
+	transform field : PREVIOUS!RdbmsValueField
+	to target : TARGET!RdbmsValueField 
+	extends PreviousFieldToTargetField {
+	}

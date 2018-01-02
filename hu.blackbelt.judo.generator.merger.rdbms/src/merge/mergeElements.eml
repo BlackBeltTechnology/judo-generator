@@ -1,36 +1,44 @@
-import "leftOutElements.etl";
+import "mergeTransformations.etl";
+
+import "../util.eol";
 
 rule MergeTables
-	merge newTable : MODIFIED!RdbmsTable
-	with oldTable : ORIGINAL!RdbmsTable
+	merge newTable : NEW!RdbmsTable
+	with oldTable : PREVIOUS!RdbmsTable
 	into target : TARGET!RdbmsTableOperation {
-	guard : not oldTable.fields.includesAll(newTable.fields) or not newTable.fields.includesAll(oldTable.fields)
+	guard : not oldTable.fields.collect(field | field.uuid).includesAll(newTable.fields.collect(field | field.uuid)) 
+				or not newTable.fields.collect(field | field.uuid).includesAll(oldTable.fields.collect(field | field.uuid))
+			target.uuid = uuid3(newTable.uuid, "MODIFY");
+			target.sqlName = newTable.sqlName + "_OPERATION_MODIFY";
+			
 			target.operationType = TARGET!RdbmsTableOperationType#MODIFY;
-			target.table = newTable;
+			target.table = newTable.equivalent("NewTableToTargetTable");
 			
-			oldTable.name.println("MERGE: ");
-			
-			var deletedFields : Sequence(TARGET!RdbmsField) = oldTable.fields().excludingAll(newTable.fields());
+			var newFieldUuids = newTable.fields.collect(newField | newField.uuid);
+			var deletedFields : OrderedSet(TARGET!RdbmsField) = oldTable.fields.select(field | newFieldUuids.excludes(field.uuid));
 			for (field in deletedFields) {
-				var fieldOperation = new TARGET!RdbmsDeletedFieldOperation();
-				fieldOperation.field = field;
+				var fieldOperation = new TARGET!RdbmsDeleteFieldOperation();
+				fieldOperation.field = field.equivalent();
 				target.deleteFieldOperations.add(fieldOperation);
 			}
 			
-			var createdFields : Sequence(TARGET!RdbmsField) = newTable.fields().excludingAll(oldTable.fields());
+			var oldFieldUuids = oldTable.fields.collect(oldField | oldField.uuid);
+			var createdFields : OrderedSet(TARGET!RdbmsField) = newTable.fields.select(field | oldFieldUuids.excludes(field.uuid));
 			for (field in createdFields) {
 				var fieldOperation = new TARGET!RdbmsCreateFieldOperation();
-				fieldOperation.field = field;
+				fieldOperation.field = field.equivalent();
 				target.createFieldOperations.add(fieldOperation);
 			}
 			
-			var remainingFields : Sequence(TARGET!RdbmsField) = newTable.fields().excludingAll(createdFields);
+			var createdFieldUuids = createdFields.collect(field | field.uuid);
+			var remainingFields : OrderedSet(TARGET!RdbmsField) = newTable.fields.select(field | createdFieldUuids.excludes(field.uuid));
 			for (field in remainingFields) {
-				var oldField = field.matches("compareFields");
-				if (field.type <> oldField.type) {
+				var oldField = oldTable.fields.select(oldField | oldField.uuid = field.uuid).first();
+				if (field.type.uuid <> oldField.type.uuid) {
 					var fieldOperation = new TARGET!RdbmsModifyFieldOperation();
+					fieldOperation.field = field.equivalent();
 					fieldOperation.typeChanged = true;
 					target.modifyFieldOperations.add(fieldOperation);
 				}
 			}
-		} 
+		}
