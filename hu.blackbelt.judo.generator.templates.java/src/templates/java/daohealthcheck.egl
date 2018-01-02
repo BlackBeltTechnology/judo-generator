@@ -1,0 +1,40 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import hu.blackbelt.judo.common.healthcheck.api.AbstractServiceHealthCheck;
+import org.apache.felix.scr.annotations.Component;
+
+import java.util.List;
+
+
+@Component(metatype = false, immediate = true)
+@SuppressWarnings({"checkstyle:executablestatementcount", "checkstyle:multiplestringliterals"})
+public class DaoHealthCheck extends AbstractServiceHealthCheck {
+
+public DaoHealthCheck() { }
+
+    @Override
+    public List<String> getServiceHaveToBeActiveByObjectClass() {
+
+        List<String> services = Lists.newArrayList();
+
+        [% for (daoMinimal in class.packageDaoMinimals()) { %]
+            services.add("[%=daoMinimal.fqName()%]");
+        [%}%]
+
+        return ImmutableList.copyOf(services);
+    }
+}
+
+[%
+operation JAVA!JvmClass packageDaoMinimals () {
+    return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#DAO_MINIMAL and c.origin.package.uuid = self.origin.package.uuid);
+} 
+%]

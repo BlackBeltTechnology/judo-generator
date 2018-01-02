@@ -23,7 +23,7 @@ import hu.blackbelt.judo.common.lang.api.meta.Metadata;
 @Setter
 @NoArgsConstructor
 @PermissionSubject(id = "[%=class.origin.uuid %]", resource = "[%= class.origin.package.name %].[%=class.origin.name %]")
-public class [%= class.name %] [% if (class.supertype.isDefined()) { %] extends [%=class.supertype.fqName() %] [% } %] implements hu.blackbelt.judo.business.dto.api.IdentifiableDto {
+public class [%= class.name %] [% if (class.hasSuper()) { %] extends [%=class.supertype.fqName() %] [% } %] implements hu.blackbelt.judo.business.dto.api.IdentifiableDto {
 
 	private Metadata $judo$meta;
 	

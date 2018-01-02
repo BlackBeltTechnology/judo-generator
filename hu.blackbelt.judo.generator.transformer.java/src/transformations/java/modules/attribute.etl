@@ -93,6 +93,41 @@ rule RestOperationAttribute
         t.fillFrom(s, "RestOperationImplClass");
 }
 
+rule FilterRestDtoAttribute
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "FilterRestDtoClass");
+}
+
+rule AbstractRestTestClientAttribute
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "AbstractRestTestClientClass");
+}
+
+rule RestTestWrapperC
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "RestTestWrapperCClass");
+}
+
+rule RestTestWrapperT
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "RestTestWrapperTClass");
+}
+
+rule RestTestWrapperM
+    transform s : PSM!JAttribute
+    to t : JAVA!JvmAttribute
+    extends JAttribute {
+        t.fillFrom(s, "RestTestWrapperMClass");
+}
+
 operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule : String) : Any {
 	self.uuid = uuid3(source.uuid, correspondingRule);
 	self.ownerClass = source.ownerClass.equivalent(correspondingRule);
@@ -100,6 +135,10 @@ operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule
 	self.mandatory = source.mandatory;
 	self.technical = source.technical;
     self.regexp = source.regexp;
+    self.placeholder = source.placeholder;
+    if (self.placeholder.isUndefined()) {
+        self.placeholder = "";
+    }
     self.derived = source.derived;
 
 	self.type = source.type.equivalent(correspondingRule);

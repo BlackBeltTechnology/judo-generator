@@ -8,7 +8,7 @@ operation JAVA!JvmMethodParameter restAnnotation() : String {
 }
 
 operation JAVA!JvmMethodParameter isId() : Boolean {
-    return self.type.uuid = idType().uuid;
+    return self.representsJudoId;
 }
 
 operation JAVA!JvmMethodParameter isPagination() : Boolean {

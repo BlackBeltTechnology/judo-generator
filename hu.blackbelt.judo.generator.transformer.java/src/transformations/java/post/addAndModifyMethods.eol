@@ -9,92 +9,19 @@ operation addAndModifyMethods () : Any {
 		} else if (method.kind = JAVA!JvmMethodKind#QUERY) {
 			if (method.type.isCollection()) {
 				createQueryCountMethodFor(method);
-				method.addPaginationParam();
+				if(not Set{JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT, JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S}.includes(method.ownerClass.coordinate)) {
+				    method.addPaginationParam();
+				}
 			}
 		}
 	}
 
 	for (interface in JAVA!JvmInterface.allOfType.select(i | i.coordinate = JAVA!JvmJudoCoordinate#DTO_OPERATION)) {
-        for (ref in interface.origin.allReferences().select(r | r.navigable)) {
-            var returnType;
-            var listType;
-            if(ref.type.isCollection()) {
-                returnType = createJvmList(ref.type.bare().dto());
-                listType = returnType;
-            } else {
-                returnType = ref.type.dto();
-                listType = createJvmList(returnType);
-            }
-
-            var countTraverseMethod = createMethodFor(interface, ref, longType(), "countTraverse", JAVA!JvmMethodKind#COUNT_TRAVERSE);
-            countTraverseMethod.addIdParam();
-            countTraverseMethod.addFilterParam();
-
-            var traverseMethod = createMethodFor(interface, ref, returnType, "traverse", JAVA!JvmMethodKind#TRAVERSE);
-            traverseMethod.addIdParam();
-            traverseMethod.addFilterParam();
-            traverseMethod.addPaginationParam();
-
-            if (not ref.derived) {
-                var countAvailableMethod = createMethodFor(interface, ref, longType(), "countAvailable", JAVA!JvmMethodKind#COUNT_AVAILABLE);
-                countAvailableMethod.addIdParam();
-                countAvailableMethod.addFilterParam();
-
-                var availableMethod = createMethodFor(interface, ref, listType, "available", JAVA!JvmMethodKind#AVAILABLE);
-                availableMethod.addIdParam();
-                availableMethod.addFilterParam();
-                availableMethod.addPaginationParam();
-
-                var attachMethod = createMethodFor(interface, ref, returnType, "attach", JAVA!JvmMethodKind#ATTACH);
-                attachMethod.addIdParam();
-                attachMethod.addCustomParam(returnType, ref.name);
-
-                var detachMethod = createMethodFor(interface, ref, returnType, "detach", JAVA!JvmMethodKind#DETACH);
-                detachMethod.addIdParam();
-                detachMethod.addCustomParam(returnType, ref.name);
-            }
-        }
+	    interface.createDtoOperationMethods();
     }
 
     for (interface in JAVA!JvmInterface.allOfType.select(i | i.coordinate = JAVA!JvmJudoCoordinate#REST_OPERATION)) {
-        for (ref in interface.origin.allReferences().select(r | r.navigable)) {
-            var returnType;
-            if(ref.type.isCollection()) {
-                returnType = createJvmList(ref.type.bare().restDto());
-            } else {
-                returnType = ref.type.restDto();
-            }
-
-            var traverseMethod = createMethodFor(interface, ref, responseType(), "traverse", JAVA!JvmMethodKind#TRAVERSE);
-            traverseMethod.addIdParam();
-            traverseMethod.addCustomParam(interface.filterRestDto(), "filter");
-            traverseMethod.addPaginationParam();
-
-            var traverseExportMethod = createMethodFor(interface, ref, responseType(), "", JAVA!JvmMethodKind#TRAVERSE_EXPORT);
-            traverseExportMethod.name = "traverse" + ref.name.firstToUpperCase() + "Export";
-            traverseExportMethod.uuid = uuid3(ref.uuid, traverseExportMethod.name);
-            traverseExportMethod.addIdParam();
-            traverseExportMethod.addCustomParam(interface.filterRestDto(), "filter");
-
-            if (not ref.derived) {
-                var availableMethod = createMethodFor(interface, ref, responseType(), "available", JAVA!JvmMethodKind#AVAILABLE);
-                availableMethod.addIdParam();
-                availableMethod.addCustomParam(interface.filterRestDto(), "filter");
-                availableMethod.addPaginationParam();
-
-                var availableAllMethod = createMethodFor(interface, ref, responseType(), "availableAll", JAVA!JvmMethodKind#AVAILABLE_ALL);
-                availableAllMethod.addCustomParam(interface.filterRestDto(), "filter");
-                availableAllMethod.addPaginationParam();
-
-                var attachMethod = createMethodFor(interface, ref, returnType, "attach", JAVA!JvmMethodKind#ATTACH);
-                attachMethod.addIdParam();
-                attachMethod.addCustomParam(returnType, ref.name);
-
-                var detachMethod = createMethodFor(interface, ref, returnType, "detach", JAVA!JvmMethodKind#DETACH);
-                detachMethod.addIdParam();
-                detachMethod.addCustomParam(returnType, ref.name);
-            }
-        }
+        interface.createRestDtoOperationMethods();
     }
 }
 
@@ -124,7 +51,6 @@ operation createBulkMethodFor (method : JAVA!JvmMethod) : Any {
 	bulkMethod.origin = method.origin;
 	bulkMethod.uuid = uuid3(method.uuid, bulkMethod.name);
 	bulkMethod.ownerClass = method.ownerClass;
-	bulkMethod.addIdsParam();
 	bulkMethod.type = createJvmList(method.type);
 	bulkMethod.kind = JAVA!JvmMethodKind#CUSTOM_BULK;
 	bulkMethod.bulk = true;
@@ -136,6 +62,90 @@ operation createBulkMethodFor (method : JAVA!JvmMethod) : Any {
 		bulkParam.type = param.type;
 		bulkParam.ownerMethod = bulkMethod;
 	}
+	bulkMethod.addIdsParam(bulkMethod.ownerClass.coordinate <> JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT);
+}
+
+operation JAVA!JvmInterface createDtoOperationMethods () {
+    for (ref in self.origin.allReferences().select(r | r.navigable)) {
+        var returnType;
+        var listType;
+        if(ref.type.isCollection()) {
+            returnType = createJvmList(ref.type.bare().dto());
+            listType = returnType;
+        } else {
+            returnType = ref.type.dto();
+            listType = createJvmList(returnType);
+        }
+
+        var countTraverseMethod = createMethodFor(self, ref, longType(), "countTraverse", JAVA!JvmMethodKind#COUNT_TRAVERSE);
+        countTraverseMethod.addIdParam();
+        countTraverseMethod.addFilterParam();
+
+        var traverseMethod = createMethodFor(self, ref, returnType, "traverse", JAVA!JvmMethodKind#TRAVERSE);
+        traverseMethod.addIdParam();
+        traverseMethod.addFilterParam();
+        traverseMethod.addPaginationParam();
+
+        if (not ref.derived) {
+            var countAvailableMethod = createMethodFor(self, ref, longType(), "countAvailable", JAVA!JvmMethodKind#COUNT_AVAILABLE);
+            countAvailableMethod.addIdParam();
+            countAvailableMethod.addFilterParam();
+
+            var availableMethod = createMethodFor(self, ref, listType, "available", JAVA!JvmMethodKind#AVAILABLE);
+            availableMethod.addIdParam();
+            availableMethod.addFilterParam();
+            availableMethod.addPaginationParam();
+
+            var attachMethod = createMethodFor(self, ref, returnType, "attach", JAVA!JvmMethodKind#ATTACH);
+            attachMethod.addIdParam();
+            attachMethod.addCustomParam(returnType, ref.name);
+
+            var detachMethod = createMethodFor(self, ref, returnType, "detach", JAVA!JvmMethodKind#DETACH);
+            detachMethod.addIdParam();
+            detachMethod.addCustomParam(returnType, ref.name);
+        }
+    }
+}
+
+operation JAVA!JvmInterface createRestDtoOperationMethods () {
+    for (ref in self.origin.allReferences().select(r | r.navigable)) {
+        var returnType;
+        if(ref.type.isCollection()) {
+            returnType = createJvmList(ref.type.bare().restDto());
+        } else {
+            returnType = ref.type.restDto();
+        }
+
+        var traverseMethod = createMethodFor(self, ref, responseType(), "traverse", JAVA!JvmMethodKind#TRAVERSE);
+        traverseMethod.addIdParam();
+        traverseMethod.addCustomParam(self.filterRestDto(), "filter");
+        traverseMethod.addPaginationParam();
+
+        var traverseExportMethod = createMethodFor(self, ref, responseType(), "", JAVA!JvmMethodKind#TRAVERSE_EXPORT);
+        traverseExportMethod.name = "traverse" + ref.name.firstToUpperCase() + "Export";
+        traverseExportMethod.uuid = uuid3(ref.uuid, traverseExportMethod.name);
+        traverseExportMethod.addIdParam();
+        traverseExportMethod.addCustomParam(self.filterRestDto(), "filter");
+
+        if (not ref.derived) {
+            var availableMethod = createMethodFor(self, ref, responseType(), "available", JAVA!JvmMethodKind#AVAILABLE);
+            availableMethod.addIdParam();
+            availableMethod.addCustomParam(self.filterRestDto(), "filter");
+            availableMethod.addPaginationParam();
+
+            var availableAllMethod = createMethodFor(self, ref, responseType(), "availableAll", JAVA!JvmMethodKind#AVAILABLE_ALL);
+            availableAllMethod.addCustomParam(self.filterRestDto(), "filter");
+            availableAllMethod.addPaginationParam();
+
+            var attachMethod = createMethodFor(self, ref, returnType, "attach", JAVA!JvmMethodKind#ATTACH);
+            attachMethod.addIdParam();
+            attachMethod.addCustomParam(returnType, ref.name);
+
+            var detachMethod = createMethodFor(self, ref, returnType, "detach", JAVA!JvmMethodKind#DETACH);
+            detachMethod.addIdParam();
+            detachMethod.addCustomParam(returnType, ref.name);
+        }
+    }
 }
 
 operation createMethodFor (ownerClass : JAVA!JvmInterface, ref : JAVA!JvmReference, returnType : JAVA!JvmType, mNamePrefix : String, kind : Any) : JAVA!JvmMethod {

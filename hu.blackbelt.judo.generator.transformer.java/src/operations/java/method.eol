@@ -74,6 +74,7 @@ operation JAVA!JvmMethod addIdParam() : Any {
 	idParam.type = idType();
 	idParam.name = "id";
 	idParam.uuid = uuid3(self.uuid, idParam.name);
+	idParam.representsJudoId = true;
 	self.parameters.add(0, idParam);
 }
 
@@ -93,12 +94,17 @@ operation JAVA!JvmMethod addFilterParam() : Any {
     self.parameters.add(param);
 }
 
-operation JAVA!JvmMethod addIdsParam() : Any {
+operation JAVA!JvmMethod addIdsParam(addToFront : Boolean) : Any {
 	var idsParam = new JAVA!JvmMethodParameter;
 	idsParam.type = createJvmList(idType());
 	idsParam.name = "ids";
 	idsParam.uuid = uuid3(self.uuid, idsParam.name);
-	self.parameters.add(0, idsParam);
+	idsParam.representsJudoId = true;
+	if(addToFront) {
+	   self.parameters.add(0, idsParam);
+	} else {
+	   self.parameters.add(idsParam);
+	}
 }
 
 operation JAVA!JvmMethod addCustomParam(type : JAVA!JvmType, name : String) : Any {

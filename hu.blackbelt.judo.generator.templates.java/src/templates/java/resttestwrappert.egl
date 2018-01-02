@@ -1,0 +1,272 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  import "../../operations/java/resttestwrapper_common.eol";
+  out.setContentType("Java");
+
+  var builderMethodsMacro = getJavaMacro("resttestwrapper_buildermethods");
+  builderMethodsMacro.populate("class", class);
+  builderMethodsMacro.populate("instanceBased", true);
+
+  var wrapperMethodsMacro = getJavaMacro("resttestwrapper_methods");
+  wrapperMethodsMacro.populate("class", class);
+  wrapperMethodsMacro.populate("showClassBased", false);
+  wrapperMethodsMacro.populate("idsParam", "asList(internal.getId())");
+%]
+
+package [%=class.package.fqName()%];
+
+import com.jayway.restassured.response.ValidatableResponse;
+import java.util.List;
+import java.util.ArrayList;
+import java.net.URL;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+
+import hu.blackbelt.judo.example.common.rest.test.JudoReqSpec;
+import hu.blackbelt.judo.example.common.rest.test.*;
+import hu.blackbelt.judo.common.context.api.*;
+import hu.blackbelt.judo.business.validator.api.codes.*;
+
+[% for (ref in class.allReferences()) { %]
+    import [%=ref.type.bare().restTestClient().fqName()%];
+[%}%]
+import [%=class.restTestClient().fqName()%];
+[% if (class.hasSuper()) { %]import [%=class.supertype.fqName()%]; [%}%]
+
+import static java.util.Arrays.asList;
+
+public class [%=class.name%] [% if (class.hasSuper()) { %] extends [%=class.supertype.name%] [%}%] implements RestTestWrapper {
+
+    private [%=class.restDto().fqName()%] internal;
+
+    private JudoReqSpec.JudoReqSpecBuilder reqSpecBuilder = JudoReqSpec.withDefaults();
+    private QueryGraph.QueryGraphBuilder qgBuilder = QueryGraph.builder();
+    private Suppressions.SuppressionsBuilder suppBuilder = Suppressions.builder();
+
+    public static final String XMIID = "[%=class.origin().uuid%]";
+    [%=builderMethodsMacro.process()%]
+
+    public [%=class.name%]([%=class.restDto().fqName()%] internal){
+        [% if (class.hasSuper()) { %]
+            super(internal);
+        [%}%]
+        this.internal = internal;
+    }
+
+    public boolean isNull() {
+        return internal == null;
+    }
+
+    public void tupdate(){
+        tupdateV();
+    }
+
+    public void trefresh(){
+        trefreshV();
+    }
+
+    public void tdelete(){
+        tdeleteV();
+    }
+
+    public ValidatableResponse tupdateV(){
+        reqSpecBuilder.queryGraph(qgBuilder.build());
+        reqSpecBuilder.suppressions(suppBuilder.build());
+
+        ValidatableResponse v = [%=class.restTestClient().fqName()%].[%=class.origin().name.firstToLowerCase()%]().update(internal, reqSpecBuilder.build());
+        reqSpecBuilder = JudoReqSpec.withDefaults();
+        qgBuilder = QueryGraph.builder();
+        suppBuilder = Suppressions.builder();
+        if (v.extract().response().statusCode() < 300) {
+            internal = [%=class.restTestClient().fqName()%].[%=class.origin().name.firstToLowerCase()%]().extract(v);
+        }
+        return v;
+    }
+
+    public ValidatableResponse trefreshV(){
+        if (internal != null) {
+            reqSpecBuilder.queryGraph(qgBuilder.build());
+            reqSpecBuilder.suppressions(suppBuilder.build());
+
+            ValidatableResponse v = [%=class.restTestClient().fqName()%].[%=class.origin().name.firstToLowerCase()%]().getById(internal.getId(), reqSpecBuilder.build());
+            reqSpecBuilder = JudoReqSpec.withDefaults();
+            qgBuilder = QueryGraph.builder();
+            suppBuilder = Suppressions.builder();
+            if (v.extract().response().statusCode() < 300) {
+                internal = [%=class.restTestClient().fqName()%].[%=class.origin().name.firstToLowerCase()%]().extract(v);
+            }
+            return v;
+        }
+        return null;
+    }
+
+    public ValidatableResponse tdeleteV(){
+        reqSpecBuilder.queryGraph(qgBuilder.build());
+        reqSpecBuilder.suppressions(suppBuilder.build());
+
+        ValidatableResponse v = [%=class.restTestClient().fqName()%].[%=class.origin().name.firstToLowerCase()%]().delete(internal, reqSpecBuilder.build());
+        reqSpecBuilder = JudoReqSpec.withDefaults();
+        qgBuilder = QueryGraph.builder();
+        suppBuilder = Suppressions.builder();
+        if (v.extract().response().statusCode() < 300) {
+            internal = null;
+        }
+        return v;
+    }
+
+    public [%=class.restDto().fqName()%] to(){
+        return internal;
+    }
+
+    [% if (class.hasFixedEnum()) { %]
+        public [%=class.restDtoEnum().fqName()%] toEnum(){
+            if (internal != null) {
+                return [%=class.restDtoEnum().fqName()%].valueOf(internal.getCode());
+            }
+            return null;
+        }
+    [%}%]
+
+    @Override
+    public boolean equals(final Object obj) {
+        boolean result = false;
+        if (this == obj) {
+            result = true;
+        } else if (obj == null){
+            return false;
+        } else if ((this.getClass().isInstance(obj) || obj.getClass().isInstance(this))) {
+            final hu.blackbelt.judo.integration.rest.api.IdentifiableRestDto that = (hu.blackbelt.judo.integration.rest.api.IdentifiableRestDto) (([%=class.name%])obj).internal;
+            result = this.getId() == null ^ that.getId() == null ? false : this.getId() != null ? this.getId().equals(that.getId()) : false;
+        }
+        return result;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() == null ? 0 : getId().hashCode();
+    }
+
+    [% for (attr in class.exportableAttrs()) { %]
+        public void set[%=attr.name.firstToUpperCase()%]([%=attr.type.fqName()%] attr){
+            if (internal != null) {
+                internal.set[%=attr.name.firstToUpperCase()%](attr);
+            }
+        }
+
+        public [%=attr.type.fqName()%] get[%=attr.name.firstToUpperCase()%](){
+            if (internal != null) {
+                return internal.get[%=attr.name.firstToUpperCase()%]();
+            }
+            return null;
+        }
+    [%}%]
+
+    [% for (attr in class.exportableTechnicalAttrs()) { %]
+        public [%=attr.type.fqName()%] get[%=attr.name.firstToUpperCase()%](){
+            if (internal != null) {
+                return internal.get[%=attr.name.firstToUpperCase()%]();
+            }
+            return null;
+        }
+    [%}%]
+
+    [% for (ref in class.allReferences().select(r | r.navigable and not "Value".isSubstringOf(r.name))) {
+        var rName : String = ref.name.firstToUpperCase();
+        var rTypeName : String = ref.type.typeDeclaration();
+        var rListType : JAVA!JvmCollection = ref.type.isCollection().ternary(ref.type, createJvmList(ref.type));
+        %]
+        public [%=rTypeName%] get[%=rName%](){
+            if (internal != null) {
+                return [%=ref.type.returnPre()%]internal.get[%=rName%]()[%=ref.type.returnPost()%];
+            }
+            return null;
+        }
+
+        public [%=rTypeName%] traverse[%=rName%]() {
+            return [%=ref.type.returnPre()%]
+                [%=ref.type.extractCall()%](traverse[%=rName%]V())
+                [%=ref.type.returnPost()%];
+        }
+
+        public ValidatableResponse traverse[%=rName%]V() {
+            reqSpecBuilder.queryGraph(qgBuilder.build());
+            reqSpecBuilder.suppressions(suppBuilder.build());
+            ValidatableResponse resp = [%=ref.callClient(class, "traverse", "internal.getId()", false)%];
+            reqSpecBuilder = JudoReqSpec.withDefaults();
+            qgBuilder = QueryGraph.builder();
+            suppBuilder = Suppressions.builder();
+            return resp;
+        }
+
+        [% for (methodName in Sequence{"attach", "detach"}) { %]
+            public [%=rTypeName%] [%=methodName%][%=rName%]([%=rTypeName%] [%=ref.name%]) {
+                return [%=ref.type.returnPre()%]
+                    [%=ref.type.extractCall()%]([%=methodName%][%=rName%]V([%=ref.name%]))
+                    [%=ref.type.returnPost()%];
+            }
+
+            public ValidatableResponse [%=methodName%][%=rName%]V([%=rTypeName%] [%=ref.name%]) {
+                return [%=ref.callClient(class, methodName, "internal.getId()", true)%];
+            }
+
+            [% if (ref.type.isCollection()) { %]
+                public [%=rTypeName%] [%=methodName%][%=rName%]([%=ref.type.bare().typeDeclaration()%]... [%=ref.name%]) {
+                    return [%=ref.type.returnPre()%]
+                        [%=ref.type.extractCall()%]([%=methodName%][%=rName%]V([%=ref.name%]))
+                        [%=ref.type.returnPost()%];
+                }
+
+                public ValidatableResponse [%=methodName%][%=rName%]V([%=ref.type.bare().typeDeclaration()%]... [%=ref.name%]) {
+                    return [%=ref.callClient(class, methodName, "internal.getId()", true)%];
+                }            
+            [%}%]
+        [%}%]
+
+        public [%=rListType.typeDeclaration()%] available[%=rName%]() {
+            return [%=rListType.returnPre()%]
+                [%=rListType.extractCall()%](available[%=rName%]V())
+                [%=rListType.returnPost()%];
+        }
+
+        public ValidatableResponse available[%=rName%]V() {
+            reqSpecBuilder.queryGraph(qgBuilder.build());
+            reqSpecBuilder.suppressions(suppBuilder.build());
+            ValidatableResponse resp = [%=ref.callClient(class, "available", "internal.getId()", false)%];
+            reqSpecBuilder = JudoReqSpec.withDefaults();
+            qgBuilder = QueryGraph.builder();
+            suppBuilder = Suppressions.builder();
+            return resp;
+        }
+
+        public [%=rListType.typeDeclaration()%] availableAll[%=rName%]() {
+            return [%=rListType.returnPre()%]
+                [%=rListType.extractCall()%](availableAll[%=rName%]V())
+                [%=rListType.returnPost()%];
+        }
+
+        public ValidatableResponse availableAll[%=rName%]V() {
+            reqSpecBuilder.queryGraph(qgBuilder.build());
+            reqSpecBuilder.suppressions(suppBuilder.build());
+            ValidatableResponse resp = [%=ref.callClient(class, "availableAll", "", false)%];
+            reqSpecBuilder = JudoReqSpec.withDefaults();
+            qgBuilder = QueryGraph.builder();
+            suppBuilder = Suppressions.builder();
+            return resp;
+        }
+    [%}%]
+
+    [%=wrapperMethodsMacro.process()%]
+}
+
+[%
+operation JAVA!JvmReference callClient(class : JAVA!JvmClass, methodName : String, instanceParam : String, includeParam : Boolean) : String {
+    var params : Sequence;
+    if (instanceParam.length() > 0) { params.add(instanceParam); }
+    params.add(class.clientAccessor() + '.REL_' + self.nameToUpperCase());
+    if (includeParam) { params.add(self.type.convertParam(self.name)); }
+    params.add("reqSpecBuilder.build()");
+    
+    return class.clientAccessor() + "." + methodName + "(" + params.concat(", ") + ")";
+}
+%]

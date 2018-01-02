@@ -40,3 +40,18 @@ operation JAVA!JvmCollection dto () : JAVA!JvmCollection {
 operation JAVA!JvmCollection restDto () : JAVA!JvmCollection {
     return createJvmList(self.bare().restDto());
 }
+
+@cached
+operation JAVA!JvmCollection restDtoEnum () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restDtoEnum());
+}
+
+@cached
+operation JAVA!JvmCollection restTestWrapperT () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restTestWrapperT());
+}
+
+@cached
+operation JAVA!JvmCollection restTestWrapperM () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restTestWrapperM());
+}

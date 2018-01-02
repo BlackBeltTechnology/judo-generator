@@ -6,6 +6,6 @@
 
 package [%=class.package.fqName()%];
 
-public enum [%=class.name%] {
-    [%=class.origin.literals.collect( l | l.name).concat(', ')%];
+public class [%=class.name%] extends [%=class.abstractRestTestClient().name%] {
+
 }

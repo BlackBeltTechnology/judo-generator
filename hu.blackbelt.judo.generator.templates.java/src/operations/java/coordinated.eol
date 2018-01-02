@@ -19,6 +19,16 @@ operation JAVA!JvmCoordinated restDto () : JAVA!JvmCoordinated {
 }
 
 @cached
+operation JAVA!JvmCoordinated restDtoBuilder () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#REST_DTO_BUILDER);
+}
+
+@cached
+operation JAVA!JvmCoordinated restDtoEnum () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#REST_DTO).fixedEnum;
+}
+
+@cached
 operation JAVA!JvmCoordinated filterRestDto () : JAVA!JvmCoordinated {
     return self.find(JAVA!JvmJudoCoordinate#FILTER_REST_DTO);
 }
@@ -89,8 +99,48 @@ operation JAVA!JvmCoordinated boServiceAbstract () : JAVA!JvmCoordinated {
 }
 
 @cached
+operation JAVA!JvmCoordinated restNamespace () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_NAMESPACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated restNamespaceOperation () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_NAMESPACE_OPERATION);
+}
+
+@cached
+operation JAVA!JvmCoordinated abstractRestTestClient () {
+    return self.find(JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestClient () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_CLIENT);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestWrapperC () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestWrapperT () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_T);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestWrapperS () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestWrapperM () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M);
+}
+
+@cached
 operation JAVA!JvmCoordinated origin() : JAVA!JvmCoordinated {
-	if (self.coordinate == JAVA!JvmJudoCoordinate#ORIGIN) {
+	if (self.coordinate = JAVA!JvmJudoCoordinate#ORIGIN) {
 		return self;
 	} else {
 		return self.origin;

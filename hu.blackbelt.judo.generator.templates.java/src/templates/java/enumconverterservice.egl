@@ -1,0 +1,42 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import hu.blackbelt.judo.business.dao.api.EntityDao;
+import hu.blackbelt.judo.business.expression.api.meta.Property;
+import hu.blackbelt.judo.business.service.api.base.AbstractEnumService;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+
+[% for (class in fixedEnumClasses()) { %]
+    import [%=class.fixedEnum.fqName()%];
+    import [%=class.fqName()%];
+[%}%]
+
+import hu.blackbelt.judo.business.service.api.*;
+
+@Component(immediate = true)
+@Service([%=class.name%].class)
+public class [%=class.name%] {
+
+    @Reference
+    private EnumServiceLocator enumServiceLockator;
+
+    [% for (class in fixedEnumClasses()) { %]
+	    public EnumService<[%=class.name%], [%=class.fixedEnum.name%]> [%=class.name.firstToLowerCase()%]() {
+            return enumServiceLockator.findEnumService([%=class.fixedEnum.name%].class);
+        }
+    [%}%]
+}
+
+[%
+@cached
+operation fixedEnumClasses () {
+    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and c.fixedEnum.isDefined());
+}
+%]

@@ -1,0 +1,150 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+
+  var builderMethodsMacro = getJavaMacro("resttestwrapper_buildermethods");
+  builderMethodsMacro.populate("class", class);
+  builderMethodsMacro.populate("instanceBased", false);
+%]
+
+package [%=class.package.fqName()%];
+
+import hu.blackbelt.judo.integration.rest.api.IdentifiableRestDto;
+import [%=class.restDto().fqName()%];
+
+import com.jayway.restassured.response.ValidatableResponse;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.net.URL;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import java.math.BigDecimal;
+
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.FluentIterable;
+
+import static com.google.common.collect.ImmutableList.copyOf;
+
+import hu.blackbelt.judo.example.common.rest.test.JudoReqSpec;
+import hu.blackbelt.judo.example.common.rest.test.*;
+import hu.blackbelt.judo.common.context.api.*;
+import hu.blackbelt.judo.business.validator.api.codes.*;
+import hu.blackbelt.judo.example.common.rest.test.RestTestWrapper;
+
+public class [%=class.name%] implements RestTestWrapper {
+
+    private [%=class.restDtoBuilder().fqName()%] builder = new [%=class.restDtoBuilder().fqName()%]();
+
+    private JudoReqSpec.JudoReqSpecBuilder reqSpecBuilder = JudoReqSpec.withDefaults();
+    private QueryGraph.QueryGraphBuilder qgBuilder = QueryGraph.builder();
+    private Suppressions.SuppressionsBuilder suppBuilder = Suppressions.builder();
+
+    public static final String XMIID = "[%=class.origin().uuid%]";
+
+    [%=builderMethodsMacro.process()%]
+
+    public static [%=class.name%] [%=class.name.firstToLowerCase()%]Empty(){
+        return new [%=class.name%]();
+    }
+
+    public static [%=class.name%] [%=class.name.firstToLowerCase()%](){
+        [%=class.name%]  ret = new [%=class.name%]();
+        ret.builder = [%=class.restTestClient().fqName()%].[%=class.origin().name.firstToLowerCase()%]().[%=class.origin().name.firstToLowerCase()%]().builder();
+        return ret;
+    }
+
+    [% for (attr in class.exportableAttrs()) { %]
+        public [%=class.name%] [%=attr.name%]([%=attr.type.name%] par) {
+            builder.[%=attr.name%](par);
+            return this;
+        }
+    [%}%]
+
+    [% for (ref in class.allReferences().select(r | r.navigable)) { %]
+        [% if (not ref.type.isCollection()) { %]
+            public [%=class.name%] [%=ref.name%]([%=ref.tWrapperName()%] par) {
+                if (par != null) {
+                    builder.[%=ref.name%]([% if(ref.type.restDto().fixedEnum.isDefined()) { %][%=ref.type.restTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().queryByCode(par)[% } else { %]par != null ? par.to() : null[%}%]);
+                } else {
+                    builder.[%=ref.name%](null);
+                }
+                return this;
+            }
+
+            public [%=class.name%] [%=ref.name%]Id(String id) {
+                if (id != null){
+                    builder.[%=ref.name%](new [%=ref.type.restDtoBuilder().fqName()%]().id(id).build());
+                }
+                return this;
+            }
+        [% } else { %]
+            public [%=class.name%] empty[%=ref.name.firstToUpperCase()%]() {
+                builder.[%=ref.name%](new [%=ref.type.bare().restDto().fqName()%][]{});
+                return this;
+            }
+
+            public [%=class.name%] [%=ref.name%]([%=ref.tWrapperName()%]... pars) {
+                builder.[%=ref.name%]([% if (ref.type.bare().restDto().fixedEnum.isDefined()) { %][%=ref.type.bare().restClientAccessor()%].queryByCode(pars)[% } else { %][%=ref.mWrapperName()%].convert(pars)[%}%].toArray(new [%=ref.type.bare().restDto().fqName()%][]{}));
+                return this;
+            }
+
+            public [%=class.name%] [%=ref.name%]Id(String... ids) {
+                builder.[%=ref.name%](FluentIterable.from(copyOf(ids)).transform(new Function<String, [%=ref.type.bare().restDto().fqName()%]>() {
+                    public [%=ref.type.bare().restDto().fqName()%] apply(String id) {
+                        return new [%=ref.type.bare().restDtoBuilder().fqName()%]().id(id).build();
+                    }
+                }).toArray([%=ref.type.bare().restDto().fqName()%].class));
+                return this;
+            }
+        [%}%]
+    [%}%]
+
+
+    public [%=class.restTestWrapperT().fqName()%] create(){
+        [%=class.restDtoBuilder().fqName()%] copy = builder;
+        builder = new [%=class.restDtoBuilder().fqName()%]();
+        reqSpecBuilder.queryGraph(qgBuilder.build());
+        reqSpecBuilder.suppressions(suppBuilder.build());
+        [%=class.restTestWrapperT().fqName()%] ret = [%=class.restTestWrapperS().name%].from([%=class.restTestClient().fqName()%].[%=class.origin().name.firstToLowerCase()%]().create(copy, reqSpecBuilder.build()));
+        reqSpecBuilder = JudoReqSpec.withDefaults();
+        qgBuilder = QueryGraph.builder();
+        suppBuilder = Suppressions.builder();
+        return ret;
+    }
+
+    public ValidatableResponse createV(){
+        [%=class.restDtoBuilder().fqName()%] copy = builder;
+        builder = new [%=class.restDtoBuilder().fqName()%]();
+        reqSpecBuilder.queryGraph(qgBuilder.build());
+        reqSpecBuilder.suppressions(suppBuilder.build());
+        ValidatableResponse ret = [%=class.restTestClient().fqName()%].[%=class.origin().name.firstToLowerCase()%]().create(copy.build(), reqSpecBuilder.build());
+        reqSpecBuilder = JudoReqSpec.withDefaults();
+        qgBuilder = QueryGraph.builder();
+        suppBuilder = Suppressions.builder();
+        return ret;
+    }
+}
+
+
+[%
+@cached
+operation JAVA!JvmReference tWrapperName () {
+    if (self.type.bare().restDto().fixedEnum.isDefined()) {
+        return self.type.restDtoEnum().fqName();
+    } else {
+        return self.type.bare().restTestWrapperT().fqName();
+    }
+}
+
+@cached
+operation JAVA!JvmReference mWrapperName () {
+    if (self.type.bare().restDto().fixedEnum.isDefined()) {
+        return self.type.restDtoEnum().fqName();
+    } else {
+        return self.type.bare().restTestWrapperM().fqName();
+    }
+}
+%]

@@ -104,6 +104,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="JvmMethodParameter" eSuperTypes="#//JvmTypedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerMethod" eType="#//JvmMethod"
         eOpposite="#//JvmMethod/parameters"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsJudoId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="JvmMethodKind">
     <eLiterals name="CUSTOM"/>
@@ -126,6 +128,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="regexpForValidation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="calculationScript" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="regexp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="placeholder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmReference" eSuperTypes="#//JvmMember">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//JvmReferenceKind"/>
@@ -228,6 +231,22 @@
     <eLiterals name="DTO_ACCESSOR" value="28"/>
     <eLiterals name="DTO_OPERATION_IMPL" value="29"/>
     <eLiterals name="REST_OPERATION_IMPL" value="30"/>
+    <eLiterals name="REST_NAMESPACE" value="31"/>
+    <eLiterals name="REST_NAMESPACE_OPERATION" value="32"/>
+    <eLiterals name="REST_NAMESPACE_OPERATION_IMPL" value="33"/>
+    <eLiterals name="REST_OPERATION_HEALTH_CHECK" value="34"/>
+    <eLiterals name="DTO_OPERATION_HEALTH_CHECK" value="35"/>
+    <eLiterals name="DAO_HEALTH_CHECK" value="36"/>
+    <eLiterals name="BO_SERVICE_HEALTH_CHECK" value="37"/>
+    <eLiterals name="BO_TYPE_RESOLVER" value="38"/>
+    <eLiterals name="ENUM_CONVERTER_SERVICE" value="39"/>
+    <eLiterals name="ABSTRACT_REST_TEST_CLIENT" value="40"/>
+    <eLiterals name="REST_TEST_BASE" value="41"/>
+    <eLiterals name="REST_TEST_CLIENT" value="42"/>
+    <eLiterals name="REST_TEST_WRAPPER_C" value="43"/>
+    <eLiterals name="REST_TEST_WRAPPER_M" value="44"/>
+    <eLiterals name="REST_TEST_WRAPPER_S" value="45"/>
+    <eLiterals name="REST_TEST_WRAPPER_T" value="46"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmCoordinated" abstract="true" eSuperTypes="#//JvmType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordinate" eType="#//JvmJudoCoordinate"/>
