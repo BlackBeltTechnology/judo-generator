@@ -1,0 +1,125 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+@abstract
+rule JAttributeToRdbmsField
+	transform s : PSM!JAttribute
+	to t : RDBMS!RdbmsField 
+	extends JElementToRdbmsElement { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE)
+	    if (not s.uuid.isDefined() or s.uuid.isEmpty()) {
+	        t.uuid  = uuid3(s.ownerClass.uuid, s.name);
+	    } else {
+	        t.uuid = s.uuid;
+	    }
+		t.table = s.ownerClass.equivalent("JClassToRdbmsTable");
+		/*s.ownerClass.println("OWNER CLASS: ");
+		s.name.println("ATTR NAME: ");
+		s.type.println("SOURCE TYPE: ");*/
+		t.type = s.type.rdbmsType();
+		t.sqlName = s.fieldSqlName(); // fieldSqlName(s);
+		t.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
+		t.description = s.ownerClass.name + "." + s.name;
+		if (s.isPrimaryKey() or s.isGuid() or s.isXmiid()) {
+			t.mandatory = true;
+		} else {
+			t.mandatory = s.mandatory;
+		}
+}
+
+
+rule JAttributeToTableIdField
+	transform s : PSM!JAttribute
+	to t : RDBMS!RdbmsIdentifierField 
+	extends JAttributeToRdbmsField { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
+		t.table.primaryKey = t;
+		t.sqlName = "ID";
+		t.type = idType();
+}
+
+rule JAttributeToTableValueField
+	transform s : PSM!JAttribute
+	to t : RDBMS!RdbmsValueField
+	extends JAttributeToRdbmsField { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey() and not s.derived
+		t.technical = s.isTechnical();
+}
+
+@lazy
+rule JAttributeToViewIdFieldWithoutView
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewIdentifierField
+	extends JElementToRdbmsElement { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
+		v.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + ".id";
+		v.sqlName = "ID";
+		v.tableField = s.equivalent("JAttributeToTableIdField");
+		v.uuid = uuid3(v.tableField.uuid, "view");
+		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+		v.description = s.ownerClass.name + "." + s.name;
+}
+
+rule JAttributeToViewIdField
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewIdentifierField 
+	extends JAttributeToViewIdFieldWithoutView {
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
+		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+		v.`alias` = v.view.primaryTable;
+}
+
+@lazy
+rule JAttributeToViewValueFieldWithoutView
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewValueField 
+	extends JElementToRdbmsElement { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey()
+		v.tableField = s.equivalent("JAttributeToTableValueField");
+		v.sqlName  = v.tableField.sqlName;
+		v.uuid = uuid3(v.tableField.uuid, "view");
+		v.description = s.ownerClass.name + "." + s.name;
+}
+
+@lazy
+rule JAttributeToViewValueField
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewValueField 
+	extends JAttributeToViewValueFieldWithoutView { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey()
+		v.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
+		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+		v.`alias` = v.view.primaryTable;
+}
+
+@lazy
+rule JAttributeToViewExpressionField
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewExpressionField 
+	extends JElementToRdbmsElement { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey()
+		v.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
+  		v.expression = s.value;
+		v.sqlName  = s.fieldSqlName();
+		v.description = s.ownerClass.name + "." + s.name;
+}
+
+rule JAttributeToUniqueKey
+	transform s : PSM!JAttribute
+	to u : RDBMS!RdbmsUniqueKey 
+	extends JElementToRdbmsElement { 
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.unique == true
+	    
+	    if (not s.uuid.isDefined() or s.uuid.isEmpty()) {
+	        u.uuid  = uuid3(s.ownerClass.uuid, s.name);
+	    } else {
+	        u.uuid = s.uuid;
+	    }
+		u.table = s.ownerClass.equivalent("JClassToRdbmsTable");
+		u.sqlName = 'U_' + u.table.sqlName + "_" + s.fieldSqlName(); 
+		u.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
+		u.description = s.ownerClass.name + "." + s.name;
+//	    ('Unique found U_' + u.table.sqlName + "_" + s.fieldSqlName()).println();
+	    //u.table.uniqueKeys.add(u);
+}
+

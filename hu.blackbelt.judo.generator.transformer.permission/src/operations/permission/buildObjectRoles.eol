@@ -1,0 +1,43 @@
+operation buildObjectRoles(classPermissions : Sequence(Permission!Permission), oppositeClasses : Sequence(String),
+							hostClassUuid : String, hostClassName : String) : Sequence(Permission!Role) {
+	
+	var oppositeList = Permission!Permission.select(p | oppositeClasses.includes(p.hostClassName) and p.permissionType = "list");
+	
+	var readPermissions = classPermissions.select(p | p.permissionType = "list" or p.permissionType = "read") + oppositeList;						
+	var updatePermissions = classPermissions.select(p | p.permissionType = "list" or p.permissionType = "read" or p.permissionType = "update" 
+												 or p.permissionType = "write" or p.permissionType = "attach" or p.permissionType = "detach");
+	var createPermissions = classPermissions.select(p | p.permissionType = "create") + updatePermissions;
+	var managePermissions = classPermissions.select(p | p.permissionType = "delete") + createPermissions;
+	var callPermissions = classPermissions.select(p | p.permissionType = "call");
+	var fullPermissions = managePermissions + callPermissions;
+	
+	var readRole : Permission!Role = new Permission!Role;
+	readRole.uuid = uuid3(hostClassUuid, "read");
+	readRole.name = hostClassName + "_" + "read";	
+	readRole.permissions.addAll(readPermissions);
+	
+	var updateRole : Permission!Role = new Permission!Role;
+	updateRole.uuid = uuid3(hostClassUuid, "update");
+	updateRole.name = hostClassName + "_" + "update";
+	updateRole.permissions.addAll(updatePermissions);
+	
+	var createRole : Permission!Role = new Permission!Role;
+	createRole.uuid = uuid3(hostClassUuid, "create");
+	createRole.name = hostClassName + "_" + "create";
+	createRole.permissions.addAll(createPermissions);
+	
+	var manageRole : Permission!Role = new Permission!Role;
+	manageRole.uuid = uuid3(hostClassUuid, "manage");
+	manageRole.name = hostClassName + "_" + "manage";
+	manageRole.permissions.addAll(managePermissions);
+	
+	var callRole : Permission!Role = new Permission!Role;
+	callRole.uuid = uuid3(hostClassUuid, "call");
+	callRole.name = hostClassName + "_" + "call";
+	callRole.permissions.addAll(callPermissions);
+	
+	var fullRole : Permission!Role = new Permission!Role;
+	fullRole.uuid = uuid3(hostClassUuid, "full");
+	fullRole.name = hostClassName + "_" + "full";
+	fullRole.permissions.addAll(fullPermissions);
+}

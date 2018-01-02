@@ -1,0 +1,149 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+@abstract
+rule JRole 
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference 
+	extends JElement {
+		t.kind = s.kind.toJava();
+		t.upper = s.upper;
+		t.lower = s.lower;
+		t.navigable = s.navigable;
+		
+}
+
+rule OriginRole 
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference 
+	extends JRole {
+		t.fillFrom(s, "Origin");
+		t.uuid = s.uuid;
+}
+
+rule BoRole 
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference 
+	extends JRole {
+		t.fillFrom(s, "Bo");
+}
+
+rule PoRole 
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference 
+	extends JRole {
+		t.fillFrom(s, "Po");
+}
+
+rule BoBuilderRole 
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference 
+	extends JRole {
+		t.fillFrom(s, "BoBuilder");
+}
+
+rule BoBqlRole 
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference 
+	extends JRole {
+		t.fillFrom(s, "BoBql");
+}
+
+rule DtoRole
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference
+	extends JRole {
+		t.fillFrom(s, "Dto");
+}
+
+rule RestDtoRole
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference
+	extends JRole {
+		t.fillFrom(s, "RestDto");
+}
+
+rule DtoBuilderRole
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference
+	extends JRole {
+		t.fillFrom(s, "DtoBuilder");
+}
+
+rule RestDtoBuilderRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "RestDtoBuilder");
+}
+
+rule DtoAccessorRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "DtoAccessor");
+}
+
+rule DtoOperationRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "DtoOperation");
+}
+
+rule RestOperationImplRole
+    transform s : PSM!JRole
+    to t : JAVA!JvmReference
+    extends JRole {
+        t.fillFrom(s, "RestOperationImpl");
+}
+
+operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : Any {
+	self.uuid = uuid3(source.uuid, rulPrefix + "Role");
+	self.ownerClass = source.ownerClass.equivalent(rulPrefix + "Class");
+	self.opposite = source.ownerRelationship.roles.select(r | r <> source).first().equivalent(rulPrefix + "Role");
+	if (source.derivedExpression.isDefined()) {
+		self.virtualExpressionScript = source.derivedExpression.replace("\n", " ");
+	}
+	self.derived = source.ownerRelationship.derived;
+	self.derivedDescription = source.derivedDescription;
+	if (self.derivedDescription.isDefined() and self.derivedDescription = "") {
+	   self.derived = true;
+	}
+	self.referenceType = source.transformToReferenceType();
+	self.optionScript = source.optionScript;
+	if (source.value.isDefined() and not self.derived) {
+		if (not source.calculated) {
+			self.defaultValueExpression = source.value;
+		}
+	}
+	if (self.opposite.ownerClass.isDefined()){
+		var typeClass = self.opposite.ownerClass;
+		if (source.upper = -1) {
+			self.type = createJvmList(typeClass);  
+		} else {
+			self.type = typeClass;
+		}
+	} else {
+		self.type = voidType();
+	}
+}
+
+operation PSM!JRole transformToReferenceType () : Any {
+	var opposite = self.ownerRelationship.roles.select(r | r <> self).first();
+	if (opposite.upper == -1) {
+		if (self.upper == -1){
+			return JAVA!JvmReferenceType#ManyToMany;
+		} else {
+			return JAVA!JvmReferenceType#ManyToOne;
+		}
+	} else {
+		if (self.upper == -1){
+			return JAVA!JvmReferenceType#OneToMany;
+		} else {
+			return JAVA!JvmReferenceType#OneToOne;
+		}
+	}
+}
+
+

@@ -1,0 +1,314 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+@abstract
+rule JClass 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass
+	extends JElement {
+		t.package ::= s.package;
+}
+
+@abstract
+rule JClassInterface 
+	transform s : PSM!JClass
+	to t : JAVA!JvmInterface
+	extends JElement {
+		t.package ::= s.package;
+}
+
+/*
+@lazy
+rule OriginInterface 
+	transform s : PSM!JClass
+	to t : JAVA!JvmInterface 
+	extends JClassInterface {
+		t.coordinate = JAVA!JvmJudoCoordinate#ORIGIN;
+		t.uuid = uuid3(s.uuid, "Interface");
+}
+*/
+
+@primary
+rule OriginClass 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends JClass {
+		t.coordinate = JAVA!JvmJudoCoordinate#ORIGIN;
+		t.supertype = s.supertype.equivalent("OriginClass");
+}
+
+@abstract
+rule InterfaceWithOrigin
+	transform s : PSM!JClass
+	to t : JAVA!JvmInterface 
+	extends JClassInterface {
+		t.origin = s.equivalent("OriginClass");
+}
+
+@abstract
+rule WithOrigin
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends JClass {
+		t.origin = s.equivalent("OriginClass");
+}
+
+rule BoInterface
+	transform s : PSM!JClass
+	to t : JAVA!JvmInterface
+	extends InterfaceWithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE) and s.framework
+		t.supertype = s.supertype.equivalent("BoInterface");
+		t.fillCoordinated(s, JAVA!JvmJudoCoordinate#BO_INTERFACE);
+}
+
+rule BoClass 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("BoClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#BO);
+		if (s.framework) {
+			t.implements.add(s.equivalent("BoInterface"));
+		}
+}
+
+rule PoClass 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+		t.supertype = s.supertype.equivalent("PoClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#PO);
+}
+
+rule BoBuilderInterface 
+	transform s : PSM!JClass
+	to t : JAVA!JvmInterface 
+	extends InterfaceWithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE) and s.framework
+		t.supertype = s.supertype.equivalent("BoBuilderInterface");
+		t.fillCoordinated(s, JAVA!JvmJudoCoordinate#BO_BUILDER_INTERFACE);
+}
+
+rule BoBuilderClass 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("BoBuilderClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#BO_BUILDER);
+		if (s.framework) {
+			t.implements.add(s.equivalent("BoBuilderInterface"));
+		}
+}
+
+rule BoBqlClass 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("BoBqlClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#BO_BQL);
+		if (s.framework) {
+			t.implements.add(s.equivalent("BoBqlInterface"));
+		}
+}
+
+rule BoBqlInterface 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends InterfaceWithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE) and s.framework
+		t.supertype = s.supertype.equivalent("BoBqlInterface");
+		t.fillCoordinated(s, JAVA!JvmJudoCoordinate#BO_BQL_INTERFACE);
+}
+
+rule BoEnumService 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE) and s.fixedEnum.isDefined()
+		t.supertype = s.supertype.equivalent("BoEnumService");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#BO_ENUM_SERVICE);
+		t.fixedEnum = s.fixedEnum.equivalent("BoEnum");
+}
+
+
+rule DaoMinimal 
+	transform s : PSM!JClass
+	to t : JAVA!JvmInterface 
+	extends InterfaceWithOrigin {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+		t.supertype = s.supertype.equivalent("DaoMinimal");
+		t.fillCoordinated(s, JAVA!JvmJudoCoordinate#DAO_MINIMAL);
+}
+
+rule BoService 
+	transform s : PSM!JClass
+	to t : JAVA!JvmInterface 
+	extends InterfaceWithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("BoService");
+		t.fillCoordinated(s, JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE);
+}
+
+rule BoServiceAbstract 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("BoServiceAbstract");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#BO_SERVICE_ABSTRACT);
+}
+
+rule BoServiceDefault 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("BoServiceDefault");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT);
+}
+
+rule BoServiceWrapper 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("BoServiceWrapper");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#BO_SERVICE_WRAPPER);
+}
+
+rule DaoQueryDsl 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("DaoQueryDsl");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#DAO_QUERY_DSL);
+}
+
+rule DaoQClass 
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass 
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#SERVICE)
+		t.supertype = s.supertype.equivalent("DaoQClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#DAO_Q_CLASS);
+}
+
+rule DtoClass
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#OPERATION)
+		t.supertype = s.supertype.equivalent("DtoClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#DTO);
+}
+
+rule RestDtoClass
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#REST)
+		t.supertype = s.supertype.equivalent("RestDtoClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#REST_DTO);
+}
+
+rule DtoBuilderClass
+	transform s : PSM!JClass
+	to t : JAVA!JvmClass
+	extends WithOrigin {
+	guard : s.participates(PSM!JLayer#OPERATION)
+		t.supertype = s.supertype.equivalent("DtoBuilderClass");
+		t.fillClass(s, JAVA!JvmJudoCoordinate#DTO_BUILDER);
+}
+
+rule RestDtoBuilderClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestDtoBuilderClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_DTO_BUILDER);
+}
+
+rule RestOperationClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmInterface
+    extends InterfaceWithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestOperationClass");
+        t.fillCoordinated(s, JAVA!JvmJudoCoordinate#REST_OPERATION);
+}
+
+rule RestOperationImplClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("RestOperationImplClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#REST_OPERATION_IMPL);
+        //TODO: We should do this for all coordinates
+        t.representationAttribute = s.representation.equivalent("RestOperationAttribute");
+}
+
+rule DtoOperationInterface
+    transform s : PSM!JClass
+    to t : JAVA!JvmInterface
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#OPERATION)
+        t.supertype = s.supertype.equivalent("DtoOperationInterface");
+        t.fillCoordinated(s, JAVA!JvmJudoCoordinate#DTO_OPERATION);
+}
+
+rule FilterRestDtoClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#REST)
+        t.supertype = s.supertype.equivalent("FilterRestDtoClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#FILTER_REST_DTO);
+}
+
+rule DtoAccessorClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#OPERATION)
+        t.supertype = s.supertype.equivalent("DtoAccessorClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#DTO_ACCESSOR);
+}
+
+rule DtoOperationClass
+    transform s : PSM!JClass
+    to t : JAVA!JvmClass
+    extends WithOrigin {
+    guard : s.participates(PSM!JLayer#OPERATION)
+        t.supertype = s.supertype.equivalent("DtoOperationClass");
+        t.fillClass(s, JAVA!JvmJudoCoordinate#DTO_OPERATION_IMPL);
+}
+
+operation JAVA!JvmCoordinated fillCoordinated (source : PSM!JClass, coordinate : Any) : Any {
+	self.coordinate = coordinate;
+	var p = self.package.findOrCreateChildRecursively(COORDINATES.get(coordinate).get(PACKAGE_NAME));
+	self.package = p;
+	var suffix = COORDINATES.get(coordinate).get(NAME_SUFFIX);
+	var prefix = COORDINATES.get(coordinate).get(NAME_PREFIX);
+	self.name = prefix + source.name + suffix;
+	self.uuid = uuid3(source.uuid , coordinate.name + suffix);
+}
+
+
+operation JAVA!JvmClass fillClass(source : PSM!JClass, coordinate : Any) : Any {
+	self.fillCoordinated(source, coordinate);
+	self.representsTenant = source.representsTenant;
+	self.representsEnum = source.representsEnum;
+	self.`abstract` = source.`abstract`;
+	self.tenantMember = source.tenantMember;
+	self.businessSingleton = source.businessSingleton;
+	self.representsUser = source.representsUser;
+	self.representsTenantUser = source.representsTenantUser;
+}

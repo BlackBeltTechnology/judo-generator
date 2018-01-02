@@ -1,0 +1,45 @@
+rule JClassToPermissions
+	transform jclass : PSM!JClass
+	to createPerm : Permission!Permission, updatePerm : Permission!Permission, listPerm : Permission!Permission, 
+	   deletePerm : Permission!Permission, modifyviewPerm : Permission!Permission {
+	guard : jclass.package.participates(PSM!JLayer#OPERATION)
+	    createPerm.hostClassName = jclass.package.name + "." + jclass.name;
+		createPerm.resource = createPerm.hostClassName;
+		createPerm.hostClassUuid = jclass.uuid;
+		createPerm.resourceUuid = jclass.uuid;
+		createPerm.action = "create";
+		createPerm.type = "object";
+		createPerm.uuid = uuid3(createPerm.hostClassUuid, createPerm.resourceUuid + createPerm.action);
+	   
+		updatePerm.hostClassName = jclass.package.name + "." + jclass.name;
+		updatePerm.resource = updatePerm.hostClassName;
+		updatePerm.hostClassUuid = jclass.uuid;
+		updatePerm.resourceUuid = jclass.uuid;
+		updatePerm.action = "update";
+		updatePerm.type = "object";
+		updatePerm.uuid = uuid3(updatePerm.hostClassUuid, updatePerm.resourceUuid + updatePerm.action);
+		
+		listPerm.hostClassName = jclass.package.name + "." + jclass.name;
+		listPerm.resource = listPerm.hostClassName;
+		listPerm.hostClassUuid = jclass.uuid;
+		listPerm.resourceUuid = jclass.uuid;
+		listPerm.action = "list";
+		listPerm.type = "object";
+		listPerm.uuid = uuid3(listPerm.hostClassUuid, listPerm.resourceUuid + listPerm.action);
+		
+		deletePerm.hostClassName = jclass.package.name + "." + jclass.name;
+		deletePerm.resource = deletePerm.hostClassName;
+		deletePerm.hostClassUuid = jclass.uuid;
+		deletePerm.resourceUuid = jclass.uuid;
+		deletePerm.action = "delete";
+		deletePerm.type = "object";
+		deletePerm.uuid = uuid3(deletePerm.hostClassUuid, deletePerm.resourceUuid + deletePerm.action);
+		
+		modifyviewPerm.hostClassName = jclass.package.name + "." + jclass.name;
+		modifyviewPerm.resource = modifyviewPerm.hostClassName;
+		modifyviewPerm.hostClassUuid = jclass.uuid;
+		modifyviewPerm.resourceUuid = jclass.uuid;
+		modifyviewPerm.action = "modifyview";
+		modifyviewPerm.type = "object";
+		modifyviewPerm.uuid = uuid3(modifyviewPerm.hostClassUuid, modifyviewPerm.resourceUuid + modifyviewPerm.action);
+	} 

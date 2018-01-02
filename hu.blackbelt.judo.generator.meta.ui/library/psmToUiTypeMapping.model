@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ASCII"?>
+<psmToUiTypeMapping:Mappings xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:psmToUiTypeMapping="http://blackbelt.hu/judo/meta/psm/ui/mapping" xmlns:ui="http://blackbelt.hu/judo/meta/psm/ui" xmi:id="_41J3oMPhEeehI5I5hnUh6Q">
+  <mappings xmi:id="_TX59kMPiEeetyPeBwSeKjA" name="boolean">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_OHrYYPzUEeaBFPkGdGK2hw"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_q3A-QMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_W0PhkMPiEeetyPeBwSeKjA" name="void">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_gvW2cPzaEeaBFPkGdGK2hw"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_PmPUsMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_ZevY8MPiEeetyPeBwSeKjA" name="date">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Rls6AAJcEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_YDcKgMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_bt3i8MPiEeetyPeBwSeKjA" name="datetime">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_XciKgAJcEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_lfI6oMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_qNwT8MPiEeetyPeBwSeKjA" name="time">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_amLcAAJcEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_j129wMPiEeetyPeBwSeKjA"/>
+  </mappings>
+  <mappings xmi:id="_s1iOgMPiEeetyPeBwSeKjA" name="integer">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_vh_foMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_xfs3kMPiEeetyPeBwSeKjA" name="string">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Rb7XYPzUEeaBFPkGdGK2hw"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_ziBmkMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_0ilZwMPiEeetyPeBwSeKjA" name="text">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_pN2QAAJcEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_3mQ4EMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_23PkAMPiEeetyPeBwSeKjA" name="memo">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_sB5sAAJcEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_3mQ4EMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_5rragMPiEeetyPeBwSeKjA" name="float">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_vALbAAJcEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_9XP_QMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_7zHBEMPiEeetyPeBwSeKjA" name="percentage">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_yU4tAAJcEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_9XP_QMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_-YWlAMPiEeetyPeBwSeKjA" name="currency">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_2Dr6AAJcEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_9XP_QMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_A4TZQMPjEeetyPeBwSeKjA" name="uuid">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_TeZEgAJdEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_AyGVgMPhEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_DOChkMPjEeetyPeBwSeKjA" name="gps">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ig8fgAJdEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_ziBmkMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_FPqbEMPjEeetyPeBwSeKjA" name="track">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_MZ9_gAJdEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_ziBmkMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_H8LrsMPjEeetyPeBwSeKjA" name="file">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_QFfPAAJdEeePbOdRMfS3CA"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_H6vzMMPhEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_KrM2sMPjEeetyPeBwSeKjA" name="serializable">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_edPa4BhaEeeH4r4fPwP1ww"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_K-ScsMPhEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_Pq5f0OTdEee02-zTiDMTlw" name="ipAddress">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_V7dkMOQHEeeiFLS-7unXRw"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_ziBmkMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_WcpgcOTdEee02-zTiDMTlw" name="natural">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Pf9gYOQHEeeiFLS-7unXRw"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_vh_foMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+  <mappings xmi:id="_ZlfgsOTdEee02-zTiDMTlw" name="url">
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_dE8IUOQHEeeiFLS-7unXRw"/>
+    <componentType xsi:type="ui:UIBaseComponentType" href="platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model#_ziBmkMPgEeehI5I5hnUh6Q"/>
+  </mappings>
+</psmToUiTypeMapping:Mappings>

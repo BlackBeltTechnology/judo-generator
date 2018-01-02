@@ -1,8 +1,0 @@
-@cached
-operation paginationClass () : FWELEMENTS!JvmClass {
-	return FWELEMENTS!JvmClass.all.select(c | c.name = "Pagination").first();
-}
-
-operation paginationClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
-	return FWELEMENTS!JvmClass.all.select(c | (c.name = "Pagination" and c.coordinate = jvmJudoCoordinate)).first();
-}

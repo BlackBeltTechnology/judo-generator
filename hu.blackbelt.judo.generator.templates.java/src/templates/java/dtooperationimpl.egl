@@ -1,0 +1,212 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import hu.blackbelt.judo.business.operation.api.base.AbstractCrudOperation;
+import hu.blackbelt.judo.business.service.api.CrudService;
+import hu.blackbelt.judo.business.validator.api.ValidationException;
+import hu.blackbelt.judo.business.validator.api.Validator;
+import hu.blackbelt.judo.common.security.api.authz.AuthorizationException;
+import hu.blackbelt.judo.business.security.api.authz.RelationAuthorizationService;
+import hu.blackbelt.judo.common.security.api.permission.Permission.RelationAction;
+import static hu.blackbelt.judo.common.security.api.permission.Permission.OperationAction.CALL;
+import static hu.blackbelt.judo.common.security.api.permission.Permission.ObjectAction.LIST;
+import static hu.blackbelt.judo.common.security.api.permission.Permission.RelationAction.ATTACH;
+import static hu.blackbelt.judo.common.security.api.permission.Permission.RelationAction.DETACH;
+
+import hu.blackbelt.judo.business.dto.api.FilterDto;
+import hu.blackbelt.judo.business.dto.api.PaginationDto;
+
+import hu.blackbelt.judo.business.bo.api.Filter;
+import hu.blackbelt.judo.business.bo.api.Pagination;
+import org.apache.felix.scr.annotations.Reference;
+
+import hu.blackbelt.judo.business.dto.api.DtoAccessor;
+
+@org.apache.felix.scr.annotations.Component(immediate=true)
+@org.apache.felix.scr.annotations.Service
+public class [%=class.name%] extends AbstractCrudOperation<[%=class.dto().fqName()%], [%=class.bo().fqName()%]> implements [%=class.dtoOperation().fqName()%] {
+
+    @Reference(policyOption = org.apache.felix.scr.annotations.ReferencePolicyOption.GREEDY)
+    private [%=class.boServiceInterface().fqName()%] [%=class.boServiceInterface().name.firstToLowerCase()%];
+
+    private [%=class.dtoAccessor().fqName()%] dtoAccessor = new [%=class.dtoAccessor().fqName()%]();
+
+    @Reference
+    private RelationAuthorizationService relationAuthz;
+
+    public [%=class.name%]() {
+    }
+
+    @Override
+    protected CrudService<[%=class.bo().fqName()%]> getCrudService() {
+        return [%=class.boServiceInterface().name.firstToLowerCase()%];
+    }
+
+    @Override
+    protected [%=class.dtoAccessor().fqName()%] getAccessor() {
+        return dtoAccessor;
+    }
+
+
+    [% if (class.abstract) { %]
+        @Override
+        public [%=class.dto().fqName()%] create([%=class.dto().fqName()%] dto) throws ValidationException, AuthorizationException {
+            throw new UnsupportedOperationException("Create is not allowed on abstract model class");
+        }
+    [%}%]
+
+    [% for (ref in class.allReferences()) { %]
+        [% if (ref.navigable) { %]
+            @Override
+            public Long countTraverse[%=ref.name.firstToUpperCase()%](String id, FilterDto filterDto) throws AuthorizationException {
+                getAuthorizationService().canI(LIST).instancesOf([%=ref.type.bare().dto().fqName()%].class);
+
+                Filter filter = converterService.convert(filterDto, Filter.class);
+                return getCrudService().countTraverse(id, filter, [%=bqlCall(class, ref)%]);
+            }
+
+            @Override
+            public [%=ref.type.dto().fqName()%] traverse[%=ref.name.firstToUpperCase()%](String id, FilterDto filterDto, PaginationDto paginationDto) throws AuthorizationException {
+                getAuthorizationService().canI(LIST).instancesOf([%=ref.type.bare().dto().fqName()%].class);
+
+                Filter filter = converterService.convert(filterDto, Filter.class);
+                Pagination pagination = converterService.convert(paginationDto, Pagination.class);
+                [%=ref.type.bo().fqName()%] result = getCrudService().traverse[% if (not ref.type.isCollection()) { %]Single[%}%]
+                (id, filter, pagination, [%=bqlCall(class, ref)%]);
+
+                return convertResult(result, [%=ref.type.bare().dto().fqName()%].class, filterDto, new [%=ref.type.bare().dtoAccessor().fqName()%]());
+            }
+
+            [% if (not ref.derived) { %]
+                @Override
+                public Long countAvailable[%=ref.name.firstToUpperCase()%](String id, FilterDto filterDto) throws AuthorizationException {
+                    getAuthorizationService().canI(LIST).instancesOf([%=ref.type.bare().dto().fqName()%].class);
+
+                    Filter filter = converterService.convert(filterDto, Filter.class);
+                    return getCrudService().countAvailable(id, filter, [%=bqlCall(class, ref)%]);
+                }
+
+
+                @Override
+                public java.util.List<[%=ref.type.bare().dto().fqName()%]> available[%=ref.name.firstToUpperCase()%](String id, FilterDto filterDto, PaginationDto paginationDto) throws AuthorizationException {
+                    getAuthorizationService().canI(LIST).instancesOf([%=ref.type.bare().dto().fqName()%].class);
+                    Filter filter = converterService.convert(filterDto, Filter.class);
+                    Pagination pagination = converterService.convert(paginationDto, Pagination.class);
+
+                    java.util.List<[%=ref.type.bare().bo().fqName()%]> result = getCrudService().available(id, filter, pagination, [%=bqlCall(class, ref)%]);
+                    return convertResult(result, [%=ref.type.bare().dto().fqName()%].class, filterDto, new [%=ref.type.bare().dtoAccessor().fqName()%]());
+                }
+
+                [% if (ref.type.isCollection()) { %]
+                    @Override
+                    public [%=ref.type.dto().fqName()%] attach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.dto().fqName()%] [%=ref.name%]) throws hu.blackbelt.judo.common.security.api.authz.AuthorizationException, ValidationException {
+                        relCheck[%=ref.name.firstToUpperCase()%](ATTACH);
+                        java.util.List<String> ids = new java.util.ArrayList<>();
+                        for ([%=ref.type.bare().dto().fqName()%] dto : [%=ref.name%]) {
+                            ids.add(dto.getId());
+                        }
+                        getTenantAccessControlService().canI( hu.blackbelt.judo.business.security.api.TenantAuthorizationData.builder().action(hu.blackbelt.judo.common.security.api.permission.Permission.RelationAction.ATTACH).onClass(getBoClass()).onInstance(id).onOtherClass([%=ref.type.bare().bo().fqName()%].class).otherInstance(ids).build());
+                        [%=ref.type.bo().fqName()%] result = getCrudService().attach(id, [%=bqlCall(class, ref)%], getConverterService().convertAll([%=ref.name%], [%=ref.type.bare().bo().fqName()%].class));
+                        return convertResult(result, [%=ref.type.bare().dto().fqName()%].class);
+                    }
+
+                    @Override
+                    public [%=ref.type.dto().fqName()%] detach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.dto().fqName()%] [%=ref.name%]) throws hu.blackbelt.judo.common.security.api.authz.AuthorizationException, ValidationException {
+                        relCheck[%=ref.name.firstToUpperCase()%](DETACH);
+                        getTenantAccessControlService().canI( hu.blackbelt.judo.business.security.api.TenantAuthorizationData.builder().action(hu.blackbelt.judo.common.security.api.permission.Permission.ObjectAction.UPDATE).onClass(getBoClass()).onInstance(id).build());
+                        [%=ref.type.bo().fqName()%] result = getCrudService().detach(id, [%=bqlCall(class, ref)%], getConverterService().convertAll([%=ref.name%], [%=ref.type.bare().bo().fqName()%].class));
+                        return convertResult(result, [%=ref.type.bare().dto().fqName()%].class);
+                    }
+                [% } else { %]
+                    @Override
+                    public [%=ref.type.dto().fqName()%] attach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.dto().fqName()%] [%=ref.name%]) throws hu.blackbelt.judo.common.security.api.authz.AuthorizationException, ValidationException {
+                        relCheck[%=ref.name.firstToUpperCase()%](ATTACH);
+                        getTenantAccessControlService().canI( hu.blackbelt.judo.business.security.api.TenantAuthorizationData.builder().action(hu.blackbelt.judo.common.security.api.permission.Permission.RelationAction.ATTACH).onClass(getBoClass()).onInstance(id).onOtherClass([%=ref.type.bare().bo().fqName()%].class).otherInstance(java.util.Arrays.asList([%=ref.name%].getId())).build());
+                        [%=ref.type.bo().fqName()%] result = getCrudService().attachSingle(id, [%=bqlCall(class, ref)%], getConverterService().convert([%=ref.name%], [%=ref.type.bare().bo().fqName()%].class));
+                        return convertResult(result, [%=ref.type.bare().dto().fqName()%].class);
+                    }
+
+                    @Override
+                    public [%=ref.type.dto().fqName()%] detach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.dto().fqName()%] [%=ref.name%]) throws hu.blackbelt.judo.common.security.api.authz.AuthorizationException, ValidationException {
+                        relCheck[%=ref.name.firstToUpperCase()%](DETACH);
+                        getTenantAccessControlService().canI( hu.blackbelt.judo.business.security.api.TenantAuthorizationData.builder().action(hu.blackbelt.judo.common.security.api.permission.Permission.ObjectAction.UPDATE).onClass(getBoClass()).onInstance(id).build());
+                        [%=ref.type.bo().fqName()%] result = getCrudService().detachSingle(id, [%=bqlCall(class, ref)%], getConverterService().convert([%=ref.name%], [%=ref.type.bare().bo().fqName()%].class));
+                        return convertResult(result, [%=ref.type.bare().dto().fqName()%].class);
+                    }
+                [%}%]
+            [%}%]
+        [%}%]
+    [%}%]
+
+    [% for (method in class.methods().select(m | Set{JAVA!JvmMethodKind#CUSTOM_BULK, JAVA!JvmMethodKind#QUERY}.includes(m.kind) or (m.kind = JAVA!JvmMethodKind#CUSTOM and m.classBased))) { %]
+        @Override
+        public [%=method.type.fqName()%] [%=method.name%](
+            [%=method.parametersSignature()%]
+            ) throws ValidationException, AuthorizationException {
+            getAuthorizationService().amIAllowedTo(CALL).methodWithName("[%=method.name%]").onInstanceOf([%=class.dtoOperation().fqName()%].class);
+            [%=method.extractStatements()%]
+            [% if (not method.type.isPrimitive()) { %]
+                return convertResult(
+                    [%=class.boServiceInterface().name.firstToLowerCase()%].[%=method.name%]([%=method.parameterExtractedNameSequence()%][*{{ service_call_parameters(class, method) }}*])
+                    , [%=method.type.bare().dto().fqName()%].class
+                );
+            [% } else { %]
+                return [%=class.boServiceInterface().name.firstToLowerCase()%].[%=method.name%]([%=method.parameterNameSequence()%]);
+            [%}%]
+        }
+    [%}%]
+
+    [% for (method in class.methods(JAVA!JvmMethodKind#QUERY_COUNT)) { %]
+        public [%=method.signature()%] {
+            [%=method.extractStatements()%]
+            return [%=class.boServiceInterface().name.firstToLowerCase()%].[%=method.name%]([%=method.parameterExtractedNameSequence()%]);
+        }
+    [%}%]
+
+    [% for (ref in class.allReferences().select(r | r.navigable)) { %]
+        private void relCheck[%=ref.name.firstToUpperCase()%](RelationAction action) throws AuthorizationException {
+            relationAuthz.checkRelationAction(getDtoClass(), [%=ref.type.bare().dto().fqName()%].class)
+            .viaRelation(getCrudService().getBoInfo().getAssociations().get([%=bqlCall(class, ref)%].getIdentifier()))
+            .check(action);
+        }
+    [%}%]
+}
+
+[%
+@cached
+operation JAVA!JvmMethod extractStatements () : String {
+    if (self.isQuery()) {
+        return "";
+    }
+    var result : Sequence;
+    for (param in self.parameters.select(p | not p.type.isPrimitive())) {
+        var convertMethod : String = param.type.isCollection().ternary("convertAll", "convert");
+        result.add(param.type.bo().fqName() + " " + param.name + "Input" + " = getConverterService()." + convertMethod + "(" + param.name + ", " + param.type.bare().bo().fqName() + ".class);");
+    }
+    return result.concat("\n");
+}
+
+@cached
+operation JAVA!JvmMethod parameterExtractedNameSequence () : String {
+    var result : Sequence;
+    for (param in self.parameters) {
+        if (param.isPagination()) {
+            result.add("converterService.convert(" + param.name + ", " + param.type.fqName() + ".class)");
+        } else if (not param.type.isPrimitive() and not param.ownerMethod.isQuery()) {
+            result.add(param.name + "Input");
+        } else {
+            result.add(param.name);
+        }
+    }
+    return result.concat(", ");
+}
+
+operation bqlCall (class : JAVA!JvmClass, ref : JAVA!JvmElement) : String {
+    return class.origin.package.domainBqlClass.fqName() + "." + class.origin.name.firstToLowerCase() + "()." + ref.name + "()";
+}
+%]

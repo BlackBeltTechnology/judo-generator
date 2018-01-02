@@ -1,0 +1,37 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+  
+%]
+package [%=class.package.fqName()%];
+
+import hu.blackbelt.judo.business.dao.api.EntityDao;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+
+@Component(immediate = true)
+@Service([%=class.name%].class)
+public class [%=class.name%] extends [%=class.boServiceAbstract().fqName()%] {
+
+    [%if (class.representsTenantUser) { %]
+	    @Reference
+	    private hu.blackbelt.judo.framework.api.service.UserInfoService userInfoService;
+	
+	    @Reference
+	    private hu.blackbelt.judo.framework.api.service.UserService userService;
+	
+	    @Reference
+	    private hu.blackbelt.judo.framework.api.service.TenantService tenantService;
+	
+	    @Reference
+	    private hu.blackbelt.judo.business.security.api.TenantUserCreateSupport<[%=class.bo().fqName()%]> tenantUserCreateSupport;
+	
+	    @Override
+	    public [%=class.bo().fqName()%] create[%=class.bo().name%](hu.blackbelt.judo.framework.business.bo.Tenant tenant, String loginName) {
+	        return tenantUserCreateSupport.createTenantUser(tenant, loginName, new [%=class.bo().fqName()%](), this, userService, tenantService, userInfoService);
+	    }
+    [%}%]
+}

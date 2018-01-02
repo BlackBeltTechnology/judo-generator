@@ -1,0 +1,41 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+-- hsqldb ALTER TABLE {{ table }} ALTER COLUMN {{ field }} SET NOT NULL;
+-- postges ALTER TABLE {{ table }} ALTER COLUMN {{ field }} SET NOT NULL, ..;
+-- oracke ALTER TABLE {{ table }} MODIFY ({{ field }} NOT NULL, ...);
+[%for (table in tables) {%]
+	[%if (hasFeature('SupportMultipleColumnModificationInOneStatement')) {%]
+		--changeset generator:set_not_null_[%= table.sqlName %]#[%= version() %] logicalFilePath:createTable stripComments:true
+		ALTER TABLE [%=table.sqlName%] 
+		[%if (dialect() == 'Oracle') {%]
+			MODIFY (
+		[%}%]
+
+		[%for (field in table.fields) {%]
+			[%if (dialect() == 'Oracle') {%]
+				[%=field.sqlName%] NULL
+			[%} else if (dialect() == 'Postgres') {%]
+				ALTER COLUMN [%=field.sqlName%] DROP NOT NULL	
+			[%} else {%]
+				ALTER COLUMN [%=field.sqlName%] SET NULL	
+			[%}%]
+			[%if (hasMore) { out.print(","); }%]
+		[%}%]
+		
+		[%if (dialect() == 'Oracle') {%]
+			)
+		[%}%]
+		;[% out.println("\n");%]
+	[%} else {%]
+		[%for (field in table.fields) {%]
+			--changeset generator:set_not_null_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:createTable stripComments:true
+			ALTER TABLE [%=table.sqlName%] ALTER COLUMN [%=field.sqlName%] SET NULL;
+			[% out.println("\n");%]
+		[%}%]
+	[%}%]
+[%}%]

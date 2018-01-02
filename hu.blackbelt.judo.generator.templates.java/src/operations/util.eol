@@ -1,0 +1,85 @@
+
+operation voidType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Void").first();
+}
+
+operation intType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Integer").first();
+}
+
+operation stringType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "String").first();
+}
+
+operation longType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Long").first();
+}
+
+operation urlType () : JAVA!JvmType {
+    return JAVATYPES!JvmType.all.select( t | t.name = "URL").first();
+}
+
+operation idType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.useForJudoId).first();
+}
+
+operation JAVA!JvmType isURL() : Boolean {
+    return self.uuid = urlType().uuid;
+}
+
+operation randomUUID () : String {
+	return Native("java.util.UUID").randomUUID().toString();
+}
+
+@cached
+operation getUuidNativeStub () : Any {
+	return Native("java.util.UUID");
+}
+
+@cached
+operation getLongNativeStub () : Any {
+	return Native("java.lang.Long");
+}
+
+operation Boolean ternary(ifTrue : Any, ifFalse : Any) : Any {
+    if (self) {
+        return ifTrue;
+    } else {
+        return ifFalse;
+    }
+}
+
+//hack balaton style :-) this method should have been in an epsilon Tool, but I did not managed to make it work
+operation uuid3 (namespace : String, name : String) : String {
+	var nameSpace_OID_uuid = getUuidNativeStub().fromString(namespace);
+
+	var msb = nameSpace_OID_uuid.getMostSignificantBits();
+	var lsb = nameSpace_OID_uuid.getLeastSignificantBits();
+
+	var outputStreamString = new Native("java.io.ByteArrayOutputStream");
+	var i = 0;
+	while (i < 8) {
+		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(msb, 8 * (7 - i))).intValue());
+		i++;
+	}
+	while (i < 16) {
+		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(lsb, 8 * (7 - i))).intValue());
+		i++;
+	}
+	
+	outputStreamString.write(name.getBytes());
+
+	return getUuidNativeStub().nameUUIDFromBytes(outputStreamString.toByteArray()).toString();
+}
+
+operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
+	var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
+	if (ret.isUndefined()) {
+		ret = new JAVA!JvmList;
+		ret.uuid = randomUUID();
+		ret.name = "List";	
+		ret.package = JAVA!JvmModel.all.first().findOrCreateJavaUtilPackage();
+		ret.componentType = componentType;
+	}
+	return ret;
+}

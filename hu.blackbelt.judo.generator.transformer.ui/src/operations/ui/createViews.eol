@@ -1,0 +1,155 @@
+operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name: String, uuid: String, isDefault: Boolean) : UI!UIClassView {
+	var classView : UI!UIClassView = new UI!UIClassView();
+	classView.uuid = uuid;
+	classView.name = name;
+	classView.isDefault = isDefault;
+	
+	var position = 1;
+	var remaining = ownerClass.attributes;
+	var vfsName : String;
+	
+	for (attrGroup in originClass.attributeOrder) {
+		if (attrGroup.attributes.first().name.startsWith("-")) {
+			vfsName = attrGroup.attributes.first().name.substring(1);
+			attrGroup.attributes.remove(attrGroup.attributes.first());
+		} else {
+			vfsName = attrGroup.attributes.first().name;
+		}
+		
+		var viewFieldSet = new UI!UIViewFieldSet();
+		viewFieldSet.name = vfsName;
+		viewFieldSet.uuid = classView.uuid + "_viewfieldset_" + vfsName;
+		viewFieldSet.position = position;
+		
+		var viewFieldPosition = 1;
+		for (attribute in attrGroup.attributes) {
+			var viewField = new UI!UIViewField();
+			viewField.componentType = attribute.equivalent("UIBaseComponentType");
+			viewField.name = attribute.name;
+			viewField.uuid = uuid3(attribute.uuid, name);
+			viewField.searchable = true;
+			viewField.position = viewFieldPosition;
+			viewFieldPosition++;
+			
+			remaining.remove(attribute);
+			
+			viewFieldSet.viewFields.add(viewField);
+		}
+		
+		position++;
+		classView.viewFieldSets.add(viewFieldSet);
+	}
+	
+	for (attribute in remaining) {
+		if ((attribute.isTypeOf(UI!UIReferenceComponentType) and attribute.navigable and not attribute.private) 
+													or (attribute.isTypeOf(UI!UIBaseComponentType) and not attribute.private)) {
+			var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
+			viewFieldSet.name = attribute.name;
+			viewFieldSet.uuid = classView.id + "_viewfieldset_" + attribute.name;
+			viewFieldSet.position = position;
+			
+			var viewField : UI!UIViewField = new UI!UIViewField();
+			viewField.name = attribute.name;
+			viewField.uuid = uuid3(attribute.uuid, name);
+			viewField.componentType = attribute;
+			viewField.searchable = true;
+			
+			position++;
+			viewFieldSet.viewFields.add(viewField);
+			classView.viewFieldSets.add(viewFieldSet);
+		}
+	}
+	
+	return classView;
+}
+
+operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, classView: UI!UIClassView, isDefault: Boolean) : UI!UIListView {
+	var listView = new UI!UIListView();
+	listView.uuid = uuid;
+	listView.name = name;
+	listView.isDefault = isDefault;
+	listView.pageSize = 20;
+	listView.detailView = classView;
+	
+	var viewFieldSet = new UI!UIViewFieldSet();
+	viewFieldSet.name = listView.name;
+	viewFieldSet.uuid = listView.uuid + "_viewfieldset_" + listView.name;
+	
+	var position = ownerClass.~attributesForListing.size();
+	
+	for (attribute in ownerClass.attributes) {
+		if ((attribute.isTypeOf(UI!UIReferenceComponentType) and attribute.upper = 1 and attribute.navigable and not attribute.private) or 
+				(attribute.isTypeOf(UI!UIBaseComponentType) and not attribute.private)) {
+				
+				var viewField = new UI!UIViewField();
+				viewField.uuid = uuid3(attribute.uuid, ownerClass.name);
+				viewField.name = attribute.name;
+				viewField.searchable = true;
+				viewField.componentType = attribute;
+				
+				if (ownerClass.~attributesForListing.includes(attribute)) {
+					viewField.position = ownerClass.~attributesForListing.indexOf(attribute) + 1;
+				} else {
+					if (ownerClass.~attributesForListing.size() > 0) {
+						viewField.show = false;
+					}
+					position += 1;
+					viewField.position = position;
+				}
+				
+				viewFieldSet.viewFields.add(viewField);
+		}
+	}
+	
+	listView.viewFieldSets.add(viewFieldSet);
+	
+	return listView;
+}
+
+operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
+	var paramView : UI!UIParamView = new UI!UIParamView();
+	paramView.name = uiaction.name;
+	paramView.uuid = uuid3(uiaction.uuid, uiaction.name);
+	
+	var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
+	viewFieldSet.name = uiaction.name;
+	viewFieldSet.uuid = paramView.uuid + '_viewfieldset_' + uiaction.name;
+	
+	var position = 1;
+	
+	for (parameter in uiaction.parameters) {
+		var viewField : UI!UIViewField = new UI!UIViewField();
+		viewField.name = parameter.name;
+		viewField.uuid = uuid3(parameter.uuid, uiaction.name);
+		viewField.componentType = parameter;
+		viewField.position = position;
+		viewFieldSet.viewFields.add(viewField);
+		
+		position++;
+	}
+	
+	paramView.viewFieldSets.add(viewFieldSet);
+	return paramView;
+}
+
+operation createResultView(uiaction : UI!UIAction) : UI!UIResultView {
+	var resultView : UI!UIResultView = new UI!UIResultView();
+	resultView.name = uiaction.name;
+	resultView.uuid = uuid3(uuid3(uiaction.uuid, uiaction.name), 'result');
+	resultView.pageSize = 1000;
+	
+	var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
+	viewFieldSet.name = uiaction.name;
+	viewFieldSet.uuid = resultView.uuid + '_viewfieldset_' + uiaction.name;
+	
+	var viewField : UI!UIViewField = new UI!UIViewField();
+	viewField.name = uiaction.result.name;
+	viewField.uuid = uuid3(resultView.uuid, uiaction.result.uuid);
+	viewField.componentType = uiaction.result;
+	viewField.position = 1;
+	viewFieldSet.viewFields.add(viewField);
+	
+	resultView.viewFieldSets.add(viewFieldSet);
+	return resultView;
+}
+

@@ -1,0 +1,11 @@
+rule JOperationToPermissions
+	transform joperation : PSM!JOperation
+	to callPerm : Permission!Permission {
+		callPerm.hostClassName = joperation.ownerClass.package.name + "." + joperation.ownerClass.name;
+		callPerm.resource = callPerm.hostClassName + "." + joperation.name;
+		callPerm.hostClassUuid = joperation.ownerClass.uuid;
+		callPerm.resourceUuid = joperation.uuid;
+		callPerm.action = "call";
+		callPerm.type = "operation";
+		callPerm.uuid = uuid3(callPerm.hostClassUuid, callPerm.resourceUuid + callPerm.action);
+	}

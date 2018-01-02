@@ -1,0 +1,78 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+rule JClassToRdbmsTable 
+	transform s : PSM!JClass
+	to t : RDBMS!RdbmsTable
+	extends JElementToRdbmsElement {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+	    t.sqlName = s.tableSqlName();
+	    t.name = s.package.fqName() + "." + s.name;
+	    t.description = s.name;
+	    for (c : PSM!JClass in s.allDescandences()) {
+			// var table : RDBMS!RdbmsTable = s.equivalent("JClassToRdbmsTable");
+			var created : RDBMS!RdbmsForeignKey = new RDBMS!RdbmsForeignKey();
+			created.name = c.name;
+			created.uuid = uuid3(s.uuid, c.uuid);
+			created.description = c.name + c.primaryKeyAttribute().name;
+			created.sqlName = "C_" + c.tableSqlName() + "_ID";
+			created.inheritenceBased = true;
+			created.type = idType();
+			created.referenceKey = c.primaryKeyAttribute().equivalent("JAttributeToTableIdField");
+			t.fields.add(created);
+	    }
+	    targetModel.rdbmsTables.add(t);
+}
+
+rule JClassToRdbmsView 
+	transform s : PSM!JClass
+	to v : RDBMS!RdbmsView
+	extends JElementToRdbmsElement {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+	    v.name = s.package.fqName() + "." + s.name;
+	    v.sqlName = s.viewSqlName();
+
+	    // Base alias is a reference for base table    
+	    v.createBaseAlias(s);
+
+        // Convert attributes to be able to clone supertypes
+	    for (a : PSM!JAttribute in s.attributes) {
+	   		v.addField(a);	   		
+	    }
+
+		// Iterate all roles contained in base table and add as a field.
+		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
+			v.addRelationField(r);
+		}
+	        
+	    // Inherited aliases and attributes
+	    if (s.supertype.isDefined()) {
+	    	var baseView : RDBMS!RdbmsView = s.supertype.equivalent("JClassToRdbmsView");
+
+			// Clone super types aliases
+	    	for (f : RDBMS!RdbmsTableAlias in baseView.tables.clone()) {
+	    		var created : RDBMS!RdbmsTableAlias = f.clone();
+				v.tables.add(created);
+	    		created.uuid = uuid3(f.uuid, v.name);
+	    		created.description = "Super " + f.table.name;
+	    		created.sqlName = "SUP_" + f.table.sqlName;
+	    	}
+	    
+	    	// Clone attributes
+	    	for (a : RDBMS!RdbmsViewField in baseView.fields) {
+	    		var created : RDBMS!RdbmsViewField = a.clone();
+	    		v.fields.add(created);
+	    		created.view = v;
+
+	    		// Set alias instance link to cloned alias
+	    		if (created.isKindOf(RDBMS!RdbmsViewAliasField)) {
+	    		    if (created.isTypeOf(RDBMS!RdbmsViewIdentifierField)) {
+	    		    	created.sqlName = "C_" + created.`alias`.table.sqlName + "_ID";
+	    		    }
+					created.`alias` = v.tables.select(e | e.name = created.`alias`.name).first();
+	    		}
+	    	}
+	    } 
+        targetModel.rdbmsViews.add(v);
+}
+

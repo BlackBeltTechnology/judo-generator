@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java:JvmModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://blackbelt.hu/judo/meta/psm/java" xmi:id="_Dg7qAPjgEeayhPkH_hAwlg" name="JTM" uuid="judo-java-psm-types" shortName="" fullName="JAVA Types Model" description="It contains all primitive types can be used in JAVA PSM modelling" applicationTop="_QQnMMPjhEeayhPkH_hAwlg">
+  <packages xmi:id="_QQnMMPjhEeayhPkH_hAwlg" name="java" uuid="jtm-package-java">
+    <contents xsi:type="java:JvmPackage" xmi:id="_UE-1sPjhEeayhPkH_hAwlg" name="lang" uuid="jtm-package-lang">
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_Y0obsPjhEeayhPkH_hAwlg" name="Integer" uuid="jtm-primitve-integer" primitive="int"/>
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_b1qjwPjhEeayhPkH_hAwlg" name="String" uuid="jtm-primitive-string" useForJudoId="true"/>
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_dpeDsPjhEeayhPkH_hAwlg" name="Boolean" uuid="jtm-primitive-boolean" primitive="boolean"/>
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_x45xcPjhEeayhPkH_hAwlg" name="Void" uuid="jtm-primitive-void" primitive="void"/>
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_bZMa8APpEee8NtDzlTwkPw" name="Float" uuid="jtm-primitive-floeat" shortName="" primitive="float"/>
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_ucuWgBlDEeenXfLhHRov1g" name="Long" uuid="jvm-primitve-long" shortName="" primitive="long"/>
+    </contents>
+    <contents xsi:type="java:JvmPackage" xmi:id="_iaVicAPpEee8NtDzlTwkPw" name="math" uuid="jtm-package-math">
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_kr1D8APpEee8NtDzlTwkPw" name="BigDecimal" uuid="jtm-primitive-bigdecimal"/>
+    </contents>
+    <contents xsi:type="java:JvmPackage" xmi:id="_pWmJ8APpEee8NtDzlTwkPw" name="net" uuid="jtm-package-net">
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_rysY8APpEee8NtDzlTwkPw" name="URL" uuid="jtm-primitive-url"/>
+    </contents>
+    <contents xsi:type="java:JvmPackage" xmi:id="_nyWwIBhaEeeH4r4fPwP1ww" name="io" uuid="pacakge-java-io">
+      <contents xsi:type="java:JvmPrimitive" xmi:id="_uvs8wBhaEeeH4r4fPwP1ww" name="Serializable" uuid="jvm-primitive-serializable" primitive=""/>
+    </contents>
+  </packages>
+  <packages xmi:id="_6jhlcAPoEee8NtDzlTwkPw" name="org" uuid="jtm-package-org">
+    <contents xsi:type="java:JvmPackage" xmi:id="_OGl8cAPpEee8NtDzlTwkPw" name="joda" uuid="jtm-package-joda">
+      <contents xsi:type="java:JvmPackage" xmi:id="_RNQycAPpEee8NtDzlTwkPw" name="time" uuid="jtm-package-time">
+        <contents xsi:type="java:JvmPrimitive" xmi:id="_VmL6gAPpEee8NtDzlTwkPw" name="LocalDateTime" uuid="jtm-primitive-localdatetime"/>
+        <contents xsi:type="java:JvmPrimitive" xmi:id="_PItckAPwEee8NtDzlTwkPw" name="LocalTime" uuid="jtm-primitive-localtime"/>
+      </contents>
+    </contents>
+  </packages>
+  <version>1.0.0</version>
+</java:JvmModel>

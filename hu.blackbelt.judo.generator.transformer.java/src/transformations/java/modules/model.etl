@@ -1,0 +1,10 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+rule JModel 
+	transform s : PSM!JModel
+	to t : JAVA!JvmModel
+	extends JElement {
+		t.packages ::= s.packages;
+		t.applicationTop ::= s.applicationTop;
+}

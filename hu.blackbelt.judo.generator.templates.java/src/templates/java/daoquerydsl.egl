@@ -1,0 +1,52 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+  
+%]
+
+package [%=class.package.fqName()%];
+
+import hu.blackbelt.judo.rdbms.querydsl.api.AbstractQueryDslEntityDao;
+import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslPersistenceProvider;
+import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslSqlQueryFactory;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+
+@Component(immediate = true)
+@Service
+public class [%=class.name%] extends AbstractQueryDslEntityDao<[%=class.bo().fqName()%], [%=class.daoQClass().fqName()%], [%=class.po().fqName()%]> implements [%=class.daoMinimal().fqName()%] {
+
+    @Reference(target = "(" + QueryDslPersistenceProvider.PROP_PERSISTENCE_UNIT_NAME + "=[%=class.package.ownerModel().applicationTop.fqName()%])")
+    QueryDslPersistenceProvider provider;
+
+    @Override
+    public [%=class.daoQClass().fqName()%] getQBase() {
+        return new [%=class.daoQClass().fqName()%]([%=class.daoQClass().fqName()%].q.getAlias());
+    }
+
+    @Override
+    public Class<[%=class.bo().fqName()%]> getEntityClass() {
+        return [%=class.bo().fqName()%].class;
+    }
+    
+    public Class<? extends hu.blackbelt.judo.business.bo.api.FrameworkEntity> getFrameworkEntityInterface() {
+	    [% if (class.framework) {%]
+	    	return [%=class.boInterface().fqName()%].class;
+	    [%} else{%]
+	    	return null;
+	    [%}%]
+    }
+
+    @Override
+    public Class<[%=class.po().fqName()%]> getPoClass() {
+        return [%=class.po().fqName()%].class;
+    }
+
+    @Override
+    public QueryDslSqlQueryFactory getSqlQueryFactory() {
+        return  provider.createSqlQueryFactory();
+    }
+
+}

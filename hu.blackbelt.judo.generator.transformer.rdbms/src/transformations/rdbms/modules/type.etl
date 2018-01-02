@@ -1,0 +1,16 @@
+import "../../../operations/_importAll.eol";
+ 
+ // TODO here
+operation PSM!JPrimitive rdbmsType () : RDBMS!RdbmsFieldType {
+	// return  RTM!Mapping.all.select(m | m.psmType.name = self.name).first().rdbmsFieldType;
+	// HACKL! Without it the generator unable to access the instance;s attributes.
+	/*for (t : RTM!Mapping in  RTM!Mapping.all) {
+		t.name.println();
+	} */
+	var name = RTM!Mapping.all.select(m | m.psmType.name = self.name).first().rdbmsFieldType.name;
+	// var ret =  RDBMS!RdbmsFieldType.all.select( p | p.name = name).first();
+	var ret =  targetModel.rdbmsFieldTypes.select( p | p.name = name).first();
+	return ret;
+    
+}
+

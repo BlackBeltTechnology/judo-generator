@@ -1,0 +1,12 @@
+{
+	"resources": [
+		[% 	for (resource in Resources!Resource.all) { %]
+		{
+			"key": "[%=resource.key%]",
+			"id": "[%=resource.uuid%]",
+			"value": "[%=resource.value%]"
+		} [%if (hasMore) { out.print(","); }%]
+		[% } %]
+	]
+}
+

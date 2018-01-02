@@ -1,0 +1,151 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import [%=class.filterRestDto().fqName()%];
+import [%=class.restDto().fqName()%];
+import hu.blackbelt.judo.integration.rest.api.CrudRestOperation;
+
+import hu.blackbelt.judo.common.security.api.authz.AuthorizationException;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+import hu.blackbelt.judo.integration.rest.api.CrudRestOperation;
+import hu.blackbelt.judo.integration.rest.api.PaginationRestDto;
+
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Api(value = "[%=class.origin.name%]")
+@Path(Namespace.REST_BASE_URI + "/[%=class.origin.nameToRest()%]")
+@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+public interface [%=class.name%] extends CrudRestOperation<[%=class.restDto().fqName()%], [%=class.filterRestDto().fqName()%]> {
+
+    @POST
+    @ApiOperation(value = "Create new [%=class.origin.name%]", response = [%=class.restDto().fqName()%].class)
+    [%=class.restDto().fqName()%] create([%=class.restDto().fqName()%] request) throws AuthorizationException;
+
+    @GET
+    @Path("/{id}")
+    @ApiOperation(value = "Read [%=class.origin.name%]", response = [%=class.restDto().fqName()%].class)
+    [%=class.restDto().fqName()%] read(@PathParam("id") String id, @BeanParam [%=class.filterRestDto().fqName()%] filter) throws AuthorizationException;
+
+    @PUT
+    @Path("/{id}")
+    @ApiOperation(value = "Update [%=class.origin.name%]", response = [%=class.restDto().fqName()%].class)
+    [%=class.restDto().fqName()%] update(@PathParam("id") String id, [%=class.restDto().fqName()%] request) throws AuthorizationException;
+
+    @DELETE
+    @Path("/{id}")
+    @SuppressWarnings("checkstyle:throwscount")
+    @ApiOperation(value = "Delete [%=class.origin.name%]", response = [%=class.restDto().fqName()%].class)
+    [%=class.restDto().fqName()%] delete(@PathParam("id") String id) throws AuthorizationException;
+
+
+    [% for (method in class.methods.select(m | m.isCustomBulk() or m.isQuery() or (m.isCustom() and m.classBased)).sortBy(m | m.name)) { %]
+        @Data
+        @NoArgsConstructor
+        public static class Action[%=method.name%]RestDto {
+            [% for (param in method.parameters.select(p | not p.isPagination())) { %]
+                [% if (method.isQuery()) { %] @QueryParam("[%=param.name%]") [%}%] private [%=param.type.fqName()%] [%=param.name%];
+            [%}%]
+        }
+
+        [% if (method.isQuery()) { %]
+            @GET
+        [% } else { %]
+            @POST
+            @Consumes("application/json")
+        [%}%]
+        @Path("/[%=method.name%]")
+        @ApiOperation(value = "custom operation")
+        public [% if (method.isQuery()) { %]Response[% } else { out.print(method.type.fqName()); }%] [%=method.name%](
+            [% if (method.isQuery()) { %] @BeanParam [%}%]Action[%=method.name%]RestDto action[%=method.name%]RestDto
+            [% if (method.isQuery()) { %], @BeanParam [%=paginationClass(JAVA!JvmJudoCoordinate#REST_DTO).fqName()%] pagination[%}%]
+            ) throws AuthorizationException;
+    [%}%]
+
+    [% for (method in class.methods(JAVA!JvmMethodKind#TRAVERSE)) {%]
+        @GET
+        @Path("/{id}/[%=method.originReference.nameToRest()%]")
+        @ApiOperation(value = "List attached [%=method.originReference.name%] to [%=class.origin.name%] ", response = [%=method.originReference.type.bare().restDto().fqName()%].class, responseContainer = "List")
+        [%=method.type.fqName()%] [%=method.name%]([%=method.parametersSignatureRest()%]) throws AuthorizationException;
+    [%}%]
+
+    [% for (method in class.methods(JAVA!JvmMethodKind#TRAVERSE_EXPORT)) {%]
+        @GET
+        @Path("/{id}/[%=method.originReference.nameToRest()%]")
+        @javax.ws.rs.Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        @ApiOperation(value = "List attached [%=method.originReference.name%] to [%=class.origin.name%] as Excel ")
+        [%=method.type.fqName()%] [%=method.name%]([%=method.parametersSignatureRest()%]) throws AuthorizationException;
+    [%}%]
+
+    [% for (method in class.methods(JAVA!JvmMethodKind#AVAILABLE)) {%]
+        @OPTIONS
+        @Path("/{id}/[%=method.originReference.nameToRest()%]")
+        @ApiOperation(value = "List all available [%=method.originReference.name%] for [%=class.origin.name%] instance", response = [%=method.originReference.type.bare().restDto().fqName()%].class, responseContainer = "List")
+        [%=method.type.fqName()%] [%=method.name%]([%=method.parametersSignatureRest()%]) throws AuthorizationException;
+    [%}%]
+
+    [% for (method in class.methods(JAVA!JvmMethodKind#AVAILABLE_ALL)) {%]
+        @OPTIONS
+        @Path("/[%=method.originReference.nameToRest()%]")
+        @ApiOperation(value = "List all available [%=method.originReference.name%] for [%=class.origin.name%] class", response = [%=method.originReference.type.bare().restDto().fqName()%].class, responseContainer = "List")
+        [%=method.type.fqName()%] [%=method.name%]([%=method.parametersSignatureRest()%]) throws AuthorizationException;
+    [%}%]
+
+    [% for (method in class.methods(JAVA!JvmMethodKind#ATTACH)) {%]
+        @PUT
+        @Path("/{id}/[%=method.originReference.nameToRest()%]")
+        @Consumes("application/json")
+        @ApiOperation(value = "Attach [%=method.originReference.name%] to [%=class.origin.name%] instance", response = [%=method.type.bare().fqName()%].class, responseContainer = "List")
+        [%=method.type.fqName()%] [%=method.name%]([%=method.parametersSignatureRest()%]) throws AuthorizationException;
+    [%}%]
+
+    [% for (method in class.methods(JAVA!JvmMethodKind#DETACH)) {%]
+        @DELETE
+        @Path("/{id}/[%=method.originReference.nameToRest()%]")
+        @Consumes("application/json")
+        @ApiOperation(value = "Detach [%=method.originReference.name%] from [%=class.origin.name%]", response = [%=method.type.bare().fqName()%].class, responseContainer = "List")
+        [%=method.type.fqName()%] [%=method.name%]([%=method.parametersSignatureRest()%]) throws AuthorizationException;
+    [%}%]
+
+    @Override
+    @GET
+    @ApiOperation(value = "List [%=class.origin.name%] ", response = [%=class.restDto().fqName()%].class, responseContainer = "List")
+    Response list(@BeanParam [%=class.filterRestDto().fqName()%] filter, @BeanParam [%=paginationClass(JAVA!JvmJudoCoordinate#REST_DTO).fqName()%] pagination) throws AuthorizationException;
+
+    @Override
+    @GET
+    @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    @ApiOperation(value = "Export [%=class.origin.name%] ", response = [%=class.restDto().fqName()%].class, responseContainer = "List")
+    Response export(@BeanParam [%=class.filterRestDto().fqName()%] filter) throws AuthorizationException;
+
+    [% for (attr in class.origin.attributes().select(a | a.type.isURL())) { %]
+        @GET
+        @Path("/{id}/[%=attr.nameToRest()%]")
+        @ApiOperation(value = "Download attached [%=attr.name%] file")
+        Response download[%=attr.name.firstToUpperCase()%](@PathParam("id") String id, @DefaultValue("false") @QueryParam("inline") boolean inline) throws AuthorizationException;
+    [%}%]
+}

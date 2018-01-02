@@ -1,0 +1,10 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+[%for (foreignKey in foreignKeys) {%]
+		--changeset generator:create_foreign_key_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:createTable stripComments:true
+[%}%]

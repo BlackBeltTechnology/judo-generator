@@ -2,18 +2,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>hu.blackbelt.judo.generator</groupId>
-    <artifactId>generator</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <artifactId>hu.blackbelt.judo.generator</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>parent</module>
-        <module>tools/gen-src-assembly</module>
-        <module>tools/deleteoverridengeneratedfiles-maven-plugin</module>
-        <module>tools/epsilon-maven-plugin</module>
-        <module>tools/hu.blackbelt.judo.workaround.ant.hutn.parser</module>
-        <module>plugins</module>
-        <module>engine</module>
-        <module>p2</module>
+        <module>hu.blackbelt.judo.generator.parent</module>
+        <module>hu.blackbelt.judo.generator.epsilon-maven-plugin</module>
+        <module>hu.blackbelt.judo.generator.parser.derived.expression.sql</module>
+        <module>hu.blackbelt.judo.generator.meta.psm</module>
+        <module>hu.blackbelt.judo.generator.meta.pim</module>
+        <module>hu.blackbelt.judo.generator.meta.java</module>
+        <module>hu.blackbelt.judo.generator.meta.rdbms</module>
+        <module>hu.blackbelt.judo.generator.meta.ui</module>
+        <module>hu.blackbelt.judo.generator.meta.permission</module>
+        <module>hu.blackbelt.judo.generator.transformer.psm.domain</module>
+        <module>hu.blackbelt.judo.generator.transformer.psm</module>
+        <module>hu.blackbelt.judo.generator.transformer.rdbms</module>
+        <module>hu.blackbelt.judo.generator.merger.rdbms</module>
+        <module>hu.blackbelt.judo.generator.transformer.ui</module>
+        <module>hu.blackbelt.judo.generator.transformer.java</module>
+        <module>hu.blackbelt.judo.generator.formatter.sql</module>
+        <module>hu.blackbelt.judo.generator.transformer.permission</module>
+        <module>hu.blackbelt.judo.generator.templates.rdbms</module>
+        <module>hu.blackbelt.judo.generator.templates.java</module>
+        <module>hu.blackbelt.judo.generator.templates.ui</module>
+        <module>hu.blackbelt.judo.generator.templates.permission</module>
     </modules>
 
 </project>

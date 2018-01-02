@@ -1,0 +1,76 @@
+import "../../../operations/_importAll.eol";
+
+rule UIClass
+	transform jclass : PSM!JClass
+	to uiclass : UI!UIClass {
+	guard : jclass.package.participates(PSM!JLayer#OPERATION) or jclass.package.participates(PSM!JLayer#SCREEN) 
+	//inherited from Identifiable
+	uiclass.uuid = jclass.uuid;
+	uiclass.name = jclass.name;
+	
+	//Attributes
+	uiclass.`abstract` = jclass.`abstract`;
+	uiclass.enumClass = jclass.representsEnum;
+	uiclass.singleton = jclass.businessSingleton;
+	if (jclass.visibility = PSM!JVisibility#PROTECTED or jclass.visibility = PSM!JVisibility#PRIVATE or jclass.visibility = PSM!JVisibility#PACKAGE) {
+		uiclass.readonly = true;
+	} else {
+		uiclass.readonly = false;
+	}
+	
+	//References
+	uiclass.representation = jclass.representation.equivalent("UIBaseComponentType");
+	uiclass.super = jclass.supertype.equivalent("UIClass");
+
+
+	var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+	//create ComponentTypes/Actions
+	var inherited = false;
+	var currentClass = jclass;
+	while (true) {
+	
+		for (attr : PSM!JAttribute in currentClass.attributes) {
+			transformJAttribute(uiclass, attr, inherited, emfTool);
+		}
+			
+		for (role : PSM!JRole in currentClass.roles) {
+			transformJRole(uiclass, role, inherited, emfTool);
+		}
+		
+		for (op : PSM!JOperation in currentClass.operations) {
+			if (op.visibility = PSM!JVisibility#PUBLIC) {
+				var action : UI!UIAction = createActions(op, inherited, uiclass.uuid);
+				action.inherited = inherited;
+				action.uuid = uuid3(uiclass.uuid, op.uuid);
+				uiclass.actions.add(action);
+			}	
+		}
+		
+		if (currentClass.supertype.isDefined()) {
+			currentClass = currentClass.supertype;
+			inherited = true;
+		}	else {
+			break;
+		}
+		
+	}
+	uiclass.~attributesForListing = new Sequence(UI!UIComponentType);
+	for (attribute in jclass.attributesForListing) {
+		uiclass.~attributesForListing.add(attribute.equivalent("UIBaseComponentType"));
+	}
+
+	//create Views
+	var classView = createClassView(uiclass, jclass, uiclass.name, uiclass.uuid + '_oview_default', true);
+	uiclass.selector = createListView(uiclass, uiclass.name, uiclass.uuid + '_lview_default', classView, true);
+	uiclass.classViews.add(classView);
+	uiclass.listViews.add(uiclass.selector);
+	for (al in jclass.aliases) {
+		classView = createClassView(uiclass, jclass, al.name, uiclass.uuid + '_oview_' + al.name, false);
+		var listView =  createListView(uiclass, al.name, uiclass.uuid + '_lview_' + al.name, classView, false);
+		uiclass.classViews.add(classView);
+		uiclass.listViews.add(listView);
+	}
+}
+
+
+

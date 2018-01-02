@@ -1,0 +1,59 @@
+post {
+	var base = new Resources!ResourceBase();
+	for (module in UI!UIModule.all) {
+		ModuleToResource(base, module);
+	}
+}
+
+
+operation ModuleToResource(base : Resources!ResourceBase, module : UI!UIModule) {
+	var resource = new Resources!Resource();
+	resource.uuid = module.uuid;
+	resource.key = module.fullyQualifiedName;
+	resource.value = module.name;
+	base.resources.add(resource);
+	for (class in module.classes) {
+		ClassToResource(base, class, module.fullyQualifiedName);
+	}	
+}
+
+operation ClassToResource(base : Resources!ResourceBase, class : UI!UIClass, fqName : String) {
+	var resource = new Resources!Resource();
+	resource.uuid = class.uuid;
+	resource.key = fqName + "." + class.name;
+	resource.value = class.name;
+	base.resources.add(resource);
+	for (attribute in class.attributes) {
+		AttributeToResource(base, attribute, class.name, fqName);
+	}
+	for (action in class.actions) {
+		ActionToResource(base, action, class.name, fqName);
+	}
+}
+
+operation AttributeToResource(base : Resources!ResourceBase, attribute : UI!UIAttributeComponentType, className : String, fqName : String) {
+	var resource = new Resources!Resource();
+	resource.uuid = attribute.uuid;
+	resource.key = fqName + "." + className + "." + attribute.name;
+	resource.value = attribute.name;
+	base.resources.add(resource);
+}
+
+operation ActionToResource(base : Resources!ResourceBase, action : UI!UIAction, className : String, fqName : String) {
+	var resource = new Resources!Resource();
+	resource.uuid = action.uuid;
+	resource.key = fqName + "." + className + "." + action.name;
+	resource.value = action.name;
+	base.resources.add(resource);
+	for (parameter in action.parameters) {
+		ParameterToResource(base, parameter, action.name, className, fqName);
+	}
+}
+
+operation ParameterToResource(base : Resources!ResourceBase, parameter : UI!UIParameterComponentType, actionName : String, className : String, fqName : String) {
+	var resource = new Resources!Resource();
+	resource.uuid = parameter.uuid;
+	resource.key = fqName + "." + className + "." + actionName + "." + parameter.name;
+	resource.value = parameter.name;
+	base.resources.add(resource);
+}

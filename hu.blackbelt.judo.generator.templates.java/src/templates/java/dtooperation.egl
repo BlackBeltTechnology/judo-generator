@@ -1,0 +1,26 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import javax.inject.Named;
+import hu.blackbelt.judo.business.operation.api.CrudOperation;
+import hu.blackbelt.judo.business.validator.api.ValidationException;
+import hu.blackbelt.judo.common.security.api.authz.AuthorizationException;
+
+import hu.blackbelt.judo.business.dto.api.FilterDto;
+import hu.blackbelt.judo.business.dto.api.PaginationDto;
+
+@hu.blackbelt.judo.common.security.api.permission.PermissionSubject(id = "[%=class.origin.uuid%]", resource = "[%=class.origin.package.name%].[%=class.origin.name%]")
+public interface [%=class.name%] extends CrudOperation<[%=class.dto().fqName()%]> {
+    [% for (method in class.dtoMethods()) { %]
+        [% if (method.isCustomBulk() or method.isQuery() or method.isCustom()) { %]
+            @hu.blackbelt.judo.common.security.api.permission.PermissionSubjectOperation(id = "[%=class.origin.uuid%].[%=method.origin.uuid%]", resource = "[%=class.origin.package.name%].[%=class.origin.name%].[%=method.name%]")
+        [%}%]
+        [%=method.type.fqName()%] [%=method.name%]([%=method.parametersSignature()%]) [% if (not method.isQueryCount()) { %]throws AuthorizationException[%}%];
+
+    [%}%]
+}

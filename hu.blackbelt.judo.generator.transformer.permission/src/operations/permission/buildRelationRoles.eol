@@ -1,0 +1,4 @@
+operation buildRelationRoles(classPermissions : Sequence(Permission!Permission), oppositeClasses : Sequence(String),
+							hostClassUuid : String, hostClassName : String) : Sequence(Permission!Role) {
+
+}

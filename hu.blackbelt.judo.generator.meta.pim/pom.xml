@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>hu.blackbelt.judo.generator</groupId>
+		<artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+	</parent>
+
+	<artifactId>hu.blackbelt.judo.generator.meta.pim</artifactId>
+	<packaging>pom</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>pim_meta/UML_Standard_Profile.Dependency_Matrix_Profile.profile.uml</file>
+									<type>uml</type>
+									<classifier>UML_Standard_Profile.Dependency_Matrix_Profile</classifier>
+								</artifact>
+								<artifact>
+									<file>pim_meta/UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml</file>
+									<type>uml</type>
+									<classifier>UML_Standard_Profile.MagicDraw_Profile.DSL_Customization</classifier>
+								</artifact>
+								<artifact>
+									<file>pim_meta/UML_Standard_Profile.MagicDraw_Profile.profile.uml</file>
+									<type>uml</type>
+									<classifier>UML_Standard_Profile.MagicDraw_Profile</classifier>
+								</artifact>
+								<artifact>
+									<file>pim_meta/UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml</file>
+									<type>uml</type>
+									<classifier>UML_Standard_Profile.MagicDraw_Profile.Traceability_customization</classifier>
+								</artifact>
+								<artifact>
+									<file>pim_meta/UML_Standard_Profile.Validation_Profile.profile.uml</file>
+									<type>uml</type>
+									<classifier>UML_Standard_Profile.Validation_Profile</classifier>
+								</artifact>
+								<artifact>
+									<file>pim_meta/JudoProfile.profile.uml</file>
+									<type>uml</type>
+									<classifier>JudoProfile</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

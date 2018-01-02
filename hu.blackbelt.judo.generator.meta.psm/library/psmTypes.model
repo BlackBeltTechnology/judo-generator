@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psm:JPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:psm="http://blackbelt.hu/judo/meta/psm" xmi:id="_EmGUcPzUEeaBFPkGdGK2hw" uuid="psm-package-types" name="types">
+  <primitives xmi:id="_OHrYYPzUEeaBFPkGdGK2hw" uuid="psm-type-boolean" name="Boolean"/>
+  <primitives xmi:id="_Rb7XYPzUEeaBFPkGdGK2hw" uuid="psm-type-string" name="String" useForIdType="true"/>
+  <primitives xmi:id="_Ts0b8PzUEeaBFPkGdGK2hw" uuid="psm-type-integer" name="Integer"/>
+  <primitives xmi:id="_gvW2cPzaEeaBFPkGdGK2hw" uuid="psm-type-void" name="Void" shortName=""/>
+  <primitives xmi:id="_Rls6AAJcEeePbOdRMfS3CA" uuid="psm-type-date" name="Date" fullName=""/>
+  <primitives xmi:id="_XciKgAJcEeePbOdRMfS3CA" uuid="psm-type-datetime" name="DateTime"/>
+  <primitives xmi:id="_amLcAAJcEeePbOdRMfS3CA" uuid="psm-type-time" name="Time"/>
+  <primitives xmi:id="_pN2QAAJcEeePbOdRMfS3CA" uuid="psm-type-text" name="Text"/>
+  <primitives xmi:id="_sB5sAAJcEeePbOdRMfS3CA" uuid="psm-type-memo" name="Memo"/>
+  <primitives xmi:id="_vALbAAJcEeePbOdRMfS3CA" uuid="psm-type-float" name="Float"/>
+  <primitives xmi:id="_yU4tAAJcEeePbOdRMfS3CA" uuid="psm-type-percentage" name="Percentage"/>
+  <primitives xmi:id="_2Dr6AAJcEeePbOdRMfS3CA" uuid="psm-type-currency" name="Currency"/>
+  <primitives xmi:id="_Ig8fgAJdEeePbOdRMfS3CA" uuid="psm-type-gps" name="Gps"/>
+  <primitives xmi:id="_MZ9_gAJdEeePbOdRMfS3CA" uuid="psm-type-track" name="Track"/>
+  <primitives xmi:id="_QFfPAAJdEeePbOdRMfS3CA" uuid="psm-type-file" name="File" fullName=""/>
+  <primitives xmi:id="_TeZEgAJdEeePbOdRMfS3CA" uuid="psm-type-uuid" name="UUID"/>
+  <primitives xmi:id="_edPa4BhaEeeH4r4fPwP1ww" uuid="primitive-serializable" name="Serializable"/>
+  <primitives xmi:id="_Pf9gYOQHEeeiFLS-7unXRw" uuid="primitive-natural" name="Natural"/>
+  <primitives xmi:id="_V7dkMOQHEeeiFLS-7unXRw" uuid="primitve-ipaddress" name="Ipaddress"/>
+  <primitives xmi:id="_dE8IUOQHEeeiFLS-7unXRw" uuid="primitive-url" name="URL"/>
+</psm:JPackage>

@@ -1,0 +1,87 @@
+@cached
+operation PSM!JClass hasSuperType () : Boolean {
+	return self.supertype.isDefined();
+}
+
+@cached
+operation PSM!JClass classSqlName() : String {
+    return self.package.packageSqlName() + "_" + self.sqlName();
+}
+
+@cached
+operation PSM!JClass tableSqlName() : String {
+    return "T_" + self.classSqlName();
+}
+
+@cached
+operation PSM!JClass viewSqlName() : String {
+    return "V_" + self.classSqlName();
+}
+
+@cached
+operation PSM!JClass primaryKeyAttribute() : PSM!JAttribute {
+    return self.attributes.select(a | a.name = "id").first();
+}
+
+
+operation allSupertypesAttributesInternal (pc : PSM!JClass, supertypesAttributesPar : Collection) : Collection {
+	var supertypesAttributes = new Sequence();
+	supertypesAttributes.addAll(supertypesAttributesPar);
+	for (a : PSM!JAttribute in pc.attributes) {
+		if (not a.isTechnical() and not a.isPrimaryKey()) {
+			supertypesAttributes.add(a);		
+		}
+	}
+	if (pc.supertype.isDefined()) {
+		supertypesAttributes.addAll(pc.allSupertypesAttributes());
+	}
+	return supertypesAttributes;
+}
+
+@cached
+operation PSM!JClass allSupertypesAttributes() : Collection {
+    if (self.supertype.isDefined()) {
+    	return allSupertypesAttributesInternal(self.supertype, new Sequence());
+    }
+    return new Sequence();
+}
+
+
+@cached
+operation PSM!JClass allDescandences() : Collection {
+	var ret : Sequence = new Sequence();
+	for (c : PSM!JClass in PSM!JClass.all.select( c | c.supertype = self)) {
+		ret.add(c);
+		ret.addAll(c.allDescandences());
+	}
+	return ret;
+}
+
+@cached
+operation PSM!JClass allSupertypes() : Collection {
+	var ret : Sequence = new Sequence();
+	if (self.supertype.isDefined()) {
+		ret.add(self.supertype);
+		ret.add(self.supertype.allSupertypes());
+	}
+	return ret;
+}
+/*
+@cached
+operation PSM!JClass serialize() : String {
+	var ret : String = ""; 
+	ret = ret + self.package.fqName() + "." + self.name;
+	if (self.supertype.isDefined()) {
+		ret = ret + "\nSuper: " + self.supertype.serialize();
+	}
+	
+	return ret;
+	
+}
+
+@cached
+operation PSM!JClass serializeWithAttributes() : String {
+	var ret : String = self.serialize();
+	return ret;
+}
+*/

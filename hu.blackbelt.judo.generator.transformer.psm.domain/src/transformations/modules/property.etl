@@ -1,0 +1,158 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+// TODO: refactor common parts into an operation
+//		 set type - refactor type selection
+@primary
+rule ClassProperty
+	transform s : Property
+	to        t : tgtPSM!JAttribute
+	extends TypedElement {
+	
+	guard : s.owner.equivalent("Class").isDefined() 
+			and s.owner.isTypeOf(Class) 
+			and not s.association.isDefined() 
+			and not s.type.isTypeOf(Class) 
+			and not s.type.isTypeOf(Enumeration)
+	
+	s.owner.equivalent("Class").attributes.add(t);
+	t.ordered = s.ordered;
+	t.unique = s.unique;
+	t.calculated = stereotypeApplications.get("calculated").includes(s);
+	t.uiNoSearch = stereotypeApplications.get("nosearch").includes(s);
+	
+	t.mandatory = s.lower = 1 and s.upper = 1;
+	
+	if ( stereotypeApplications.get("decimals").containsKey(s) ) {
+		t.decimals = stereotypeApplications.get("decimals").get(s).asInteger();
+		t.println("RULE::ClassProperty - ADD decimals specification - " + t.decimals + " ");
+	}
+
+	// check if interpreted on association owned properties also	
+	if ( stereotypeApplications.get("interval").containsKey(s) and stereotypeApplications.get("interval").get(s).isDefined() ) {
+		t.interval = stereotypeApplications.get("interval").get(s);
+		t.println("RULE::ClassProperty - ADD interval specification - " + t.interval + " ");
+	}
+	
+	if ( stereotypeApplications.get("placeholder").containsKey(s) ) {
+		t.placeholder = stereotypeApplications.get("placeholder").get(s);
+		t.println("RULE::ClassProperty - ADD placeholder specification - " + t.placeholder + " ");
+	}
+
+	if ( stereotypeApplications.get("regexp").containsKey(s) ) {
+		t.regexp = stereotypeApplications.get("regexp").get(s);
+		t.println("RULE::ClassProperty - ADD regexp specification - " + t.regexp + " ");
+	}
+
+	if (stereotypeApplications.get("representationProperty").includes(s) and 
+		s.owner.isTypeOf(Class)) {
+		s.owner.equivalent("Class").representation = t;
+		t.println("RULE::ClassProperty - ADD this property to Class " + s.owner.equivalent("Class").name + "::representation ~~> ");
+	}
+	
+	if ( stereotypeApplications.get("watchProperties").includes(s)) {
+		 t.watched = true;
+	}
+	
+	"".println("RULE::ClassProperty");
+}
+
+rule ClassPropertyRole
+	transform s : Property
+	to        t : tgtPSM!JRole
+	extends NamedElement {
+
+	guard : s.owner.equivalent("Class").isDefined() and 
+			s.owner.isTypeOf(Class) and 
+			s.association.isDefined()
+	
+	s.println("RULE::ClassPropertyRole ROLE: ");	
+	s.association.println("RULE::ClassPropertyRole");
+	s.association.memberEnd.println("MEBER ENDS ==>  ");
+	s.association.isDefined().println("RULE::ClassPropertyRole Association on Role EXISTS: ");	
+	s.association.equivalent("Relationship").println("RULE::ClassPropertyRole");	
+	s.association.equivalent("Relationship").isDefined().println("RULE::ClassPropertyRole Association on Role EQUIV EXISTS: ");
+	s.type.println("RULE::ClassPropertyRole - Property TYPE: ");
+	s.type.equivalent().println("RULE::ClassPropertyRole - Property TYPE EQUIV: ");
+	
+	if ( stereotypeApplications.get("derivedDescription").containsKey(s) ) {
+		t.derivedDescription = stereotypeApplications.get("derivedDescription").get(s);
+	}
+
+	if ( stereotypeApplications.get("derivedExpression").containsKey(s) ) {
+		t.derivedExpression = stereotypeApplications.get("derivedExpression").get(s);
+	}
+	
+	s.association.equivalent("Relationship").roles.add(t);
+	t.calculated = stereotypeApplications.get("calculated").includes(s);
+	t.navigable = s.navigable;
+	t.ordered = s.ordered;
+	t.unique = s.unique;
+	t.lower = s.lower;
+	t.upper = s.upper;
+	t.ownerClass ::= s.type;
+	
+	switch (s.aggregation) {
+		case AggregationKind#composite 	: t.kind = tgtPSM!JAssociationKind#COMPOSITION;
+		case AggregationKind#shared 	: t.kind = tgtPSM!JAssociationKind#AGGREGATION;
+		default							: t.kind = tgtPSM!JAssociationKind#ASSOCIATION; // AggregationKind#none
+	}
+
+}
+
+/*
+@lazy
+rule ClassPropertyRole
+	transform s : Property
+	to        t : tgtPSM!JRole 
+	extends NamedElement {
+
+	guard : s.owner.equivalent("Class").isDefined() 
+			and s.owner.isTypeOf(Class) 
+			and ( s.type.isTypeOf(Class) or s.type.isTypeOf(Enumeration) )
+	var t;
+	if (s.type.isTypeOf(Class) and s.type.equivalent().isDefined()) {
+		t = s.type.equivalent();
+	} else if (s.type.isTypeOf(Enumeration)) {
+		t = s.type.equivalent("Enum2CorrespondingValueClass");
+	}
+	//createRelationWithRoles(s.owner.package.equivalent(), s.owner.equivalent().name, t.name, s.owner.equivalent(), t);
+
+}
+*/
+
+@lazy
+rule RelationProperty
+	transform s : Property
+	to        t : tgtPSM!JRole
+	extends NamedElement {
+	
+	//guard : s.owner.equivalent("Relationship").isDefined() and
+	guard:	s.owner.isTypeOf(Association) 
+	
+	s.owner.println("s.owner: ");
+	s.owner.owner.println("s.owner.owner: ");
+	s.otherEnd.println("ASSOC OTHER END: ");
+	
+	s.owner.equivalent("Relationship").roles.add(t);
+	t.name = s.name;
+	t.calculated = stereotypeApplications.get("calculated").includes(s);
+	t.ordered = s.ordered;
+	t.unique = s.unique;
+	t.lower = s.lower;
+	t.upper = s.upper;
+	t.navigable = s.navigable;
+	t.ownerClass ::= s.type;
+	
+	var ops = stereotypeApplications.get("options").get(s);
+	var otherOps = stereotypeApplications.get("options").get(s.otherEnd);
+	for (op in ops + otherOps) {
+        var parts = op.split(":");
+        if (parts.at(0) == self.name) {
+        	t.optionScript = parts.at(1);
+            break;
+        }
+    }
+    
+	"".println("RULE::RelationProperty");
+}

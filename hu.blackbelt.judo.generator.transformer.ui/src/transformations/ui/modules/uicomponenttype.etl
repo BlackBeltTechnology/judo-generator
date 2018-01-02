@@ -1,0 +1,72 @@
+import "../../../operations/_importAll.eol";
+
+@lazy
+rule UIReferenceComponentType
+	transform jrole : PSM!JRole
+	to uireference : UI!UIReferenceComponentType {
+		//inherited from Identifiable
+		uireference.name = jrole.name;
+		//attributes
+		if (jrole.visibility = PSM!JVisibility#PROTECTED) {
+			uireference.readonly = true;
+		}
+		if (jrole.visibility = PSM!JVisibility#PRIVATE) {
+			uireference.private = true;
+		}
+		if (jrole.ownerRelationship.derived or jrole.calculated or jrole.visibility = PSM!JVisibility#PROTECTED) {
+			uireference.value = "";
+		} else {
+			uireference.value = jrole.value;
+		}
+		uireference.derived = jrole.ownerRelationship.derived;
+		uireference.lower = jrole.lower;
+		uireference.upper = jrole.upper;
+		uireference.navigable = jrole.navigable;
+		uireference.kind = jrole.kind.name.toLowerCase();
+		uireference.interval = jrole.interval;
+	}
+
+@lazy
+rule UIBaseComponentType
+	transform jattribute : PSM!JAttribute
+	to uibasetype : UI!UIBaseComponentType {
+		//inherited from Identifiable
+		uibasetype.name = jattribute.name;
+		//attributes
+		if (jattribute.visibility = PSM!JVisibility#PROTECTED) {
+			uibasetype.readonly = true;
+		}
+		if (jattribute.visibility = PSM!JVisibility#PRIVATE) {
+			uibasetype.private = true;
+		}
+		if (jattribute.derived or jattribute.calculated or jattribute.visibility = PSM!JVisibility#PROTECTED) {
+			uibasetype.value = "";
+		} else {
+			uibasetype.value = jattribute.value;
+		}
+		uibasetype.derived = jattribute.derived;
+		uibasetype.lower = jattribute.lower;
+		uibasetype.upper = jattribute.upper;
+		uibasetype.regexp = jattribute.regexp;
+		uibasetype.decimals = jattribute.decimals;
+		uibasetype.placeholder = jattribute.placeholder;
+		uibasetype.type = jattribute.type.componentType().name;
+		uibasetype.interval = jattribute.interval;
+	} 
+
+@lazy
+rule UIParameterComponentType
+	transform jparameter : PSM!JParameter
+	to uiparameter : UI!UIParameterComponentType {
+	guard : jparameter.ownerOperation.isDefined() and jparameter.ownerOperation.visibility = PSM!JVisibility#PUBLIC
+		//inherited from Identifiable
+		uiparameter.uuid = jparameter.uuid;
+		uiparameter.name = jparameter.name;
+		//attributes
+		uiparameter.value = "";
+		uiparameter.lower = jparameter.lower;
+		uiparameter.upper = jparameter.upper;
+		uiparameter.interval = jparameter.interval;
+	}
+	
+	

@@ -1,0 +1,42 @@
+@cached
+operation JAVA!JvmCollection fqName () : String {
+	if (self.componentType.uuid == voidType().uuid) {
+		return "void";
+	}
+	return self.package.fqName() + "." + self.name + "<" + self.componentType.fqName() + ">";
+}
+
+@cached
+operation JAVA!JvmCollection bare () : JAVA!JvmType {
+	return self.componentType;
+}
+
+@cached
+operation JAVA!JvmType javaClassName () : String {
+	return self.package.fqName() + "." + self.name;
+}
+
+@cached
+operation JAVA!JvmCollection isVoid () : Boolean {
+	return self.componentType.isVoid();
+}
+
+@cached
+operation JAVA!JvmCollection isPrimitive () : Boolean {
+    return self.componentType.isPrimitive();
+}
+
+@cached
+operation JAVA!JvmCollection bo () : JAVA!JvmCollection {
+    return createJvmList(self.bare().bo());
+}
+
+@cached
+operation JAVA!JvmCollection dto () : JAVA!JvmCollection {
+    return createJvmList(self.bare().dto());
+}
+
+@cached
+operation JAVA!JvmCollection restDto () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restDto());
+}

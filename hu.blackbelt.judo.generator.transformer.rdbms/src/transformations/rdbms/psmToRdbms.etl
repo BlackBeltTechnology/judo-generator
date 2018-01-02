@@ -1,0 +1,24 @@
+import "modules/model.etl";
+import "modules/element.etl";
+import "modules/type.etl";
+import "modules/class.etl";
+import "modules/enumeration.etl";
+import "modules/attribute.etl";
+import "modules/role.etl";
+
+import "pre/addParticipateToAllElement.eol";
+import "pre/addIdToEntities.eol";
+
+
+pre {
+	var targetModel : RDBMS!RdbmsModel;
+	var targetConfiguration : RDBMS!RdbmsConfiguration;
+
+	addParticipateToAllElement();
+	addIdToEntities();	
+}	
+
+post {
+	RDBMS!RdbmsModel.all.first().version = psmVersion;
+}
+

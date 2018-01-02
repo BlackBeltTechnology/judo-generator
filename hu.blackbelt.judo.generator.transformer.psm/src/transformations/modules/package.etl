@@ -1,0 +1,28 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+rule Package
+	transform s : Package
+	to 		  t : tgtPSM!JPackage 
+	extends NamedElement {
+	
+	guard: stereotypeApplications.get("packages").includes(s)
+
+	if ((s.owner.equivalent().isDefined()) and
+		(not s.owner.isTypeOf(Model))) {	
+	 	t.parent ::= s.owner;
+		s.owner.equivalent("Package").children.add(t);
+	} else {
+		tgtModel.packages.add(t);
+	} 
+	
+	if ( stereotypeApplications.get("application").includes(s) ) {
+		tgtModel.applicationTop = t;
+		t.println("RULE::Package - ADD this package to JModel::applicationTop ~~> ");
+	}
+	
+	s.fullyQualifiedPath().println("RULE::Package - PKG :: ");
+	"".println("c");
+}
+
+

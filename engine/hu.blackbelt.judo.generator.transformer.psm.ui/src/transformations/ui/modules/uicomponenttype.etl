@@ -1,5 +1,0 @@
-rule UIComponentType
-	transform jtype : PSM!JType
-	to uicomponenttype : UI!UIComponentType {
-		uicomponenttype.name = jtype.name;
-	}

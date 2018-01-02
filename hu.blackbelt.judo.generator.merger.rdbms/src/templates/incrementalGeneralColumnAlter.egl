@@ -1,0 +1,12 @@
+[* Postgre *]
+
+[% if (tableOperation.modifyFieldOperations.size() > 0) {%]
+ALTER TABLE [%=tableOperation.table.sqlName%]
+	[% if (tableOperation.modifyFieldOperations.size() = 1) {%]
+	ALTER COLUMN [%=tableOperation.modifyFieldOperations.at(0).field.sqlName%] TYPE [%=tableOperation.modifyFieldOperations.at(0).field.type.toString()%];
+	[% } else {%]
+	[% for (fieldOperation in tableOperation.modifyFieldOperations) {%]
+	ALTER COLUMN [%=fieldOperation.field.sqlName%] TYPE [%=fieldOperation.field.type.toString()%] [%if (hasMore) { out.print(","); } else { out.print(";"); }%]
+	[% } %]
+	[% } %]
+[% } %]

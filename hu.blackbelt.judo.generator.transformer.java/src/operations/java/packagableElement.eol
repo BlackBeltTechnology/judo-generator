@@ -1,0 +1,18 @@
+@cached
+operation JAVA!JvmPackagableElement fqPath () : String {
+	return self.fqName().replaceAll("\\.", "/"); 
+}
+
+@cached
+operation JAVA!JvmPackagableElement fqName () : String {
+	return fqNameInternal(self);
+}
+
+operation fqNameInternal (pe : JAVA!JvmPackagableElement) : String {
+	if (pe.package.isDefined()) {
+		return pe.package.fqName() + "." + pe.name;
+	} else {
+		return pe.name;
+	}
+}
+

@@ -1,0 +1,456 @@
+[% 		
+	if (UI!UIBase.all.size() > 1) {
+		out.println("[");
+		for (ui in UI!UIBase.all) {
+			ui.generateJson();  if (hasMore) { out.println(","); }
+		}
+		out.print("]");
+	} else {
+		for (ui in UI!UIBase.all) {
+			ui.generateJson();
+		}
+	}
+%]
+
+[% operation UI!UIClass generateJson() { %]
+{
+	"singleton" : [%=self.singleton%],
+	"listViews" : [
+	[% if(not self.listViews.isEmpty())  { %]	
+		[%for (listView in self.listViews) { %]
+			[%listView.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]
+	],
+	"enumclass" : [%=self.enumClass%],
+	"name" : "[%=self.name%]",
+	"fields" : [
+	[% if(not self.attributes.isEmpty())  { %]
+		[%for (attribute in self.attributes) { %]
+			[%attribute.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]	
+	[% } %]
+	],
+	"abstract" : [%=self.abstract%],
+	"actions" : [
+	[% if(not self.actions.isEmpty())  { %]		
+		[%for (action in self.actions) { %]
+			[%action.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]		
+	[% } %]
+	],
+	"selector" : "[%=self.selector.id%]",
+	"readonly" : [%=self.readonly%],
+	[% if (self.representation.isDefined()) { %]
+	"representation" : "<%= [%=self.representation.name%] %>",
+	[% } else {%]
+	"representation" : "",
+	[% } %]
+	"objectViews" : [
+	[% if(not self.classViews.isEmpty())  { %]
+		[%for (classView in self.classViews) { %]
+			[%classView.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]
+	],
+	"childObjectViews" : [
+	[% if(not self.childClassViews.isEmpty())  { %]
+		[%for (classView in self.childClassViews) { %]
+			"[%=classView.uuid%]" [% if (hasMore) { out.println(","); } %]
+		[%}%]	
+	[% } %]
+	],
+	[% if(self.super.isDefined())  { %]
+	"super" : "[%=self.super.id%]",
+	[%} else {%]
+	"super" : null,
+	[%}%]
+	"id" : "[%=self.id%]"	
+}
+[% } %]
+
+[% operation UI!UIAction generateJson() { %]
+{
+	"confirmed" : [%=self.toBeConfirmed%],
+	"classbased" : [%=self.classBased%],
+	"name" : "[%=self.name%]",
+	[% if(self.resultView.isDefined())  { %]
+	"resultView" : [%self.resultView.generateJson();%],
+	[% } else {%]
+	"resultView" : null,
+	[% } %]
+	"fields" : [
+	[% if(not self.parameters.isEmpty())  { %]
+		[%for (parameter in self.parameters) { %]
+			[%parameter.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]
+	],
+	"id" : "[%=self.id%]",
+	"notBulk" : [%=self.notBulk%],
+	[% if(self.result.isDefined())  { %]
+	"result" : [%=self.result.generateJson()%],
+	[% } else {%]
+	"result" : null,
+	[% } %]
+	"inherited" : [%=self.inherited%],
+	"query" : [%=self.isQuery%],
+	"paramView" : [%self.paramView.generateJson();%]
+}
+[% } %]
+
+[% operation UI!UIView generateJson() { %]
+{
+	"name" : "[%=self.name%]",
+	"pageSize" : [%=self.pageSize%],
+	"default" : [%=self.isDefault%],
+	[% if(self.isTypeOf(UI!UIListView)) {%]
+		"detail" : "[%=self.detailView.uuid%]",
+	[%}%]
+	[% if(self.isTypeOf(UI!UIClassView)) {%]
+		"rules" : [],
+	[% } %]
+	"viewFieldSets" : [
+	[% if(not self.viewFieldSets.isEmpty())  { %]
+		[%for (viewFieldSet in self.viewFieldSets) { %]
+			[%viewFieldSet.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]	
+	[% } %]	
+	],
+	"id" : "[%=self.id%]",
+	"columns" : [%=self.columns%]
+}
+[% } %]
+
+[% operation UI!UIViewField generateJson() { %]
+{
+	"search" : [%=self.searchable%],
+	"name" : "[%=self.name%]",
+	"show" : [%=self.show%],
+	[% if (self.componentType.upper > 1 or self.componentType.upper = -1) {%]
+	"list" : true,
+	[%} else {%]
+	"list" : false,
+	[% } %]
+	"order" : [%=self.order%],
+	"field" : "[%=self.componentType.id%]",
+	[% if (not self.componentType.isTypeOf(UI!UIBaseComponentType) and self.componentType.upper = 1) {%]
+	"single" : true,
+	[%} else {%]
+	"single" : false,
+	[% } %]
+	"position" : [%=self.position%],
+	"id" : "[%=self.id%]"
+}
+[% } %]
+
+[% operation UI!UIViewFieldSet generateJson() { %]
+{
+	"position" : [%=self.position%],
+	"viewFields" : [
+	[% if(not self.viewFields.isEmpty())  { %]	
+		[%for (viewField in self.viewFields) { %]
+			[%viewField.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]	
+	[% } %]
+	],
+	"id" : "[%=self.id%]",
+	"name" : "[%=self.name%]"	
+}
+[% } %]
+
+[% operation UI!UIMenuItem generateJson() { %]
+{
+	"name" : "[%=self.name%]",
+	"menuitems" : [
+	[% if(not self.menuItems.isEmpty())  { %]
+		[%for (menuItem in self.menuItems) { %]
+			[%menuItem.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]
+	],
+	"id" : "[%=self.id%]",
+	"filters" : [
+	[% if(not self.filters.isEmpty())  { %]
+		[%for (filter in self.filters) { %]
+			[%filter.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]
+	],
+	[% if(self.menuView.isDefined())  { %]
+	"view" : "[%=self.menuView.id%]"
+	[% } else {%]
+	"view" : null
+	[% } %]
+}
+[% } %]
+
+[% operation UI!UIModule generateJson() { %]
+{
+	"fqname" : "[%=self.fullyQualifiedName%]",
+	"classes" : [
+	[% if(not self.classes.isEmpty())  { %]		
+		[%for (class in self.classes) { %]
+			[%class.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]	
+	[% } %]
+	],
+	"id" : "[%=self.id%]",
+	"version" : "[%=self.version%]",
+	"name" : "[%=self.name%]"
+}
+[% } %]
+
+[% operation UI!UIBaseComponentType generateJson() { %]
+{
+	[% if (self.upper = -1) { %]
+	"upper" : "*",
+	[% } else { %]
+	"upper" : "[%=self.upper%]",
+	[% } %]
+	"referenced" : null,
+	
+	[% if(self.lower > 0)  { %]
+	"mandatory" : true,
+	[% } else {%]
+	"mandatory" : false,
+	[% } %]
+	
+	"private" : [%=self.private%],
+	"single" : false,
+	"intervals" : [
+	[% if(not self.intervals.isEmpty())  { %]	
+		[%for (interval in self.intervals) { %]
+			[%interval.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]
+	],
+	
+	"id" : "[%=self.id%]",
+	"readonly" : [%=self.readonly%],
+	"inherited" : [%=self.inherited%],
+	"type" : "[%=self.type%]",
+	"derived" : [%=self.derived%],
+	"navigable" : false,
+	"component" : "[%=self.type%]",
+	[% if (self.regexp.isDefined()) {%]
+	"regexp" : "[%=self.regexp.asString().replace("\\\\","\\\\\\\\")%]",
+	[% } else {%]
+	"regexp" : "[%=self.regexp%]",
+	[% } %]
+	[% if(self.placeholder.isDefined())  { %]
+	"placeholder" : "[%=self.placeholder%]",
+	[% } else {%]
+	"placeholder" : "",
+	[% } %]
+	"association" : false,
+	"lower" : "[%=self.lower%]",
+	"name" : "[%=self.name%]",
+	[% if (self.interval.isDefined()) {%]
+	"interval" : "[%=self.interval%]",
+	[% } else { %]
+	"interval" : "",
+	[% } %]
+	"list" : false,
+	[% if(self.value.isDefined())  { %]
+	"value" : "[%=self.value%]",
+	[% } else {%]
+	"value" : "",
+	[%}%]
+	"disableOnCreate" : false,
+	"representation" : [%=self.representation%],
+	[% if(self.decimals.isDefined())  { %]
+	"decimals" : "[%=self.decimals%]"
+	[% } else {%]
+	"decimals" : null
+	[% } %]
+}
+[% } %]
+
+[% operation UI!UIReferenceComponentType generateJson() { %]
+{
+	[% if (self.upper = -1) { %]
+	"upper" : "*",
+	[% } else { %]
+	"upper" : "[%=self.upper%]",
+	[% } %]
+	"referenced" : "[%=self.referenced.uuid%]",
+	[% if(self.lower > 0)  { %]
+	"mandatory" : true,
+	[% } else {%]
+	"mandatory" : false,
+	[% } %]
+	
+	"private" : [%=self.private%],
+	[% if (self.upper = 1) {%]
+	"single" : true,
+	[% } else {%]
+	"single" : false,
+	[% } %]
+	"intervals" : [
+	[% if(not self.intervals.isEmpty())  { %]	
+		[%for (interval in self.intervals) { %]
+			[%interval.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]
+	],
+	
+	"id" : "[%=self.id%]",
+	"readonly" : [%=self.readonly%],
+	[% if(self.opposite.isDefined()) {%]
+	"other" : "[%=self.opposite.id %]",
+	[% } else { %]
+	"other" : null,
+	[% } %]
+	"inherited" : [%=self.inherited%],
+	"type" : "[%=self.type%]",
+	"derived" : [%=self.derived%],
+	"navigable" : [%=self.navigable%],
+	"component" : "[%=self.type%]",
+	"kind" : "[%=self.kind%]",
+	"regexp" : "",
+	"placeholder" : "",
+	"association" : true,
+	"lower" : "[%=self.lower%]",
+	"name" : "[%=self.name%]",
+	[% if (self.interval.isDefined()) {%]
+	"interval" : "[%=self.interval%]",
+	[% } else { %]
+	"interval" : "",
+	[% } %]
+	
+	[% if (self.upper > 1 or self.upper = -1) {%]
+	"list" : true,
+	[% } else {%]
+	"list" : false,
+	[% } %]
+	[% if(self.value.isDefined())  { %]
+	"value" : "[%=self.value%]",
+	[% } else {%]
+	"value" : "",
+	[%}%]
+	"disableOnCreate" : false,
+	"representation" : false,
+	"decimals" : null
+}
+[% } %]
+
+
+[% operation UI!UIParameterComponentType generateJson() { %]
+{
+	[% if (self.upper = -1) { %]
+	"upper" : "*",
+	[% } else { %]
+	"upper" : "[%=self.upper%]",
+	[% } %]
+	[% if (self.referenced.isDefined()) { %] 
+	"referenced" : "[%=self.referenced.id%]",
+	[% } else {%]
+	"referenced" : null,
+	[% } %]
+	[% if(self.lower > 0)  { %]
+	"mandatory" : true,
+	[% } else {%]
+	"mandatory" : false,
+	[% } %]
+	
+	"private" : false,
+	[% if (self.referenced.isDefined() and self.upper = 1) {%]
+	"single" : true,
+	[% } else {%]
+	"single" : false,
+	[% } %]
+	"intervals" : [
+	[% if(self.intervals.isDefined() and not self.intervals.isEmpty())  { %]	
+		[%for (interval in self.intervals) { %]
+			[%interval.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]
+	],
+	
+	"id" : "[%=self.id%]",
+	"readonly" : false,
+	"inherited" : false,
+	"type" : "[%=self.type%]",
+	"derived" : false,
+	"navigable" : false,
+	"component" : "[%=self.type%]",
+	"regexp" : "",
+	"placeholder" : "",
+	"association" : false,
+	"lower" : "[%=self.lower%]",
+	"name" : "[%=self.name%]",
+	[% if (self.interval.isDefined()) {%]
+	"interval" : "[%=self.interval%]",
+	[% } else { %]
+	"interval" : "",
+	[% } %]
+	[% if (self.referenced.isDefined() and self.upper > 1) {%]
+	"list" : true,
+	[% } else {%]
+	"list" : false,
+	[% } %]
+	[% if(self.value.isDefined())  { %]
+	"value" : "[%=self.value%]",
+	[% } else {%]
+	"value" : "",
+	[%}%]
+	"disableOnCreate" : false,
+	"representation" : false,
+	"decimals" : null
+}
+[% } %]
+
+[% operation UI!UIInfo generateJson() { %]
+{
+	[% if(self.userClass.isDefined())  { %]
+	"userClass" : "[%=self.userClass%]",
+	[% } %]
+	"versions" : {
+	[% if(not self.submodels.isEmpty())  { %]
+	[%for (submodel in self.submodels) { %]
+		"[%=submodel%]": "[%=self.versions.at(self.submodels.indexOf(submodel))%]" [% if (hasMore) { out.println(","); } %]
+	[% }%]
+	[% }%]
+	}
+}	
+[% } %]
+
+[% operation UI!UIBase generateJson() { %]
+{
+    "info" : [%self.info.generateJson(); %], 
+	"menu" : [%self.mainMenu.generateJson();%],
+	"modules": [
+	[% if(not self.modules.isEmpty())  { %]
+		[%for (module in self.modules) { %]
+			[%module.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	[% } %]	
+	]	
+}
+[% } %]
+
+[% operation UI!UIFilter generateJson() { %]
+{
+	"attribute" : "[%=self.attribute%]",
+	"operator" : "[%=self.operator%]",
+	"value" : "[%=self.value%]",
+	"fixed" : [%=self.fixed%] 
+}
+[% } %]
+
+[% operation UI!UIInterval generateJson() { %]
+{
+	[% if(self.max.isDefined())  { %]
+	"max" : [%=self.max%],
+	[% } else {%]
+	"max" : null,
+	[% } %]
+	"step" : [%=self.step%],
+	[% if(self.min.isDefined())  { %]
+	"min" : [%=self.min%]
+	[% } else {%]
+	"min" : null
+	[% } %]
+}
+[% } %]

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.blackbelt.judo.meta.psm.java/src" modelPluginID="hu.blackbelt.judo.meta.psm.java"
+    modelName="Java" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>java.ecore</foreignModel>
+  <genPackages prefix="Java" disposableProviderFactory="true" ecorePackage="java.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="java.ecore#//JvmMethodKind">
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/CUSTOM"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/QUERY"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/QUERY_COUNT"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/SM_DECIDE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/CUSTOM_BULK"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/COUNT_TRAVERSE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/TRAVERSE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/COUNT_AVAILABLE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/AVAILABLE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/ATTACH"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/DETACH"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/TRAVERSE_EXPORT"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmMethodKind/AVAILABLE_ALL"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="java.ecore#//JvmReferenceKind">
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmReferenceKind/ASSOCIATION"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmReferenceKind/AGGREGATION"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmReferenceKind/COMPOSITION"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="java.ecore#//JvmReferenceType">
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmReferenceType/OneToOne"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmReferenceType/ManyToMany"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmReferenceType/OneToMany"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmReferenceType/ManyToOne"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="java.ecore#//JvmJudoCoordinate">
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/ORIGIN"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_SERVICE_INTERFACE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_DTO"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_ENUM_SERVICE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_BUILDER"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_BQL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/PO"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_ENUM"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/PO_ENUM"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DOMAIN_BQL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DAO_MINIMAL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_SERVICE_ABSTRACT"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_SERVICE_DEFAULT"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_SERVICE_WRAPPER"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DAO_QUERY_DSL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DAO_Q_CLASS"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_INTERFACE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_BUILDER_INTERFACE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/BO_BQL_INTERFACE"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_OPERATION"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_BUILDER"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_ENUM"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_DTO_BUILDER"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_DTO_ENUM"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_OPERATION"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/FILTER_REST_DTO"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_ACCESSOR"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/DTO_OPERATION_IMPL"/>
+      <genEnumLiterals ecoreEnumLiteral="java.ecore#//JvmJudoCoordinate/REST_OPERATION_IMPL"/>
+    </genEnums>
+    <genClasses ecoreClass="java.ecore#//JvmElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/uuid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/shortName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/fullName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/framework"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmElement/fwElement"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmModel/packages"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmModel/version"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmModel/applicationTop"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmPackage">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmPackage/contents"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmPackage/ownerModel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmPackage/domainBqlClass"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmPackagableElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmPackagableElement/package"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmType/supertype"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmType/useForJudoId"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmTypedElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmTypedElement/type"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmClass">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/members"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/stateMachines"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/fixedEnum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/abstract"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/representationAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/representsTenant"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/tenantMember"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/technicalObject"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/representsEnum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/representsTenantUser"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/representsUser"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/businessSingleton"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/implements"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmEnum">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmEnum/literals"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmEnum/classRepresentation"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmLiteral/ownerEnum"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmPrimitive">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmPrimitive/primitive"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmCollection">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmCollection/componentType"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmList"/>
+    <genClasses ecoreClass="java.ecore#//JvmMethod">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/parameters"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/transitions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/guards"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMethod/classBased"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMethod/bulk"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMethod/kind"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/ownerClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/origin"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/originReference"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmMember">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMember/ownerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMember/derived"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMember/unique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMember/defaultValueExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmMethodParameter">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethodParameter/ownerMethod"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/mandatory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/technical"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/regexpForValidation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/calculationScript"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmAttribute/regexp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmMember/defaultValueExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmReference/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmReference/upper"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmReference/lower"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmReference/navigable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmReference/optionScript"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmReference/opposite"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmReference/virtualExpressionScript"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmReference/referenceType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmReference/derivedDescription"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmState">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmState/ownerStateMachine"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmState/outgoingTransitions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmState/incomingTransitions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmState/initialState"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmState/finalState"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmStateMachine">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmStateMachine/ownerClass"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmStateMachine/states"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmStateMachine/transitions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmStateMachine/correspondingEnum"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmTransition">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmTransition/fromState"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmTransition/toState"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmTransition/guard"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmTransition/executingMethod"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmTransition/ownerStateMachine"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmGuard">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmGuard/ownerTransition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmGuard/implementingMethod"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmGuard/literal"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmGuard/text"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmGuard/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmInterface">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmInterface/methods"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmCoordinated/coordinate"/>
+    </genClasses>
+    <genClasses ecoreClass="java.ecore#//JvmCoordinated">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmCoordinated/coordinate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmCoordinated/origin"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

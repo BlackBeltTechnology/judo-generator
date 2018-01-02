@@ -1,0 +1,50 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+rule JRoleToRdbmsTableForeignKey 
+	transform s : PSM!JRole
+	to fk : RDBMS!RdbmsForeignKey {
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction()
+	    fk.name = s.opposite().ownerClass.package.fqName() +  s.opposite().ownerClass.name + "." + s.opposite().name;
+	    fk.referenceKey = s.opposite().ownerClass.equivalent().primaryKey;
+	    fk.sqlName = s.roleIdSqlName();    
+	    fk.foreignKeySqlName = s.roleFkSqlName();    
+		fk.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
+		fk.type = idType();
+		fk.description =  s.opposite().name + " (" + s.opposite().ownerClass.name + ")";
+		fk.uuid = s.uuid;
+		fk.mandatory = s.isMandatory();
+	}
+
+/*
+@lazy
+rule JRoleToRdbmsViewIdentifierForeignKey 
+	transform s : PSM!JRole
+	to v : RDBMS!RdbmsViewIdentifierField {
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction()
+	    v.name = s.opposite().ownerClass.package.fqName() +  s.opposite().ownerClass.name + "." + s.opposite().name;
+	    v.sqlName = s.roleIdSqlName();
+	    // v.view = s.ownerClass.equivalent("JClassToRdbmsView");
+		v.description =  s.opposite().name + " (" + s.opposite().ownerClass.name + ")";
+		v.uuid = uuid3(s.uuid, v.name);
+		v.tableField = s.equivalent("JRoleToRdbmsTableForeignKey");
+		
+		-/-*
+		var aliasName = "Supertype " + supertypeTable.name;
+	    var aliasSqlName = "SUP_" + supertypeTable.sqlName;
+		var supertypeAlias : RDBMS!RdbmsTableAlias;
+	    if (v.tables.exists(e | e.name = aliasName)) {
+	    	supertypeAlias = v.tables.select(e | e.name = aliasName).first();
+	    } else {
+	    	supertypeAlias = new RDBMS!RdbmsTableAlias();
+	    	supertypeAlias.uuid = uuid3(supertypeTable.uuid, v.name);
+	    	supertypeAlias.table = supertypeTable;
+	    	supertypeAlias.name = aliasName;
+	    	supertypeAlias.sqlName = aliasSqlName;
+	    	v.tables.add(supertypeAlias);
+	    }
+		-*-/
+		// Iterate all descandences to be able to inherit IdFields.
+		
+	}
+*/

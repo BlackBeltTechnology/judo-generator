@@ -1,0 +1,92 @@
+import "modules/element.etl";
+import "modules/model.etl";
+import "modules/package.etl";
+import "modules/class.etl";
+import "modules/property.etl"; // something wrong is here :) TODO: debug transformation... to find the root cause
+////import "modules/role.etl";
+import "modules/enumeration.etl";
+import "modules/operation.etl";
+import "modules/relationship.etl";
+import "modules/parameter.etl";
+import "modules/stateMachine.etl";
+
+import "pre/collectJUDOStereotypes.etl";
+
+pre {
+
+	var modelName = "Model";
+	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
+	var tgtModel;
+	inpPIM!rest.allInstances().size().println();
+	var stereotypeApplications : Map = collectJUDOStereotypeInstances(); 
+	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
+	
+	frameworkPkgPath.println();
+	frameworkQName.println();
+	
+}
+
+post {
+	"POST processing STARTED:".println();
+	
+	// set attributesForListing on all Classes
+	stereotypeApplications.get("list").setAttrForListingAssocs();
+	
+	// set attributeOrder on all Classes
+	stereotypeApplications.get("order").setAttrOrderAssocs();
+	
+	for (je in tgtPSM!JElement.all) {
+		if (je.participates.size = 0) {
+			je.participates.add(tgtPSM!JLayer#ALL);
+		}
+		je.framework = true;
+	}
+	
+	"POST processing FINISHED.".println();
+}
+
+// 'self' is map of classes to "listing Specifications"
+// works on tgtPSM!Properties, modifies tgtPSM!Classes in-place 
+// !!! DOES NOT RETAIN ORDER!!
+operation Map setAttrForListingAssocs() {
+	var classes = self.keySet();
+	
+	for (c in classes) { // classes, constrained by <<list>>
+		var listing = self.get(c).split("\n");
+		
+		listing.println("Listing for " + c.name + " : ");
+		for (attr in c.attribute->select( a | listing.includes( a.name ))) {
+			c.attributesForListing.add( attr );
+		}
+	}
+}
+
+// 'self' is map of classes to "order Specifications"
+// works on tgtPSM!Properties, modifies tgtPSM!Classes in-place 
+// RETAINS ATTRIBUTE ORDER
+operation Map setAttrOrderAssocs() {
+	var classes = self.keySet();
+	for (c in classes) {
+		var position = 1;
+		var groupName;
+	    for (g in self.get(c).split("\n")) {
+	        if (g.at(0) == "-") {
+	            groupName = g.at(0).substring(1);
+	            g = g.substring(1);
+	        } else {
+	            groupName = g.at(0);
+	        }
+	
+	        var attrGroup = hutn.JUIAttributeGroup(groupName);
+	        ret.attributeOrder.append(attrGroup);
+	        attrGroup.uuid = str(uuid.uuid3(uuid.UUID(clazz.xmiid), groupName));
+	        attrGroup.position = position;
+	
+	        for (fieldname in g) {
+	            attrGroup.attributes.append(c.attribute->selectOne( attr | attr.name = fieldname));
+	        }
+	
+	        position += 1;
+	    }
+	}
+}
