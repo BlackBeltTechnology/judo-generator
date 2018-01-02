@@ -8,6 +8,7 @@ rule TableCreated
 		
 		tableOp.uuid = uuid3(table.uuid, "CREATED");
 		tableOp.sqlName = table.sqlName + "_OPERATION_CREATE";
+		tableOp.name = table.name + "_OPERATION_CREATE";
 	
 		tableOp.operationType = TARGET!RdbmsTableOperationType#CREATE;
 		tableOp.table = table.equivalent("NewTableToTargetTable");
@@ -18,6 +19,7 @@ rule TableDeleted
 	to tableOp : TARGET!RdbmsTableOperation {
 		tableOp.uuid = uuid3(table.uuid, "DELETED");
 		tableOp.sqlName = table.sqlName + "_OPERATION_DELETE";
+		tableOp.name = table.name + "_OPERATION_DELETE";
 	
 		tableOp.operationType = TARGET!RdbmsTableOperationType#DELETE;
 		tableOp.table = table.equivalent("PreviousTableToTargetTable");
@@ -32,6 +34,7 @@ rule NewTableToTargetTable
 		
 		target.sqlName = table.sqlName;
 		target.uuid = table.uuid;
+		target.name = table.name;
 		for (field in table.fields) {
 			target.fields.add(field.equivalent());
 		}
@@ -44,6 +47,7 @@ rule PreviousTableToTargetTable
 	to target : TARGET!RdbmsTable {
 		target.sqlName = table.sqlName;
 		target.uuid = table.uuid;
+		target.name = table.name;
 		for (field in table.fields) {
 			target.fields.add(field.equivalent());
 		}
@@ -56,7 +60,7 @@ rule NewFieldToTargetField
 	to target : TARGET!RdbmsField {
 		target.sqlName = field.sqlName;
 		target.uuid = field.uuid;
-		
+		target.name = field.name;
 		var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
 		target.type = emfTool.getECoreUtil().copy(field.type);
 	}
@@ -92,7 +96,7 @@ rule PreviousFieldToTargetField
 	to target : TARGET!RdbmsField {
 		target.sqlName = field.sqlName;
 		target.uuid = field.uuid;
-		
+		target.name = field.name;
 		var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
 		target.type = emfTool.getECoreUtil().copy(field.type);
 	}

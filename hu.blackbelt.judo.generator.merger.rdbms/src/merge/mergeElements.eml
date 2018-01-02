@@ -12,6 +12,7 @@ rule MergeTables
 			newTable.uuid.println("Tábla: ");
 			target.uuid = uuid3(newTable.uuid, "MODIFY");
 			target.sqlName = newTable.sqlName + "_OPERATION_MODIFY";
+			target.name = newTable.name + "_OPERATION_MODIFY";
 			
 			target.operationType = TARGET!RdbmsTableOperationType#MODIFY;
 			target.table = newTable.equivalent("NewTableToTargetTable");
@@ -20,6 +21,8 @@ rule MergeTables
 			var deletedFields : OrderedSet(TARGET!RdbmsField) = oldTable.fields.select(field | newFieldUuids.excludes(field.uuid));
 			for (field in deletedFields) {
 				var fieldOperation = new TARGET!RdbmsDeleteFieldOperation();
+				fieldOperation.uuid = uuid3(field.uuid, "_RdbmsDeleteFieldOperation");
+				fieldOperation.name = field.name + "_RdbmsDeleteFieldOperation";
 				fieldOperation.field = field.equivalent();
 				target.deleteFieldOperations.add(fieldOperation);
 			}
@@ -28,6 +31,8 @@ rule MergeTables
 			var createdFields : OrderedSet(TARGET!RdbmsField) = newTable.fields.select(field | oldFieldUuids.excludes(field.uuid));
 			for (field in createdFields) {
 				var fieldOperation = new TARGET!RdbmsCreateFieldOperation();
+				fieldOperation.uuid = uuid3(field.uuid, "_RdbmsCreateFieldOperation");
+				fieldOperation.name = field.name + "_RdbmsCreateFieldOperation";
 				fieldOperation.field = field.equivalent();
 				target.createFieldOperations.add(fieldOperation);
 			}
@@ -40,25 +45,12 @@ rule MergeTables
 				field.sqlName.println("Field: ");
 				if (field.type.uuid <> oldField.type.uuid) {
 					var fieldOperation = new TARGET!RdbmsModifyFieldOperation();
+					fieldOperation.uuid = uuid3(field.uuid, "_RdbmsModifyFieldOperation");
+					fieldOperation.name = field.name + "_RdbmsModifyFieldOperation";
 					fieldOperation.field = field.equivalent();
 					fieldOperation.typeChanged = true;
 					target.modifyFieldOperations.add(fieldOperation);
 				}
 			}
 		}
-		
-@lazy
-rule NewTableToTargetTable
-	transform table : NEW!RdbmsTable
-	to target : TARGET!RdbmsTable {
-	
-		table.sqlName.println("Rule table: ");
-		
-		target.sqlName = table.sqlName;
-		target.uuid = table.uuid;
-		for (field in table.fields) {
-			target.fields.add(field.equivalent());
-		}
-		target.primaryKey = table.primaryKey.equivalent();
-	}
 	
