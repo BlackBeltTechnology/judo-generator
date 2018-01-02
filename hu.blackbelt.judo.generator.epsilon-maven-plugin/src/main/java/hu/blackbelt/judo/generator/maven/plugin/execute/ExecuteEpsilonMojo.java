@@ -65,14 +65,12 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
                         executeModule(eolModule, eolProgram.source,
                                 params.stream().map(p -> Variable.createReadOnlyVariable(p.name, p.value)).collect(Collectors.toList()));
 
+                        eolProgram.post(context);
+                        
                         if (!eolProgram.isOk()) {
                             throw new MojoExecutionException("Program aborted: " + eolProgram.toString());
                         } else {
                             getLog().info("Execution result: " + eolProgram.toString());
-                        }
-
-                        if (eolProgram instanceof Ecl) {
-                        	((Ecl) eolProgram).exportMatchTrace(context);
                         }
                     }
                 }

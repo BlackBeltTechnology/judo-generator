@@ -30,5 +30,7 @@ public class Eol {
     public String toString() {
         return "";
     }
+    
+    public void post(Map<Object, Object> context) {}
 
 }

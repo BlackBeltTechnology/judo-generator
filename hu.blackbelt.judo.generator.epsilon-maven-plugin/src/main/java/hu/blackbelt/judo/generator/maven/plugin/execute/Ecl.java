@@ -31,7 +31,8 @@ public class Ecl extends Eol {
         return eclModule;
     };
     
-    void exportMatchTrace(Map<Object, Object> context) {
+    @Override
+	public void post(Map<Object, Object> context) {
     	 if (exportMatchTrace != null) {
  			context.put(
  				exportMatchTrace, 
