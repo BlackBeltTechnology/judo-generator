@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import hu.blackbelt.judo.generator.maven.plugin.AbstractEpsilonMojo;
 import hu.blackbelt.judo.generator.maven.plugin.EmfModelUtils;
 import hu.blackbelt.judo.generator.maven.plugin.Model;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -14,12 +13,15 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
-import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.IEolExecutableModule;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.eol.models.ModelReference;
 import org.eclipse.epsilon.eol.models.ModelRepository;
+import org.eclipse.epsilon.profiling.Profiler;
+import org.eclipse.epsilon.profiling.ProfilerTargetSummary;
+import org.eclipse.epsilon.profiling.ProfilingExecutionListener;
 
 import java.io.File;
 import java.util.HashMap;
@@ -36,6 +38,9 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
     @Parameter(name = "eolPrograms", readonly = true, required = true)
     public List<Eol> eolPrograms;
 
+    @Parameter(name = "profile", readonly = true, required = false)
+    public Boolean profile = false;
+
     public ExecuteEpsilonMojo() {
     }
     synchronized public void execute() throws MojoExecutionException, MojoFailureException {
@@ -49,13 +54,29 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
             try {
                 addMetaModels(resourceSet);
                 addModels(resourceSet, modelRepository, emfModels);
-                
+
                 getLog().info("URL converters: \n\t" + URIConverter.URI_MAP.entrySet().stream().map(e -> e.getKey() + "->" + e.getValue()).collect(Collectors.joining("\n\t")));
 
                 if (eolPrograms != null) {
                     for (Eol eolProgram : eolPrograms) {
+
                         IEolExecutableModule eolModule = eolProgram.getModule(context);
-                        eolModule.getContext().setModelRepository(modelRepository);
+
+                        ModelRepository repository = eolModule.getContext().getModelRepository();
+
+                        for (Model model : emfModels.keySet()) {
+                            ModelReference ref = EmfModelUtils.createModelReference(emfModels.get(model));
+                            ref.setName(model.getName());
+                            if (model.getAliases() != null) {
+                                for (String alias : model.getAliases()) {
+                                    ref.getAliases().add(alias);
+                                }
+                            }
+                            repository.addModel(ref);
+                        }
+
+
+                        // eolModule.getContext().setModelRepository(modelRepository);
                         List<EolProgramParameter> params = eolProgram.parameters;
                         if (params == null) {
                             params = Lists.newArrayList();
@@ -94,19 +115,39 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
 
     private void executeModule(IEolExecutableModule eolModule, File source, List<Variable> parameters) throws Exception {
         eolModule.parse(source);
-
-        if (eolModule.getParseProblems().size() > 0) {
-            getLog().error("Parse errors occured...");
-            for (ParseProblem problem : eolModule.getParseProblems()) {
-                getLog().error(problem.toString());
+        if (profile) {
+            Profiler.INSTANCE.reset();
+        }
+        try {
+            if (profile) {
+                Profiler.INSTANCE.start(source.getName(), "", eolModule);
             }
-            throw new MojoExecutionException("Parse error");
-        }
-        for (Variable parameter : parameters) {
-            eolModule.getContext().getFrameStack().put(parameter);
-        }
 
-        Object result = eolModule.execute();
-        // getLog().info("Eol execute result: " + result.toString());
+            if (eolModule.getParseProblems().size() > 0) {
+                getLog().error("Parse errors occured...");
+                for (ParseProblem problem : eolModule.getParseProblems()) {
+                    getLog().error(problem.toString());
+                }
+                throw new MojoExecutionException("Parse error");
+            }
+            for (Variable parameter : parameters) {
+                eolModule.getContext().getFrameStack().put(parameter);
+            }
+
+            if (profile) {
+                eolModule.getContext().getExecutorFactory().addExecutionListener(new ProfilingExecutionListener());
+            }
+
+            Object result = eolModule.execute();
+            // getLog().info("Eol execute result: " + result.toString());
+        } finally {
+            if (profile) {
+                Profiler.INSTANCE.stop(source.getName());
+                for (ProfilerTargetSummary p : Profiler.INSTANCE.getTargetSummaries()) {
+                    getLog().info(String.format("Index: %d Name: %s: Count: %d Individual Time: %d Aggregate time: %d", p.getIndex(), p.getName(), p.getExecutionCount(), p.getExecutionTime().getIndividual(), p.getExecutionTime().getAggregate()));
+                }
+            }
+
+        }
     }
 }

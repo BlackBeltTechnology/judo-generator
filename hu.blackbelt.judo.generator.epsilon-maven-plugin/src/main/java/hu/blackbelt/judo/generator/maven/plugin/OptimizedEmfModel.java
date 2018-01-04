@@ -3,9 +3,11 @@ package hu.blackbelt.judo.generator.maven.plugin;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.emc.emf.CachedResourceSet;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.EmfUtil;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -13,15 +15,17 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class ResourceSetBasedEmfModel extends EmfModel {
+public class OptimizedEmfModel extends EmfModel {
 	
+	/*
 	private final ResourceSet resourceSet;
 	
 	public ResourceSetBasedEmfModel(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
-	}
+	} */
 	
 	private List<EPackage> attemptFileBasedMetamodelReuse(URI uri) {
 		if (!reuseUnmodifiedFileBasedMetamodels || !uri.isFile()) {
@@ -88,8 +92,24 @@ public class ResourceSetBasedEmfModel extends EmfModel {
 		}
 	}
 
+	protected ResourceSet createResourceSet() {
+		CachedResourceSet ret =  new CachedResourceSet();
+		ret.setURIResourceMap(new HashMap<>());
+		return ret;
+	}
+
+
 	@Override
 	public void loadModelFromUri() throws EolModelLoadingException {
+		ResourceSet resourceSet = createResourceSet();
+
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("model", new OptimizedXmiResourceImpl.Factory());
+		
+        // Check if global package registry contains the EcorePackage
+		if (EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) == null) {
+			EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+		}
+		
 		determinePackagesFrom(resourceSet);
 		
 		// Note that AbstractEmfModel#getPackageRegistry() is not usable yet, as modelImpl is not set

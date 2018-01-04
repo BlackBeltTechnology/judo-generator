@@ -1,6 +1,5 @@
 package hu.blackbelt.judo.generator.maven.plugin;
 
-import com.google.common.collect.Maps;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
@@ -97,7 +96,6 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
     }
 
     public void addModels(ResourceSet resourceSet, ModelRepository modelRepository, Map<Model, EmfModel> emfModels) throws MojoExecutionException {
-        emfModels = Maps.newConcurrentMap();
         if (models != null) {
             for (Model emf : models) {
                 log.info("Model: " + emf.toString());

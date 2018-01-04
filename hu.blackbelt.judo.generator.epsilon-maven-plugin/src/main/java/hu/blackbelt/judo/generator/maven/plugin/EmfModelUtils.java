@@ -12,10 +12,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.epsilon.common.util.StringProperties;
-import org.eclipse.epsilon.emc.emf.DefaultXMIResource;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.eol.models.IReflectiveModel;
+import org.eclipse.epsilon.eol.models.ModelReference;
 import org.eclipse.epsilon.eol.models.ModelRepository;
+import org.eclipse.epsilon.eol.models.ReflectiveModelReference;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
@@ -96,12 +99,23 @@ public final class EmfModelUtils {
         
         try {
             model.load(properties);
+            model.setName(emfModel.getName());
             repository.addModel(model);
-            return model;
+	        return model;
         } catch (EolModelLoadingException e) {
             throw new MojoExecutionException("Cannot load model: " + uri.toString(), e);
         }
     }
+
+
+	public static ModelReference createModelReference(IModel model) {
+		if (model instanceof IReflectiveModel) {
+			return new ReflectiveModelReference((IReflectiveModel)model);
+
+		} else {
+			return new ModelReference(model);
+		}
+	}
 
     private static URI convertFileToUri(File file) {
         return file == null ? null : URI.createFileURI(file.getAbsolutePath());
@@ -122,7 +136,8 @@ public final class EmfModelUtils {
     	/*rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("library", new XMIResourceFactoryImpl());
     	rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("model", new XMIResourceFactoryImpl());
     	rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMLResourceFactoryImpl()); */
-		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(rs.getResourceFactoryRegistry().DEFAULT_EXTENSION, new DefaultXMIResource.Factory());
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(rs.getResourceFactoryRegistry().DEFAULT_EXTENSION, new OptimizedXmiResourceImpl.Factory());
+		//rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(rs.getResourceFactoryRegistry().DEFAULT_EXTENSION, new DefaultXMIResource.Factory());
 
 		if (rs.getPackageRegistry().getEPackage(EcorePackage.eNS_URI) == null) {
 			rs.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
@@ -140,8 +155,8 @@ public final class EmfModelUtils {
     }
     
     public static EmfModel createEmfModel(ResourceSet resourceSet) {
-        return new EmfModel();
-    	// return new ResourceSetBasedEmfModel(resourceSet);
+        return new OptimizedEmfModel();
+	    //return new EmfModel();
     }
 
 	/**
