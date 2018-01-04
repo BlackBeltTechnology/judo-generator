@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.epsilon.common.util.StringProperties;
+import org.eclipse.epsilon.emc.emf.DefaultXMIResource;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -136,8 +137,8 @@ public final class EmfModelUtils {
     	/*rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("library", new XMIResourceFactoryImpl());
     	rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("model", new XMIResourceFactoryImpl());
     	rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMLResourceFactoryImpl()); */
-		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(rs.getResourceFactoryRegistry().DEFAULT_EXTENSION, new OptimizedXmiResourceImpl.Factory());
-		//rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(rs.getResourceFactoryRegistry().DEFAULT_EXTENSION, new DefaultXMIResource.Factory());
+		// rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(rs.getResourceFactoryRegistry().DEFAULT_EXTENSION, new OptimizedXmiResourceImpl.Factory());
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(rs.getResourceFactoryRegistry().DEFAULT_EXTENSION, new DefaultXMIResource.Factory());
 
 		if (rs.getPackageRegistry().getEPackage(EcorePackage.eNS_URI) == null) {
 			rs.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);

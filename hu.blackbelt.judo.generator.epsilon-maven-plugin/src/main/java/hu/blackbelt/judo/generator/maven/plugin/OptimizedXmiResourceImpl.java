@@ -26,6 +26,9 @@ public class OptimizedXmiResourceImpl extends XMIResourceImpl {
 		setOptimizedOptions();
 	}
 	
+	/*
+	 * TODO: Parameters have to delegate to maven
+	 */
 	private void setOptimizedOptions() {
 		super.setIntrinsicIDToEObjectMap(new HashMap<String, EObject>());
 		this.getDefaultLoadOptions().put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);	
@@ -33,7 +36,6 @@ public class OptimizedXmiResourceImpl extends XMIResourceImpl {
 		this.getDefaultLoadOptions().put(XMIResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl(10000, true));
 		this.getDefaultLoadOptions().put(XMIResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap<Object,Object>());
 		this.getDefaultLoadOptions().put(XMIResource.OPTION_DISABLE_NOTIFY, Boolean.TRUE);
-
 		this.getDefaultLoadOptions().put(XMIResource.OPTION_CONFIGURATION_CACHE, Boolean.TRUE);
 
 	}

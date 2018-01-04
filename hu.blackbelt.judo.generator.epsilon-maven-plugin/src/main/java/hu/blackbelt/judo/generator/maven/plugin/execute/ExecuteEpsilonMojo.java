@@ -46,14 +46,14 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
     synchronized public void execute() throws MojoExecutionException, MojoFailureException {
         Map<Model, EmfModel> emfModels = Maps.newConcurrentMap();
         ResourceSet resourceSet = EmfModelUtils.initResourceSet();
-        ModelRepository modelRepository = new ModelRepository();
+        ModelRepository projectModelRepository = new ModelRepository();
         Map<Object, Object> context = new HashMap();
         
         try {
             Exception ex = null;
             try {
                 addMetaModels(resourceSet);
-                addModels(resourceSet, modelRepository, emfModels);
+                addModels(resourceSet, projectModelRepository, emfModels);
 
                 getLog().info("URL converters: \n\t" + URIConverter.URI_MAP.entrySet().stream().map(e -> e.getKey() + "->" + e.getValue()).collect(Collectors.joining("\n\t")));
 
@@ -61,22 +61,32 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
                     for (Eol eolProgram : eolPrograms) {
 
                         IEolExecutableModule eolModule = eolProgram.getModule(context);
-
-                        ModelRepository repository = eolModule.getContext().getModelRepository();
-
+                        
+                        // Determinate any mode have alias or not
+                        boolean isAliasExists = false;
                         for (Model model : emfModels.keySet()) {
-                            ModelReference ref = EmfModelUtils.createModelReference(emfModels.get(model));
-                            ref.setName(model.getName());
                             if (model.getAliases() != null) {
-                                for (String alias : model.getAliases()) {
-                                    ref.getAliases().add(alias);
-                                }
+                            	isAliasExists = true;
                             }
-                            repository.addModel(ref);
                         }
 
+                        if (isAliasExists) {
+                            ModelRepository repository = eolModule.getContext().getModelRepository();
 
-                        // eolModule.getContext().setModelRepository(modelRepository);
+                            for (Model model : emfModels.keySet()) {
+                                ModelReference ref = EmfModelUtils.createModelReference(emfModels.get(model));
+                                ref.setName(model.getName());
+                                if (model.getAliases() != null) {
+                                    for (String alias : model.getAliases()) {
+                                        ref.getAliases().add(alias);
+                                    }
+                                }
+                                repository.addModel(ref);
+                            }
+                        } else {
+                        	eolModule.getContext().setModelRepository(projectModelRepository);
+                        }
+
                         List<EolProgramParameter> params = eolProgram.parameters;
                         if (params == null) {
                             params = Lists.newArrayList();
@@ -100,11 +110,11 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
                 getLog().error("Error", e);
             } finally {
                 if (ex != null) {
-                    for (IModel model : modelRepository.getModels()) {
+                    for (IModel model : projectModelRepository.getModels()) {
                         model.setStoredOnDisposal(false);
                     }
                 }
-                modelRepository.dispose();
+                projectModelRepository.dispose();
                 if (ex != null) {
                     throw new MojoExecutionException("Could not run", ex);
                 }

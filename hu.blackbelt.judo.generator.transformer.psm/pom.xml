@@ -58,31 +58,6 @@
 				<artifactId>epsilon-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
-                    <execution>
-                    	<id>transform-from-hutn</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>parseHutn</goal>
-                        </goals>
-                        <configuration>
-                            <metaModels>
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-                            </metaModels>
-                            <models>
-                                <model>
-                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
-                                    <name>PSMTYPES</name>
-                                    <metaModelUris>
-                                        <param>http://blackbelt.hu/judo/meta/psm</param>
-                                    </metaModelUris>
-                                    <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
-                                </model>
-                            </models>
-                            <hutnFile>src/model/test_opm_platform.hutn</hutnFile>
-                            <targetFile>${project.build.directory}/target.model</targetFile>
-                        </configuration>
-                    </execution>
-
 					<execution>
 					    <id>transform-from-pim</id>
 						<phase>generate-resources</phase>
@@ -144,6 +119,33 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
+
+                    <execution>
+                    	<id>transform-from-hutn</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>parseHutn</goal>
+                        </goals>
+                        <configuration>
+                            <metaModels>
+                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+                            </metaModels>
+                            <models>
+                                <model>
+                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+                                    <name>PSMTYPES</name>
+                                    <metaModelUris>
+                                        <param>http://blackbelt.hu/judo/meta/psm</param>
+                                    </metaModelUris>
+                                    <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
+                                </model>
+                            </models>
+                            <hutnFile>src/model/test_opm_platform.hutn</hutnFile>
+                            <targetFile>${project.build.directory}/target.model</targetFile>
+                        </configuration>
+                    </execution>
+
+
 				</executions>
 			</plugin>
 
