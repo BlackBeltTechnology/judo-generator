@@ -9,18 +9,12 @@ rule JClassToRdbmsTable
 	    t.sqlName = s.tableSqlName();
 	    t.name = s.package.fqName() + "." + s.name;
 	    t.description = s.name;
-	    for (c : PSM!JClass in s.allDescandences()) {
-			// var table : RDBMS!RdbmsTable = s.equivalent("JClassToRdbmsTable");
-			var created : RDBMS!RdbmsForeignKey = new RDBMS!RdbmsForeignKey();
-			created.name = c.name;
-			created.uuid = uuid3(s.uuid, c.uuid);
-			created.description = c.name + c.primaryKeyAttribute().name;
-			created.sqlName = "C_" + c.tableSqlName() + "_ID";
-			created.inheritenceBased = true;
-			created.type = idType();
-			created.referenceKey = c.primaryKeyAttribute().equivalent("JAttributeToTableIdField");
-			t.fields.add(created);
+        for (c : PSM!JClass in s.allDescandences()) {
+			t.fields.add(s.createForeginKey(c));
 	    }
+        for (c : PSM!JClass in s.allSupertypes()) {
+        	t.fields.add(s.createForeginKey(c));
+	    }   
 	    targetModel.rdbmsTables.add(t);
 }
 
