@@ -1,7 +1,12 @@
 rule UIFilter
 	transform jUIFilter: PSM!JUIFilter
 	to uiFilter : UI!UIFilter {
-		uiFilter.name = jUIFilter.name;
+		if (jUIFilter.name.isDefined()) {
+			uiFilter.name = jUIFilter.name;
+		} else {
+			uiFilter.name = "filter";
+		}
+		
 		uiFilter.uuid = jUIFilter.uuid;
 		uiFilter.attribute = jUIFilter.attribute.uuid;
 		uiFilter.operator = jUIFilter.operator.toString();

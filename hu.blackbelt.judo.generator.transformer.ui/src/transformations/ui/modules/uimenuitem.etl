@@ -9,12 +9,14 @@ rule UIMenuItem
 		if (jUIMenuItem.type = PSM!JMenuItemType#LIST) {
 			menuView = new UI!UIListView();
 			menuView.uuid = jUIMenuItem.represent.uuid + "_lview_" + "default";
+			menuView.name = jUIMenuItem.name;
 			
 			for (filter in jUIMenuItem.uifilters) {
 				uiMenuItem.filters.add(filter.equivalent("UIFilter"));
 			}
 		} else if (jUIMenuItem.type = PSM!JMenuItemType#OBJECT) {
 			menuView = new UI!UIClassView();
+			menuView.name = jUIMenuItem.name;
 			
 			if (jUIMenuItem.`alias`.isDefined()) {
 				menuView.uuid = jUIMenuItem.represent.uuid + "_oview_" + jUIMenuItem.`alias`.name;
