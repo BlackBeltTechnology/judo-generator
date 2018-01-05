@@ -67,7 +67,15 @@ operation PSM!JClass allSupertypes() : Collection {
 	return ret;
 }
 
-
+@cached
+operation PSM!JClass allRoles() : Collection {
+	var ret : Sequence = new Sequence();
+	ret.addAll(self.roles);
+	for (c : PSM!JClass in self.allSupertypes()) {
+		ret.addAll(c.roles);
+	}
+	return ret;
+}
 
 operation PSM!JClass createForeginKey(otherTable : PSM!JClass) : RDBMS!RdbmsForeignKey {
 	var created : RDBMS!RdbmsForeignKey = new RDBMS!RdbmsForeignKey();
@@ -80,6 +88,21 @@ operation PSM!JClass createForeginKey(otherTable : PSM!JClass) : RDBMS!RdbmsFore
 	created.referenceKey = otherTable.primaryKeyAttribute().equivalent("JAttributeToTableIdField");
 	created.deleteOnCascade = true;
 	return created;
+}
+
+@cached
+operation PSM!JClass id() : PSM!JAttribute {
+	return self.attributes.select(a | a.name = "id").first;
+}
+
+@cached
+operation PSM!JClass allAttributes() : Collection {
+	var ret : Sequence = new Sequence();
+	ret.addAll(self.attributes);
+	for (c : PSM!JClass in self.allSupertypes()) {
+		ret.addAll(c.attributes);
+	}
+	return ret;
 }
 
 

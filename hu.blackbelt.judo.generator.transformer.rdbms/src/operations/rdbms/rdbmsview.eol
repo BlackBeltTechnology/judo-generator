@@ -1,3 +1,6 @@
+import "../psm/_importPsm.eol";
+
+
 // Base alias is a reference for base table
 operation RDBMS!RdbmsView createBaseAlias(class : PSM!JClass) {
     var baseAlias : RDBMS!RdbmsTableAlias = new RDBMS!RdbmsTableAlias();
@@ -26,39 +29,81 @@ operation RDBMS!RdbmsView addField(attribute : PSM!JAttribute) {
   		vf.uuid = uuid3(attribute.uuid, self.name);
    		vf.view = self;  		 
    		    		 
+   		(attribute.ownerClass.name + "." + attribute.name).println("EXPRESSION FOUND: ");
+   		
    		for (expr in parseDerivedExpression(attribute.value)) {
 	    	if (expr.isExpressionLabelExpression()) {
-	    		var labex : RDBMS!RdbmsLabelExpression = new RDBMS!RdbmsLabelExpression();
-	    		labex.expression = expr.getLabelExpression().getText();
-	    		vf.expressions.add(labex);
+	    		var labelExpression : RDBMS!RdbmsLabelExpression = new RDBMS!RdbmsLabelExpression();
+	    		labelExpression.expression = expr.getLabelExpression().getText();
+	    		vf.expressions.add(labelExpression);
 	    	} else if (expr.isExpressionRelationExpression()) {
-				var r = expr.getRelationExpression();
-				var c = attribute.ownerClass;
-				var baseTable = c.equivalent("JClassToRdbmsTable");
-				var relName = "";
+
+				var currentRelartionExpression = new RDBMS!RdbmsRelationExpression();
+				vf.expressions.add(currentRelartionExpression);
+
+				var currentRelationExpression = expr.getRelationExpression();
+				var currentClass = attribute.ownerClass;
+				var currentBaseTable = currentClass.equivalent("JClassToRdbmsTable");
+				var currentRelationName = "";
+
+				var currentRelationIdentifierFieldName = attribute.name;
+				var currentRelationIdentifierField : RDBMS!RdbmsViewIdentifierField = currentClass.id().equivalent("JAttributeToViewIdField");
 						
-						/*		
-				while (r.isDefined()) {
+				while (currentRelationExpression.isDefined()) {
 					// Search for role.
-					if (r.hasChild()) {
-						if (relName <> "") {
-							relName += ".";
+					if (currentRelationExpression.hasChild()) {
+						if (currentRelationName <> "") {
+							currentRelationName += ".";
 						} 
-						relName += r.getRelationName(); 
+						currentRelationName += currentRelationExpression.getRelationName(); 
+						("Role: " + currentRelationName + " " + currentRelationExpression.getRelationName()).println();
+						// c.allRoles().println("Roles: ");
+						// c.name.println(" Class:");
+						// r.getRelationName().println(" Relation name: ");
+						// for (r : PSM!JRole in c.allRoles()) {
+						// 	(r.name + " " + r.ownerClass.name).println("    Role: ");
+						// }
 						
-						var role : PSM!JRole = c.roles.select(sr | sr.name == r.getRelationName()).first;
-						("Role: " +  relName + " " + role).println(); 
-						r = r.getRelationExpression();
-						c = role.opposite().ownerClass;
+						var currentRole : PSM!JRole = currentClass.allRoles().select(sr | sr.name == currentRelationExpression.getRelationName()).first;
+						//c.roles.select(sr | c.allRoles().contains(c.isKindOf(sr.ownerClass) and sr.name == r.getRelationName()).first;
+						// ("Role: " +  relName + " " + role).println(); 
+
 						
-						// Search for alias
-						
-						
+						var previousRelationIdentifierField : RDBMS!RdbmsViewIdentifierField = currentRelationIdentifierField;
+						var currentRelationIdentifierFieldName = attribute.name + " " + currentRelationName;
+						var currentRelationIdentifierField : RDBMS!RdbmsViewRelationIdentifierField = self.fields.select(s | s.name == currentRelationIdentifierFieldName).first;
+						if (currentRelationIdentifierField.isUndefined()) {
+							currentRelationIdentifierField = new RDBMS!RdbmsViewRelationIdentifierField();
+							currentRelationIdentifierField.name = currentRelationIdentifierFieldName;
+							currentRelationIdentifierField.sqlName = "REL_" + currentClass.tableSqlName() + "_ID";
+							currentRelationIdentifierField.uuid = uuid3(currentRole.uuid, self.name + "." + currentRelationIdentifierFieldName);
+
+							// Find or crete alias
+							// var currentRelationTableField = currentClass.equivalent("JClassToRdbmsTable");
+							// currentRelationIdentifierField.`alias` = 
+							
+							currentRelationIdentifierField.relationField = previousRelationIdentifierField;
+							self.fields.add(currentRelationIdentifierField);
+						}
+						currentClass = currentRole.opposite().ownerClass;						
+						currentRelationExpression = currentRelationExpression.getRelationExpression();
 					} else {
-						var attr : PSM!JAttribute = c.attributes.select(sa | sa.name == r.getRelationName()).first;
-						("Attribute: " + attr).println(); 
+						(currentClass.name + " " + currentRelationExpression.getRelationName()).println("Current class: ");
+						var attr : PSM!JAttribute = currentClass.allAttributes().select(sa | sa.name == currentRelationExpression.getRelationName()).first;
+						("Attribute: " + attr).println();
+
+						// Search epression field
+						/*var relationViewValueFieldName = attribute.name + " " + currentRelationName;
+						var vff : RDBMS!RdbmsViewValueField = self.fields.select(s | s.name == relationViewValueFieldName).first;
+						if (vff.isUndefined()) {
+							// Search for relation is joined
+						}
+						*/
 						
-						-/-*
+						
+												
+						
+						/*
 						var nvf : RDBMS!RdbmsViewValueField = attribute.equivalent("JAttributeToViewValueFieldWithoutView");
 						
 						if (not self.fields.includes(nvf)) {
@@ -67,12 +112,11 @@ operation RDBMS!RdbmsView addField(attribute : PSM!JAttribute) {
 						 
 						if (baseTable == self.primaryTable) {
 							
-						} *-/
-						r = null;
+						} */
+						currentRelationExpression = null;
 
 					}
 				}
-			*/
    		    }
 		}
   	}

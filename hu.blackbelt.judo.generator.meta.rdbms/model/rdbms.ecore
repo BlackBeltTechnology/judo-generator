@@ -118,7 +118,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsRelationExpression" eSuperTypes="#//RdbmsExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="field" lowerBound="1" eType="#//RdbmsViewValueField"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewRelationIdentifierField" eSuperTypes="#//RdbmsViewAliasField">
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewRelationIdentifierField" eSuperTypes="#//RdbmsViewIdentifierField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="relationField" lowerBound="1"
         eType="#//RdbmsViewIdentifierField"/>
   </eClassifiers>
