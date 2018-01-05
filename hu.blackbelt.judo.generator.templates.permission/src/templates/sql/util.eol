@@ -1,0 +1,45 @@
+@cached
+operation version() : String {
+	return Permission!PermissionModel.all.first().version;
+}
+
+@cached
+operation tmpRole() : String {
+	return  "TMP_R_" + formatVersion(); 
+	}
+
+@cached
+operation tmpTRole() : String {
+	return  "TMP_TR_" + formatVersion(); 
+	}
+	
+@cached
+operation tmpRoleRoles() : String {
+	return  "TMP_R_R_" + formatVersion(); 
+	}
+	
+@cached
+operation tmpRolePermissions() : String {
+	return  "TMP_R_P_" + formatVersion(); 
+	}
+	
+@cached
+operation tmpUserRoles() : String {
+	return  "TMP_U_R_" + formatVersion(); 
+	}
+	
+@cached
+operation tmpTUserTRoles() : String {
+	return  "TMP_TU_TR_" + formatVersion(); 
+	}
+	
+@cahced
+operation formatVersion() : String {
+	var temp = version().replace("////.","_").replace('-SNAPSHOT', '');
+	return temp.substring(0, getMathNativeStub().min(temp.length(), 30));
+}
+
+@cached
+operation getMathNativeStub() : Any {
+	return Native("java.lang.Math");
+}

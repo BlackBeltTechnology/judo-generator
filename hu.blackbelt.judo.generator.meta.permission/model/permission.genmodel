@@ -17,7 +17,8 @@
     <genClasses ecoreClass="permission.ecore#//PermissionModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference permission.ecore#//PermissionModel/permissions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference permission.ecore#//PermissionModel/roles"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//PermissionModel/javaPackage"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference permission.ecore#//PermissionModel/admin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//PermissionModel/version"/>
     </genClasses>
     <genClasses ecoreClass="permission.ecore#//RelPermission">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//RelPermission/otherType"/>
@@ -30,6 +31,12 @@
     </genClasses>
     <genClasses ecoreClass="permission.ecore#//Identifiable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//Identifiable/uuid"/>
+    </genClasses>
+    <genClasses ecoreClass="permission.ecore#//Admin">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//Admin/loginName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//Admin/credential"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//Admin/infoUuid"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference permission.ecore#//Admin/adminRole"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

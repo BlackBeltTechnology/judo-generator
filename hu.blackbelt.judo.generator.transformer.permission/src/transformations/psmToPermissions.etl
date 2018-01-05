@@ -4,14 +4,16 @@ import "joperationPermissions.etl";
 import "../operations/_importAll.eol";
 
 pre {
-	var permissionModel : Permission!PermissionModel = new Permission!PermissionModel;
-	
 	var permissionMap : Map<String, Sequence(Permission!Permission)> = new Map();
 	var oppositeMap : Map<String, Sequence(String)> = new Map();
 	var classMap : Map<String, String> = new Map();
 }
 
 post {
+	var permissionModel = new Permission!PermissionModel();
+	permissionModel.uuid = PSM!JModel.all.first().uuid;
+	permissionModel.version = "1.0.0";
+
 	for (jclass in PSM!JClass.all) {
 		if (jclass.package.participates(PSM!JLayer#OPERATION)) {
 			var hostClassName : String = jclass.package.name + "." + jclass.name;
@@ -26,7 +28,7 @@ post {
 				for (jrole in currentClass.roles) {
 					if (jrole.navigable) {
 						classPermissions.addAll(JRoleToPermissions(jrole, jclass.package, jclass));
-						oppositeSeq.add(jrole.opposite().ownerClass.name);
+						oppositeSeq.add(jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name);
 					}
 				}
 				
@@ -47,13 +49,20 @@ post {
 			permissionMap.put(hostClassName, classPermissions);
 			classMap.put(hostClassName, jclass.uuid);
 			permissionModel.permissions.addAll(classPermissions);
+			
 		}
 	}
 
-	/*for (hostClassName in permissionMap.keySet()) {
+	for (hostClassName in permissionMap.keySet()) {
 		var oppositeClasses : Sequence(String) = oppositeMap.get(hostClassName);
 		var hostClassUuid : String = classMap.get(hostClassName);
 		var classPermissions : Sequence(Permission!Permission) = permissionMap.get(hostClassName);
 		permissionModel.roles.addAll(buildObjectRoles(classPermissions, oppositeClasses, hostClassUuid, hostClassName));
-	}*/
+	}
+	
+	permissionModel.buildRelationRoles();
+	permissionModel.createAdmin();
+	permissionModel.createAdminRole();
+	permissionModel.createLoginRole();
+	permissionModel.mustChangePasswordRole();
 }

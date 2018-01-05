@@ -1,0 +1,268 @@
+[% import "util.eol"; %]
+
+[% var admin = Permission!Admin.all.first(); %]
+
+--liquibase formatted sql
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-- Create admin user (run once)
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+--changeset generator:create_admin_user stripComments:true logicalFilePath:setupPermissions
+INSERT INTO V_FRW_USER_INFO(C_GUID, C_LOGIN_NAME, C_DELETED, C_SOURCE)
+VALUES('[%=admin.infoUuid%]', '[%=admin.loginName%]', 'N', 'DB');
+
+INSERT INTO V_FRW_USER (C_USER_INFO_ID, C_GUID, C_CREDENTIAL, C_ACTIVE, C_NOCNEL, C_NOCNSS)
+VALUES(
+    (select id from V_FRW_USER_INFO where C_GUID='[%=admin.infoUuid%]'),
+'[%=admin.uuid%]','[%=admin.credential%]', 'Y', 'N', 'N'
+)
+
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-- Create permission temp tables (run on every change)
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+--changeset generater:permission_tmp_role#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+CREATE TABLE [%=tmpRole()%]
+(
+    C_NAME VARCHAR(255),
+    C_GUID VARCHAR(255),
+    C_XMIID VARCHAR(255),
+    C_INTERNAL CHAR(1),
+    C_AUU VARCHAR(255),
+    C_ACU VARCHAR(255),
+    C_ACT TIMESTAMP,
+    C_AUT TIMESTAMP
+);
+
+--changeset generater:permission_tmp_trole#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+CREATE TABLE [%=tmpTRole()%]
+(
+    C_NAME VARCHAR(255),
+    C_GUID VARCHAR(255),
+    C_XMIID VARCHAR(255),
+    C_INTERNAL CHAR(1),
+    C_AUU VARCHAR(255),
+    C_ACU VARCHAR(255),
+    C_ACT TIMESTAMP,
+    C_AUT TIMESTAMP
+);
+
+--changeset generater:permission_tmp_role_role#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+CREATE TABLE [%=tmpRoleRoles()%]
+(
+    CHILD_GUID VARCHAR(255),
+    PARENT_GUID VARCHAR(255)
+);
+
+--changeset generater:permission_tmp_role_permission#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+CREATE TABLE [%=tmpRolePermissions()%]
+(
+    PERM_GUID VARCHAR(255),
+    ROLE_GUID VARCHAR(255)
+);
+
+--changeset generater:permission_tmp_user_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+CREATE TABLE [%=tmpUserRoles()%]
+(
+    C_USERS_ID INTEGER,
+    C_GUID VARCHAR(255)
+);
+
+--changeset generater:permission_tmp_tuser_troles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+CREATE TABLE[%=tmpTUserTRoles()%]
+(
+    C_TUSERS_ID INTEGER,
+    C_GUID VARCHAR(255)
+);
+
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-- Backup custom roles to temp tables (run on every version change)
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+--changeset generator:backup_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+-- Copy custom elementary roles to TMP
+TRUNCATE TABLE [%=tmpRole()%];
+INSERT INTO [%=tmpRole()%] (C_NAME, C_GUID, C_XMIID, C_INTERNAL, C_AUU, C_ACU, C_ACT, C_AUT)
+SELECT C_NAME, C_GUID, C_XMIID, C_INTERNAL, C_AUU, C_ACU, C_ACT, C_AUT
+FROM T_FRW_ROLE
+WHERE coalesce(C_INTERNAL, NULL, 'N') = 'N' AND c_t_frw_trole_id IS NULL;
+
+-- Copy custom tenant roles to TMP
+TRUNCATE TABLE [%=tmpTRole()%];
+INSERT INTO [%=tmpTRole()%] (C_NAME, C_GUID, C_XMIID, C_INTERNAL, C_AUU, C_ACU, C_ACT, C_AUT)
+SELECT C_NAME, C_GUID, C_XMIID, C_INTERNAL, C_AUU, C_ACU, C_ACT, C_AUT
+FROM V_FRW_TROLE
+WHERE coalesce(C_INTERNAL, NULL, 'N') = 'N';
+
+-- Copy custom ROLE ROLE juntion to TMP
+TRUNCATE TABLE [%=tmpRoleRoles()%];
+INSERT INTO [%=tmpRoleRoles()%] (CHILD_GUID, PARENT_GUID)
+SELECT rc.c_guid, rp.c_guid
+FROM T_ROLE_ROLE_BC67D7 rr
+JOIN T_FRW_ROLE rc ON (rr.c_children_id = rc.id)
+JOIN T_FRW_ROLE rp ON (rr.c_parents_id = rp.id)
+WHERE coalesce(rc.C_INTERNAL, NULL, 'N') = 'N' OR coalesce(rp.C_INTERNAL, NULL, 'N') = 'N';
+
+-- Copy custom ROLE PERMISSIONS to TMP
+TRUNCATE TABLE [%=tmpRolePermissions()%];
+INSERT INTO [%=tmpRolePermissions()%] (PERM_GUID, ROLE_GUID)
+SELECT p.c_guid, r.c_guid
+FROM T_ROLE_PERM_446F1D pr
+JOIN T_FRW_PERM p ON (pr.c_perms_id = p.id)
+JOIN T_FRW_ROLE r ON (pr.c_roles_id = r.id)
+WHERE coalesce(r.C_INTERNAL, NULL, 'N') = 'N';
+
+-- Copy user ROLES to TMP
+TRUNCATE TABLE [%=tmpUserRoles()%];
+INSERT INTO [%=tmpUserRoles()%] (C_USERS_ID, C_GUID)
+SELECT ur.C_USERS_ID, r.C_GUID
+FROM T_USER_ROLE_ED3759 ur
+JOIN T_FRW_ROLE r ON (r.ID = ur.C_ROLES_ID);
+
+-- Copy tenant user ROLES to TMP
+TRUNCATE TABLE [%=tmpTUserTRoles()%];
+INSERT INTO [%=tmpTUserTRoles()%](C_TUSERS_ID, C_GUID)
+SELECT ur.C_TUSERS_ID, r.C_GUID
+FROM T_TUSER_TROLE_69F8D9 ur
+JOIN V_FRW_TROLE r
+ON (r.ID = ur.C_TROLES_ID);
+
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-- Purge roles/permissions to temp tables (run on every version change)
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+--changeset generator:purge_permissions#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+-- Purge ROLE_PERMISSIONS
+TRUNCATE TABLE T_ROLE_PERM_446F1D;
+
+-- Purge ROLE_ROLE
+TRUNCATE TABLE T_ROLE_ROLE_BC67D7;
+
+-- Purge USER ROLE
+TRUNCATE TABLE T_USER_ROLE_ED3759;
+
+-- Purge TENANT USER ROLE
+TRUNCATE TABLE T_TUSER_TROLE_69F8D9;
+
+-- Purge ROLE
+DELETE FROM V_FRW_ROLE;
+
+-- Purge PERMISSION
+DELETE FROM V_FRW_PERM;
+
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-- Generate permissions and internal roles (run on every version change)
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+--changeset generator:create_permissions#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+[% for (permission in Permission!Permission.all) {
+	if (not 'credential'.isSubstringOf(permission.resource)) {%]
+-- create permission[[%=permission.resource%]:[%=permission.action%]]
+INSERT INTO V_FRW_PERM (C_RESOURCE, C_PERMID, C_GUID, C_ACTION)
+VALUES ('[%=permission.resource%]', '[%=permission.resourceUuid%]', '[%=permission.uuid%]', '[%=permission.action%]');
+	[%}%]
+[%}%]
+
+--changeset generator:create_elementary_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+[% for (role in Permission!Role.all) {%]
+-- create role[[%=role.name%]]
+INSERT INTO V_FRW_ROLE (C_NAME, C_GUID, C_INTERNAL)
+VALUES ('[%=role.name%]', '[%=role.uuid%]', 'Y');
+[%}%]
+
+--changeset generator:fill_elementary_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+[% for (role in Permission!Role.all) {
+	 for (permission in role.rolePermissions) {
+	 	if (not 'credential'.isSubstringOf(permission.resource)) {%]
+-- role[[%=role.name%]] <- [[%=permission.resource%]:[%=permission.action%]]
+INSERT INTO T_ROLE_PERM_446F1D (C_PERMS_ID, C_ROLES_ID)
+VALUES (
+    (SELECT ID FROM V_FRW_PERM WHERE C_GUID='[%=permission.uuid%]'),
+    (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=role.uuid%]')
+);
+		[%}%]
+	[%}%]
+[%}%]
+[* TODO *]
+--changeset generator:embed_elementary_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+{% for role2role in model.embedded_roles %}
+{% for child in role2role.children -%}
+-- role[{{ role2role.parent.name }}] <- [{{ child.name }}]
+INSERT INTO T_ROLE_ROLE_BC67D7 (C_PARENTS_ID, C_CHILDREN_ID)
+VALUES (
+    (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='{{ role2role.parent.guid }}'),
+    (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='{{ child.guid }}')
+);
+{% endfor %}
+{% endfor %}
+
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-- Generate admin user role (run once, because backup mechanism already saves and restore it)
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+--changeset generator:attach_admin_user_to_admin_role stripComments:true logicalFilePath:setupPermissions
+INSERT INTO T_USER_ROLE_ED3759 (C_ROLES_ID, C_USERS_ID)
+VALUES (
+    (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=admin.adminRole.uuid%]'),
+(SELECT ID FROM V_FRW_USER WHERE C_GUID='[%=admin.uuid%]')
+);
+
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-- Restore custom roles to temp tables (run on every version change)
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+--changeset generator:restore_permissions#[%=version()%] stripComments:true logicalFilePath:setupPermissions
+-- Restore saved roles
+INSERT INTO V_FRW_ROLE (C_NAME, C_GUID, C_INTERNAL, C_AUU, C_ACU, C_ACT, C_AUT)
+SELECT r.C_NAME, r.C_GUID, r.C_INTERNAL, r.C_AUU, r.C_ACU, r.C_ACT, r.C_AUT
+FROM [%=tmpRole()%] r;
+
+-- Restore saved tenant roles
+INSERT INTO V_FRW_TROLE (C_NAME, C_GUID, C_INTERNAL, C_AUU, C_ACU, C_ACT, C_AUT)
+SELECT r.C_NAME, r.C_GUID, r.C_INTERNAL, r.C_AUU, r.C_ACU, r.C_ACT, r.C_AUT
+FROM [%=tmpTRole()%] r;
+
+-- Restore saved user roles
+INSERT INTO T_USER_ROLE_ED3759 (C_USERS_ID, C_ROLES_ID)
+SELECT ur.C_USERS_ID, r.ID
+FROM [%=tmpUserRoles()%] ur JOIN V_FRW_ROLE r ON (r.C_GUID = ur.C_GUID);
+
+-- Restore saved tenant user roles
+INSERT INTO T_TUSER_TROLE_69F8D9 (C_TUSERS_ID, C_TROLES_ID)
+SELECT ur.C_TUSERS_ID, r.ID
+FROM [%=tmpTUserTRoles()%] ur JOIN V_FRW_TROLE r ON (r.C_GUID = ur.C_GUID);
+
+-- Restore  saved role role
+INSERT INTO T_ROLE_ROLE_BC67D7(C_CHILDREN_ID, C_PARENTS_ID)
+SELECT c.ID, p.ID
+FROM [%=tmpRoleRoles()%] t
+JOIN V_FRW_ROLE p ON (p.C_GUID = t.PARENT_GUID)
+JOIN V_FRW_ROLE c ON (c.C_GUID = t.CHILD_GUID);
+
+-- Restore saved role permission
+INSERT INTO T_ROLE_PERM_446F1D(C_PERMS_ID, C_ROLES_ID)
+SELECT p.ID, r.ID
+FROM [%=tmpRolePermissions()%] t
+JOIN V_FRW_ROLE r ON (r.C_GUID = t.ROLE_GUID)
+JOIN V_FRW_PERM p ON (p.C_GUID = t.PERM_GUID);

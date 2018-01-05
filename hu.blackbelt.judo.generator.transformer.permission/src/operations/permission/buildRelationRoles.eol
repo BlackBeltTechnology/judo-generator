@@ -1,4 +1,36 @@
-operation buildRelationRoles(classPermissions : Sequence(Permission!Permission), oppositeClasses : Sequence(String),
-							hostClassUuid : String, hostClassName : String) : Sequence(Permission!Role) {
+operation Permission!PermissionModel buildRelationRoles() {
+	for (jrole in PSM!JRole.all) {
+					if (jrole.navigable) {			
+						var resourceRole = jrole.ownerClass.package.name + "." + jrole.ownerClass.name + "." + jrole.name;
+						var resourceClass = jrole.ownerClass.package.name + "." + jrole.ownerClass.name;
+						var resourceOpposite = jrole.opposite().ownerClass.package.name + "." + 
+													jrole.opposite().ownerClass.name + "." + jrole.opposite().name;
+										
+						var permsRole = Permission!Permission.all.select(p | p.resource = resourceRole
+											and (p.action = "read" or p.action = "write" or p.action = "attach" or p.action = "detach"));
+						var permsClass = Permission!Permission.all.select(p | p.resource = resourceClass 
+											and (p.action = "list" or p.action = "update"));
+						var permsOpposite = Permission!Permission.all.select(p | p.resource = resourceOpposite 
+											and (p.action = "attach" or p.action = "detach"));
+						
+						var attachRole = new Permission!Role();
+						attachRole.uuid = uuid3(jrole.ownerClass.uuid, "attach");
+						attachRole.name = resourceRole + "_" + "attach";
+						attachRole.rolePermissions.addAll(permsRole.select(p | p.action = "read" or p.action = "write" or p.action = "attach"));
+						attachRole.rolePermissions.addAll(permsClass);
+						attachRole.rolePermissions.addAll(permsOpposite.select(p | p.action = "attach"));
+						
+						var detachRole = new Permission!Role();
+						detachRole.uuid = uuid3(jrole.ownerClass.uuid, "detach");
+						detachRole.name = resourceRole + "_" + "detach";	
+						detachRole.rolePermissions.addAll(permsRole.select(p | p.action = "read" or p.action = "write" or p.action = "detach"));
+						detachRole.rolePermissions.addAll(permsClass);
+						detachRole.rolePermissions.addAll(permsOpposite.select(p | p.action = "detach"));
+						
+						self.roles.add(attachRole);
+						self.roles.add(detachRole);
+					}
+				}
+	
 
 }

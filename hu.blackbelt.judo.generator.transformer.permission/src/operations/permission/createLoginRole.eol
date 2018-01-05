@@ -1,0 +1,64 @@
+operation Permission!PermissionModel createLoginRole() {
+	var loginPermMap : Map<String, String>() = createLoginMap();
+	
+	var loginRole = new Permission!Role();
+	loginRole.name = "login";
+	loginRole.uuid = uuid3("7ac4c368-1fae-4250-a963-316b0e2d965f", "login");
+	loginRole.rolePermissions = Permission!Permission.all.select(perm | perm.action.equals(loginPermMap.get(perm.resource)));
+	
+	self.roles.add(loginRole);
+}
+
+operation createLoginMap() : Map<String, String> {
+	var loginPermMap = new Map<String, String>();
+	
+	loginPermMap.put("framework.User.login", "call");
+	loginPermMap.put("framework.User.permissions", "call");
+	loginPermMap.put("framework.User.changePassword", "call");
+	loginPermMap.put("framework.User.tenants", "call");
+	
+	loginPermMap.put("framework.User.active", "read");
+	loginPermMap.put("framework.User.email", "read");
+	loginPermMap.put("framework.User.firstName", "read");
+	loginPermMap.put("framework.User.guid", "read");
+	loginPermMap.put("framework.User.lastLoginTime", "call");
+	loginPermMap.put("framework.User.lastName", "read");
+	loginPermMap.put("framework.User.loginName", "read");
+	loginPermMap.put("framework.User.notificationEmail", "read");
+	loginPermMap.put("framework.User.notificationSms", "read");
+	loginPermMap.put("framework.User.sms", "read");
+	loginPermMap.put("framework.User.xmiid", "read");
+	loginPermMap.put("framework.User.roles", "read");
+	loginPermMap.put("framework.User.configs", "read");
+	loginPermMap.put("framework.User.groups", "read");
+	loginPermMap.put("framework.User.profile", "read");
+	loginPermMap.put("framework.User.tenantUsers", "read");
+	loginPermMap.put("framework.User.userInfo", "read");
+	
+	loginPermMap.put("framework.ConfigEntry","list");
+	loginPermMap.put("framework.ConfigEntry.xmiid","read");
+	loginPermMap.put("framework.ConfigEntry.value","read");
+	loginPermMap.put("framework.ConfigEntry.key","read");
+	loginPermMap.put("framework.ConfigEntry.guid","read");
+	loginPermMap.put("framework.ConfigEntry.config","read");
+	
+	loginPermMap.put("framework.UserConfig.mergedEntries","call");
+	
+	loginPermMap.put("framework.Config.xmiid","read");
+	loginPermMap.put("framework.Config.guid","read");
+	loginPermMap.put("framework.Config.clientName","read");
+	loginPermMap.put("framework.Config.entries","read");
+	
+	loginPermMap.put("framework.Permission.xmiid","read");
+	loginPermMap.put("framework.Permission.resource","read");
+	loginPermMap.put("framework.Permission.permissionId","read");
+	loginPermMap.put("framework.Permission.guid","read");
+	loginPermMap.put("framework.Permission.action","read");
+	
+	loginPermMap.put("framework.Tenant.name","read");
+	loginPermMap.put("framework.Tenant.xmiid","read");
+	loginPermMap.put("framework.Tenant.tenantId","read");
+	loginPermMap.put("framework.Tenant.guid","read");
+	
+	return loginPermMap;
+}

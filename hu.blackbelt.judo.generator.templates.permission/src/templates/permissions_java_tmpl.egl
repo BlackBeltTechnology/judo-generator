@@ -1,3 +1,5 @@
+[% var admin = Permission!Admin.all.first(); %]
+
 package hu.blackbelt.common.permissions;
 
 import com.google.common.collect.Maps;
@@ -62,12 +64,12 @@ public final class StaticPermissionRegistry implements PermissionRegistry {
         return new RootUserDescriptor(){
             @Override
             public String getGuid() {
-                return "62feb4ab-1080-460b-b613-18128b159e28";
+                return "[%=admin.uuid%]";
             }
 
             @Override
             public String getInfoGuid() {
-                return "c1271e6e-f585-11e5-9ce9-5e5517507c66";
+                return "[%=admin.infoUuid%]";
             }
         };
     }

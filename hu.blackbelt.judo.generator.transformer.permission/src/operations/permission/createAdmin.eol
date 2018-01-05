@@ -1,0 +1,19 @@
+operation Permission!PermissionModel createAdmin() {
+	var admin = new Permission!Admin();
+	admin.uuid = '62feb4ab-1080-460b-b613-18128b159e28';
+	admin.loginName = 'admin';
+	admin.credential = '$shiro1$SHA-256$1$dGZ2mj08lBOGHsaVMkcgTw==$wtiDp2exTQfqPgG9qD5+iqEyybfAB9LJH/MMniCjl+M=';
+	admin.infoUuid = 'c1271e6e-f585-11e5-9ce9-5e5517507c66';
+	
+	self.admin = admin;
+} 
+
+operation Permission!PermissionModel createAdminRole() {
+	var adminRole = new Permission!Role();
+	adminRole.uuid = uuid3("1b55c5a1-cb2d-437b-b837-13156a8b7bdf","admin");
+	adminRole.name = "admin";
+	adminRole.rolePermissions = self.permissions;
+	
+	self.admin.adminRole = adminRole;
+	self.roles.add(adminRole);
+}
