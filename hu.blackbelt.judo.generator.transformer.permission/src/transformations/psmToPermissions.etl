@@ -53,14 +53,23 @@ post {
 		}
 	}
 
+	var oppositeClasses : Sequence(String);
+
 	for (hostClassName in permissionMap.keySet()) {
-		var oppositeClasses : Sequence(String) = oppositeMap.get(hostClassName);
+		oppositeClasses = oppositeMap.get(hostClassName);
 		var hostClassUuid : String = classMap.get(hostClassName);
 		var classPermissions : Sequence(Permission!Permission) = permissionMap.get(hostClassName);
-		permissionModel.roles.addAll(buildObjectRoles(classPermissions, oppositeClasses, hostClassUuid, hostClassName));
+		permissionModel.buildObjectRoles(classPermissions, oppositeClasses, hostClassUuid, hostClassName);
 	}
 	
 	permissionModel.buildRelationRoles();
+	
+	for (hostClassName in permissionMap.keySet()) {
+		oppositeClasses = oppositeMap.get(hostClassName);
+		permissionModel.buildEmbeddedRoles( oppositeClasses, hostClassName);
+	}
+	
+	
 	permissionModel.createAdmin();
 	permissionModel.createAdminRole();
 	permissionModel.createLoginRole();

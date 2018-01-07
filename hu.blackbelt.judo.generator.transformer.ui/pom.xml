@@ -52,14 +52,17 @@
                         </metaModelUris>
                         <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.psm.domain/target/domainPsm.model</platformAlias>
                     </model>
-                    <model>
-                        <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
-                        <name>PSM</name>
-                        <metaModelUris>
-                            <param>http://blackbelt.hu/judo/meta/psm</param>
-                        </metaModelUris>
-                        <expand>true</expand>
-                    </model>
+                    
+                    
+                   <model>
+
+							<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
+							<name>PSM</name>
+							<metaModelUris>
+								<param>http://blackbelt.hu/judo/meta/psm</param>
+							</metaModelUris>
+							<expand>true</expand>
+					</model>
 
                     <model>
                         <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:model:uiTypes:${project.version}</artifact>

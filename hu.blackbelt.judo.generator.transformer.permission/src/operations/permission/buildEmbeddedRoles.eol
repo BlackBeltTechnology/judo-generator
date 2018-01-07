@@ -1,3 +1,11 @@
-operation Permission!PermissionModel buildEmbeddedRoles() {
-
+operation Permission!PermissionModel buildEmbeddedRoles(oppositeClasses : Sequence(String), hostClassName : String) {
+	var oppositeRoles : Sequence(Permission!Role) = Permission!Role.all.select(role | oppositeClasses.includes(role.name.replace("_read", "")));
+	var hostRoles = Permission!Role.all.select(role | role.name = hostClassName + "_update" or role.name = hostClassName + "_create" 
+		or role.name = hostClassName + "_manage" or role.name = hostClassName + "_full");
+	
+	for (role in hostRoles) {
+		role.childrenRoles.addAll(oppositeRoles);
+	}
+	
+	
 }

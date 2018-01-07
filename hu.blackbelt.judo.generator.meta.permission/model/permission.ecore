@@ -33,8 +33,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rolePermissions" upperBound="-1"
         eType="#//Permission"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parentRole" eType="#//Role"
-        eOpposite="#//Role/childrenRoles"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parentRole" upperBound="-1"
+        eType="#//Role" eOpposite="#//Role/childrenRoles"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="childrenRoles" upperBound="-1"
         eType="#//Role" eOpposite="#//Role/parentRole"/>
   </eClassifiers>

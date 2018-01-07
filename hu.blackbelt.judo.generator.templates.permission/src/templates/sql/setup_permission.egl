@@ -183,6 +183,7 @@ VALUES ('[%=permission.resource%]', '[%=permission.resourceUuid%]', '[%=permissi
 -- create role[[%=role.name%]]
 INSERT INTO V_FRW_ROLE (C_NAME, C_GUID, C_INTERNAL)
 VALUES ('[%=role.name%]', '[%=role.uuid%]', 'Y');
+
 [%}%]
 
 --changeset generator:fill_elementary_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
@@ -197,19 +198,23 @@ VALUES (
 );
 		[%}%]
 	[%}%]
+	
 [%}%]
-[* TODO *]
+
 --changeset generator:embed_elementary_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
-{% for role2role in model.embedded_roles %}
-{% for child in role2role.children -%}
--- role[{{ role2role.parent.name }}] <- [{{ child.name }}]
+[% for (role in Permission!Role.all) {
+	if (role.childrenRoles.size() > 0) {
+		for (child in role.childrenRoles) {%]
+-- role[[%=role.name%]] <- [[%=child.name%]]
 INSERT INTO T_ROLE_ROLE_BC67D7 (C_PARENTS_ID, C_CHILDREN_ID)
 VALUES (
-    (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='{{ role2role.parent.guid }}'),
-    (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='{{ child.guid }}')
-);
-{% endfor %}
-{% endfor %}
+    (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=role.uuid%]'),
+    (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=child.uuid%]')
+); 
+		[%}%]
+	[%}%]
+	
+[%}%]
 
 
 -------------------------------------------------------------------------------------------------
