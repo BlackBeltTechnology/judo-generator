@@ -1,6 +1,10 @@
-import "mergeTransformations.etl";
-
 import "../util.eol";
+import "mergeOperations.eol";
+
+pre {
+	var targetModel : TARGET!RdbmsModel = NEW!RdbmsModel.all.first().transformModel();
+	transformFieldTypes();
+}
 
 rule MergeTables
 	merge newTable : NEW!RdbmsTable
@@ -8,14 +12,12 @@ rule MergeTables
 	into target : TARGET!RdbmsTableOperation {
 	guard : not oldTable.fields.collect(field | field.uuid).includesAll(newTable.fields.collect(field | field.uuid)) 
 				or not newTable.fields.collect(field | field.uuid).includesAll(oldTable.fields.collect(field | field.uuid))
-			newTable.sqlName.println("Tábla: ");
-			newTable.uuid.println("Tábla: ");
 			target.uuid = uuid3(newTable.uuid, "MODIFY");
 			target.sqlName = newTable.sqlName + "_OPERATION_MODIFY";
 			target.name = newTable.name + "_OPERATION_MODIFY";
 			
 			target.operationType = TARGET!RdbmsTableOperationType#MODIFY;
-			target.table = newTable.equivalent("NewTableToTargetTable");
+			target.table = newTable.transformTable();
 			
 			var newFieldUuids = newTable.fields.collect(newField | newField.uuid);
 			var deletedFields : OrderedSet(TARGET!RdbmsField) = oldTable.fields.select(field | newFieldUuids.excludes(field.uuid));
@@ -23,7 +25,8 @@ rule MergeTables
 				var fieldOperation = new TARGET!RdbmsDeleteFieldOperation();
 				fieldOperation.uuid = uuid3(field.uuid, "_RdbmsDeleteFieldOperation");
 				fieldOperation.name = field.name + "_RdbmsDeleteFieldOperation";
-				fieldOperation.field = field.equivalent();
+				fieldOperation.field = field.transformField();
+				target.table.fields.add(fieldOperation.field);
 				target.deleteFieldOperations.add(fieldOperation);
 			}
 			
@@ -33,7 +36,7 @@ rule MergeTables
 				var fieldOperation = new TARGET!RdbmsCreateFieldOperation();
 				fieldOperation.uuid = uuid3(field.uuid, "_RdbmsCreateFieldOperation");
 				fieldOperation.name = field.name + "_RdbmsCreateFieldOperation";
-				fieldOperation.field = field.equivalent();
+				fieldOperation.field = target.table.fields.select(f | f.uuid = field.uuid).first();
 				target.createFieldOperations.add(fieldOperation);
 			}
 			
@@ -41,16 +44,34 @@ rule MergeTables
 			var remainingFields : OrderedSet(TARGET!RdbmsField) = newTable.fields.select(field | createdFieldUuids.excludes(field.uuid));
 			for (field in remainingFields) {
 				var oldField = oldTable.fields.select(oldField | oldField.uuid = field.uuid).first();
-				newTable.sqlName.println("Tábla: ");
-				field.sqlName.println("Field: ");
 				if (field.type.uuid <> oldField.type.uuid) {
 					var fieldOperation = new TARGET!RdbmsModifyFieldOperation();
 					fieldOperation.uuid = uuid3(field.uuid, "_RdbmsModifyFieldOperation");
 					fieldOperation.name = field.name + "_RdbmsModifyFieldOperation";
-					fieldOperation.field = field.equivalent();
+					fieldOperation.field = target.table.fields.select(f | f.uuid = field.uuid).first();
 					fieldOperation.typeChanged = true;
 					target.modifyFieldOperations.add(fieldOperation);
 				}
 			}
 		}
+		
+post {
+
+	var prevUuids = PREVIOUS!RdbmsTable.all.collect(table | table.uuid);
+	var newUuids = NEW!RdbmsTable.all.collect(table | table.uuid);
+
+	var deletedTables : Sequence(PREVIOUS!RdbmsTable)= PREVIOUS!RdbmsTable.all.select(table | newUuids.excludes(table.uuid));
+	for (table in deletedTables) {
+		table.createDeleteTableOperation();
+	}
+	
+	var createdTables : Sequence(NEW!RdbmsTable)= NEW!RdbmsTable.all.select(table | prevUuids.excludes(table.uuid));
+	for (table in createdTables) {
+		table.createCreateTableOperation();
+	}
+	
+	targetModel.rdbmsTables.addAll(TARGET!RdbmsTable.all);
+	targetModel.rdbmsFieldTypes.addAll(TARGET!RdbmsFieldType.all);
+	targetModel.tableOperations.addAll(TARGET!RdbmsTableOperation.all);
+}
 	

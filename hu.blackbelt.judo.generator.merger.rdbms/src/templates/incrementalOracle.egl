@@ -4,22 +4,22 @@
 	[% if (tableOperation.operationType = TARGET!RdbmsTableOperationType#CREATE) { 
 		var inc : Template = TemplateFactory.load("incrementalGeneralTableCreate.egl");
 		inc.populate("tableOperation", tableOperation);
-		inc.process();
+		out.println(inc.process());
 	%]
 	[% } else if (tableOperation.operationType = TARGET!RdbmsTableOperationType#DELETE) { 
 		var inc : Template = TemplateFactory.load("incrementalGeneralTableDrop.egl");
 		inc.populate("tableOperation", tableOperation);
-		inc.process();
+		out.println(inc.process());
 	%]
 		
 	[% } else if (tableOperation.operationType = TARGET!RdbmsTableOperationType#MODIFY) { 
 		var inc : Template = TemplateFactory.load("incrementalGeneralColumnCreateDrop.egl");
 		inc.populate("tableOperation", tableOperation);
-		inc.process();
+		out.println(inc.process());
 		
 		inc = TemplateFactory.load("incrementalHsqlColumnAlter.egl");
 		inc.populate("tableOperation", tableOperation);
-		inc.process();
+		out.println(inc.process());
 	%]
 		
 	[% } %]

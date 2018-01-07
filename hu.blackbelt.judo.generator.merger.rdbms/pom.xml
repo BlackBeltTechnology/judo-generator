@@ -33,6 +33,9 @@
                     <model>
 						<artifact>${basedir}/src/model/rdbmsPostgres_modify.model</artifact>
 						<name>NEW</name>
+						<aliases>
+							<alias>SOURCE</alias>
+						</aliases>		
 						<metaModelUris>
 							<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 						</metaModelUris>
@@ -41,6 +44,10 @@
 					<model>
 						<artifact>${basedir}/src/model/rdbmsPostgres.model</artifact>
 						<name>PREVIOUS</name>
+						<aliases>
+							<alias>SOURCE</alias>
+						</aliases>
+						
 						<metaModelUris>
 							<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 						</metaModelUris>

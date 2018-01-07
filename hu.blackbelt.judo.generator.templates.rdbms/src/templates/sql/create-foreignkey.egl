@@ -14,7 +14,7 @@
 		REFERENCES [%=foreignKey.referenceKey.sqlName%] (ID)
 		[% if (foreignKey.deleteOnCascade) {%]
 			ON DELETE CASCADE
-		[%} else if (foreignKey.null)% {%]
+		[%} else if (not foreignKey.mandatory)% {%]
 			ON DELETE SET NULL
 		[%} else {%]
 			[%if (dialect() == 'Oracle') {%]
