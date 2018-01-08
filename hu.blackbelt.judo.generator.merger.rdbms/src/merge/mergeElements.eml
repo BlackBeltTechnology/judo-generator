@@ -44,12 +44,19 @@ rule MergeTables
 			var remainingFields : OrderedSet(TARGET!RdbmsField) = newTable.fields.select(field | createdFieldUuids.excludes(field.uuid));
 			for (field in remainingFields) {
 				var oldField = oldTable.fields.select(oldField | oldField.uuid = field.uuid).first();
-				if (field.type.uuid <> oldField.type.uuid) {
+				if (field.type.uuid <> oldField.type.uuid or field.mandatory <> oldField.mandatory) {
 					var fieldOperation = new TARGET!RdbmsModifyFieldOperation();
 					fieldOperation.uuid = uuid3(field.uuid, "_RdbmsModifyFieldOperation");
 					fieldOperation.name = field.name + "_RdbmsModifyFieldOperation";
 					fieldOperation.field = target.table.fields.select(f | f.uuid = field.uuid).first();
-					fieldOperation.typeChanged = true;
+					
+					if (field.type.uuid <> oldField.type.uuid) {
+						fieldOperation.typeChanged = true;
+					}
+					if (field.mandatory <> oldField.mandatory) {
+						fieldOperation.mandatoryChanged = true;
+					}
+						
 					target.modifyFieldOperations.add(fieldOperation);
 				}
 			}
