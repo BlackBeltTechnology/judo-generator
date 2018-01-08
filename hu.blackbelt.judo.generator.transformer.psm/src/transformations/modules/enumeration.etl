@@ -47,7 +47,7 @@ rule Enum2CorrespondingValueClass
 	
 	enumValueClass.name = t.name.concat("Value");
 	enumValueClass.framework = isFrameworkElmt;
-	
+	enumValueClass.representsEnumValue = true;
  	enumValueClass.attributes.add( createDefaultAttribute("langcode").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")).derived().value("{self.language.code}"));
  	
  	// create a new relation : enumEnumValueRelation

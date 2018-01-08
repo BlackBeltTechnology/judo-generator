@@ -74,6 +74,7 @@
         eType="#//JUIAlias" containment="true" eOpposite="#//JUIAlias/ownerClass"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="watched" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsEnumValue" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JAttribute" eSuperTypes="#//JTypedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="placeholder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
