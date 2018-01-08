@@ -121,6 +121,7 @@
     <genClasses ecoreClass="rdbms.ecore#//RdbmsCreateFieldOperation"/>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsModifyFieldOperation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/typeChanged"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/mandatoryChanged"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsDeleteFieldOperation"/>
   </genPackages>

@@ -151,8 +151,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsCreateFieldOperation" eSuperTypes="#//RdbmsFieldOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsModifyFieldOperation" eSuperTypes="#//RdbmsFieldOperation">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeChanged" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatoryChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsDeleteFieldOperation" eSuperTypes="#//RdbmsFieldOperation"/>
 </ecore:EPackage>
