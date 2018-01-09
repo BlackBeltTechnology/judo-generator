@@ -41,6 +41,13 @@ post {
 		}
 	}
 	
+	for (jc in tgtPSM!JClass.all) {
+		jc.attributes.add(createDefaultAttribute("auditCreateUser").uuid(jc.uuid + "auditCreateUser").technical().type(getPSMPrimitiveType("String")));
+		jc.attributes.add(createDefaultAttribute("auditCreateTime").uuid(jc.uuid + "auditCreateTime").technical().type(getPSMPrimitiveType("datetime")));
+		jc.attributes.add(createDefaultAttribute("auditUpdateUser").uuid(jc.uuid + "auditUpdateUser").technical().type(getPSMPrimitiveType("String")));
+		jc.attributes.add(createDefaultAttribute("auditUpdateTime").uuid(jc.uuid + "auditUpdateTime").technical().type(getPSMPrimitiveType("datetime")));
+	}
+	
 	"POST processing FINISHED.".println();
 }
 
