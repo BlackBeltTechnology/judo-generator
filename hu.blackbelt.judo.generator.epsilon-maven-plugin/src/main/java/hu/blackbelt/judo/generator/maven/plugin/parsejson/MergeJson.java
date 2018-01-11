@@ -93,18 +93,22 @@ public class MergeJson extends AbstractMojo {
 				}
 			}
 			
+			HashMap<String, JSONObject> finalJsonMap = new HashMap();
 			for (String uuid : modifiedJsonMap.keySet()) {
-				if (modifiedJsonExistsMap.get(uuid) == false) {
-					modifiedJsonMap.remove(uuid);
+				if (modifiedJsonExistsMap.get(uuid) == true) {
+					finalJsonMap.put(uuid, modifiedJsonMap.get(uuid));
 				}
 			}
+			
+			newJsonStream.close();
+			modifiedJsonStream.close();
 			
 			PrintWriter outputStream = new PrintWriter(modifiedJson);
 			outputStream.println("{ \"resources\": [");
 			int index = 0;
-			for (String uuid : modifiedJsonMap.keySet()) {
-				outputStream.append(modifiedJsonMap.get(uuid).toString());
-				if (index != modifiedJsonMap.size()-1) {
+			for (String uuid : finalJsonMap.keySet()) {
+				outputStream.append(finalJsonMap.get(uuid).toString());
+				if (index != finalJsonMap.size()-1) {
 					outputStream.append(",\n");
 					index++;
 				}
