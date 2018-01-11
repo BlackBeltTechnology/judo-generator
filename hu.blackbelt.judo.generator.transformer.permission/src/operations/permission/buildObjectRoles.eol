@@ -1,10 +1,18 @@
 operation Permission!PermissionModel buildObjectRoles(classPermissions : Sequence(Permission!Permission), oppositeClasses : Sequence(String),
-							hostClassUuid : String, hostClassName : String) {
-	var oppositeList = Permission!Permission.all.select(p | oppositeClasses.includes(p.hostClassName) and p.action = "list");
+							enums : Sequence(String), hostClassUuid : String, hostClassName : String) {
+							
+	var oppositeList = Permission!Permission.all.select(p | oppositeClasses.includes(p.hostClassName) and p.action = "list");	
+	var enumReadWrite = Permission!RelPermission.all.select(p | enums.includes(p.resource) and (p.action = "read" or p.action = "write"));
 	
-	var readPermissions = classPermissions.select(p | p.action = "list" or p.action = "read") + oppositeList;						
+	enums.println("ENUMS: ");
+	enumReadWrite.println("Enum READ/WRITE: ");
+	
+	var oppositeAttachDetach = Permission!RelPermission.all.select(p | p.otherType.equals(hostClassName) and oppositeClasses.includes(p.hostClassName)
+								and (p.action = "attach" or p.action = "detach"));
+	
+	var readPermissions = classPermissions.select(p | p.action = "list" or p.action = "read") + oppositeList + enumReadWrite.select(p | p.action = "read");						
 	var updatePermissions = classPermissions.select(p | p.action = "list" or p.action = "read" or p.action = "update" 
-												 or p.action = "write" or p.action = "attach" or p.action = "detach");
+												 or p.action = "write" or p.action = "attach" or p.action = "detach") + oppositeAttachDetach + enumReadWrite;
 	var createPermissions = classPermissions.select(p | p.action = "create") + updatePermissions;
 	var managePermissions = classPermissions.select(p | p.action = "delete") + createPermissions;
 	var callPermissions = classPermissions.select(p | p.action = "call");

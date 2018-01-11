@@ -175,16 +175,16 @@ DELETE FROM V_FRW_PERM;
 -- create permission[[%=permission.resource%]:[%=permission.action%]]
 INSERT INTO V_FRW_PERM (C_RESOURCE, C_PERMID, C_GUID, C_ACTION)
 VALUES ('[%=permission.resource%]', '[%=permission.resourceUuid%]', '[%=permission.uuid%]', '[%=permission.action%]');
-	[%}%]
-[%}%]
+[%	}
+}%]
+
 
 --changeset generator:create_elementary_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
 [% for (role in Permission!Role.all) {%]
 -- create role[[%=role.name%]]
 INSERT INTO V_FRW_ROLE (C_NAME, C_GUID, C_INTERNAL)
 VALUES ('[%=role.name%]', '[%=role.uuid%]', 'Y');
-
-[%}%]
+[% out.println(); } %]
 
 --changeset generator:fill_elementary_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
 [% for (role in Permission!Role.all) {
@@ -196,10 +196,10 @@ VALUES (
     (SELECT ID FROM V_FRW_PERM WHERE C_GUID='[%=permission.uuid%]'),
     (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=role.uuid%]')
 );
-		[%}%]
-	[%}%]
-	
-[%}%]
+[%		}
+	}	out.println(); out.println(); 
+}%]
+
 
 --changeset generator:embed_elementary_roles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
 [% for (role in Permission!Role.all) {
@@ -210,11 +210,10 @@ INSERT INTO T_ROLE_ROLE_BC67D7 (C_PARENTS_ID, C_CHILDREN_ID)
 VALUES (
     (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=role.uuid%]'),
     (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=child.uuid%]')
-); 
-		[%}%]
-	[%}%]
-	
-[%}%]
+);
+[%		} out.println(); out.println(); 
+	} 
+}%] 
 
 
 -------------------------------------------------------------------------------------------------

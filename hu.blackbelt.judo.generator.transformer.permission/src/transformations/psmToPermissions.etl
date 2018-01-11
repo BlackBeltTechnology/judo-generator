@@ -6,6 +6,7 @@ import "../operations/_importAll.eol";
 pre {
 	var permissionMap : Map<String, Sequence(Permission!Permission)> = new Map();
 	var oppositeMap : Map<String, Sequence(String)> = new Map();
+	var enumMap : Map<String, Sequence(String)> = new Map();
 	var classMap : Map<String, String> = new Map();
 }
 
@@ -19,6 +20,8 @@ post {
 			var hostClassName : String = jclass.package.name + "." + jclass.name;
 			var classPermissions : Sequence(Permission!Permission);
 			var oppositeSeq : Sequence(String) = new Sequence(String);
+			var enumSeq : Sequence(String) = new Sequence(String);
+			
 			var currentClass = jclass;
 			while (true) {
 				for (jattribute in currentClass.attributes) {
@@ -29,11 +32,19 @@ post {
 					if (jrole.navigable) {
 						classPermissions.addAll(JRoleToPermissions(jrole, jclass.package, jclass));
 						oppositeSeq.add(jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name);
+						
+						jrole.name.println("JRole");
+						
+						if (not jclass.representsEnumValue and jrole.opposite().ownerClass.representsEnum) {
+							var valueRole = jrole.opposite().ownerClass.roles.select(role | role.opposite().ownerClass.representsEnumValue).first();
+							valueRole.name.println("ValueRole: ");
+							enumSeq.add(valueRole.ownerClass.package.name + "." + valueRole.ownerClass.name + "." + valueRole.name);
+						} 
 					}
 				}
 				
 				if (currentClass.supertype.isDefined()) {
-					currentClass = currentClass.supertype;				
+					currentClass = currentClass.supertype;		
 				} else {
 					break;				
 				}
@@ -45,6 +56,7 @@ post {
 			
 			classPermissions.addAll(jclass.equivalents("JClassToPermissions"));
 			
+			enumMap.put(hostClassName, enumSeq);
 			oppositeMap.put(hostClassName, oppositeSeq);
 			permissionMap.put(hostClassName, classPermissions);
 			classMap.put(hostClassName, jclass.uuid);
@@ -57,9 +69,10 @@ post {
 
 	for (hostClassName in permissionMap.keySet()) {
 		oppositeClasses = oppositeMap.get(hostClassName);
+		var enums : Sequence(String) = enumMap.get(hostClassName);
 		var hostClassUuid : String = classMap.get(hostClassName);
 		var classPermissions : Sequence(Permission!Permission) = permissionMap.get(hostClassName);
-		permissionModel.buildObjectRoles(classPermissions, oppositeClasses, hostClassUuid, hostClassName);
+		permissionModel.buildObjectRoles(classPermissions, oppositeClasses, enums, hostClassUuid, hostClassName);
 	}
 	
 	permissionModel.buildRelationRoles();

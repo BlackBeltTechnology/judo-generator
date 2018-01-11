@@ -4,7 +4,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		var readPerm = new Permission!RelPermission();
 		readPerm.hostClassName = package.name + "." + class.name;
 		readPerm.resource = readPerm.hostClassName + "." + jrole.name;
-		readPerm.otherType = jrole.opposite().ownerClass.name;
+		readPerm.otherType = jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name;
 		readPerm.hostClassUuid = class.uuid;
 		readPerm.resourceUuid = readPerm.hostClassUuid + "." + jrole.uuid;
 		readPerm.action = "read";
@@ -14,7 +14,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		var writePerm = new Permission!RelPermission();
 		writePerm.hostClassName = package.name + "." + class.name;
 		writePerm.resource = writePerm.hostClassName + "." + jrole.name;
-		writePerm.otherType = jrole.opposite().ownerClass.name;
+		writePerm.otherType = jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name;
 		writePerm.hostClassUuid = class.uuid;
 		writePerm.resourceUuid = writePerm.hostClassUuid + "." + jrole.uuid;
 		writePerm.action = "write";
@@ -24,7 +24,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		var attachPerm = new Permission!RelPermission();
 		attachPerm.hostClassName = package.name + "." + class.name;
 		attachPerm.resource = attachPerm.hostClassName + "." + jrole.name;
-		attachPerm.otherType = jrole.opposite().ownerClass.name;
+		attachPerm.otherType = jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name;
 		attachPerm.hostClassUuid = class.uuid;
 		attachPerm.resourceUuid = attachPerm.hostClassUuid + "." + jrole.uuid;
 		attachPerm.action = "attach";
@@ -34,7 +34,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		var detachPerm = new Permission!RelPermission();
 		detachPerm.hostClassName = package.name + "." + class.name;
 		detachPerm.resource = detachPerm.hostClassName + "." + jrole.name;
-		detachPerm.otherType = jrole.opposite().ownerClass.name;
+		detachPerm.otherType = jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name;
 		detachPerm.hostClassUuid = class.uuid;
 		detachPerm.resourceUuid = detachPerm.hostClassUuid + "." + jrole.uuid;
 		detachPerm.action = "detach";

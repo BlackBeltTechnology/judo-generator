@@ -609,10 +609,6 @@
           <children xmi:type="notation:Node" xmi:id="_WHj04NjiEeedyq45T22dWg" type="2003" element="_WHcgINjiEeedyq45T22dWg">
             <children xmi:type="notation:Node" xmi:id="_WHkb8NjiEeedyq45T22dWg" type="5007"/>
             <children xmi:type="notation:Node" xmi:id="_WHkb8djiEeedyq45T22dWg" type="7004">
-              <children xmi:type="notation:Node" xmi:id="_WHlDANjiEeedyq45T22dWg" type="3010" element="_WHgKgNjiEeedyq45T22dWg">
-                <styles xmi:type="notation:FontStyle" xmi:id="_WHlDAdjiEeedyq45T22dWg" fontName="Sans" fontHeight="8" bold="true"/>
-                <layoutConstraint xmi:type="notation:Location" xmi:id="_WHlDAtjiEeedyq45T22dWg"/>
-              </children>
               <children xmi:type="notation:Node" xmi:id="_Us3MAPCdEeey5NfnrusvuA" type="3010" element="_Usy6kPCdEeey5NfnrusvuA">
                 <styles xmi:type="notation:FontStyle" xmi:id="_Us3MAfCdEeey5NfnrusvuA" fontName="Sans" fontHeight="8" bold="true"/>
                 <layoutConstraint xmi:type="notation:Location" xmi:id="_Us3MAvCdEeey5NfnrusvuA"/>
@@ -899,12 +895,6 @@
           <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
-        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_WHgKgNjiEeedyq45T22dWg" name="javaPackage : EString" tooltipText="">
-          <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_WHgxkNjiEeedyq45T22dWg" labelAlignment="LEFT" description="_V0Cb8djiEeedyq45T22dWg">
-            <labelFormat>bold</labelFormat>
-          </ownedStyle>
-          <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
-        </ownedElements>
         <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_Usy6kPCdEeey5NfnrusvuA" name="version : EString" tooltipText="">
           <target xmi:type="ecore:EAttribute" href="permission.ecore#//PermissionModel/version"/>
           <semanticElements xmi:type="ecore:EAttribute" href="permission.ecore#//PermissionModel/version"/>
@@ -976,7 +966,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC_EReference']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_YINeANjiEeedyq45T22dWg" visible="false" sourceNode="_YIIlgNjiEeedyq45T22dWg" targetNode="_YIIlgNjiEeedyq45T22dWg" beginLabel="[0..*] childrenRoles" endLabel="[0..1] parentRole">
+      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_YINeANjiEeedyq45T22dWg" visible="false" sourceNode="_YIIlgNjiEeedyq45T22dWg" targetNode="_YIIlgNjiEeedyq45T22dWg" beginLabel="[0..*] childrenRoles" endLabel="[0..*] parentRole">
         <target xmi:type="ecore:EReference" href="permission.ecore#//Role/parentRole"/>
         <semanticElements xmi:type="ecore:EReference" href="permission.ecore#//Role/childrenRoles"/>
         <semanticElements xmi:type="ecore:EReference" href="permission.ecore#//Role/parentRole"/>
