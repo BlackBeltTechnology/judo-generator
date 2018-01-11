@@ -36,6 +36,7 @@ rule JClassToRdbmsView
 
 		// Iterate all roles contained in base table and add as a field.
 		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
+			r.name.println("Role found: ");
 			v.addRelationField(r);
 		}
 	        
@@ -63,6 +64,7 @@ rule JClassToRdbmsView
 	    		    if (created.isTypeOf(RDBMS!RdbmsViewIdentifierField)) {
 	    		    	created.sqlName = "C_" + created.`alias`.table.sqlName + "_ID";
 	    		    }
+	    		    created.`alias`.println("Alias: ");
 					created.`alias` = v.tables.select(e | e.name = created.`alias`.name).first();
 	    		}
 	    	}

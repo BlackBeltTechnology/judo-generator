@@ -6,6 +6,9 @@ rule JRoleToRdbmsTableForeignKey
 	to fk : RDBMS!RdbmsForeignKey {
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction()
 	    fk.name = s.opposite().ownerClass.package.fqName() +  s.opposite().ownerClass.name + "." + s.opposite().name;
+	    if (s.opposite().isUndefined()) {
+	    	s.name.println("Could not find opposite: ");
+	    }
 	    fk.referenceKey = s.opposite().ownerClass.equivalent().primaryKey;
 	    fk.sqlName = s.roleIdSqlName();    
 	    fk.foreignKeySqlName = s.roleFkSqlName();    

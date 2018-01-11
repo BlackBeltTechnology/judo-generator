@@ -51,8 +51,6 @@
                 </configuration>
             </plugin>
 
-
-
 			<plugin>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>epsilon-maven-plugin</artifactId>
@@ -67,8 +65,6 @@
 						<configuration>
 							<metaModels>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<!-- <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml2_5:${project.version}</metaModel> -->
-								<!-- <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml_standard_profile:${project.version}</metaModel> -->
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
 								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
 
@@ -100,8 +96,6 @@
 									</metaModelUris>
 									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
 								</model>
-		
-								<!-- Target -->
 								<model>
 									<artifact>${project.build.directory}/carPsm.model</artifact>
 									<name>tgtPSM</name>
@@ -144,8 +138,6 @@
                             <targetFile>${project.build.directory}/target.model</targetFile>
                         </configuration>
                     </execution>
-
-
 				</executions>
 			</plugin>
 
@@ -168,7 +160,51 @@
 					<attachChecksums>true</attachChecksums>
 				</configuration>
 			</plugin>
+			<!-- Hack style.. But this is not balaton, it's another. Replacing stupid Eclipse reative path to a little bit more civilized (but also hack platform URI) -->
+		    <plugin>
+		      <groupId>com.google.code.maven-replacer-plugin</groupId>
+		      <artifactId>replacer</artifactId>
+		      <version>1.5.3</version>
+		      <executions>
+		        <execution>
+		          <phase>compile</phase>
+		          <id>replace-target-model</id>
+		          <goals>
+		            <goal>replace</goal>
+		          </goals>
+			      <configuration>
+			       <ignoreMissingFile>false</ignoreMissingFile>
+			       <file>${project.build.directory}/target.model</file>
+			        <replacements>
+			          <replacement>
+			            <token>\.\.\/\.\.\/(.*)\.model</token>
+			            <value>platform:/resource/$1.model</value>
+			          </replacement>
+			        </replacements>
+			      </configuration>
+		        </execution>
 
+		        <execution>
+		          <phase>compile</phase>
+		          <id>replace-target-hutnmodel</id>
+		          <goals>
+		            <goal>replace</goal>
+		          </goals>
+			      <configuration>
+			       <ignoreMissingFile>false</ignoreMissingFile>
+			       <file>${project.build.directory}/carPsm.model</file>
+			        <replacements>
+			          <replacement>
+			            <token>\.\.\/\.\.\/(.*)\.model</token>
+			            <value>platform:/resource/$1.model</value>
+			          </replacement>
+			        </replacements>
+			      </configuration>
+		        </execution>
+
+		      </executions>
+		    </plugin>
+            
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
