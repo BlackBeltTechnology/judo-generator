@@ -33,6 +33,8 @@ rule Enum2CorrespondingValueClass
 	var tgtPkg : tgtPSM!JPackage = s.owner.equivalent("Package");
 	var isFrameworkElmt = tgtPkg.framework;
 	
+	t.representsEnum = true;
+	
 	s.owner.equivalent("Package").classes.add(t);
 	
 	if ( s.equivalent("Enumeration").isDefined() ) {
@@ -47,6 +49,9 @@ rule Enum2CorrespondingValueClass
 	
 	enumValueClass.name = t.name.concat("Value");
 	enumValueClass.framework = isFrameworkElmt;
+	enumValueClass.representsEnumValue = true;
+	
+	enumValueClass.representsEnumValue.println("Enum: ");
 	
  	enumValueClass.attributes.add( createDefaultAttribute("langcode").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")).derived().value("{self.language.code}"));
  	
@@ -64,6 +69,7 @@ rule Enum2CorrespondingValueClass
  	enumClassRole.name = enumClassRoleName;
  	enumClassRole.uuid = uuid3(t.uuid, "enumClassRole");
  	enumClassRole.framework = isFrameworkElmt;
+ 	enumClassRole.navigable = true;
  	enumEnumValueRelation.roles.add( enumClassRole );
  	
  	enumClassRole.ownerClass = enumValueClass;
@@ -73,14 +79,13 @@ rule Enum2CorrespondingValueClass
  	enumValueClassRole.name = enumValueClassRoleName;
  	enumValueClassRole.uuid = uuid3(t.uuid, "enumValueClassRole");
  	enumValueClassRole.framework = isFrameworkElmt;
+ 	enumValueClassRole.navigable = true;
  	enumEnumValueRelation.roles.add( enumValueClassRole );
 
-	enumValueClassRole.ownerClass = tgtPSM!JClass.allInstances()->select( c | c.package = s.owner.equivalent("Package") and 
-											  								  c.name = s.name ).first();
+	enumValueClassRole.ownerClass = t;
 	enumValueClassRole.ownerClass.roles.add( enumValueClassRole );
 	
-	var langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and 
-															 c.package.name ="framework").first(); // TODO: make it fully specified via Qualified name
+	var langClass = inpPIM!Class.allInstances()->select(c | c.name = "Language" and c.package.name = "framework").first().equivalent("Class"); // TODO: make it fully specified via Qualified name
 
 	// reassignment - adding "Values" to the end of the yet defined name
 	enumValueClassRoleName = enumValueClassRoleName.concat("Values"); 

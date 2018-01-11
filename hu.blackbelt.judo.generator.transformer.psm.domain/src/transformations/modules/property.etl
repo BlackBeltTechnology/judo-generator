@@ -34,13 +34,28 @@ rule ClassProperty
 		t.println("RULE::ClassProperty - ADD interval specification - " + t.interval + " ");
 	}
 	
+	if ( stereotypeApplications.get("interval").containsKey(s.type) and stereotypeApplications.get("interval").get(s.type).isDefined() ) {
+		t.interval = stereotypeApplications.get("interval").get(s.type);
+		t.println("RULE::ClassProperty - ADD interval specification - " + t.interval + " ");
+	}
+	
 	if ( stereotypeApplications.get("placeholder").containsKey(s) ) {
 		t.placeholder = stereotypeApplications.get("placeholder").get(s);
+		t.println("RULE::ClassProperty - ADD placeholder specification - " + t.placeholder + " ");
+	}
+	
+	if ( stereotypeApplications.get("placeholder").containsKey(s.type) ) {
+		t.placeholder = stereotypeApplications.get("placeholder").get(s.type);
 		t.println("RULE::ClassProperty - ADD placeholder specification - " + t.placeholder + " ");
 	}
 
 	if ( stereotypeApplications.get("regexp").containsKey(s) ) {
 		t.regexp = stereotypeApplications.get("regexp").get(s);
+		t.println("RULE::ClassProperty - ADD regexp specification - " + t.regexp + " ");
+	}
+	
+	if ( stereotypeApplications.get("regexp").containsKey(s.type) ) {
+		t.regexp = stereotypeApplications.get("regexp").get(s.type);
 		t.println("RULE::ClassProperty - ADD regexp specification - " + t.regexp + " ");
 	}
 
@@ -90,7 +105,7 @@ rule ClassPropertyRole
 	t.unique = s.unique;
 	t.lower = s.lower;
 	t.upper = s.upper;
-	t.ownerClass ::= s.type;
+	t.ownerClass ::= s.association.memberEnd.select(m | m <> s).first().type;
 	
 	switch (s.aggregation) {
 		case AggregationKind#composite 	: t.kind = tgtPSM!JAssociationKind#COMPOSITION;
@@ -100,26 +115,35 @@ rule ClassPropertyRole
 
 }
 
-/*
-@lazy
-rule ClassPropertyRole
+
+rule ClassPropertyRoleEnum
 	transform s : Property
-	to        t : tgtPSM!JRole 
+	to        r1 : tgtPSM!JRole, r2 : tgtPSM!JRole, rs : tgtPSM!JRelationship  
 	extends NamedElement {
 
 	guard : s.owner.equivalent("Class").isDefined() 
 			and s.owner.isTypeOf(Class) 
-			and ( s.type.isTypeOf(Class) or s.type.isTypeOf(Enumeration) )
-	var t;
-	if (s.type.isTypeOf(Class) and s.type.equivalent().isDefined()) {
-		t = s.type.equivalent();
-	} else if (s.type.isTypeOf(Enumeration)) {
-		t = s.type.equivalent("Enum2CorrespondingValueClass");
-	}
-	//createRelationWithRoles(s.owner.package.equivalent(), s.owner.equivalent().name, t.name, s.owner.equivalent(), t);
-
+			and s.type.isTypeOf(Enumeration)
+			and s.type.equivalent("Enum2CorrespondingValueClass").isDefined()
+	
+	r1.uuid = uuid3(s.owner.equivalent("Class").uuid, s.name);
+	r1.ownerClass = s.owner.equivalent("Class");
+	r1.navigable = true;
+	
+	r2.name = s.name + "Inverse";
+	r2.uuid = uuid3(s.type.equivalent("Enum2CorrespondingValueClass").uuid, r2.name);
+	r2.ownerClass = s.type.equivalent("Enum2CorrespondingValueClass");
+	r2.navigable = true;
+	r2.visibility = r1.visibility;
+	rs.uuid = uuid3(s.owner.equivalent("Class").uuid, s.type.equivalent("Enum2CorrespondingValueClass").uuid);
+	rs.name = r1.name + " - " + r2.name;
+	rs.visibility = r1.visibility;
+	rs.roles.add(r1);
+	rs.roles.add(r2);
+	s.owner.equivalent("Class").package.relationships.add(rs);
 }
-*/
+
+
 
 @lazy
 rule RelationProperty

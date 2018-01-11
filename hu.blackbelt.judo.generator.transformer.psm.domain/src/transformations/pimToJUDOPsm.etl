@@ -18,7 +18,7 @@ pre {
 	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
 	var tgtModel;
 	inpPIM!rest.allInstances().size().println();
-	var stereotypeApplications : Map = collectJUDOStereotypeInstances(); 
+	var stereotypeApplications : Map = collectJUDOStereotypeInstances();
 	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
 	
 	frameworkPkgPath.println();
@@ -52,11 +52,12 @@ operation Map setAttrForListingAssocs() {
 	var classes = self.keySet();
 	
 	for (c in classes) { // classes, constrained by <<list>>
+		var targetClass = c.equivalent();
 		var listing = self.get(c).split("\n");
 		
 		listing.println("Listing for " + c.name + " : ");
 		for (attr in c.attribute->select( a | listing.includes( a.name ))) {
-			c.attributesForListing.add( attr );
+			targetClass.attributesForListing.add( attr.equivalent() );
 		}
 	}
 }
@@ -67,25 +68,33 @@ operation Map setAttrForListingAssocs() {
 operation Map setAttrOrderAssocs() {
 	var classes = self.keySet();
 	for (c in classes) {
+		var targetClass = c.equivalent();
 		var position = 1;
+		var orderGroups = self.get(c).split("\n");
 		var groupName;
-	    for (g in self.get(c).split("\n")) {
-	        if (g.at(0) == "-") {
-	            groupName = g.at(0).substring(1);
-	            g = g.substring(1);
+		var fieldNames = new Sequence;
+		orderGroups.println("Order for " + c.name + " : ");
+	    for (og in orderGroups) {
+	        var splitted = og.split(" ");
+	        if (splitted.at(0).charAt(0) == "-") {
+	            groupName = splitted.at(0).substring(1);
+	            fieldNames.addAll(splitted.sublist(1, splitted.size()));
 	        } else {
-	            groupName = g.at(0);
+	        	groupName = splitted.at(0);
+	            fieldNames = splitted;
 	        }
 	
-	        var attrGroup = hutn.JUIAttributeGroup(groupName);
-	        ret.attributeOrder.append(attrGroup);
-	        attrGroup.uuid = str(uuid.uuid3(uuid.UUID(clazz.xmiid), groupName));
+	        var attrGroup = new tgtPSM!JUIAttributeGroup(groupName);
+	        attrGroup.uuid = uuid3(targetClass.uuid, groupName);
 	        attrGroup.position = position;
+	        targetClass.attributeOrder.add(attrGroup);
 	
-	        for (fieldname in g) {
-	            attrGroup.attributes.append(c.attribute->selectOne( attr | attr.name = fieldname));
+	        for (fn in fieldNames) {
+	        	fn.println("FN: ");
+	        	c.println("IN CLASS: ");
+	        	var attrInPIM = c.allAttributes()->selectOne( attr | attr.name = fn).println("ORDERED ATTR: ");
+	            attrGroup.attributes.add(attrInPIM.equivalent());
 	        }
-	
 	        position += 1;
 	    }
 	}

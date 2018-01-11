@@ -105,7 +105,7 @@ rule ClassPropertyRole
 	t.unique = s.unique;
 	t.lower = s.lower;
 	t.upper = s.upper;
-	t.ownerClass ::= s.type;
+	t.ownerClass ::= s.association.memberEnd.select(m | m <> s).first().type;
 	
 	switch (s.aggregation) {
 		case AggregationKind#composite 	: t.kind = tgtPSM!JAssociationKind#COMPOSITION;
@@ -128,11 +128,16 @@ rule ClassPropertyRoleEnum
 	
 	r1.uuid = uuid3(s.owner.equivalent("Class").uuid, s.name);
 	r1.ownerClass = s.owner.equivalent("Class");
+	r1.navigable = true;
+	
 	r2.name = s.name + "Inverse";
 	r2.uuid = uuid3(s.type.equivalent("Enum2CorrespondingValueClass").uuid, r2.name);
 	r2.ownerClass = s.type.equivalent("Enum2CorrespondingValueClass");
+	r2.navigable = true;
+	r2.visibility = r1.visibility;
 	rs.uuid = uuid3(s.owner.equivalent("Class").uuid, s.type.equivalent("Enum2CorrespondingValueClass").uuid);
 	rs.name = r1.name + " - " + r2.name;
+	rs.visibility = r1.visibility;
 	rs.roles.add(r1);
 	rs.roles.add(r2);
 	s.owner.equivalent("Class").package.relationships.add(rs);

@@ -18,7 +18,7 @@ pre {
 	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
 	var tgtModel;
 	inpPIM!rest.allInstances().size().println();
-	var stereotypeApplications : Map = collectJUDOStereotypeInstances(); 
+	var stereotypeApplications : Map = collectJUDOStereotypeInstances();
 	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
 	
 	frameworkPkgPath.println();
@@ -42,10 +42,12 @@ post {
 	}
 	
 	for (jc in tgtPSM!JClass.all) {
-		jc.attributes.add(createDefaultAttribute("auditCreateUser").uuid(jc.uuid + "auditCreateUser").technical().type(getPSMPrimitiveType("String")));
-		jc.attributes.add(createDefaultAttribute("auditCreateTime").uuid(jc.uuid + "auditCreateTime").technical().type(getPSMPrimitiveType("datetime")));
-		jc.attributes.add(createDefaultAttribute("auditUpdateUser").uuid(jc.uuid + "auditUpdateUser").technical().type(getPSMPrimitiveType("String")));
-		jc.attributes.add(createDefaultAttribute("auditUpdateTime").uuid(jc.uuid + "auditUpdateTime").technical().type(getPSMPrimitiveType("datetime")));
+		jc.attributes.add(createDefaultAttribute("auditCreateUser").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
+		jc.attributes.add(createDefaultAttribute("auditCreateTime").uuid(jc.uuid).technical().type(getPSMPrimitiveType("datetime")).private());
+		jc.attributes.add(createDefaultAttribute("auditUpdateUser").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
+		jc.attributes.add(createDefaultAttribute("auditUpdateTime").uuid(jc.uuid).technical().type(getPSMPrimitiveType("datetime")).private());
+		jc.attributes.add(createDefaultAttribute("guid").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
+		jc.attributes.add(createDefaultAttribute("xmiid").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
 	}
 	
 	"POST processing FINISHED.".println();
