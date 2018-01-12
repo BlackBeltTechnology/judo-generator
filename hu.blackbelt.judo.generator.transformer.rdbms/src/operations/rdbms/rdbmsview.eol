@@ -70,18 +70,30 @@ operation RDBMS!RdbmsView addField(attribute : PSM!JAttribute) {
 
 						
 						var previousRelationIdentifierField : RDBMS!RdbmsViewIdentifierField = currentRelationIdentifierField;
-						var currentRelationIdentifierFieldName = attribute.name + " " + currentRelationName;
+						var currentRelationIdentifierFieldName = attribute.name + "." + currentRelationName;
 						var currentRelationIdentifierField : RDBMS!RdbmsViewRelationIdentifierField = self.fields.select(s | s.name == currentRelationIdentifierFieldName).first;
 						if (currentRelationIdentifierField.isUndefined()) {
 							currentRelationIdentifierField = new RDBMS!RdbmsViewRelationIdentifierField();
 							currentRelationIdentifierField.name = currentRelationIdentifierFieldName;
 							currentRelationIdentifierField.sqlName = "REL_" + currentClass.tableSqlName() + "_ID";
 							currentRelationIdentifierField.uuid = uuid3(currentRole.uuid, self.name + "." + currentRelationIdentifierFieldName);
-
-							// Find or crete alias
-							// var currentRelationTableField = currentClass.equivalent("JClassToRdbmsTable");
-							// currentRelationIdentifierField.`alias` = 
 							
+							// Find alias
+							var currentAlias : RDBMS!RdbmsTableAlias = self.fields.select(e | e.isKindOf(RDBMS!RdbmsViewAliasField)).collect(e | e.`alias`).select(e | e.name = currentRelationName).first;
+							
+							// Creaate alias
+							if (currentAlias.isUndefined()) {
+								currentAlias = new RDBMS!RdbmsTableAlias();
+								self.tables.add(currentAlias);
+								currentAlias.table = currentClass.equivalent("JClassToRdbmsTable");
+								currentAlias.uuid = uuid3(self.uuid, currentRelationName);
+								currentAlias.sqlName = 'REL_' + abbreviate(currentRelationName, 12);
+							}
+							
+							// Find value field
+							// var currentValueField : RDBMS!RdbmsViewAliasField = 
+											
+							currentRelationIdentifierField.`alias` = currentAlias;
 							currentRelationIdentifierField.relationField = previousRelationIdentifierField;
 							self.fields.add(currentRelationIdentifierField);
 						}

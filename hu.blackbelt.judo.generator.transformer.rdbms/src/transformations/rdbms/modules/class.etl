@@ -64,6 +64,7 @@ rule JClassToRdbmsView
 	    		    if (created.isTypeOf(RDBMS!RdbmsViewIdentifierField)) {
 	    		    	created.sqlName = "C_" + created.`alias`.table.sqlName + "_ID";
 	    		    }
+	    		    created.name.println("Field: ");
 	    		    created.`alias`.println("Alias: ");
 					created.`alias` = v.tables.select(e | e.name = created.`alias`.name).first();
 	    		}
