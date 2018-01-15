@@ -20,8 +20,13 @@ operation PSM!JRole isMandatory() : Boolean {
 }
 
 @cached
+operation PSM!JRole isSingle() : Boolean {
+	return self.upper = 1;
+}
+
+@cached
 operation PSM!JRole roleSqlName() : String {
-    return self.opposite().sqlName() + "_" + self.ownerClass.classSqlName() + "_" + self.opposite().ownerClass.classSqlName();
+    return self.sqlName() + "_" + self.ownerClass.classSqlName() + "_" + self.ownerClass.classSqlName();
 }
 
 @cached
@@ -31,5 +36,10 @@ operation PSM!JRole roleFkSqlName() : String {
 
 @cached
 operation PSM!JRole roleIdSqlName() : String {
-    return "C_" + self.opposite().ownerClass.classSqlName() + "_ID";
+    return "C_" + self.opposite().ownerClass.sqlName() + "_ID";
+}
+
+@cached
+operation PSM!JRole roleAliasName() : String {
+	return self.ownerClass.package.fqName() +  "." + self.ownerClass.name + "." + self.name;
 }

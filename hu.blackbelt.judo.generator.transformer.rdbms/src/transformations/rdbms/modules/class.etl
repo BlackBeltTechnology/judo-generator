@@ -37,9 +37,17 @@ rule JClassToRdbmsView
 
 		// Iterate all roles contained in base table and add as a field.
 		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
-			r.name.println("Role found: ");
+			r.name.println("Role (self) found: ");
 			v.addRelationField(r);
 		}
+
+/*
+		// Iterate all roles not contained in base table, but single relation as a field.
+		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and r.isSingle() and not r.ownerRelationship.isJunction())) {
+			r.name.println("Role (foreign) found: ");
+			v.addRelationField(r.opposite());
+		}
+*/
 	        
 	    // Inherited aliases and attributes
 	    if (s.supertype.isDefined()) {

@@ -275,6 +275,7 @@ package  {
                             },
                             JClass "a0f3a6b1-2a7e-414d-aea6-41b03a610c1c" {
                                 name : "UserInfo" 
+                                shortName : "UserInfo" 
                                 uuid : "a0f3a6b1-2a7e-414d-aea6-41b03a610c1c" 
                                 framework : "True" 
                                 abstract : "False" 
@@ -16531,22 +16532,22 @@ package  {
                                 visibility : PUBLIC 
                                 type : Integer "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw" 
                             },
-                            JAttribute "8201c486-f513-42c3-af6d-cfb03c9b0c1b" {
-                                name : "repetitionUnit" 
-                                uuid : "8201c486-f513-42c3-af6d-cfb03c9b0c1b" 
-                                framework : "False" 
-                                technical : "False" 
-                                unique : "False" 
-                                ordered : "False" 
-                                value : "" 
-                                placeholder : "" 
-                                mandatory : "False" 
-                                derived : "False" 
-                                calculated : "False" 
-                                interval : "" 
-                                visibility : PUBLIC 
-                                type : Integer "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw" 
-                            },
+//                            JAttribute "8201c486-f513-42c3-af6d-cfb03c9b0c1b" {
+//                                name : "repetitionUnit" 
+//                                uuid : "8201c486-f513-42c3-af6d-cfb03c9b0c1b" 
+//                                framework : "False" 
+//                                technical : "False" 
+//                                unique : "False" 
+//                                ordered : "False" 
+//                                value : "" 
+//                                placeholder : "" 
+//                                mandatory : "False" 
+//                                derived : "False" 
+//                                calculated : "False" 
+//                                interval : "" 
+//                                visibility : PUBLIC 
+//                                type : Integer "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw" 
+//                            },
                             JAttribute "fc63a456-52fd-4ebe-bb9f-28afd4e21c06" {
                                 name : "repetitionDuration" 
                                 uuid : "fc63a456-52fd-4ebe-bb9f-28afd4e21c06" 

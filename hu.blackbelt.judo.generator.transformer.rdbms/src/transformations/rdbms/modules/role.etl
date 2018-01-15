@@ -5,7 +5,7 @@ rule JRoleToRdbmsTableForeignKey
 	transform s : PSM!JRole
 	to fk : RDBMS!RdbmsForeignKey {
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction()
-	    fk.name = s.opposite().ownerClass.package.fqName() +  s.opposite().ownerClass.name + "." + s.opposite().name;
+	    fk.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
 	    if (s.opposite().isUndefined()) {
 	    	s.name.println("Could not find opposite: ");
 	    }
@@ -14,7 +14,7 @@ rule JRoleToRdbmsTableForeignKey
 	    fk.foreignKeySqlName = s.roleFkSqlName();    
 		fk.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
 		fk.type = idType();
-		fk.description =  s.opposite().name + " (" + s.opposite().ownerClass.name + ")";
+		fk.description =  s.name + " (" + s.opposite().ownerClass.name + ")";
 		fk.uuid = s.uuid;
 		fk.mandatory = s.isMandatory();
 	}

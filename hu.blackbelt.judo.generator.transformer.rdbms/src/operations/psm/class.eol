@@ -79,7 +79,7 @@ operation PSM!JClass allRoles() : Collection {
 
 operation PSM!JClass createForeginKey(otherTable : PSM!JClass) : RDBMS!RdbmsForeignKey {
 	var created : RDBMS!RdbmsForeignKey = new RDBMS!RdbmsForeignKey();
-	created.name = otherTable.name;
+	created.name = otherTable.package.fqName() + "." + otherTable.name;
 	created.uuid = uuid3(self.uuid, otherTable.uuid);
 	created.description = otherTable.name + otherTable.primaryKeyAttribute().name;
 	created.sqlName = "C_" + otherTable.tableSqlName() + "_ID";
