@@ -25,6 +25,7 @@ rule JClassToRdbmsView
 	guard : s.participates(PSM!JLayer#PERSISTENCE)
 	    v.name = s.package.fqName() + "." + s.name;
 	    v.sqlName = s.viewSqlName();
+	    v.originUuid = s.uuid;
 
 	    // Base alias is a reference for base table    
 	    v.createBaseAlias(s);

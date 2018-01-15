@@ -1,0 +1,22 @@
+operation hasFeature(feature : String) : Boolean {
+    return RDBMS!RdbmsFeature.all.exists(f | f.name = feature);
+}
+
+@cached
+operation version() : String {
+	return RDBMS!RdbmsModel.all.first().version;
+}
+
+@cached
+operation dialect() : String {
+	return RDBMS!RdbmsConfiguration.all.first().dialect;
+}
+
+operation Boolean ternary(ifTrue : Any, ifFalse : Any) : Any {
+    if (self) {
+        return ifTrue;
+    } else {
+        return ifFalse;
+    }
+}
+

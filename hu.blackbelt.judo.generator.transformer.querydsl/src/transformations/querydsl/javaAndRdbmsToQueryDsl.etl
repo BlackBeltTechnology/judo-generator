@@ -1,0 +1,14 @@
+import "modules/model.etl";
+import "modules/class.etl";
+import "modules/view.etl";
+import "modules/field.etl";
+import "modules/role.etl";
+import "modules/attribute.etl";
+
+pre {
+	var targetModel : QUERYDSL!QueryDslModel;
+}	
+
+post {
+}
+

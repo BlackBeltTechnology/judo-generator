@@ -1,0 +1,42 @@
+@cached
+operation QUERYDSL!QueryDslClass poClassName () : String {
+    return self.originName + "Po";
+}
+
+@cached
+operation QUERYDSL!QueryDslClass poClassFqName () : String {
+    return self.packageName + ".business.po." + self.poClassName();
+}
+
+@cached
+operation QUERYDSL!QueryDslClass packageFqName () : String {
+    return self.packageName + ".querydsl";
+}
+
+@cached
+operation QUERYDSL!QueryDslClass attributes () : Collection {
+    return self.attributes.sortBy(a | a.name).invert(); //TODO: remove invert
+}
+
+@cached
+operation QUERYDSL!QueryDslClass allAttributes () : Collection {
+	var all = self.attributes().clone();
+	if (self.supertype.isDefined()) {
+		all.addAll(self.supertype.allAttributes());
+	}
+	return all;//TODO: .sortBy(a | a.name);
+}
+
+@cached
+operation QUERYDSL!QueryDslClass references () : Collection {
+    return self.references.sortBy(a | a.name).invert(); //TODO: remove invert
+}
+
+@cached
+operation QUERYDSL!QueryDslClass allReferences () : Collection {
+	var all = self.references().clone();
+	if (self.supertype.isDefined()) {
+		all.addAll(self.supertype.allReferences());
+	}
+	return all.sortBy(a | a.name);
+}

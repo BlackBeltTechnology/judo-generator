@@ -1,0 +1,7 @@
+@cached
+operation JAVA!JvmPrimitive fqName () : String {
+	if (self.uuid == voidType().uuid) {
+		return voidType().primitive;
+	}
+	return fqNameInternal(self);
+}

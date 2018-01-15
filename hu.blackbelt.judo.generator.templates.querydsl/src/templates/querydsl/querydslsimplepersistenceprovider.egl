@@ -1,0 +1,153 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=topPackageName%];
+
+import hu.blackbelt.judo.common.context.api.TransactionStackContextService;
+import hu.blackbelt.judo.common.osgi.api.ServiceReady;
+import hu.blackbelt.judo.common.transaction.api.TransactionManager;
+import hu.blackbelt.judo.rdbms.querydsl.api.ConnectionManager;
+import hu.blackbelt.judo.rdbms.querydsl.api.ConnectionManagerFactory;
+import hu.blackbelt.judo.rdbms.querydsl.api.LoggingSqlListener;
+import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslDatabaseTypeTemplateUtil;
+import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslPersistenceProvider;
+import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslSqlQueryFactory;
+import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslSqlQueryFactoryImpl;
+import hu.blackbelt.judo.rdbms.querydsl.api.SQLTemplateInfoUtil;
+import hu.blackbelt.judo.rdbms.querydsl.api.base.URLByStringType;
+import hu.blackbelt.judo.rdbms.querydsl.api.base.BooleanAsStringType;
+import hu.blackbelt.judo.rdbms.querydsl.api.base.LocalTimeByTimestampType;
+import hu.blackbelt.judo.rdbms.querydsl.api.base.ClobAsStringType;
+
+import hu.blackbelt.rdbms.db.api.DatabaseType;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.felix.scr.annotations.Activate;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.ConfigurationPolicy;
+import org.apache.felix.scr.annotations.Deactivate;
+import org.apache.felix.scr.annotations.Properties;
+import org.apache.felix.scr.annotations.Property;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.commons.osgi.PropertiesUtil;
+import org.osgi.service.component.ComponentContext;
+import org.osgi.service.jdbc.DataSourceFactory;
+
+import javax.sql.DataSource;
+
+/**
+* This component provides the QueryDslPersistenceProvider for the given DataSource. It is a simple provider, does not handle transactional
+* context.
+*/
+@Getter
+@Setter
+@Component(immediate = true, metatype=true, policy = ConfigurationPolicy.REQUIRE)
+@Service
+@Properties(value = {
+@Property(name = DatabaseType.DATABASE_TYPE, value = "hsqldb"),
+@Property(name = [%=className%].PROP_LOG_SQL, boolValue = [%=className%].DEFAULT_LOG_SQL),
+@Property(name = [%=className%].PROP_DATASOURCE_READY + ".target",
+          value = "(dataSourceReady=" + [%=className%].DEFAULT_DATASOURCE_NAME + ")"),
+@Property(name = [%=className%].DATASOURCE + ".target",
+          value = "(dataSourceName=" + [%=className%].DEFAULT_DATASOURCE_NAME + ")"),
+@Property(name = [%=className%].TRANSACTION_MANAGER + ".target",
+          value = "(transactionManager.name=" + [%=className%].DEFAULT_TRNSACTION_MANAGER_NAME + ")"),
+@Property(name = QueryDslPersistenceProvider.PROP_IMPLEMENTATION,
+          value = [%=className%].DEFAULT_IMPLEMENTATION, propertyPrivate = true),
+@Property(name = QueryDslPersistenceProvider.PROP_PERSISTENCE_UNIT_NAME,
+          value = [%=className%].DEFAULT_PERSISTENCE_UNIT_NAME, propertyPrivate = true)
+})
+
+@SuppressWarnings("checkstyle:missingctor")
+public class [%=className%] implements QueryDslPersistenceProvider {
+    public static final String COULD_NOT_GET_SQL_QUERY_FACTORY_PROVIDER = "Could not get SQLQueryFactoryProviderInstance ";
+
+    public static final String DEFAULT_IMPLEMENTATION = "[%=topPackageName%].[%=className%]";
+    public static final String DEFAULT_PERSISTENCE_UNIT_NAME = "[%=topPackageName%]";
+    public static final String DEFAULT_DATASOURCE_NAME = "[%=topPackageName%]-hsqldb";
+    public static final String DEFAULT_TRNSACTION_MANAGER_NAME = "[%=topPackageName%]";
+
+    public static final String PROP_DATASOURCE_READY = "dataSourceReady";
+
+    public static final String DATASOURCE = "dataSource";
+
+    public static final String TRANSACTION_MANAGER = "transactionManager";
+
+    public static final String PROP_LOG_SQL = "logSql";
+    public static final boolean DEFAULT_LOG_SQL = true;
+
+    public [%=className%]() {
+    }
+
+    @Reference
+    private TransactionStackContextService transactionStackContextService;
+
+    @Reference(name = [%=className%].PROP_DATASOURCE_READY)
+    private ServiceReady dataSourceReady;
+
+    @Reference(name = [%=className%].DATASOURCE)
+    private DataSource dataSource;
+
+    @Reference(name = [%=className%].TRANSACTION_MANAGER)
+    private TransactionManager transactionManager;
+
+    @Reference
+    private ConnectionManagerFactory connectionManagerFactory;
+
+    private DatabaseType dataBaseType = DatabaseType.H2;
+    private String dataSourceName = DEFAULT_DATASOURCE_NAME;
+    private boolean logSql = DEFAULT_LOG_SQL;
+
+    @Activate
+    protected void activate(ComponentContext componentContext) {
+        dataBaseType = DatabaseType.find(
+            PropertiesUtil.toString(componentContext.getProperties().get(DatabaseType.DATABASE_TYPE), DatabaseType.H2.getIdentifier()));
+        dataSourceName = PropertiesUtil.toString(componentContext.getProperties().get(DataSourceFactory.JDBC_DATASOURCE_NAME),
+            DEFAULT_DATASOURCE_NAME);
+        logSql = PropertiesUtil.toBoolean(componentContext.getProperties().get(PROP_LOG_SQL), DEFAULT_LOG_SQL);
+    }
+
+    @Deactivate
+        protected void deactivate(ComponentContext componentContext) {
+    }
+
+    @Override
+    public QueryDslSqlQueryFactory createSqlQueryFactory() {
+        ConnectionManager connectionManager = connectionManagerFactory.createTransactionalConnectionManager(transactionManager,
+            DEFAULT_PERSISTENCE_UNIT_NAME, transactionStackContextService);
+        return new QueryDslSqlQueryFactoryImpl(querydslConfiguration(dataBaseType),  connectionManager);
+    }
+
+    private com.querydsl.sql.Configuration querydslConfiguration(DatabaseType dbType) {
+        com.querydsl.sql.Configuration configuration = new com.querydsl.sql.Configuration(QueryDslDatabaseTypeTemplateUtil.getByDatabaseType(dbType));
+
+        // Type to map URL to String and back
+        configuration.register(new URLByStringType());
+        configuration.register(new BooleanAsStringType());
+        configuration.register(new LocalTimeByTimestampType());
+
+        // Clob type registration. By default using String mapping, but some database using Clob type.
+        if (SQLTemplateInfoUtil.isClobUsed(configuration.getTemplates())) {
+            ClobAsStringType cast = new ClobAsStringType();
+
+        {%- for table in sqlmodel.views -%}
+            {%- for field in table.fields %}
+                {%- if field.umltype == 'memo' %}
+                    configuration.register("{{ table.name }}", "{{ field.name }}", cast);
+                {% endif -%}
+            {%- endfor -%}
+        {%- endfor -%}
+        }
+
+        // Add log if neccessary
+        if (logSql) {
+            configuration.addListener(new LoggingSqlListener(configuration));
+        }
+
+        return configuration;
+    }
+}

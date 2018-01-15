@@ -1,0 +1,17 @@
+import "../../../operations/_importAll.eol";
+
+rule JvmClassToQueryDslClass
+    transform s : JAVA!JvmClass
+    to t : QUERYDSL!QueryDslClass {
+        guard : s.coordinate = JAVA!JvmJudoCoordinate#ORIGIN and not s.fwElement
+            and s.rootPackage().ownerModel.isDefined() /*Skip dummy classes*/
+            and s.fqName() <> "javax.ws.rs.core.Response" /*Skip Response class*/
+
+        t.name = "Q" + s.name;
+        t.originUuid = s.uuid;
+        t.originName = s.name;
+        t.packageName = s.package.fqName();
+        t.supertype = s.supertype.equivalent("JvmClassToQueryDslClass");
+        t.view = RDBMS!RdbmsView.all.selectOne(rt | rt.originUuid = t.originUuid).equivalent("RdbmsViewToQueryDslTable");
+        targetModel.queryDslClasses.add(t);
+    }

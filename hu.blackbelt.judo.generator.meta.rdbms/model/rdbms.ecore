@@ -57,6 +57,7 @@
         upperBound="-1" eType="#//RdbmsTableAlias" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryTable" lowerBound="1"
         eType="#//RdbmsTableAlias"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="originUuid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewField" abstract="true" eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="view" lowerBound="1" eType="#//RdbmsView"

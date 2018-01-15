@@ -1,0 +1,36 @@
+@cached
+operation QUERYDSL!QueryDslField pathType () : String {
+    return getFieldProperty(self, "PATH_TYPE");
+}
+
+@cached
+operation QUERYDSL!QueryDslField pathFactory () : String {
+    return getFieldProperty(self, "PATH_FACTORY");
+}
+
+@cached
+operation QUERYDSL!QueryDslField pathGeneric () : String {
+    return getFieldProperty(self, "PATH_GENERIC");
+}
+
+operation getFieldProperty(field : QUERYDSL!QueryDslField, propertyName : String) : String {
+    var fieldTypeMapping = Map{
+        "Date"       = Map{"PATH_TYPE" = "DatePath<LocalDateTime>",          "PATH_FACTORY" = "createDate",     "PATH_GENERIC" = "LocalDateTime.class" },
+        "DateTime"   = Map{"PATH_TYPE" = "DateTimePath<LocalDateTime>",      "PATH_FACTORY" = "createDateTime", "PATH_GENERIC" = "LocalDateTime.class" },
+        "Time"       = Map{"PATH_TYPE" = "TimePath<LocalTime>",              "PATH_FACTORY" = "createTime",     "PATH_GENERIC" = "LocalTime.class" },
+        "Boolean"    = Map{"PATH_TYPE" = "BooleanPath",                      "PATH_FACTORY" = "createBoolean",  "PATH_GENERIC" = "" },
+        "Integer"    = Map{"PATH_TYPE" = "NumberPath<Integer>",              "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Integer.class" },    
+        "String"     = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
+        "Text"       = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
+        "Memo"       = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
+        "Float"      = Map{"PATH_TYPE" = "NumberPath<Float>",                "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Float.class" },
+        "Percentage" = Map{"PATH_TYPE" = "NumberPath<Float>",                "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Float.class" },
+        "Currency"   = Map{"PATH_TYPE" = "NumberPath<java.math.BigDecimal>", "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "java.math.BigDecimal.class" },
+        "Uuid"       = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
+        "Gps"        = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
+        "Track"      = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
+        "File"       = Map{"PATH_TYPE" = "SimplePath<URL>",                  "PATH_FACTORY" = "createSimple",   "PATH_GENERIC" = "URL.class" },
+        "Id"         = Map{"PATH_TYPE" = "NumberPath<Long>",                 "PATH_FACTORY" = "createNumber",     "PATH_GENERIC" = "Long.class" }
+    };
+    return fieldTypeMapping.get(field.typeName).get(propertyName);
+}

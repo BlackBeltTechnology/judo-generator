@@ -1,0 +1,205 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.packageFqName()%];
+
+import com.google.common.collect.ImmutableMap;
+
+import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslContext;
+
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.QBean;
+import com.querydsl.core.types.dsl.SimplePath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.TimePath;
+import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.EnumPath;
+
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.LocalDate;
+
+import com.querydsl.sql.ColumnMetadata;
+
+import [%=class.poClassFqName()%];
+
+import javax.annotation.Nullable;
+import javax.annotation.Generated;
+import java.sql.Types;
+import java.net.URL;
+import java.util.Map;
+
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+import static com.querydsl.core.types.Projections.bean;
+
+@Generated("com.querydsl.sql.codegen.MetaDataSerializer")
+public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.poClassName()%]> {
+    public static final [%=class.name%] q = new [%=class.name%]("[%=class.view.sqlName%]");
+
+    // Constructors
+    /**
+     * Contsucts [%=class.name%] and sets the PathBase. It inherits the parent schema and all reured property which is shared
+     * in the query which created by the root.
+     *
+     * @param parent
+     */
+    public [%=class.name%](QueryDslContext parent) {
+        super([%=class.name%].class, [%=class.poClassName()%].class,
+            forVariable(parent.getAliasGenerator().getNextForName("[%=class.originName%]")), parent.getSchemaName(), "[%=class.view.sqlName%]");
+        super.setAliasGenerator(parent.getAliasGenerator());
+        addMetadata();
+    }
+
+    /**
+     * Contsucts [%=class.name%] and sets the PathBase. It initializes all required metadata to connect other entities.
+     *
+     * @param variable The alias name of table. In the queries, joins and projections this name will be used
+     */
+    public [%=class.name%](String variable) {
+        super([%=class.name%].class, [%=class.poClassName()%].class, forVariable(variable), null, "[%=class.view.sqlName%]");
+        addMetadata();
+    }
+
+    /**
+     * Contsucts [%=class.name%] and sets the PathBase. The DB Schema and alternative table name can be given. It is usefull
+     * when there are tables with same structure as original and every other things are handled same. It
+     * initializes all required metadata to connect other entities.
+     *
+     * @param variable The alias name of table. In the queries, joins and projections this name will be used
+     * @param schema The schema name of table (prefix)
+     * @param table The table name is used for mapping
+     */
+    public [%=class.name%](String variable, String schema, String table) {
+        super([%=class.name%].class, [%=class.poClassName()%].class, forVariable(variable), schema, table);
+        addMetadata();
+    }
+
+    // Attribute definitions
+    public final NumberPath<Long> id = createNumber("id", Long.class);
+    //TODO: {%- if attr.enum %}{%- endif %}
+    [% for (attr in class.attributes()) { %]
+        public final EnumPath<{{ attr.type.pack.business.po._name_ }}Po> [%=attr.name%] = createEnum("[%=attr.name%]", {{ attr.type.pack.business.po._name_ }}Po.class);
+    [%}%]
+
+    //TODO: {%- if not field.enum %}{%- endif %}
+    [% for (field in class.view.fields) { %]
+        public final [%=field.pathType()%] [%=field.name%] = [%=field.pathFactory()%]("[%=field.name%]"[%=(field.pathGeneric().length > 0).ternary(", " + field.pathGeneric(), "")%]);
+    [%}%]
+
+    /* It is not used, because initialization can be circular
+    // Relations to other direct entities
+    {%- for foreignKey in table.foreignKeys %}
+    public {{ foreignKey.ref.type.bare.querydsl }}.Q{{ foreignKey.otherTable.umlname }} {{ foreignKey.qdslnamefk }};
+    {%- endfor %}
+    {%- for invKey in table.invKeys %}
+    public {{ invKey.otherref.type.bare.querydsl }}.Q{{ invKey.table.umlname }} {{ invKey.qdslinvnamefk }};
+    {%- endfor %}
+    */
+    // Physical key and foreig key definitions
+    public class PrimaryKeys {
+        public final com.querydsl.sql.PrimaryKey<[%=class.name%]> {{ class.name|lower }} = createPrimaryKey(id);
+    }
+
+    // Forign key handles normal relation when this table references the other and invers relation when the other table references to our table
+    public class ForeignKeys {
+        {%- for foreignKey in table.foreignKeys %}
+        public final com.querydsl.sql.ForeignKey<{{ foreignKey.ref.type.bare.querydsl }}.Q{{ foreignKey.otherTable.umlname }}> {{ foreignKey.qdslnamefk }} = createForeignKey({{ foreignKey.qdslname }}, "ID");
+        {%- endfor %}
+        {%- for invKey in table.invKeys %}
+        public final com.querydsl.sql.ForeignKey<{{ invKey.otherref.type.bare.querydsl }}.Q{{ invKey.table.umlname }}> {{ invKey.qdslinvnamefk }} = createInvForeignKey(id, "{{ invKey.name }}");
+        {%- endfor %}
+        {%- for nmkey in table.nmKeys %}
+        public final com.querydsl.sql.ForeignKey<{{ nmkey.junction.package }}.Q{{ nmkey.junction.qtypname }}> junction_{{ nmkey.qdslnamefk }} = createInvForeignKey(id, "{{ nmkey.invField.name }}");
+        {%- endfor %}
+    }
+
+    public final PrimaryKeys pk = new PrimaryKeys();
+    public final ForeignKeys fk = new ForeignKeys();
+
+    // Add all required metadata. It stores the modell specific types to be able to map via DSL and Name based dynamic build
+    // It maps the attributes and relations to phisical database fields and foreign keys
+    private void addMetadata() {
+        addMetadata("id", id, ColumnMetadata.named("id").ofType(Types.BIGINT));
+        {%- for field in table.fields %}
+        addMetadata("{{ field.qdslname }}", {{ field.qdslname }}, ColumnMetadata.named("{{ field.name }}").ofType(Types.{{ field.qsqltype }}));
+        {%- endfor %}
+        {%- for foreignKey in table.foreignKeys %}
+        addRelationInfo("{{ foreignKey.fkattrname }}", "{{ foreignKey.ref.otherName }}", {{ foreignKey.ref.type.bare.querydsl }}.Q{{ foreignKey.otherTable.umlname }}.class, null, {{ foreignKey.ref.type.bare.business.po._name_Po }}.class, fk.{{ foreignKey.qdslnamefk }},
+            {%- if foreignKey.qdslupper == "1" %}false{% else %}true{% endif %}, false, {% if foreignKey.qdslinvlower == "1" %}true{% else %}false{%  endif %}, "{{ foreignKey.ref.options or '' }}");
+        {%- endfor %}
+        {%- for invKey in table.invKeys %}
+        addRelationInfo("{{ invKey.fkotherattrname }}", "{{ invKey.otherref.otherName }}", {{ invKey.otherref.type.bare.querydsl }}.Q{{ invKey.table.umlname }}.class, null, {{ invKey.otherref.type.bare.business.po._name_Po }}.class, fk.{{ invKey.qdslinvnamefk }},
+            {%- if invKey.qdslinvupper == "1" %}false{% else %}true{%  endif %}, true, {% if invKey.qdslinvlower == "1" %}true{% else %}false{%  endif %}, "{{ invKey.otherref.options or ''}}");
+        {%- endfor %}
+        {%- for nmkey in table.nmKeys %}
+        addRelationInfo("{{ nmkey.fkattrname }}", "{{ nmkey.ref.otherName }}", {{ nmkey.ref.type.bare.querydsl.Q_name_  }}.class, {{ nmkey.junction.package }}.Q{{ nmkey.junction.qtypname }}.class, {{ nmkey.ref.type.bare.business.po._name_Po }}.class, fk.junction_{{ nmkey.qdslnamefk }}, true, true, false, "");
+        {%- endfor %}
+    }
+
+
+    private static final Map<String, Getter<[%=class.poClassName()%], ?>> getters = ImmutableMap.<String, Getter<[%=class.poClassName()%], ?>>builder()
+        [% for (attr in class.allAttributes()) { %]
+            .put("[%=attr.name%][*{{ attr.name|lower_first }}*]", new Getter<[%=class.poClassName()%], [%=attr.typeFqName%][*{{ attr.type.pack.business.po._name_Po }}*]>() {
+                    @Nullable
+                    @Override
+                    public [%=attr.typeFqName%][*{{ attr.type.pack.business.po._name_Po }}*] get(@Nullable [%=class.poClassName()%] input) {
+                        return input.get[%=attr.name.firstToUpperCase()%]();
+                    }
+            })
+        [%}%]
+        [% for (ref in class.allReferences()) { %]
+            .put("[%=ref.name%][*{{ ref.name|lower_first }}*]", new Getter<[%=class.poClassName()%], [%=ref.typeFqName%][*{{ ref.type.pack.business.po._name_Po }}*]>() {
+                    @Nullable
+                    @Override
+                    public [%=ref.typeFqName%][*{{ ref.type.pack.business.po._name_Po }}*] get(@Nullable [%=class.poClassName()%] input) {
+                        return input.get[%=ref.name.firstToUpperCase()%]();
+                    }
+            })
+        [%}%]
+        .build();
+
+    private static final Map<String, Setter<[%=class.poClassName()%], Object>> setters = ImmutableMap.<String, Setter<[%=class.poClassName()%], Object>>builder()
+        [% for (attr in class.allAttributes()) { %]
+            .put("[%=attr.name%]", new Setter<[%=class.poClassName()%], Object>() {
+                @Nullable
+                @Override
+                public void set(@Nullable [%=class.poClassName()%] instance, @Nullable Object value) {
+                    instance.set[%=attr.name.firstToUpperCase()%](([%=attr.typeFqName%][*{{ attr.type.pack.business.po._name_Po }}*]) value);
+                }
+            })
+        [%}%]
+        [% for (ref in class.allReferences()) { %]
+            .put("[%=ref.name%]", new Setter<[%=class.poClassName()%], Object>() {
+                @Nullable
+                @Override
+                public void set(@Nullable [%=class.poClassName()%] instance, @Nullable Object value) {
+                    instance.set[%=ref.name.firstToUpperCase()%](([%=ref.typeFqName%][*{{ ref.type.pack.business.po._name_Po }}*]) value);
+                }
+            })
+        [%}%]
+        .build();
+
+    @Override
+    public Object getMember([%=class.poClassName()%] obj, String memberName) {
+        if (memberName.startsWith("$")) {
+            return null;
+        } else if (!getters.containsKey(memberName)) {
+            throw new IllegalArgumentException("Unknown member: " + memberName);
+        } else return getters.get(memberName).get(obj);
+    }
+
+    @Override
+    public void setMember([%=class.poClassName()%] obj, String memberName, Object value) {
+        if (memberName.startsWith("$")) {
+        } else if (!setters.containsKey(memberName)) {
+            throw new IllegalArgumentException("Unknown member: " + memberName);
+        } else setters.get(memberName).set(obj, value);
+    }
+}

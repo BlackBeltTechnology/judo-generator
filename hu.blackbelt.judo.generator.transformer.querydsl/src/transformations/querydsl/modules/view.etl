@@ -1,0 +1,9 @@
+import "../../../operations/_importAll.eol";
+
+rule RdbmsViewToQueryDslTable
+    transform s : RDBMS!RdbmsView
+    to t : QUERYDSL!QueryDslView {
+        t.name = s.name;
+        t.sqlName = s.sqlName;
+        t.originUuid = s.originUuid;
+    }

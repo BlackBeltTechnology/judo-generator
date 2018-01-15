@@ -1,0 +1,12 @@
+import "../../../operations/_importAll.eol";
+
+rule JvmReferenceToQueryDslReference
+    transform s : JAVA!JvmReference
+    to t : QUERYDSL!QueryDslReference {
+        guard : s.ownerClass.coordinate = JAVA!JvmJudoCoordinate#ORIGIN
+
+        t.name = s.name;
+        t.originUuid = s.uuid;
+        t.typeFqName = s.type.po().fqName();
+        t.ownerClass = s.ownerClass.equivalent("JvmClassToQueryDslClass");
+    }

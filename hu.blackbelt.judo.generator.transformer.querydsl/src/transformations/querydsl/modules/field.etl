@@ -1,0 +1,25 @@
+import "../../../operations/_importAll.eol";
+
+rule QueryDslFieldGeneric
+    transform s : RDBMS!RdbmsViewAliasField
+    to t : QUERYDSL!QueryDslField {
+        t.name = s.name.split("\\.").last();
+        t.sqlName = s.sqlName;
+        t.typeName = s.tableField.type.name;
+        t.view = s.view.equivalent("RdbmsViewToQueryDslTable");
+    }
+
+rule RdbmsViewValueFieldToQueryDslField
+    transform s : RDBMS!RdbmsViewValueField
+    to t : QUERYDSL!QueryDslField
+    extends QueryDslFieldGeneric {}
+
+rule RdbmsViewIdentifierFieldToQueryDslField
+    transform s : RDBMS!RdbmsViewIdentifierField
+    to t : QUERYDSL!QueryDslField
+    extends QueryDslFieldGeneric {}
+
+rule RdbmsViewRelationIdentifierFieldToQueryDslField
+    transform s : RDBMS!RdbmsViewRelationIdentifierField
+    to t : QUERYDSL!QueryDslField
+    extends QueryDslFieldGeneric {}

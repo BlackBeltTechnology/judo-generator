@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>hu.blackbelt.judo.generator</groupId>
+		<artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+	</parent>
+
+	<artifactId>hu.blackbelt.judo.generator.transformer.querydsl</artifactId>
+	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>epsilon-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<id>transform-querydsl</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
+                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.querydsl:ecore:querydsl:${project.version}</metaModel>
+							</metaModels>
+
+							<models>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsPostgres:${project.version}</artifact>
+									<name>RDBMS</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+									</metaModelUris>
+								</model>
+
+                                <model>
+                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
+                                    <name>JAVATYPES</name>
+                                    <metaModelUris>
+                                        <param>http://blackbelt.hu/judo/meta/psm/java</param>
+                                    </metaModelUris>
+                                    <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
+                                </model>
+                                <model>
+                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.java:model:java:${project.version}</artifact>
+                                    <name>JAVA</name>
+                                    <metaModelUris>
+                                        <param>http://blackbelt.hu/judo/meta/psm/java</param>
+                                    </metaModelUris>
+                                </model>
+
+                                <!-- Target -->
+                                <model>
+                                    <artifact>${project.build.directory}/querydsl.model</artifact>
+                                    <name>QUERYDSL</name>
+                                    <readOnLoad>false</readOnLoad>
+                                    <storeOnDisposal>true</storeOnDisposal>
+                                    <metaModelUris>
+                                        <param>http://blackbelt.hu/judo/meta/psm/querydsl</param>
+                                    </metaModelUris>
+                                </model>
+
+							</models>
+							<eolPrograms>
+								<Evl>
+									<source>src/validations/validation.evl</source>
+								</Evl>
+								<Etl>
+									<source>src/transformations/querydsl/javaAndRdbmsToQueryDsl.etl</source>
+								</Etl>
+							</eolPrograms>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-resource</id>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src</directory>
+								</resource>
+							</resources>
+						</configuration>
+						
+					</execution>
+
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.build.directory}/querydsl.model</file>
+									<type>model</type>
+									<classifier>querydsl</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>hu.blackbelt.judo.generator</groupId>
+			<artifactId>hu.blackbelt.judo.generator.transformer.java</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>

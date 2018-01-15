@@ -1,0 +1,4 @@
+for (c in QUERYDSL!QueryDslClass.all) {
+    c.name.println();
+    c.view.println("  ");
+}

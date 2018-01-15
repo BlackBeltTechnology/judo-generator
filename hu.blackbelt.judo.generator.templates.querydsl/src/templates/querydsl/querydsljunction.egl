@@ -1,0 +1,131 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package {{ package }};
+
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.sql.ColumnMetadata;
+import {{ junction.field1.jtype.bare.querydsl }}.Q{{ junction.field1.jtype.name }};
+import {{ junction.field2.jtype.bare.querydsl }}.Q{{ junction.field2.jtype.name }};
+import hu.blackbelt.judo.rdbms.querydsl.api.JunctionPo;
+import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslContext;
+import com.querydsl.sql.ForeignKey;
+import com.querydsl.sql.PrimaryKey;
+
+import javax.annotation.Generated;
+import java.sql.Types;
+
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+
+/**
+ * Special juinction table handler QType. It is requred to handle n m relation correctly.
+ */
+
+@Generated("com.querydsl.sql.codegen.MetaDataSerializer")
+public class Q{{ junction.qtypname }} extends QueryDslContext<Q{{ junction.qtypname }}, JunctionPo> {
+    public static final Q{{ junction.qtypname }} q = new Q{{ junction.qtypname }}("{{ junction.name }}");
+
+    // Constructors
+
+    /**
+     * Contsucts Q{{ junction.qtypname }} and sets the PathBase. It inherits the parent schema and all reured property which is shared
+     * in the query which created by the root.
+     *
+     * @param parent
+     */
+    public Q{{ junction.qtypname }}(QueryDslContext parent) {
+        super(Q{{ junction.qtypname }}.class, JunctionPo.class,
+                forVariable(parent.getAliasGenerator().getNextForName("{{ junction.field1.name | upper }}{{ junction.field2.name | upper }}")), parent.getSchemaName(), "{{ junction.name }}");
+        super.setAliasGenerator(parent.getAliasGenerator());
+        addMetadata();
+    }
+
+    /**
+     * Contsucts Q{{ junction.qtypname }} and sets the PathBase. It initializes all required metadata to connect other entities.
+     *
+     * @param variable The alias name of table. In the queries, joins and projections this name will be used
+     */
+    public Q{{ junction.qtypname }}(String variable) {
+        super(Q{{ junction.qtypname }}.class, JunctionPo.class, forVariable(variable), null, "{{ junction.name }}");
+        addMetadata();
+    }
+
+    /**
+     * Contsucts Q{{ junction.qtypname }} and sets the PathBase. The DB Schema and alternative table name can be given. It is usefull
+     * when there are tables with same structure as original and every other things are handled same. It
+     * initializes all required metadata to connect other entities.
+     *
+     * @param variable The alias name of table. In the queries, joins and projections this name will be used
+     * @param schema   The schema name of table (prefix)
+     * @param table    The table name is used for mapping
+     */
+    public Q{{ junction.qtypname }}(String variable, String schema, String table) {
+        super(Q{{ junction.qtypname }}.class, JunctionPo.class, forVariable(variable), schema, table);
+        addMetadata();
+    }
+
+    // Attribute definitions
+    public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final NumberPath<Long> {{ junction.field1.fkattrname }} = createNumber("mId", Long.class);
+    public final NumberPath<Long> {{ junction.field2.fkattrname }} = createNumber("nId", Long.class);
+
+    /* It is not used, because initialization can be circular
+    // Relations to other direct entities
+    */
+    // Physical key and foreig key definitions
+    public class PrimaryKeys {
+        public final PrimaryKey<Q{{ junction.qtypname }}> classn1m1 = createPrimaryKey(id);
+    }
+
+    // Forign key handles normal relation when this table references the other and invers relation when the other table references to our table
+    public class ForeignKeys {
+        public final ForeignKey<Q{{ junction.field1.jtype.name }}> m = createForeignKey(Q{{ junction.qtypname }}.this.{{ junction.field1.fkattrname }}, "ID");
+        public final ForeignKey<Q{{ junction.field2.jtype.name }}> n = createForeignKey(Q{{ junction.qtypname }}.this.{{ junction.field2.fkattrname }}, "ID");
+    }
+
+    public final PrimaryKeys pk = new PrimaryKeys();
+    public final ForeignKeys fk = new ForeignKeys();
+
+    // Add all required metadata. It stores the modell specific types to be able to map via DSL and Name based dynamic build
+    // It maps the attributes and relations to phisical database fields and foreign keys
+    private void addMetadata() {
+        addMetadata("id", id, ColumnMetadata.named("id").ofType(Types.BIGINT));
+        addMetadata("{{ junction.field1.fkattrname }}", {{ junction.field1.fkattrname }}, ColumnMetadata.named("{{ junction.field1.name }}").ofType(Types.BIGINT));
+        addMetadata("{{ junction.field2.fkattrname }}", {{ junction.field2.fkattrname }}, ColumnMetadata.named("{{ junction.field2.name }}").ofType(Types.BIGINT));
+        addRelationInfo("{{ junction.field1.fkattrname }}", "{{ junction.field2.fkattrname }}", Q{{ junction.field1.jtype.name }}.class, null, {{ junction.field1.jtype.bare.business.po._name_Po }}.class, fk.m, false, false, false, "");
+        addRelationInfo("{{ junction.field2.fkattrname }}", "{{ junction.field1.fkattrname }}", Q{{ junction.field2.jtype.name }}.class, null, {{ junction.field2.jtype.bare.business.po._name_Po }}.class, fk.n, false, false, false, "");
+    }
+
+    @Override
+    public Object getMember(JunctionPo obj, String memberName) {
+        if ("id".equals(memberName)) {
+            return obj.getId();
+        }
+        else if ("{{ junction.field1.fkattrname }}".equals(memberName)) {
+            return obj.getMId();
+        }
+        else if ("{{ junction.field2.fkattrname }}".equals(memberName)) {
+            return obj.getNId();
+        }
+        throw new IllegalArgumentException("Unknown member: " + memberName);
+    }
+
+    @Override
+    public void setMember(JunctionPo obj, String memberName, Object value) {
+        if ("id".equals(memberName)) {
+            obj.setId((Long) value);
+        }
+        else if ("{{ junction.field1.fkattrname }}".equals(memberName)) {
+            obj.setMId((Long) value);
+        }
+        else if ("{{ junction.field2.fkattrname }}".equals(memberName)) {
+            obj.setNId((Long) value);
+        }
+        throw new IllegalArgumentException("Unknown member: " + memberName);
+    }
+
+}

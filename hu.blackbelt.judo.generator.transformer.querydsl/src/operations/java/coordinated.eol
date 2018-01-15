@@ -1,0 +1,18 @@
+@cached
+operation JAVA!JvmCoordinated po () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#PO);
+}
+
+@cached
+operation JAVA!JvmCoordinated origin() : JAVA!JvmCoordinated {
+    if (self.coordinate == JAVA!JvmJudoCoordinate#ORIGIN) {
+        return self;
+    } else {
+        return self.origin;
+    }
+}
+
+operation JAVA!JvmCoordinated find (jvmJudoCoordinate : Any) : JAVA!JvmCoordinated {
+    var ret =  JAVA!JvmCoordinated.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().isDefined() and c.origin().uuid = self.origin().uuid)).first();
+    return ret;
+}

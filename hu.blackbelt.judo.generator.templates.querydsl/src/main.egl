@@ -1,0 +1,33 @@
+[%
+import "operations/_importAll.eol";
+
+getQueryDslTemplate("querydsl").genQueryDsl();
+getQueryDslTemplate("querydsljunction").genQueryDslJunction();
+getQueryDslTemplate("querydslsimplepersistenceprovider").genQueryDslSimplePersistenceProvider();
+
+operation Template genQueryDsl () {
+    for (class in QUERYDSL!QueryDslClass.all) {
+        self.populate("class", class);
+        self.generate("QUERYDSL/" + class.packageName.replaceAll("\\.", "/") + "/" + class.name + ".java");
+        self.reset();
+    }
+}
+
+operation Template genQueryDslJunction () {
+   
+}
+
+operation Template genQueryDslSimplePersistenceProvider () {
+    var queryDslModel = QUERYDSL!QueryDslModel.all.first();
+    var className = queryDslModel.persistenceName + "QueryDslSimplePersistenceProvider";
+    self.populate("className", className);
+    self.populate("topPackageName", queryDslModel.topPackageName);
+    self.generate("QUERYDSL_SIMPLE_PERSISTENCE_PROVIDER/" + queryDslModel.topPackageName.replaceAll("\\.", "/") + "/" + className + ".java");
+    self.reset();
+}
+
+operation getQueryDslTemplate (templateName : String) : Any {
+    return TemplateFactory.load("templates/querydsl/" + templateName + ".egl");
+}
+
+%]

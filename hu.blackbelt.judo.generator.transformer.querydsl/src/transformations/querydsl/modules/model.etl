@@ -1,0 +1,15 @@
+import "../../../operations/_importAll.eol";
+rule RdbmsModelToQueryDslModel 
+    transform s : RDBMS!RdbmsModel
+    to t : QUERYDSL!QueryDslModel {
+        guard : QUERYDSL!QueryDslModel.all.size == 0
+
+        targetModel = t;
+
+        t.version = RDBMS!RdbmsModel.all.first().version;
+
+        //TODO: there should only be one java model and that should be used
+        var javaModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
+        t.topPackageName = javaModel.applicationTop.fqName();
+        t.persistenceName = javaModel.applicationTop.name.firstToUpperCase();
+    }
