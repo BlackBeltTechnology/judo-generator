@@ -7,4 +7,67 @@ rule JModel
 	extends JElement {
 		t.packages ::= s.packages;
 		t.applicationTop ::= s.applicationTop;
+
+
+		for (other in JAVATYPES!JvmPrimitive.all) {
+			var p : JAVA!JvmPrimitive = new JAVA!JvmPrimitive;
+			p.description = other.description;
+			p.framework = other.framework;
+			p.fullName = other.fullName;
+			p.fwElement = other.fwElement;
+			p.name = other.name;
+			p.primitive = other.primitive;
+			p.shortName = other.shortName;
+			//p.supertype = other.supertype;
+			p.useForJudoId = other.useForJudoId;
+			p.uuid = other.uuid;
+			p.package = t.findOrCreatePackageRecursively(other.package.fqName());
+		}
+
+		for (other in FWELEMENTS!JvmInterface.all) {
+			other.cloneToJavaModel(t);
+		}
+}
+
+operation FWELEMENTS!JvmClass cloneToJavaModel(jvmModel : JAVA!JvmModel) {
+	var c : JAVA!JvmClass = new JAVA!JvmClass;
+	c.abstract = self.abstract;
+	c.businessSingleton = self.businessSingleton;
+	c.coordinate = self.coordinate;
+	c.description = self.description;
+	//c.fixedEnum = self.fixedEnum;
+	c.framework = self.framework;
+	c.fullName = self.fullName;
+	c.fwElement = self.fwElement;
+	//c.implements = self.implements;
+	c.name = self.name;
+	//c.origin = self.origin; //TODO: this should be copied!
+	//c.representationAttribute = self.representationAttribute;
+	c.representsEnum = self.representsEnum;
+	c.representsTenant = self.representsTenant;
+	c.representsTenantUser = self.representsTenantUser;
+	c.representsUser = self.representsUser;
+	c.shortName = self.shortName;
+	//c.supertype = self.supertype;
+	c.technicalObject = self.technicalObject;
+	c.tenantMember = self.tenantMember;
+	c.useForJudoId = self.useForJudoId;
+	c.uuid = self.uuid;
+	c.package = jvmModel.findOrCreatePackageRecursively(self.package.fqName());
+}
+
+operation FWELEMENTS!JvmInterface cloneToJavaModel (jvmModel : JAVA!JvmModel) {
+	var i : JAVA!JvmInterface = new JAVA!JvmInterface;
+	i.coordinate = self.coordinate;
+	i.description = self.description;
+	i.framework = self.framework;
+	i.fullName = self.fullName;
+	i.fwElement = self.fwElement;
+	i.name = self.name;
+	i.origin = self.origin;
+	i.shortName = self.shortName;
+	//i.supertype = self.supertype;
+	i.useForJudoId = self.useForJudoId;
+	i.uuid = self.uuid;
+	i.package = jvmModel.findOrCreatePackageRecursively(self.package.fqName());
 }

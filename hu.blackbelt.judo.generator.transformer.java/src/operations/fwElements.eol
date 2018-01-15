@@ -1,19 +1,19 @@
 @cached
-operation paginationOrigin () : FWELEMENTS!JvmClass {
-    return FWELEMENTS!JvmClass.all.select(c | c.name = "Pagination" and c.coordinate=JAVA!JvmJudoCoordinate#ORIGIN).first();
+operation paginationOrigin () : JAVA!JvmClass {
+    return JAVA!JvmClass.all.select(c | c.name = "Pagination" and c.coordinate=JAVA!JvmJudoCoordinate#ORIGIN).first();
 }
 
-operation paginationClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
-    return FWELEMENTS!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Pagination" and c.coordinate = jvmJudoCoordinate)).first();
+operation paginationClass (jvmJudoCoordinate : Any) : JAVA!JvmClass {
+    return JAVA!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Pagination" and c.coordinate = jvmJudoCoordinate)).first();
 }
 
 @cached
-operation filterOrigin () : FWELEMENTS!JvmClass {
-    return FWELEMENTS!JvmClass.all.select(c | c.name = "Filter" and c.coordinate=JAVA!JvmJudoCoordinate#ORIGIN).first();
+operation filterOrigin () : JAVA!JvmClass {
+    return JAVA!JvmClass.all.select(c | c.name = "Filter" and c.coordinate=JAVA!JvmJudoCoordinate#ORIGIN).first();
 }
 
-operation filterClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
-    return FWELEMENTS!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Filter" and c.coordinate = jvmJudoCoordinate)).first();
+operation filterClass (jvmJudoCoordinate : Any) : JAVA!JvmClass {
+    return JAVA!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Filter" and c.coordinate = jvmJudoCoordinate)).first();
 }
 
 @cached

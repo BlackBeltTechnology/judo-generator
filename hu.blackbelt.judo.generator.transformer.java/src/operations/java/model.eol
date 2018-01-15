@@ -5,7 +5,7 @@ operation JAVA!JvmModel findOrCreateJavaUtilPackage () : JAVA!JvmPackage {
 operation JAVA!JvmModel findOrCreatePackageRecursively (packageName : String) : JAVA!JvmPackage {
 	var packsToCreate = packageName.split("\\.");
 	var topPackageName = packsToCreate.first();
-	var topPackage = self.packages.select(p | p.name = topPackageName).first();
+	var topPackage = self.packages.selectOne(p | p.name = topPackageName and p.package.isUndefined());
 	if (topPackage.isUndefined()) {
 		topPackage = new JAVA!JvmPackage;
 		topPackage.name = topPackageName;

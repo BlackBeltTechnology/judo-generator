@@ -4,7 +4,7 @@ operation addPackageBasedClasses () {
 }
 
 operation addDomainBqlClasses () : Any {
-	for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO).origin.package.asSet()) {
+	for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and not c.fwElement).origin.package.asSet()) {
 		var domainBqlClass = new JAVA!JvmClass;
 		domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
 		domainBqlClass.name = package.name.firstToUpperCase();
@@ -16,7 +16,7 @@ operation addDomainBqlClasses () : Any {
 }
 
 operation addPackageBasedRestDtoClasses () {
-    for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#REST_DTO).origin.package.asSet()) {
+    for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#REST_DTO and not c.fwElement).origin.package.asSet()) {
         var dummyOriginClass = new JAVA!JvmClass;
         dummyOriginClass.name = "DummyOriginClassForPackage" + package.name;
         dummyOriginClass.coordinate = JAVA!JvmJudoCoordinate#ORIGIN;

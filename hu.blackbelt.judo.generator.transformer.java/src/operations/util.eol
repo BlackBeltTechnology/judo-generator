@@ -1,26 +1,26 @@
 
 operation voidType () : JAVA!JvmType {
-	return JAVATYPES!JvmType.all.select( t | t.name = "Void").first();
+	return JAVA!JvmType.all.select( t | t.name = "Void").first();
 }
 
 operation intType () : JAVA!JvmType {
-	return JAVATYPES!JvmType.all.select( t | t.name = "Integer").first();
+	return JAVA!JvmType.all.select( t | t.name = "Integer").first();
 }
 
 operation stringType () : JAVA!JvmType {
-	return JAVATYPES!JvmType.all.select( t | t.name = "String").first();
+	return JAVA!JvmType.all.select( t | t.name = "String").first();
 }
 
 operation longType () : JAVA!JvmType {
-	return JAVATYPES!JvmType.all.select( t | t.name = "Long").first();
+	return JAVA!JvmType.all.select( t | t.name = "Long").first();
 }
 
 operation idType () : JAVA!JvmType {
-	return JAVATYPES!JvmType.all.select( t | t.useForJudoId).first();
+	return JAVA!JvmType.all.select( t | t.useForJudoId).first();
 }
 
 operation urlType () : JAVA!JvmType {
-    return  JAVATYPES!JvmType.all.select( t | t.name = "URL").first();
+    return  JAVA!JvmType.all.select( t | t.name = "URL").first();
 }
 
 operation randomUUID () : String {

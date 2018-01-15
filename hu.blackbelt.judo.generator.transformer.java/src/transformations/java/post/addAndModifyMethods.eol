@@ -108,6 +108,7 @@ operation JAVA!JvmInterface createDtoOperationMethods () {
 }
 
 operation JAVA!JvmInterface createRestDtoOperationMethods () {
+    var responseType = responseType();
     for (ref in self.origin.allReferences().select(r | r.navigable)) {
         var returnType;
         if(ref.type.isCollection()) {
@@ -116,24 +117,24 @@ operation JAVA!JvmInterface createRestDtoOperationMethods () {
             returnType = ref.type.restDto();
         }
 
-        var traverseMethod = createMethodFor(self, ref, responseType(), "traverse", JAVA!JvmMethodKind#TRAVERSE);
+        var traverseMethod = createMethodFor(self, ref, responseType, "traverse", JAVA!JvmMethodKind#TRAVERSE);
         traverseMethod.addIdParam();
         traverseMethod.addCustomParam(self.filterRestDto(), "filter");
         traverseMethod.addPaginationParam();
 
-        var traverseExportMethod = createMethodFor(self, ref, responseType(), "", JAVA!JvmMethodKind#TRAVERSE_EXPORT);
+        var traverseExportMethod = createMethodFor(self, ref, responseType, "", JAVA!JvmMethodKind#TRAVERSE_EXPORT);
         traverseExportMethod.name = "traverse" + ref.name.firstToUpperCase() + "Export";
         traverseExportMethod.uuid = uuid3(ref.uuid, traverseExportMethod.name);
         traverseExportMethod.addIdParam();
         traverseExportMethod.addCustomParam(self.filterRestDto(), "filter");
 
         if (not ref.derived) {
-            var availableMethod = createMethodFor(self, ref, responseType(), "available", JAVA!JvmMethodKind#AVAILABLE);
+            var availableMethod = createMethodFor(self, ref, responseType, "available", JAVA!JvmMethodKind#AVAILABLE);
             availableMethod.addIdParam();
             availableMethod.addCustomParam(self.filterRestDto(), "filter");
             availableMethod.addPaginationParam();
 
-            var availableAllMethod = createMethodFor(self, ref, responseType(), "availableAll", JAVA!JvmMethodKind#AVAILABLE_ALL);
+            var availableAllMethod = createMethodFor(self, ref, responseType, "availableAll", JAVA!JvmMethodKind#AVAILABLE_ALL);
             availableAllMethod.addCustomParam(self.filterRestDto(), "filter");
             availableAllMethod.addPaginationParam();
 

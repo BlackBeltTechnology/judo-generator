@@ -4,7 +4,7 @@ operation addHuBlackbeltPackages () : Any {
 		var origPackages = topModel.packages.asSet();
 		var topPackage = topModel.findOrCreatePackageRecursively("hu.blackbelt");
 		for (p in origPackages) { 
-			if (p.name <> "java"){
+			if (not Set{"java", "javax", "hu", "org"}.includes(p.name)){
 				p.package = topPackage;
 			}
 		}
