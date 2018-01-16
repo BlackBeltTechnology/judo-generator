@@ -142,6 +142,13 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	enumClass.name = corrEnum.name;
 	enumClass.fixedEnum = corrEnum; 
 	enumClass.uuid = uuid3(self.uuid, "Cls");
+	enumClass.representsEnum = true;
+	
+	enumClass.attributes.add(createDefaultAttribute("code").uuid(enumClass.uuid).type(getPSMPrimitiveType("String")));
+	
+	var att = createDefaultAttribute("value").uuid(enumClass.uuid).type(getPSMPrimitiveType("String"));	
+	enumClass.attributes.add(att);
+	enumClass.representation = att;
 	
 		// ownerships
 		enumClass.package = tgtPkg;
@@ -152,6 +159,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	enumValueClass.name = enumClass.name + "Values"; 
 	enumValueClass.uuid = uuid3(self.uuid, "ValCls");
 	
+	enumValueClass.attributes.add(createDefaultAttribute("value").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")));
 		// ownerships
 		enumValueClass.package = tgtPkg;
 		tgtPkg.classes.add( enumValueClass );
@@ -166,7 +174,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	langClass.println("RULE::STATEMACHINE - LANGCLASS : ");
 
 // add relation : enumValueClass - Language - First part of Relation name should coume first!
-	createRelationWithRoles( tgtPkg, "langClient", "langSupplier",			// TODO: check & ensure correct role assignments
+	createRelationWithRoles( tgtPkg, "langClient", "langcode",			// TODO: check & ensure correct role assignments
 									 langClass, enumValueClass);
 
 

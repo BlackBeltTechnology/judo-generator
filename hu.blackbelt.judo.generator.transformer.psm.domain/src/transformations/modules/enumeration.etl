@@ -34,6 +34,11 @@ rule Enum2CorrespondingValueClass
 	var isFrameworkElmt = tgtPkg.framework;
 	
 	t.representsEnum = true;
+	t.attributes.add(createDefaultAttribute("code").uuid(t.uuid).type(getPSMPrimitiveType("String")));
+	
+	var att = createDefaultAttribute("value").uuid(t.uuid).type(getPSMPrimitiveType("String"));	
+	t.attributes.add(att);
+	t.representation = att;
 	
 	s.owner.equivalent("Package").classes.add(t);
 	
@@ -50,6 +55,8 @@ rule Enum2CorrespondingValueClass
 	enumValueClass.name = t.name.concat("Value");
 	enumValueClass.framework = isFrameworkElmt;
 	enumValueClass.representsEnumValue = true;
+	enumValueClass.attributes.add(createDefaultAttribute("value").uuid(t.uuid).type(getPSMPrimitiveType("String")));
+	
 	
 	enumValueClass.representsEnumValue.println("Enum: ");
 	
@@ -101,6 +108,7 @@ rule Enum2CorrespondingValueClass
  	enumValueClassRole2nd.uuid = uuid3(t.uuid, "enumValueClassRole2nd");
  	enumValueClassLangClassRelationship.roles.add( enumValueClassRole2nd );
 
+	enumValueClassRole2nd.navigable = true;
 	enumValueClassRole2nd.ownerClass = langClass;
  	enumValueClassRole2nd.framework = isFrameworkElmt;
 	enumValueClassRole2nd.ownerClass.roles.add( enumValueClassRole2nd );
@@ -111,6 +119,7 @@ rule Enum2CorrespondingValueClass
  	langClassRole.framework = isFrameworkElmt;
  	enumValueClassLangClassRelationship.roles.add( langClassRole );
  	
+ 	langClassRole.navigable = true;
  	langClassRole.ownerClass = enumValueClass;
  	langClassRole.ownerClass.roles.add( langClassRole ); 
  }
