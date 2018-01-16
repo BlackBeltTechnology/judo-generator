@@ -1,18 +1,22 @@
 operation Permission!PermissionModel buildObjectRoles(classPermissions : Sequence(Permission!Permission), oppositeClasses : Sequence(String),
-							enums : Sequence(String), hostClassUuid : String, hostClassName : String) {
+							enums : Sequence(String), enumValues : Sequence(String), hostClassUuid : String, hostClassName : String) {
 							
 	var oppositeList = Permission!Permission.all.select(p | oppositeClasses.includes(p.hostClassName) and p.action = "list");	
-	var enumReadWrite = Permission!RelPermission.all.select(p | enums.includes(p.resource) and (p.action = "read" or p.action = "write"));
-	
-	enums.println("ENUMS: ");
-	enumReadWrite.println("Enum READ/WRITE: ");
+	var enumReadWrite = Permission!Permission.all.select(p | enums.includes(p.resource.replace(".value", "")) and (p.action = "read" or p.action = "write"));
+	var enumValuePermissions = Permission!RelPermission.all.select(p | enumValues.includes(p.resource) and (p.action = "read" or p.action = "write"));
 	
 	var oppositeAttachDetach = Permission!RelPermission.all.select(p | p.otherType.equals(hostClassName) and oppositeClasses.includes(p.hostClassName)
 								and (p.action = "attach" or p.action = "detach"));
 	
-	var readPermissions = classPermissions.select(p | p.action = "list" or p.action = "read") + oppositeList + enumReadWrite.select(p | p.action = "read");						
+	var readPermissions = classPermissions.select(p | p.action = "list" or p.action = "read") 
+												+ oppositeList 
+												+ enumReadWrite.select(p | p.action = "read")
+												+ enumValuePermissions.select(p | p.action = "read");						
 	var updatePermissions = classPermissions.select(p | p.action = "list" or p.action = "read" or p.action = "update" 
-												 or p.action = "write" or p.action = "attach" or p.action = "detach") + oppositeAttachDetach + enumReadWrite;
+												 or p.action = "write" or p.action = "attach" or p.action = "detach") 
+												 + oppositeAttachDetach 
+												 + enumReadWrite
+												 + enumValuePermissions;
 	var createPermissions = classPermissions.select(p | p.action = "create") + updatePermissions;
 	var managePermissions = classPermissions.select(p | p.action = "delete") + createPermissions;
 	var callPermissions = classPermissions.select(p | p.action = "call");

@@ -21,7 +21,7 @@ operation createLoginMap() : Map<String, String> {
 	loginPermMap.put("framework.User.email", "read");
 	loginPermMap.put("framework.User.firstName", "read");
 	loginPermMap.put("framework.User.guid", "read");
-	loginPermMap.put("framework.User.lastLoginTime", "call");
+	loginPermMap.put("framework.User.lastLoginTime", "read");
 	loginPermMap.put("framework.User.lastName", "read");
 	loginPermMap.put("framework.User.loginName", "read");
 	loginPermMap.put("framework.User.notificationEmail", "read");

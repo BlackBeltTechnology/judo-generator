@@ -7,6 +7,7 @@ pre {
 	var permissionMap : Map<String, Sequence(Permission!Permission)> = new Map();
 	var oppositeMap : Map<String, Sequence(String)> = new Map();
 	var enumMap : Map<String, Sequence(String)> = new Map();
+	var enumValueMap : Map<String, Sequence(String)> = new Map();
 	var classMap : Map<String, String> = new Map();
 }
 
@@ -17,10 +18,12 @@ post {
 
 	for (jclass in PSM!JClass.all) {
 		if (jclass.package.participates(PSM!JLayer#OPERATION)) {
+		
 			var hostClassName : String = jclass.package.name + "." + jclass.name;
 			var classPermissions : Sequence(Permission!Permission);
 			var oppositeSeq : Sequence(String) = new Sequence(String);
 			var enumSeq : Sequence(String) = new Sequence(String);
+			var enumValueSeq : Sequence(String) = new Sequence(String);
 			
 			var currentClass = jclass;
 			while (true) {
@@ -31,14 +34,15 @@ post {
 				for (jrole in currentClass.roles) {
 					if (jrole.navigable) {
 						classPermissions.addAll(JRoleToPermissions(jrole, jclass.package, jclass));
-						oppositeSeq.add(jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name);
-						
-						jrole.name.println("JRole");
-						
+						if (not jclass.representsEnum or jrole.opposite().ownerClass.representsEnumValue) {
+							oppositeSeq.add(jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name);
+						}
+											
 						if (not jclass.representsEnumValue and jrole.opposite().ownerClass.representsEnum) {
 							var valueRole = jrole.opposite().ownerClass.roles.select(role | role.opposite().ownerClass.representsEnumValue).first();
-							valueRole.name.println("ValueRole: ");
-							enumSeq.add(valueRole.ownerClass.package.name + "." + valueRole.ownerClass.name + "." + valueRole.name);
+							enumValueSeq.add(valueRole.ownerClass.package.name + "." + valueRole.ownerClass.name + "." + valueRole.name);
+												
+							enumSeq.add(jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name);
 						} 
 					}
 				}
@@ -57,6 +61,7 @@ post {
 			classPermissions.addAll(jclass.equivalents("JClassToPermissions"));
 			
 			enumMap.put(hostClassName, enumSeq);
+			enumValueMap.put(hostClassName, enumValueSeq);
 			oppositeMap.put(hostClassName, oppositeSeq);
 			permissionMap.put(hostClassName, classPermissions);
 			classMap.put(hostClassName, jclass.uuid);
@@ -65,23 +70,24 @@ post {
 		}
 	}
 
-	var oppositeClasses : Sequence(String);
-
 	for (hostClassName in permissionMap.keySet()) {
-		oppositeClasses = oppositeMap.get(hostClassName);
+		var oppositeClasses : Sequence(String) = oppositeMap.get(hostClassName);
 		var enums : Sequence(String) = enumMap.get(hostClassName);
+		var enumValues : Sequence(String) = enumValueMap.get(hostClassName);
 		var hostClassUuid : String = classMap.get(hostClassName);
 		var classPermissions : Sequence(Permission!Permission) = permissionMap.get(hostClassName);
-		permissionModel.buildObjectRoles(classPermissions, oppositeClasses, enums, hostClassUuid, hostClassName);
+		
+		permissionModel.buildObjectRoles(classPermissions, oppositeClasses, enums, enumValues, hostClassUuid, hostClassName);
 	}
 	
 	permissionModel.buildRelationRoles();
 	
 	for (hostClassName in permissionMap.keySet()) {
-		oppositeClasses = oppositeMap.get(hostClassName);
-		permissionModel.buildEmbeddedRoles( oppositeClasses, hostClassName);
+		var oppositeClasses : Sequence(String) = oppositeMap.get(hostClassName);
+		var enums : Sequence(String) = enumMap.get(hostClassName);
+		
+		permissionModel.buildEmbeddedRoles(hostClassName, oppositeClasses, enums);
 	}
-	
 	
 	permissionModel.createAdmin();
 	permissionModel.createAdminRole();

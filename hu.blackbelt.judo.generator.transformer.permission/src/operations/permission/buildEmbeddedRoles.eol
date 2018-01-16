@@ -1,4 +1,4 @@
-operation Permission!PermissionModel buildEmbeddedRoles(oppositeClasses : Sequence(String), hostClassName : String) {
+operation Permission!PermissionModel buildEmbeddedRoles(hostClassName : String, oppositeClasses : Sequence(String), enums : Sequence(String)) {
 	var oppositeRoles : Sequence(Permission!Role) = Permission!Role.all.select(role | oppositeClasses.includes(role.name.replace("_read", "")));
 	var hostRoles = Permission!Role.all.select(role | role.name = hostClassName + "_update" or role.name = hostClassName + "_create" 
 		or role.name = hostClassName + "_manage" or role.name = hostClassName + "_full");
@@ -7,5 +7,16 @@ operation Permission!PermissionModel buildEmbeddedRoles(oppositeClasses : Sequen
 		role.childrenRoles.addAll(oppositeRoles);
 	}
 	
-	
+	if (enums.size > 0) {
+		var readRole = Permission!Role.all.select(role | role.name = hostClassName + "_read").first();
+		var readEnumRoles = Permission!Role.all.select(role | enums.includes(role.name.replace("_read", "")));
+		
+		readRole.name.println("ReadRole: ");
+		for (role in readEnumRoles) {
+			role.name.println("EnumRoles:");
+		}
+		
+		
+		readRole.childrenRoles.addAll(readEnumRoles);
+	}
 }
