@@ -41,6 +41,12 @@ post {
 				mainMenu.menuItems.add(menuItem);
 			}
 		}
+	} else {
+	
+		var loneMenuItems = UI!UIMenuItem.all.select(item | not item.ownerMenuItem.isDefined() and item.uuid <> "main_menu");
+		var mainMenu = UI!UIMenuItem.all.select(item | item.uuid = "main_menu").first();
+		
+		mainMenu.menuItems.addAll(loneMenuItems);
 	}
 	
 	for (class in UI!UIClass.all) {

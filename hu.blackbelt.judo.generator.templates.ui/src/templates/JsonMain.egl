@@ -196,7 +196,11 @@
 	[% } %]
 	],
 	"id" : "[%=self.id%]",
+	[% if (not self.version.isDefined()) {%]
+	"version" : "",
+	[% } else {%]
 	"version" : "[%=self.version%]",
+	[%}%]
 	"name" : "[%=self.name%]"
 }
 [% } %]

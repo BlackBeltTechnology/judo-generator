@@ -5,7 +5,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 	classView.isDefault = isDefault;
 	
 	var position = 1;
-	var remaining = ownerClass.attributes;
+	var remaining : OrderedSet(UI!UIAttributeComponentType) = ownerClass.attributes;
 	var vfsName : String;
 	
 	for (attrGroup in originClass.attributeOrder) {
@@ -31,7 +31,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 			viewField.position = viewFieldPosition;
 			viewFieldPosition++;
 			
-			remaining.remove(attribute);
+			remaining = remaining.excluding(attribute.equivalent("UIBaseComponentType"));
 			
 			viewFieldSet.viewFields.add(viewField);
 		}
@@ -43,16 +43,20 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 	for (attribute in remaining) {
 		if ((attribute.isTypeOf(UI!UIReferenceComponentType) and attribute.navigable and not attribute.private) 
 													or (attribute.isTypeOf(UI!UIBaseComponentType) and not attribute.private)) {
+													
 			var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 			viewFieldSet.name = attribute.name;
-			viewFieldSet.uuid = classView.id + "_viewfieldset_" + attribute.name;
+			viewFieldSet.uuid = classView.uuid + "_viewfieldset_" + attribute.name;
 			viewFieldSet.position = position;
 			
 			var viewField : UI!UIViewField = new UI!UIViewField();
 			viewField.name = attribute.name;
-			viewField.uuid = uuid3(attribute.uuid, name);
+			viewField.uuid = uuid3(uuid3(attribute.uuid, name), viewFieldSet.uuid);
+			
 			viewField.componentType = attribute;
 			viewField.searchable = true;
+			
+			//attribute.name.println("Attribute: ");
 			
 			position++;
 			viewFieldSet.viewFields.add(viewField);

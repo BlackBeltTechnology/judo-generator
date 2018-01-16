@@ -1,5 +1,6 @@
 import "../../../operations/_importAll.eol";
 
+
 rule UIClass
 	transform jclass : PSM!JClass
 	to uiclass : UI!UIClass {
@@ -17,11 +18,10 @@ rule UIClass
 	} else {
 		uiclass.readonly = false;
 	}
-	
+
 	//References
 	uiclass.representation = jclass.representation.equivalent("UIBaseComponentType");
 	uiclass.super = jclass.supertype.equivalent("UIClass");
-
 
 	var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
 	//create ComponentTypes/Actions
@@ -54,6 +54,7 @@ rule UIClass
 		}
 		
 	}
+
 	uiclass.~attributesForListing = new Sequence(UI!UIComponentType);
 	for (attribute in jclass.attributesForListing) {
 		uiclass.~attributesForListing.add(attribute.equivalent("UIBaseComponentType"));
@@ -64,6 +65,7 @@ rule UIClass
 	uiclass.selector = createListView(uiclass, uiclass.name, uiclass.uuid + '_lview_default', classView, true);
 	uiclass.classViews.add(classView);
 	uiclass.listViews.add(uiclass.selector);
+	
 	for (al in jclass.aliases) {
 		classView = createClassView(uiclass, jclass, al.name, uiclass.uuid + '_oview_' + al.name, false);
 		var listView =  createListView(uiclass, al.name, uiclass.uuid + '_lview_' + al.name, classView, false);

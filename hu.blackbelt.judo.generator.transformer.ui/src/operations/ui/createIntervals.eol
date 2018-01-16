@@ -1,21 +1,18 @@
-operation createIntervals(intervalString : String, classUuid : String, typeUuid : String) : Sequence(UI!UIInterval) {
-	var intervalSequence : Sequence(UI!UIInterval) = new Sequence(UI!UIInterval);
+operation UI!UIComponentType createIntervals(intervalString : String, classUuid : String) {
 	
 	if (intervalString.isDefined()) {
-		intervalString.println("STRING: ");
-		var intervalList = intervalString.replace(" ", "").split("\\],\\[");
+		var intervalList = intervalString.replace(" ", "").replace("\\],\\[", " ").replace("\\]", "").replace("\\[", "").split(" ");
+		
 		var n = 1;
 		if (intervalList.first() <> "") {
 			for (interval in intervalList) {
-				interval = interval.substring(1, interval.length()-2);
 				var splitInterval = interval.split(",");
-				splitInterval.println("SPLIT: ");
-				splitInterval.first().println("FRIST: ");
 				var uiInterval = new UI!UIInterval();
+							
 				if (splitInterval.first() <> "") {
 					uiInterval.min = splitInterval.first().asInteger();
 				}
-				if (splitInterval.size() = 2 and splitInterval.second() <> "") {
+				if (splitInterval.size() >= 2 and splitInterval.second() <> "") {
 					uiInterval.max = splitInterval.second().asInteger();
 				}
 				if (splitInterval.size() = 3 and splitInterval.third() <> "") {
@@ -23,14 +20,13 @@ operation createIntervals(intervalString : String, classUuid : String, typeUuid 
 				}
 				
 				uiInterval.name = "UIInterval";
-				uiInterval.uuid = uuid3(uuid3(classUuid, typeUuid), n.asString);
+				uiInterval.uuid = uuid3(uuid3(classUuid, self.uuid), n.asString);
 				n++;
 				
-				intervalSequence.add(uiInterval);
+				self.intervals.add(uiInterval);
 			}
 		}
-	}
-	return intervalSequence;	
+	}	
 }
 
 //hack balaton style :-) this method should have been in an epsilon Tool, but I did not managed to make it work

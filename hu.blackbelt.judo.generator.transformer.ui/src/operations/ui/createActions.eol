@@ -26,7 +26,7 @@ operation createActions(joperation : PSM!JOperation, inherited : Boolean, classU
 					uiaction.result.type = param.type.componentType().name;
 				}
 				
-				uiaction.result.intervals = createIntervals(param.interval, classUuid, uiaction.result.uuid);
+				uiaction.result.createIntervals(param.interval, classUuid);
 				uiaction.resultView = createResultView(uiaction);
 			} else {
 				var uiparam : UI!UIParameterComponentType;
@@ -46,7 +46,7 @@ operation createActions(joperation : PSM!JOperation, inherited : Boolean, classU
 					uiparam.type = param.type.componentType().name;
 				}
 
-				uiparam.intervals = createIntervals(param.interval, classUuid, uiparam.uuid);
+				uiparam.createIntervals(param.interval, classUuid);
 			}
 		}
 		

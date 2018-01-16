@@ -1,6 +1,7 @@
 rule UIBase
 	transform jmodel: PSM!JModel
 	to uibase : UI!UIBase {
+	guard : UI!UIBase.all.size() = 0
 	
 	uibase.name = jmodel.name;
 	uibase.uuid = jmodel.uuid;
