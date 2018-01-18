@@ -1,55 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>hu.blackbelt.judo.generator</groupId>
-        <artifactId>hu.blackbelt.judo.generator.parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-        <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
-    </parent>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>hu.blackbelt.judo.generator</groupId>
+		<artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+	</parent>
 
-    <artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
-    <packaging>pom</packaging>
-    
-    <dependencies>
-        <dependency>
-            <artifactId>hu.blackbelt.judo.generator.transformer.psm.domain</artifactId>
-            <groupId>hu.blackbelt.judo.generator</groupId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+	<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
+	<packaging>pom</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.0.2</version>
-                <executions>
-                    <execution>
-                        <id>copy-domain-psm-model</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <artifactItems>
-                        <artifactItem>
-                            <groupId>hu.blackbelt.judo.generator</groupId>
-                            <artifactId>hu.blackbelt.judo.generator.transformer.psm.domain</artifactId>
-                            <version>${project.version}</version>
-                            <type>model</type>
-                            <classifier>psm</classifier>
-                            <overWrite>true</overWrite>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                            <destFileName>carPsm.model</destFileName>
-                        </artifactItem>
-                    </artifactItems>
-                </configuration>
-            </plugin>
+	<dependencies>
+		<dependency>
+			<artifactId>hu.blackbelt.judo.generator.transformer.psm.domain</artifactId>
+			<groupId>hu.blackbelt.judo.generator</groupId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy-domain-psm-model</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>hu.blackbelt.judo.generator</groupId>
+							<artifactId>hu.blackbelt.judo.generator.transformer.psm.domain</artifactId>
+							<version>${project.version}</version>
+							<type>model</type>
+							<classifier>psm</classifier>
+							<overWrite>true</overWrite>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<destFileName>carPsm.model</destFileName>
+						</artifactItem>
+					</artifactItems>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy-uml</id>
+						<!-- here the phase you need -->
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<resources>
+								<resource>
+                                <directory>${basedir}/src/model</directory>
+                                <includes>
+                                    <include>JUDO_Car.uml</include>
+                                </includes>
+                            	</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 
 			<plugin>
 				<groupId>${project.groupId}</groupId>
@@ -57,7 +84,7 @@
 				<version>${project.version}</version>
 				<executions>
 					<execution>
-					    <id>transform-from-pim</id>
+						<id>transform-from-pim</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>execute</goal>
@@ -75,8 +102,10 @@
 							</metaModels>
 							<models>
 								<model>
-									<artifact>file:${basedir}/src/model/JUDO_Car.uml</artifact>
+									<artifact>file:${project.build.directory}/JUDO_Car.uml</artifact>
 									<name>inpPIM</name>
+									<readOnLoad>true</readOnLoad>
+									<storeOnDisposal>true</storeOnDisposal>
 									<metaModelUris>
 										<param>http://www.eclipse.org/uml2/5.0.0/UML</param>
 										<param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
@@ -87,6 +116,24 @@
 										<param>http:///schemas/JudoProfile/_apWi4IDvEeePbrcCa2jZwg/0</param>
 									</metaModelUris>
 									<expand>true</expand>
+								</model>
+								<model>
+									<artifact>file:${basedir}/src/pim_extension/extension.ecore</artifact>
+									<name>Extension</name>
+									<readOnLoad>true</readOnLoad>
+									<storeOnDisposal>false</storeOnDisposal>
+									<metaModelUris>
+										<param>http://www.eclipse.org/emf/2002/Ecore</param>
+									</metaModelUris>
+								</model>
+								<model>
+									<artifact>file:${basedir}/src/pim_extension/pim_classes.ecore</artifact>
+									<name>PimClasses</name>
+									<readOnLoad>true</readOnLoad>
+									<storeOnDisposal>false</storeOnDisposal>
+									<metaModelUris>
+										<param>http://www.eclipse.org/emf/2002/Ecore</param>
+									</metaModelUris>
 								</model>
 								<model>
 									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
@@ -107,6 +154,9 @@
 								</model>
 							</models>
 							<eolPrograms>
+								<Eol>
+									<source>src/pim_extension/ext.eol</source>
+								</Eol>
 								<Etl>
 									<source>src/transformations/pimToJUDOPsm.etl</source>
 								</Etl>
@@ -114,37 +164,37 @@
 						</configuration>
 					</execution>
 
-                    <execution>
-                    	<id>transform-from-hutn</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>parseHutn</goal>
-                        </goals>
-                        <configuration>
-                            <metaModels>
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-                            </metaModels>
-                            <models>
-                                <model>
-                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
-                                    <name>PSMTYPES</name>
-                                    <metaModelUris>
-                                        <param>http://blackbelt.hu/judo/meta/psm</param>
-                                    </metaModelUris>
-                                    <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
-                                </model>
-                            </models>
-                            <hutnFile>src/model/test_opm_platform.hutn</hutnFile>
-                            <targetFile>${project.build.directory}/target.model</targetFile>
-                        </configuration>
-                    </execution>
+					<!-->execution>
+						<id>transform-from-hutn</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>parseHutn</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+							</metaModels>
+							<models>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<name>PSMTYPES</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
+								</model>
+							</models>
+							<hutnFile>src/model/test_opm_platform.hutn</hutnFile>
+							<targetFile>${project.build.directory}/target.model</targetFile>
+						</configuration>
+					</execution-->
 				</executions>
 			</plugin>
 
 			<plugin>
-			    <groupId>net.nicoulaj.maven.plugins</groupId>
-			    <artifactId>checksum-maven-plugin</artifactId>
-			    <version>1.6</version>
+				<groupId>net.nicoulaj.maven.plugins</groupId>
+				<artifactId>checksum-maven-plugin</artifactId>
+				<version>1.6</version>
 				<executions>
 					<execution>
 						<goals>
@@ -160,90 +210,92 @@
 					<attachChecksums>true</attachChecksums>
 				</configuration>
 			</plugin>
-			<!-- Hack style.. But this is not balaton, it's another. Replacing stupid Eclipse reative path to a little bit more civilized (but also hack platform URI) -->
-		    <plugin>
-		      <groupId>com.google.code.maven-replacer-plugin</groupId>
-		      <artifactId>replacer</artifactId>
-		      <version>1.5.3</version>
-		      <executions>
-		        <execution>
-		          <phase>compile</phase>
-		          <id>replace-target-model</id>
-		          <goals>
-		            <goal>replace</goal>
-		          </goals>
-			      <configuration>
-			       <ignoreMissingFile>false</ignoreMissingFile>
-			       <file>${project.build.directory}/target.model</file>
-			        <replacements>
-			          <replacement>
-			            <token>\.\.\/\.\.\/(.*)\.model</token>
-			            <value>platform:/resource/$1.model</value>
-			          </replacement>
-			        </replacements>
-			      </configuration>
-		        </execution>
+			<!-- Hack style.. But this is not balaton, it's another. Replacing stupid 
+				Eclipse reative path to a little bit more civilized (but also hack platform 
+				URI) -->
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<id>replace-target-model</id>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<ignoreMissingFile>false</ignoreMissingFile>
+							<file>${project.build.directory}/target.model</file>
+							<replacements>
+								<replacement>
+									<token>\.\.\/\.\.\/(.*)\.model</token>
+									<value>platform:/resource/$1.model</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
 
-		        <execution>
-		          <phase>compile</phase>
-		          <id>replace-target-hutnmodel</id>
-		          <goals>
-		            <goal>replace</goal>
-		          </goals>
-			      <configuration>
-			       <ignoreMissingFile>false</ignoreMissingFile>
-			       <file>${project.build.directory}/carPsm.model</file>
-			        <replacements>
-			          <replacement>
-			            <token>\.\.\/\.\.\/(.*)\.model</token>
-			            <value>platform:/resource/$1.model</value>
-			          </replacement>
-			        </replacements>
-			      </configuration>
-		        </execution>
+					<execution>
+						<phase>compile</phase>
+						<id>replace-target-hutnmodel</id>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<ignoreMissingFile>false</ignoreMissingFile>
+							<file>${project.build.directory}/carPsm.model</file>
+							<replacements>
+								<replacement>
+									<token>\.\.\/\.\.\/(.*)\.model</token>
+									<value>platform:/resource/$1.model</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
 
-		      </executions>
-		    </plugin>
-            
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-artifacts</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/carPsm.model</file>
-                                    <type>model</type>
-                                    <classifier>psm</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>${project.build.directory}/carPsm.model.md5</file>
-                                    <type>md5</type>
-                                    <classifier>psm</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>${project.build.directory}/target.model</file>
-                                    <type>model</type>
-                                    <classifier>psmFromHutn</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>${project.build.directory}/target.model.md5</file>
-                                    <type>md5</type>
-                                    <classifier>psmFromHutn</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+				</executions>
+			</plugin>
 
-        </plugins>
-    </build>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.build.directory}/carPsm.model</file>
+									<type>model</type>
+									<classifier>psm</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/carPsm.model.md5</file>
+									<type>md5</type>
+									<classifier>psm</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/target.model</file>
+									<type>model</type>
+									<classifier>psmFromHutn</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/target.model.md5</file>
+									<type>md5</type>
+									<classifier>psmFromHutn</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>

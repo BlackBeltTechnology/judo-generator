@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="pim" nsURI="hu.blackbelt.judo.generator.meta.pim.extension"
+    nsPrefix="pim">
+  <eClassifiers xsi:type="ecore:EClass" name="PunishmentExtension">
+    <eAnnotations source="Target">
+      <details key="name" value="Punishment"/>
+    </eAnnotations>
+    <eOperations name="tesztOp" eType="ecore:EClass http://hu.blackbelt.judo.generator.meta.pim.extension.classes#//Engine">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+      </eAnnotations>
+      <eParameters name="param" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="param2" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+      <eParameters name="param3" eType="ecore:EClass http://hu.blackbelt.judo.generator.meta.pim.extension.classes#//Engine"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="teszt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        defaultValueLiteral="teszt">
+      <eAnnotations source="Override">
+        <details key="visibility" value="public"/>
+        <details key="static" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="teszt2" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        derived="true">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="engineCustom" lowerBound="1"
+        eType="ecore:EClass http://hu.blackbelt.judo.generator.meta.pim.extension.classes#//Engine">
+      <eAnnotations source="Addition">
+        <details key="type" value="Engine"/>
+        <details key="visibility" value="public"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EngineExtension">
+    <eAnnotations source="Target">
+      <details key="name" value="Engine"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="punishmentCustom" upperBound="-1"
+        eType="ecore:EClass http://hu.blackbelt.judo.generator.meta.pim.extension.classes#//Punishment">
+      <eAnnotations source="Addition">
+        <details key="type" value="Punishment"/>
+        <details key="visibility" value="public"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CarImplExtension">
+    <eAnnotations source="Target">
+      <details key="name" value="CarImpl"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wheelsDerived" eType="ecore:EClass http://hu.blackbelt.judo.generator.meta.pim.extension.classes#//WheelImpl">
+      <eAnnotations source="DerivedExpression">
+        <details key="expression" value="asdafsdf"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Tuple">
+    <eAnnotations source="Addition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MenuRootExtension">
+    <eAnnotations source="MenuRoot"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MenuExtension">
+    <eAnnotations source="MenuItem">
+      <details key="parent" value="MenuRoot"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TreatedPatientUser">
+    <eAnnotations source="Screen">
+      <details key="base" value="PatientUser"/>
+      <details key="parent" value="MenuExtension"/>
+    </eAnnotations>
+  </eClassifiers>
+</ecore:EPackage>

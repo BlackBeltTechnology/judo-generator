@@ -1,0 +1,47 @@
+@namespace(
+	uri="hu.blackbelt.judo.generator.meta.pim.extension",
+	prefix="pim")
+package pim;
+
+import "http://hu.blackbelt.judo.generator.meta.pim.extension.classes";
+
+
+
+@Target("name"="Punishment")
+class PunishmentExtension {
+	@Addition("visibility"="public", "static"="true")
+	attr Integer teszt = "teszt";
+	
+	@Addition("visibility"="protected")
+	derived attr String teszt2;
+	
+	@Addition("visibility"="public")
+	ref pim.Engine[1] engineCustom;
+	
+	@Addition("visibility"="public")
+  	op pim.Engine tesztOp(String param, Integer param2, pim.Engine param3);
+}
+
+@Target("name"="Engine")
+class EngineExtension {
+	@Addition("type"="Punishment", "visibility"="public")
+	ref  pim.Punishment[*] punishmentCustom;
+}
+
+@Target("name"="CarImpl")
+class CarImplExtension {
+	@DerivedExpression("expression"="asdafsdf")
+	ref pim.WheelImpl wheelsDerived;
+}
+
+@Addition
+class Tuple {}
+
+@MenuRoot
+class MenuRootExtension {}
+
+@MenuItem("parent"="MenuRoot")
+class MenuExtension {}
+
+@Screen("base"="PatientUser", "parent"="MenuExtension")
+class TreatedPatientUser {}
