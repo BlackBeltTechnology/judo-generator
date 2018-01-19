@@ -7,14 +7,23 @@ operation addGuardMethodsAndEnum () : Any {
 				var oClass = state.ownerStateMachine.ownerClass;
 				var enum = new JAVA!JvmEnum;
 				enum.name = key.name.firstToUpperCase() + state.name.firstToUpperCase();
-				enum.uuid = uuid3(val.uuid, enum.name);
+				enum.uuid = uuid3(oClass.uuid, enum.name);
 				enum.package = oClass.package;
 				var decideMethod = new JAVA!JvmMethod;
 				decideMethod.name = "decide" + enum.name;
-				decideMethod.uuid = uuid3(val.uuid, decideMethod.name);
-				decideMethod.ownerClass = oClass;
+				decideMethod.uuid = uuid3(oClass.uuid, decideMethod.name);
+				decideMethod.ownerClass = oClass.boServiceAbstract();
 				decideMethod.type = enum;
 				decideMethod.kind = JAVA!JvmMethodKind#SM_DECIDE;
+				for (param in key.parameters) {
+				    var p = new JAVA!JvmMethodParameter;
+                    p.type = param.type;
+                    p.name = param.name;
+                    p.uuid = uuid3(decideMethod.uuid, p.name);
+                    decideMethod.parameters.add(p);
+				}
+				decideMethod.addIdParam();
+
 				for (tr in val) {
 					var literal = new JAVA!JvmLiteral;
 					literal.name = tr.guard.text.toUpperCase();

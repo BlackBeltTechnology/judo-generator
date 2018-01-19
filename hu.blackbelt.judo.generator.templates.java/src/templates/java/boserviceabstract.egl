@@ -32,6 +32,12 @@ import org.apache.felix.scr.annotations.Service;
 import java.io.Serializable;
 import java.util.Arrays;
 
+[%for (decideMethodHelperEnum in class.guardEnums()) { %]
+    [%for (literal in decideMethodHelperEnum.literals) { %]
+        import static [%=class.fqName()%].[%=decideMethodHelperEnum.name%].[%=literal.name%];
+    [%}%]
+[%}%]
+
 @Component
 public abstract class [%=class.name%] extends AbstractCrudService<[%=class.bo().fqName()%]> implements [%=class.boServiceInterface().fqName()%]
 {
@@ -125,7 +131,7 @@ public abstract class [%=class.name%] extends AbstractCrudService<[%=class.bo().
 	[%}%]
 	
     [%for (method in class.methods()) { %]
-	    public [%=method.type.fqName()%] [%=method.name%] ([%=method.parametersSignature()%]){
+	    public [%if (method.isGuardDecide()) { %][%=method.ownerClass.fqName()%].[%=method.type.name%][%} else {%][%=method.type.fqName()%][%}%] [%=method.name%] ([%=method.parametersSignature()%]){
 		    [%if (method.isQueryCount()) { %]
 		        throw new UnsupportedOperationException("You have to override customCount method implementation in your default service!!");
 		    [%} else if (method.isGuardDecide()) { %]
@@ -215,7 +221,7 @@ public abstract class [%=class.name%] extends AbstractCrudService<[%=class.bo().
 		}
 	[%}%]
 	
-	[%for (decideMethodHelperEnum in class.origin.guardEnums()) { %]
+	[%for (decideMethodHelperEnum in class.guardEnums()) { %]
 		public enum [%=decideMethodHelperEnum.name%] {
 			[%=decideMethodHelperEnum.literals.collect( l | l.name).concat(', ')%];
 		}
