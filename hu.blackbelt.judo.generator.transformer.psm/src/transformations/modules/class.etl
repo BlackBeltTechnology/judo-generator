@@ -118,6 +118,9 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	for (imp in sourceClass.elementImport) {
 	    var menuClass = imp.importedElement;
 	    
+	    menuClass.println("MENUCLASS: ");
+	    menuClass.name.println("MENUCLASS NAME: ");
+	    
 	    if (menuClass.isTypeOf(inpPIM!InstanceSpecification) and not stereotypeApplications.get("alias").get(menuClass).includes(menuClass)) {
 	        continue;
 	    }
@@ -172,8 +175,9 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	    if (menuClass.isTypeOf(Package) and menuClass.stereotype("dtoPackages")) {
 	    	var classes = new Sequence;
 	    	menuClass.collectClasses(classes);
+	    	classes.name.println("COLLECT CLASSES: ");
 	        for (childMenuClass in classes) {
-	            mi = JUIMenuItem;
+	            var mi = new tgtPSM!JUIMenuItem;
 	            mi.uuid = uuid3(uuid3(parentMenuItem.uuid, childMenuClass.id), imp.id);
 	            mi.name = childMenuClass.name;
 	
@@ -191,7 +195,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 }
 
 operation inpPIM!Package collectClasses (classes : Sequence(inpPIM!Class)) : Any {
-	classes.including(self.packagedElements.select(e | e.isTypeOf(inpPIM!Class)));
+	classes.addAll(self.packagedElements.select(e | e.isTypeOf(inpPIM!Class)));
 	for (p in self.packagedElements.select(e | e.isTypeOf(inpPIM!Package))) {
 		p.collectClasses(classes);
 	}

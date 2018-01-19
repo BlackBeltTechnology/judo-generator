@@ -15,7 +15,7 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	
  	// clientRole
  	var clientRole : tgtPSM!JRole = new tgtPSM!JRole; 
- 	clientRole.uuid = uuid3(relation.uuid, "clientRole");
+ 	clientRole.uuid = uuid3(uuid3(relation.uuid, "clientRole"), clientRoleName);
  	clientRole.name = clientRoleName;
  	relation.roles.add( clientRole );
  	
@@ -24,7 +24,7 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	
  	// supplierRole
  	var supplierRole : tgtPSM!JRole = new tgtPSM!JRole; 
- 	supplierRole.uuid = uuid3(supplierRoleOwner.uuid, "suppolierRole");
+ 	supplierRole.uuid = uuid3(uuid3(supplierRoleOwner.uuid, "suppolierRole"), supplierRoleName);
  	supplierRole.name = supplierRoleName;
  	relation.roles.add( supplierRole );
 
