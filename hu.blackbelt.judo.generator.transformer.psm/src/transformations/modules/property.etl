@@ -105,7 +105,8 @@ rule ClassPropertyRole
 	t.unique = s.unique;
 	t.lower = s.lower;
 	t.upper = s.upper;
-	t.ownerClass ::= s.association.memberEnd.select(m | m <> s).first().type;
+	t.ownerClass ::= s.owner;
+	
 	
 	switch (s.aggregation) {
 		case AggregationKind#composite 	: t.kind = tgtPSM!JAssociationKind#COMPOSITION;

@@ -24,6 +24,9 @@ rule Relationship
 		var eqiv = me.equivalent().println("ME EQUIV: ");
 		if (eqiv.isDefined()) {
 			t.roles.add(eqiv);
+			if (me.owner.isTypeOf(Association)) {
+				eqiv.ownerClass ::= s.memberEnd.select(m | m <> me).first().type;
+			}
 		}
 	}
 
