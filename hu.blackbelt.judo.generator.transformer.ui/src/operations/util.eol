@@ -35,3 +35,10 @@ operation uuid3 (namespace : String, name : String) : String {
 	return getUuidNativeStub().nameUUIDFromBytes(outputStreamString.toByteArray()).toString();
 }
 
+@cached
+operation PSM!JPackage onlyContainerPackage() : Boolean {
+	return self.primitives.isEmpty() 
+	   and self.enumerations.isEmpty() 
+	   and self.relationships.isEmpty() 
+	   and self.classes.isEmpty(); 
+}

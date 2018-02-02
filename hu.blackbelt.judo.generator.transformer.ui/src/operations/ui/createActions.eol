@@ -7,7 +7,7 @@ operation createActions(joperation : PSM!JOperation, inherited : Boolean, classU
 		//Attributes
 		uiaction.classBased = joperation.classBased;
 		uiaction.toBeConfirmed = joperation.uiMustConfirm;
-		uiaction.notBulk = joperation.bulk;
+		uiaction.notBulk = not joperation.bulk;
 		uiaction.isQuery = (joperation.kind = PSM!JOperationKind#QUERY);
 		//Parameters		
 		for (param : PSM!JParameter in joperation.parameters) {

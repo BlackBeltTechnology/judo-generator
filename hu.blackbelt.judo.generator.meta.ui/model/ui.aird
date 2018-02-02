@@ -13,8 +13,21 @@
     <semanticResources>../library/psmToUiTestTypeMapping.model</semanticResources>
     <semanticResources>psmToUiTypeMapping.ecore</semanticResources>
     <semanticResources>resources.ecore</semanticResources>
+    <semanticResources>ui.genmodel</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" xmi:id="_x3ZxkKd1EeewXONo54bgNA">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_XUoUwMlnEeeZWafPuerDaA" name="ui" repPath="#_x7UBMKd1EeewXONo54bgNA">
+        <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
+        <target xmi:type="ecore:EPackage" href="ui.ecore#/"/>
+      </ownedRepresentationDescriptors>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_XUpi4MlnEeeZWafPuerDaA" name="SuperTypes" repPath="#_CJK_wKhOEeewXONo54bgNA">
+        <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
+        <target xmi:type="ecore:EPackage" href="ui.ecore#/"/>
+      </ownedRepresentationDescriptors>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_XUpi4slnEeeZWafPuerDaA" name="Test class diagram" repPath="#_FlVhQMMAEeeT-amjbwo5Hw">
+        <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
+        <target xmi:type="ecore:EPackage" href="test_ui.ecore#/"/>
+      </ownedRepresentationDescriptors>
       <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_euzo4NOPEeefQPd7YVi7Bg" name="resources">
         <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_eu0P8NOPEeefQPd7YVi7Bg" source="DANNOTATION_CUSTOMIZATION_KEY">
           <data xmi:type="diagram:ComputedStyleDescriptionRegistry" xmi:id="_eu0P8dOPEeefQPd7YVi7Bg">
@@ -164,18 +177,6 @@
         <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@additionalLayers[name='Validation']"/>
         <target xmi:type="ecore:EPackage" href="resources.ecore#/"/>
       </ownedRepresentations>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_XUoUwMlnEeeZWafPuerDaA" name="ui" repPath="#_x7UBMKd1EeewXONo54bgNA">
-        <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
-        <target xmi:type="ecore:EPackage" href="ui.ecore#/"/>
-      </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_XUpi4MlnEeeZWafPuerDaA" name="SuperTypes" repPath="#_CJK_wKhOEeewXONo54bgNA">
-        <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
-        <target xmi:type="ecore:EPackage" href="ui.ecore#/"/>
-      </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_XUpi4slnEeeZWafPuerDaA" name="Test class diagram" repPath="#_FlVhQMMAEeeT-amjbwo5Hw">
-        <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
-        <target xmi:type="ecore:EPackage" href="test_ui.ecore#/"/>
-      </ownedRepresentationDescriptors>
     </ownedViews>
   </viewpoint:DAnalysis>
   <diagram:DSemanticDiagram xmi:id="_x7UBMKd1EeewXONo54bgNA" name="ui">

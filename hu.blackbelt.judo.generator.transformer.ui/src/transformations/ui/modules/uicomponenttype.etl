@@ -52,6 +52,8 @@ rule UIBaseComponentType
 		uibasetype.placeholder = jattribute.placeholder;
 		uibasetype.type = jattribute.type.componentType().name;
 		uibasetype.interval = jattribute.interval;
+		
+		uibasetype.~search = not jattribute.uiNoSearch;
 	} 
 
 @lazy

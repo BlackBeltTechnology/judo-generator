@@ -27,7 +27,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 			viewField.componentType = attribute.equivalent("UIBaseComponentType");
 			viewField.name = attribute.name;
 			viewField.uuid = uuid3(attribute.uuid, name);
-			viewField.searchable = true;
+			viewField.searchable = not attribute.uiNoSearch;
 			viewField.position = viewFieldPosition;
 			viewFieldPosition++;
 			
@@ -54,9 +54,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 			viewField.uuid = uuid3(uuid3(attribute.uuid, name), viewFieldSet.uuid);
 			
 			viewField.componentType = attribute;
-			viewField.searchable = true;
-			
-			//attribute.name.println("Attribute: ");
+			viewField.searchable = attribute.~search;
 			
 			position++;
 			viewFieldSet.viewFields.add(viewField);
@@ -88,7 +86,7 @@ operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, cla
 				var viewField = new UI!UIViewField();
 				viewField.uuid = uuid3(attribute.uuid, ownerClass.name);
 				viewField.name = attribute.name;
-				viewField.searchable = true;
+				viewField.searchable = attribute.~search;
 				viewField.componentType = attribute;
 				
 				if (ownerClass.~attributesForListing.includes(attribute)) {
