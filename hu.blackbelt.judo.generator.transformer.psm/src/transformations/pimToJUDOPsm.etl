@@ -41,7 +41,7 @@ post {
 		}
 	}
 	
-	for (jc in tgtPSM!JClass.all) {
+	for (jc in tgtPSM!JClass.all.select(c | c.supertype.isUndefined())) {
 		jc.attributes.add(createDefaultAttribute("auditCreateUser").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
 		jc.attributes.add(createDefaultAttribute("auditCreateTime").uuid(jc.uuid).technical().type(getPSMPrimitiveType("datetime")).private());
 		jc.attributes.add(createDefaultAttribute("auditUpdateUser").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());

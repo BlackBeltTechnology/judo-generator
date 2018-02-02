@@ -144,6 +144,9 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	enumClass.uuid = uuid3(self.uuid, "Cls");
 	enumClass.representsEnum = true;
 	
+	createRelationWithRoles( tgtPkg, self.name.firstToUpperCase() + "Inverse", self.name,
+									 enumClass, self.ownerClass);
+	
 	enumClass.attributes.add(createDefaultAttribute("code").uuid(enumClass.uuid).type(getPSMPrimitiveType("String")));
 	
 	var att = createDefaultAttribute("value").uuid(enumClass.uuid).type(getPSMPrimitiveType("String"));	
@@ -156,7 +159,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 
 	// Def Class for EnumLiterals - Values
 	var enumValueClass : tgtPSM!JClass = new tgtPSM!JClass;
-	enumValueClass.name = enumClass.name + "Values"; 
+	enumValueClass.name = enumClass.name + "Value"; 
 	enumValueClass.uuid = uuid3(self.uuid, "ValCls");
 	
 	enumValueClass.attributes.add(createDefaultAttribute("value").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")));
@@ -164,9 +167,11 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 		enumValueClass.package = tgtPkg;
 		tgtPkg.classes.add( enumValueClass );
 
+	enumValueClass.attributes.add( createDefaultAttribute("langcode").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")).derived().value("{self.language.code}"));
+	
 // add relation : enum - enumClass
 // add relation : enumClass - enumValueClass
-	createRelationWithRoles( tgtPkg, "client", "supplier",			// TODO: check & ensure correct role assignments
+	createRelationWithRoles( tgtPkg, "", enumClass.name,			// TODO: check & ensure correct role assignments
 									 enumClass, enumValueClass);
 
 	// TODO: refactor to a cached operation 
@@ -174,7 +179,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	langClass.println("RULE::STATEMACHINE - LANGCLASS : ");
 
 // add relation : enumValueClass - Language - First part of Relation name should coume first!
-	createRelationWithRoles( tgtPkg, "langClient", "langcode",			// TODO: check & ensure correct role assignments
+	createRelationWithRoles( tgtPkg, "Values", "language",			// TODO: check & ensure correct role assignments
 									 langClass, enumValueClass);
 
 

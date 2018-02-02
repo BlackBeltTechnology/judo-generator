@@ -130,7 +130,9 @@ rule ClassPropertyRoleEnum
 	r1.ownerClass = s.owner.equivalent("Class");
 	r1.navigable = true;
 	
-	r2.name = s.owner.name + s.name + "Inverse";
+	r2.name = s.owner.name.firstToLowerCase() + s.name.firstToUpperCase() + "Inverse";
+	r2.lower = 0;
+	r2.upper = -1;
 	r2.uuid = uuid3(s.type.equivalent("Enum2CorrespondingValueClass").uuid, r2.name);
 	r2.ownerClass = s.type.equivalent("Enum2CorrespondingValueClass");
 	r2.navigable = true;

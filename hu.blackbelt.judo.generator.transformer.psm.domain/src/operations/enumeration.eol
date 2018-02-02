@@ -5,18 +5,19 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
 														  supplierRoleOwner : tgtPSM!JClass) : tgtPSM!JRelationship {
 	var relation : tgtPSM!JRelationship = new tgtPSM!JRelationship; 													  
 	
- 	clientRoleName = clientRoleName.firstToLowerCase();
- 	supplierRoleName = supplierRoleName.firstToLowerCase();
- 	var relationName = clientRoleName + "-" + supplierRoleName;
- 	
- 	relation.name = relationName;
  	relation.uuid = uuid3(clientRoleOwner.uuid, supplierRoleOwner.uuid);
  	pkg.relationships.add( relation );
+ 	
+ 	if (clientRoleName.length() > 0) {
+ 		clientRoleName = clientRoleName.firstToUpperCase();
+ 	}
  	
  	// clientRole
  	var clientRole : tgtPSM!JRole = new tgtPSM!JRole; 
  	clientRole.uuid = uuid3(uuid3(relation.uuid, "clientRole"), clientRoleName);
- 	clientRole.name = clientRoleName;
+ 	clientRole.name = supplierRoleOwner.name.firstToLowerCase() + clientRoleName;
+ 	clientRole.lower = 0;
+ 	clientRole.upper = -1;
  	relation.roles.add( clientRole );
  	
  	clientRole.ownerClass = clientRoleOwner;
@@ -24,12 +25,14 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	
  	// supplierRole
  	var supplierRole : tgtPSM!JRole = new tgtPSM!JRole; 
- 	supplierRole.uuid = uuid3(uuid3(supplierRoleOwner.uuid, "suppolierRole"), supplierRoleName);
+ 	supplierRole.uuid = uuid3(uuid3(supplierRoleOwner.uuid, "supplierRole"), supplierRoleName);
  	supplierRole.name = supplierRoleName;
  	relation.roles.add( supplierRole );
 
 	supplierRole.ownerClass = supplierRoleOwner;
 	supplierRole.ownerClass.roles.add( supplierRole );
+	
+	relation.name = clientRole.name + "-" + supplierRole.name;
 	
 	return relation;
 }

@@ -116,6 +116,29 @@ rule ClassPropertyRole
 
 }
 
+/*rule ClassPropertyRole
+	transform s : Property
+	to        t : tgtPSM!JClass
+	extends NamedElement {
+
+	guard : s.owner.equivalent("Class").isDefined() and 
+			s.owner.isTypeOf(Class) and 
+			s.type.isTypeOf(Class) and
+			not s.association.isDefined() 
+	
+	var classToBeCopied : tgtPSM!JClass = tgtPSM!JClass.all.selectOne(class | class.name = s.type.name);
+	
+	t.uuid = uuid3(t.uuid, s.owner.name);
+	t.name = s.owner.equivalent("Class").name + s.name.firstToUpperCase() + classToBeCopied.name.firstToUpperCase();
+	t.participates.addAll(s.owner.equivalent("Class").participates);
+
+	t.uuid.println("Cloned class uuid: ");
+	t.name.println("Cloned class name: ");
+	t.participates.println("Cloned class participates: ");
+
+	s.owner.equivalent("Class").package.classes.add(t);
+}*/
+
 
 rule ClassPropertyRoleEnum
 	transform s : Property
@@ -131,7 +154,9 @@ rule ClassPropertyRoleEnum
 	r1.ownerClass = s.owner.equivalent("Class");
 	r1.navigable = true;
 	
-	r2.name = s.owner.name + s.name + "Inverse";
+	r2.name = s.owner.name.firstToLowerCase() + s.name.firstToUpperCase() + "Inverse";
+	r2.lower = 0;
+	r2.upper = -1;
 	r2.uuid = uuid3(s.type.equivalent("Enum2CorrespondingValueClass").uuid, r2.name);
 	r2.ownerClass = s.type.equivalent("Enum2CorrespondingValueClass");
 	r2.navigable = true;
