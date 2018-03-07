@@ -21,6 +21,12 @@ rule ClassProperty
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.uiNoSearch = stereotypeApplications.get("nosearch").includes(s);
 	
+	if (s.defaultValue.isKindOf(Expression)) {
+		t.value = s.defaultValue.symbol;
+	} else {
+		t.value = s.`default`;
+	}
+	
 	t.mandatory = s.lower = 1 and s.upper = 1;
 	
 	if ( stereotypeApplications.get("decimals").containsKey(s) ) {
@@ -92,10 +98,28 @@ rule ClassPropertyRole
 	
 	if ( stereotypeApplications.get("derivedDescription").containsKey(s) ) {
 		t.derivedDescription = stereotypeApplications.get("derivedDescription").get(s);
+	} else {
+		if (stereotypeApplications.get("derivedDescription").get(s.otherEnd).isDefined() or 
+		stereotypeApplications.get("derivedExpression").get(s.otherEnd).isDefined()) {
+			t.derivedDescription = "Break On Through To The Other Side!";
+		}
 	}
 
 	if ( stereotypeApplications.get("derivedExpression").containsKey(s) ) {
 		t.derivedExpression = stereotypeApplications.get("derivedExpression").get(s);
+	}
+	
+	if ( stereotypeApplications.get("options").containsKey(s) ) {
+	
+		var options = stereotypeApplications.get("options").get(s);
+		var splitOptions = options.split(":");
+		if (splitOptions.first().equals(s.name)) {
+			options = splitOptions.second();
+		} else {
+			options = null;
+		}
+
+		t.optionScript = options;
 	}
 	
 	s.association.equivalent("Relationship").roles.add(t);
@@ -106,6 +130,12 @@ rule ClassPropertyRole
 	t.lower = s.lower;
 	t.upper = s.upper;
 	t.ownerClass ::= s.owner;
+	
+	if (s.defaultValue.isKindOf(Expression)) {
+		t.value = s.defaultValue.symbol;
+	} else {
+		t.value = s.`default`;
+	}
 	
 	switch (s.aggregation) {
 		case AggregationKind#composite 	: t.kind = tgtPSM!JAssociationKind#COMPOSITION;
@@ -129,13 +159,20 @@ rule ClassPropertyRoleEnum
 	r1.uuid = uuid3(s.owner.equivalent("Class").uuid, s.name);
 	r1.ownerClass = s.owner.equivalent("Class");
 	r1.navigable = true;
+	r1.lower = s.lower;
+	r1.upper = s.upper;
+	
+	if (s.defaultValue.isKindOf(Expression)) {
+		r1.value = s.defaultValue.symbol;
+	} else {
+		r1.value = s.`default`;
+	}
 	
 	r2.name = s.owner.name.firstToLowerCase() + s.name.firstToUpperCase() + "Inverse";
 	r2.lower = 0;
 	r2.upper = -1;
 	r2.uuid = uuid3(s.type.equivalent("Enum2CorrespondingValueClass").uuid, r2.name);
 	r2.ownerClass = s.type.equivalent("Enum2CorrespondingValueClass");
-	r2.navigable = true;
 	r2.visibility = r1.visibility;
 	rs.uuid = uuid3(s.owner.equivalent("Class").uuid, s.type.equivalent("Enum2CorrespondingValueClass").uuid);
 	rs.name = r1.name + " - " + r2.name;
@@ -169,6 +206,25 @@ rule RelationProperty
 	t.upper = s.upper;
 	t.navigable = s.navigable;
 	t.ownerClass ::= s.type;
+	
+	if (s.defaultValue.isKindOf(Expression)) {
+		t.value = s.defaultValue.symbol;
+	} else {
+		t.value = s.`default`;
+	}
+	
+	if ( stereotypeApplications.get("derivedDescription").containsKey(s) ) {
+		t.derivedDescription = stereotypeApplications.get("derivedDescription").get(s);
+	} else {
+		if (stereotypeApplications.get("derivedDescription").get(s.otherEnd).isDefined() or 
+		stereotypeApplications.get("derivedExpression").get(s.otherEnd).isDefined()) {
+			t.derivedDescription = "Break On Through To The Other Side!";
+		}
+	}
+
+	if ( stereotypeApplications.get("derivedExpression").containsKey(s) ) {
+		t.derivedExpression = stereotypeApplications.get("derivedExpression").get(s);
+	}
 	
 	var ops = stereotypeApplications.get("options").get(s);
 	var otherOps = stereotypeApplications.get("options").get(s.otherEnd);

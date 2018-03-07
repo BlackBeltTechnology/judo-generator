@@ -1,74 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>hu.blackbelt.judo.generator</groupId>
-        <artifactId>hu.blackbelt.judo.generator.parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-        <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>hu.blackbelt.judo.generator</groupId>
+		<artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+	</parent>
 
-    <artifactId>hu.blackbelt.judo.generator.transformer.permission</artifactId>
-    <packaging>jar</packaging>
+	<artifactId>hu.blackbelt.judo.generator.transformer.permission</artifactId>
+	<packaging>jar</packaging>
 
-  <build>
-    <plugins>
-      <plugin>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>epsilon-maven-plugin</artifactId>
-          <version>${project.version}</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <metaModels>
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.permission:ecore:permission:${project.version}</metaModel>
-              </metaModels>
-                <models>
-					<model>
-                        <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
-                        <name>PSMTYPES</name>
-                        <metaModelUris>
-                            <param>http://blackbelt.hu/judo/meta/psm</param>
-                        </metaModelUris>
-                        <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
-                    </model>
+	<build>
+		<plugins>
 
-                    <model>
-						<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
-						<name>PSM</name>
-						<metaModelUris>
-							<param>http://blackbelt.hu/judo/meta/psm</param>
-						</metaModelUris>
-						<expand>true</expand>
-					</model>       
-                    <!--  Target -->
-                    <model>
-                       <artifact>${project.build.directory}/permission.model</artifact>
-                       <name>Permission</name>
-                       <readOnLoad>false</readOnLoad>
-                       <storeOnDisposal>true</storeOnDisposal>
-                       <metaModelUris>
-                           <param>http://blackbelt.hu/judo/meta/psm/permission</param>
-                       </metaModelUris>
-                    </model>
-                </models>  
-                <eolPrograms>
-                    <Etl>
-                        <source>src/transformations/psmToPermissions.etl</source>
-                    </Etl>
-                </eolPrograms>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-psm-md5</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${groupId}</groupId>
+									<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
+									<version>${project.version}</version>
+									<type>md5</type>
+									<classifier>psmFromHutn</classifier>
+									<overWrite>false</overWrite>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<destFileName>psm.md5</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>gmaven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>read-psm-md5</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<header_file>${project.build.directory}/psm.md5</header_file>
+							</properties>
+							<source>
+								def file = new File(project.properties.header_file)
+								project.properties.psmversion = file.getText()
+							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>epsilon-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.permission:ecore:permission:${project.version}</metaModel>
+							</metaModels>
+							<models>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<name>PSMTYPES</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
+								</model>
+
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+									<name>PSM</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<expand>true</expand>
+								</model>
+								<!-- Target -->
+								<model>
+									<artifact>${project.build.directory}/permission.model</artifact>
+									<name>Permission</name>
+									<readOnLoad>false</readOnLoad>
+									<storeOnDisposal>true</storeOnDisposal>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm/permission</param>
+									</metaModelUris>
+								</model>
+							</models>
+							<eolPrograms>
+								<Etl>
+									<source>src/transformations/psmToPermissions.etl</source>
+									<parameters>
+										<parameter>
+											<name>psmVersion</name>
+											<value>${project.version}-${psmversion}</value>
+										</parameter>
+									</parameters>
+								</Etl>
+							</eolPrograms>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>3.0.0</version>
@@ -78,7 +137,7 @@
 						<goals>
 							<goal>add-resource</goal>
 						</goals>
-						
+
 						<configuration>
 							<resources>
 								<resource>
@@ -86,7 +145,7 @@
 								</resource>
 							</resources>
 						</configuration>
-						
+
 					</execution>
 
 					<execution>
@@ -107,6 +166,7 @@
 					</execution>
 				</executions>
 			</plugin>
-    </plugins>
-  </build>
+
+		</plugins>
+	</build>
 </project>

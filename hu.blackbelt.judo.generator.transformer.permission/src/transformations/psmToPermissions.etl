@@ -9,12 +9,13 @@ pre {
 	var enumMap : Map<String, Sequence(String)> = new Map();
 	var enumValueMap : Map<String, Sequence(String)> = new Map();
 	var classMap : Map<String, String> = new Map();
+	var mapUUID : Map<String, Sequence(String)> = new Map();
 }
 
 post {
 	var permissionModel = new Permission!PermissionModel();
 	permissionModel.uuid = PSM!JModel.all.first().uuid;
-	permissionModel.version = "1.0.0";
+	permissionModel.version = psmVersion;
 
 	for (jclass in PSM!JClass.all) {
 		if (jclass.package.participates(PSM!JLayer#OPERATION)) {
@@ -38,7 +39,7 @@ post {
 							oppositeSeq.add(jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name);
 						}
 											
-						if (not jclass.representsEnumValue and jrole.opposite().ownerClass.representsEnum) {
+						if (not jclass.representsEnumValue and jrole.opposite().ownerClass.representsEnum) {						
 							var valueRole = jrole.opposite().ownerClass.roles.select(role | role.opposite().ownerClass.representsEnumValue).first();
 							enumValueSeq.add(valueRole.ownerClass.package.name + "." + valueRole.ownerClass.name + "." + valueRole.name);
 												
@@ -93,4 +94,14 @@ post {
 	permissionModel.createAdminRole();
 	permissionModel.createLoginRole();
 	permissionModel.mustChangePasswordRole();
+	
+	
+	for (key : String in mapUUID.keySet()) {
+		var value = mapUUID.get(key);
+		if (value.size() > 1) {
+			"".println();
+			"DUPLICATE: KEY:".print(key + " " + value);
+			"".println();
+		}
+	}
 }

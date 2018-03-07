@@ -27,6 +27,7 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	var supplierRole : tgtPSM!JRole = new tgtPSM!JRole; 
  	supplierRole.uuid = uuid3(uuid3(supplierRoleOwner.uuid, "supplierRole"), supplierRoleName);
  	supplierRole.name = supplierRoleName;
+ 	supplierRole.navigable = true;
  	relation.roles.add( supplierRole );
 
 	supplierRole.ownerClass = supplierRoleOwner;

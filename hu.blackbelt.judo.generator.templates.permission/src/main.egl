@@ -1,10 +1,10 @@
 [%
 	var permissionProp : Template = TemplateFactory.load("templates/permissions_properties_tmpl.egl");
-	permissionProp.generate("permissionProp.txt");
+	permissionProp.generate("permissions.properties");
 	
 	var permissionJava : Template = TemplateFactory.load("templates/permissions_java_tmpl.egl");
-	permissionJava.generate("permissionJava.txt");
+	permissionJava.generate("StaticPermissionRegistry.java");
 	
 	var permissionSql : Template = TemplateFactory.load("templates/sql/setup_permission.egl");
-	permissionSql.generate("permissionSql.txt");
+	permissionSql.generate("setup_permission.sql");
 %]

@@ -18,7 +18,7 @@ INSERT INTO V_FRW_USER (C_USER_INFO_ID, C_GUID, C_CREDENTIAL, C_ACTIVE, C_NOCNEL
 VALUES(
     (select id from V_FRW_USER_INFO where C_GUID='[%=admin.infoUuid%]'),
 '[%=admin.uuid%]','[%=admin.credential%]', 'Y', 'N', 'N'
-)
+);
 
 
 -------------------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ CREATE TABLE [%=tmpUserRoles()%]
 );
 
 --changeset generater:permission_tmp_tuser_troles#[%=version()%] stripComments:true logicalFilePath:setupPermissions
-CREATE TABLE[%=tmpTUserTRoles()%]
+CREATE TABLE [%=tmpTUserTRoles()%]
 (
     C_TUSERS_ID INTEGER,
     C_GUID VARCHAR(255)

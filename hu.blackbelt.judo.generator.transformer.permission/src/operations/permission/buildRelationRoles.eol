@@ -14,14 +14,14 @@ operation Permission!PermissionModel buildRelationRoles() {
 											and (p.action = "attach" or p.action = "detach"));
 						
 						var attachRole = new Permission!Role();
-						attachRole.uuid = uuid3(jrole.ownerClass.uuid, "attach");
+						attachRole.uuid = uuid3(jrole.uuid, "attach");
 						attachRole.name = resourceRole + "_" + "attach";
 						attachRole.rolePermissions.addAll(permsRole.select(p | p.action = "read" or p.action = "write" or p.action = "attach"));
 						attachRole.rolePermissions.addAll(permsClass);
 						attachRole.rolePermissions.addAll(permsOpposite.select(p | p.action = "attach"));
 						
 						var detachRole = new Permission!Role();
-						detachRole.uuid = uuid3(jrole.ownerClass.uuid, "detach");
+						detachRole.uuid = uuid3(jrole.uuid, "detach");
 						detachRole.name = resourceRole + "_" + "detach";	
 						detachRole.rolePermissions.addAll(permsRole.select(p | p.action = "read" or p.action = "write" or p.action = "detach"));
 						detachRole.rolePermissions.addAll(permsClass);

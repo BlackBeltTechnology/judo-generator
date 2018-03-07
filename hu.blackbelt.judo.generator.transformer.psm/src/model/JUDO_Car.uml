@@ -50,7 +50,30 @@
               <ownedRule xmi:id="_KEwYkcw4Eee4YbvpwMXMhQ" name="CarNoWheel:Size" visibility="public" constrainedElement="_KEw__8w4Eee4YbvpwMXMhQ">
                 <specification xmi:type="uml:LiteralString" xmi:id="_KEwYksw4Eee4YbvpwMXMhQ" name="" visibility="public" value="min = 0, max = 0"/>
               </ownedRule>
+              <ownedRule xmi:id="_KEwYxcw4Eee4YbvpwMXMhQ" name="" visibility="public" constrainedElement="_KEy12sw4Eee4YbvpwMXMhQ">
+                <specification xmi:type="uml:LiteralString" xmi:id="_KEwYxsw4Eee4YbvpwMXMhQ" name="" visibility="public" value="self.licensePlate"/>
+              </ownedRule>
+              <ownedRule xmi:id="_KEwYx8w4Eee4YbvpwMXMhQ" name="" visibility="public" constrainedElement="_KEy14cw4Eee4YbvpwMXMhQ">
+                <specification xmi:type="uml:LiteralString" xmi:id="_KEwYyMw4Eee4YbvpwMXMhQ" name="" visibility="public" value="self.wheels"/>
+              </ownedRule>
               <generalization xmi:id="_KEw_98w4Eee4YbvpwMXMhQ" general="_KExmsMw4Eee4YbvpwMXMhQ"/>
+              <ownedAttribute xmi:id="_KEy12sw4Eee4YbvpwMXMhQ" name="licensePlateDerived" visibility="protected" type="_KExmwcw4Eee4YbvpwMXMhQ" association="_KEy2AMw4Eee4YbvpwMXMhQ">
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy14Mw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400110_287873_4400" name="" visibility="public" value="1"/>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="_KEy14cw4Eee4YbvpwMXMhQ" name="wheelsDerived" visibility="protected" type="_KExm2cw4Eee4YbvpwMXMhQ" association="_KEy2CMw4Eee4YbvpwMXMhQ">
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy16Mw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KEy158w4Eee4YbvpwMXMhQ" name="" visibility="public" value="*"/>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="_KEy16cw4Eee4YbvpwMXMhQ" name="hoppa" visibility="public" isUnique="false">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy178w4Eee4YbvpwMXMhQ" name="" visibility="public"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400085_321082_3565" name="" visibility="public" value="1"/>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="_KExmusw4Eee4YbvpwMXMhQ" name="licensePlate" visibility="public" type="_KExmwcw4Eee4YbvpwMXMhQ" aggregation="composite" association="_KExBAcw4Eee4YbvpwMXMhQ">
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KExmwMw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400091_313280_3785" name="" visibility="public" value="1"/>
+              </ownedAttribute>
               <ownedAttribute xmi:id="_KEw_-Mw4Eee4YbvpwMXMhQ" name="engine" visibility="public" type="_KExnJ8w4Eee4YbvpwMXMhQ" aggregation="composite" association="_KExBAsw4Eee4YbvpwMXMhQ">
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEw__sw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400055_420229_2800" name="" visibility="public" value="1"/>
@@ -154,6 +177,23 @@
                   <subvertex xmi:type="uml:FinalState" xmi:id="_KExAdMw4Eee4YbvpwMXMhQ" name="Final State1"/>
                 </region>
               </ownedBehavior>
+              <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_KEy18Mw4Eee4YbvpwMXMhQ" name="mysm" visibility="public" isReentrant="false">
+                <region xmi:id="_KEy18cw4Eee4YbvpwMXMhQ" name="">
+                  <transition xmi:id="_KEy19sw4Eee4YbvpwMXMhQ" name="Transition" source="_KEy18sw4Eee4YbvpwMXMhQ" target="_KEy188w4Eee4YbvpwMXMhQ"/>
+                  <transition xmi:id="_KEy198w4Eee4YbvpwMXMhQ" name="Transition" source="_KEy188w4Eee4YbvpwMXMhQ" target="_KEy19Mw4Eee4YbvpwMXMhQ">
+                    <trigger xmi:id="_18_5_2_1c100dd_1511867503312_995463_6331" name="" visibility="public" event="_18_5_2_1c100dd_1511867503311_597612_6330"/>
+                  </transition>
+                  <transition xmi:id="_KEy1-cw4Eee4YbvpwMXMhQ" name="Transition1" source="_KEy188w4Eee4YbvpwMXMhQ" target="_KEy19Mw4Eee4YbvpwMXMhQ">
+                    <trigger xmi:id="_18_5_2_1c100dd_1511867519701_56844_6337" name="" visibility="public" event="_18_5_2_1c100dd_1511867519701_431731_6336"/>
+                  </transition>
+                  <transition xmi:id="_KEy1-8w4Eee4YbvpwMXMhQ" name="Transition" source="_KEy19Mw4Eee4YbvpwMXMhQ" target="_KEy19cw4Eee4YbvpwMXMhQ"/>
+                  <subvertex xmi:type="uml:Pseudostate" xmi:id="_KEy18sw4Eee4YbvpwMXMhQ" name="Initial State"/>
+                  <subvertex xmi:type="uml:State" xmi:id="_KEy188w4Eee4YbvpwMXMhQ" name="State"/>
+                  <subvertex xmi:type="uml:State" xmi:id="_KEy19Mw4Eee4YbvpwMXMhQ" name="State1"/>
+                  <subvertex xmi:type="uml:FinalState" xmi:id="_KEy19cw4Eee4YbvpwMXMhQ" name="Final State"/>
+                </region>
+              </ownedBehavior>
+              <ownedOperation xmi:id="_KEy1_Mw4Eee4YbvpwMXMhQ" name="carimplop" visibility="public"/>
               <ownedOperation xmi:id="_KExAgcw4Eee4YbvpwMXMhQ" name="createWithFourWheels" visibility="public" isStatic="true">
                 <ownedParameter xmi:id="_KExAhcw4Eee4YbvpwMXMhQ" name="car" type="_KEw_88w4Eee4YbvpwMXMhQ" isUnique="false">
                   <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KExAh8w4Eee4YbvpwMXMhQ" name="" visibility="public" value="1"/>
@@ -308,10 +348,6 @@
                 <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_5_2_1c100dd_1510993400096_933400_3961" name="" visibility="public" value="1"/>
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400096_196117_3962" name="" visibility="public" value="1"/>
-              </ownedAttribute>
-              <ownedAttribute xmi:id="_KExmusw4Eee4YbvpwMXMhQ" name="licensePlate" visibility="public" type="_KExmwcw4Eee4YbvpwMXMhQ" aggregation="composite" association="_KExBAcw4Eee4YbvpwMXMhQ">
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KExmwMw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400091_313280_3785" name="" visibility="public" value="1"/>
               </ownedAttribute>
             </packagedElement>
             <packagedElement xmi:type="uml:Class" xmi:id="_KExmwcw4Eee4YbvpwMXMhQ" name="LicensePlate" visibility="public">
@@ -970,59 +1006,22 @@
               <ownedLiteral xmi:id="_KEy108w4Eee4YbvpwMXMhQ" name="round" visibility="public"/>
               <ownedLiteral xmi:id="_KEy11Mw4Eee4YbvpwMXMhQ" name="rectangle" visibility="public"/>
             </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_KEy11cw4Eee4YbvpwMXMhQ" name="CarImpl" visibility="public">
-              <ownedRule xmi:id="_KEwYxcw4Eee4YbvpwMXMhQ" name="" visibility="public" constrainedElement="_KEy12sw4Eee4YbvpwMXMhQ">
-                <specification xmi:type="uml:LiteralString" xmi:id="_KEwYxsw4Eee4YbvpwMXMhQ" name="" visibility="public" value="self.licensePlate"/>
-              </ownedRule>
-              <ownedRule xmi:id="_KEwYx8w4Eee4YbvpwMXMhQ" name="" visibility="public" constrainedElement="_KEy14cw4Eee4YbvpwMXMhQ">
-                <specification xmi:type="uml:LiteralString" xmi:id="_KEwYyMw4Eee4YbvpwMXMhQ" name="" visibility="public" value="self.wheels"/>
-              </ownedRule>
-              <generalization xmi:id="_KEy12cw4Eee4YbvpwMXMhQ" general="_KEw_88w4Eee4YbvpwMXMhQ"/>
-              <ownedAttribute xmi:id="_KEy12sw4Eee4YbvpwMXMhQ" name="licensePlateDerived" visibility="protected" type="_KExmwcw4Eee4YbvpwMXMhQ" association="_KEy2AMw4Eee4YbvpwMXMhQ">
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy14Mw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400110_287873_4400" name="" visibility="public" value="1"/>
-              </ownedAttribute>
-              <ownedAttribute xmi:id="_KEy14cw4Eee4YbvpwMXMhQ" name="wheelsDerived" visibility="protected" type="_KEy2EMw4Eee4YbvpwMXMhQ" association="_KEy2CMw4Eee4YbvpwMXMhQ">
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy16Mw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KEy158w4Eee4YbvpwMXMhQ" name="" visibility="public" value="*"/>
-              </ownedAttribute>
-              <ownedAttribute xmi:id="_KEy16cw4Eee4YbvpwMXMhQ" name="hoppa" visibility="public" isUnique="false">
-                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy178w4Eee4YbvpwMXMhQ" name="" visibility="public"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400085_321082_3565" name="" visibility="public" value="1"/>
-              </ownedAttribute>
-              <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_KEy18Mw4Eee4YbvpwMXMhQ" name="mysm" visibility="public" isReentrant="false">
-                <region xmi:id="_KEy18cw4Eee4YbvpwMXMhQ" name="">
-                  <transition xmi:id="_KEy19sw4Eee4YbvpwMXMhQ" name="Transition" source="_KEy18sw4Eee4YbvpwMXMhQ" target="_KEy188w4Eee4YbvpwMXMhQ"/>
-                  <transition xmi:id="_KEy198w4Eee4YbvpwMXMhQ" name="Transition" source="_KEy188w4Eee4YbvpwMXMhQ" target="_KEy19Mw4Eee4YbvpwMXMhQ">
-                    <trigger xmi:id="_18_5_2_1c100dd_1511867503312_995463_6331" name="" visibility="public" event="_18_5_2_1c100dd_1511867503311_597612_6330"/>
-                  </transition>
-                  <transition xmi:id="_KEy1-cw4Eee4YbvpwMXMhQ" name="Transition1" source="_KEy188w4Eee4YbvpwMXMhQ" target="_KEy19Mw4Eee4YbvpwMXMhQ">
-                    <trigger xmi:id="_18_5_2_1c100dd_1511867519701_56844_6337" name="" visibility="public" event="_18_5_2_1c100dd_1511867519701_431731_6336"/>
-                  </transition>
-                  <transition xmi:id="_KEy1-8w4Eee4YbvpwMXMhQ" name="Transition" source="_KEy19Mw4Eee4YbvpwMXMhQ" target="_KEy19cw4Eee4YbvpwMXMhQ"/>
-                  <subvertex xmi:type="uml:Pseudostate" xmi:id="_KEy18sw4Eee4YbvpwMXMhQ" name="Initial State"/>
-                  <subvertex xmi:type="uml:State" xmi:id="_KEy188w4Eee4YbvpwMXMhQ" name="State"/>
-                  <subvertex xmi:type="uml:State" xmi:id="_KEy19Mw4Eee4YbvpwMXMhQ" name="State1"/>
-                  <subvertex xmi:type="uml:FinalState" xmi:id="_KEy19cw4Eee4YbvpwMXMhQ" name="Final State"/>
-                </region>
-              </ownedBehavior>
-              <ownedOperation xmi:id="_KEy1_Mw4Eee4YbvpwMXMhQ" name="carimplop" visibility="public"/>
-            </packagedElement>
+           
+           _KEy11cw4Eee4YbvpwMXMhQ
+           
+           _KEy2Rcw4Eee4YbvpwMXMhQ
+           
             <packagedElement xmi:type="uml:Association" xmi:id="_KEy2AMw4Eee4YbvpwMXMhQ" name="" visibility="public" memberEnd="_KEy12sw4Eee4YbvpwMXMhQ _KEy2Acw4Eee4YbvpwMXMhQ">
-              <ownedEnd xmi:id="_KEy2Acw4Eee4YbvpwMXMhQ" name="ci" visibility="public" type="_KEy11cw4Eee4YbvpwMXMhQ" association="_KEy2AMw4Eee4YbvpwMXMhQ">
+              <ownedEnd xmi:id="_KEy2Acw4Eee4YbvpwMXMhQ" name="ci" visibility="public" type="_KEy2Rcw4Eee4YbvpwMXMhQ" association="_KEy2AMw4Eee4YbvpwMXMhQ">
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy2B8w4Eee4YbvpwMXMhQ" name="" visibility="public"/>
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400079_453048_3385" name="" visibility="public" value="1"/>
               </ownedEnd>
             </packagedElement>
             <packagedElement xmi:type="uml:Association" xmi:id="_KEy2CMw4Eee4YbvpwMXMhQ" name="" visibility="public" memberEnd="_KEy14cw4Eee4YbvpwMXMhQ _KEy2Ccw4Eee4YbvpwMXMhQ">
-              <ownedEnd xmi:id="_KEy2Ccw4Eee4YbvpwMXMhQ" name="ci" visibility="public" type="_KEy11cw4Eee4YbvpwMXMhQ" association="_KEy2CMw4Eee4YbvpwMXMhQ">
+              <ownedEnd xmi:id="_KEy2Ccw4Eee4YbvpwMXMhQ" name="ci" visibility="public" type="_KEy2Rcw4Eee4YbvpwMXMhQ" association="_KEy2CMw4Eee4YbvpwMXMhQ">
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy2D8w4Eee4YbvpwMXMhQ" name="" visibility="public"/>
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400109_248404_4367" name="" visibility="public" value="1"/>
               </ownedEnd>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_KEy2EMw4Eee4YbvpwMXMhQ" name="WheelImpl" visibility="public">
-              <generalization xmi:id="_KEy2FMw4Eee4YbvpwMXMhQ" general="_KExm2cw4Eee4YbvpwMXMhQ"/>
             </packagedElement>
             <packagedElement xmi:type="uml:Association" xmi:id="_18_5_2_1c100dd_1511108971638_630968_22465" name="" visibility="public" memberEnd="_18_5_2_1c100dd_1511108971638_406800_22466 _18_5_2_1c100dd_1511108971638_711991_22467"/>
             <packagedElement xmi:type="uml:Association" xmi:id="_18_5_2_1c100dd_1511108994495_367876_22503" name="" visibility="public" memberEnd="_18_5_2_1c100dd_1511108994496_217572_22504 _18_5_2_1c100dd_1511108994496_902826_22505"/>
@@ -1535,8 +1534,6 @@
   <JudoProfile:call xmi:id="_-RPgINw7EeeL1p-ms-KnMw" base_Dependency="_KEzc4sw4Eee4YbvpwMXMhQ"/>
   <JudoProfile:object_read xmi:id="_-RPgIdw7EeeL1p-ms-KnMw" base_Dependency="_KEzc_8w4Eee4YbvpwMXMhQ"/>
   <JudoProfile:object_update xmi:id="_-RPgItw7EeeL1p-ms-KnMw" base_Dependency="_KEzc0sw4Eee4YbvpwMXMhQ"/>
-  <JudoProfile:implementation xmi:id="_-RQHMNw7EeeL1p-ms-KnMw" base_Class="_KEy2EMw4Eee4YbvpwMXMhQ"/>
-  <JudoProfile:implementation xmi:id="_-RQHMdw7EeeL1p-ms-KnMw" base_Class="_KEy11cw4Eee4YbvpwMXMhQ"/>
   <JudoProfile:query xmi:id="_-RQHMtw7EeeL1p-ms-KnMw" base_Operation="_KExA9cw4Eee4YbvpwMXMhQ"/>
   <JudoProfile:query xmi:id="_-RQuQNw7EeeL1p-ms-KnMw" base_Operation="_KExA7cw4Eee4YbvpwMXMhQ"/>
   <JudoProfile:query xmi:id="_-RQuQdw7EeeL1p-ms-KnMw" base_Operation="_KExAycw4Eee4YbvpwMXMhQ"/>

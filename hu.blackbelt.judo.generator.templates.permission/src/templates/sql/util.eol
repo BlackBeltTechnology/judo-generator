@@ -35,7 +35,7 @@ operation tmpTUserTRoles() : String {
 	
 @cahced
 operation formatVersion() : String {
-	var temp = version().replace("////.","_").replace('-SNAPSHOT', '');
+	var temp = version().replace("\\.","_").replace('-SNAPSHOT', '').replace("-","_");
 	return temp.substring(0, getMathNativeStub().min(temp.length(), 30));
 }
 

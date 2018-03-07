@@ -17,7 +17,7 @@ rule StateMachine
 	ownerClass.println("OWNERCLASS ==> ");
 	ownerPackage.println("OWNERPACKAGE ==> ");
 	
-	stateMachineEnum.name = ownerClass.name.concat( s.name.firstToUpperCase() );
+	stateMachineEnum.name = ownerClass.name.concat( s.name.firstToUpperCase());
 	stateMachineEnum.uuid = uuid3(t.uuid, "StateEnum");
 	
 	ownerPackage.enumerations.add(stateMachineEnum);
@@ -110,19 +110,13 @@ rule Transition
 		}
 	}
 	
-	// create Association for Operation <-> Transition
-	var effect = s.effect;
+	if ( s.trigger.event.`operation`.isDefined() and s.trigger.event.`operation`.size() > 0) {
 	
-	if ( effect.isDefined() and effect.isTypeOf(OpaqueBehavior)) {
-		var specification = effect.specification;
-		
-		specification.println("RULE::Transition - Transition Specification : ");
-		
-		if ( specification.isTypeOf( Operation ) ) {
-			var op = specification.equivalent("Operation");
-			t.executingOperation = op;
-			op.transition.add( t );
-		}
+		s.trigger.event.`operation`.println("RULE: TRANSITION - EXECUTING METHOD");
+	
+		var op = s.trigger.event.`operation`.first().equivalent("Operation");
+		t.executingOperation = op;
+		op.transition.add( t );	
 	}
 	
 	t.println("RULE::Transition - tgt : ");
@@ -161,6 +155,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	var enumValueClass : tgtPSM!JClass = new tgtPSM!JClass;
 	enumValueClass.name = enumClass.name + "Value"; 
 	enumValueClass.uuid = uuid3(self.uuid, "ValCls");
+	enumValueClass.representsEnumValue = true;
 	
 	enumValueClass.attributes.add(createDefaultAttribute("value").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")));
 		// ownerships

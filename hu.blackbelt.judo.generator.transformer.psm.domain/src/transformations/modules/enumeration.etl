@@ -34,11 +34,19 @@ rule Enum2CorrespondingValueClass
 	var isFrameworkElmt = tgtPkg.framework;
 	
 	t.representsEnum = true;
-	t.attributes.add(createDefaultAttribute("code").uuid(t.uuid).type(getPSMPrimitiveType("String")));
 	
-	var att = createDefaultAttribute("value").uuid(t.uuid).type(getPSMPrimitiveType("String"));	
-	t.attributes.add(att);
-	t.representation = att;
+	var code = createDefaultAttribute("code").uuid(t.uuid).type(getPSMPrimitiveType("String"));
+	code.lower = 1;
+	code.upper = 1;
+	code.mandatory = true;
+	t.attributes.add(code);
+	
+	var value = createDefaultAttribute("value").uuid(t.uuid).type(getPSMPrimitiveType("String"));
+	value.lower = 1;
+	value.upper = 1;
+	value.mandatory = true;
+	t.attributes.add(value);
+	t.representation = value;
 	
 	s.owner.equivalent("Package").classes.add(t);
 	
@@ -55,8 +63,12 @@ rule Enum2CorrespondingValueClass
 	enumValueClass.name = t.name.concat("Value");
 	enumValueClass.framework = isFrameworkElmt;
 	enumValueClass.representsEnumValue = true;
-	enumValueClass.attributes.add(createDefaultAttribute("value").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")));
 	
+	value = (createDefaultAttribute("value").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")));
+	value.lower = 1;
+	value.upper = 1;
+	value.mandatory = true;
+	enumValueClass.attributes.add(value);
 	
 	enumValueClass.representsEnumValue.println("Enum: ");
 	

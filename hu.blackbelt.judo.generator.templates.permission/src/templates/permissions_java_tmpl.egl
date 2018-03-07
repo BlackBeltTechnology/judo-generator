@@ -1,6 +1,6 @@
 [% var admin = Permission!Admin.all.first(); %]
 
-package hu.blackbelt.common.permissions;
+package hu.blackbelt.judo;
 
 import com.google.common.collect.Maps;
 import fj.data.List;

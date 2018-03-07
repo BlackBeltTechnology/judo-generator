@@ -9,7 +9,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		readPerm.resourceUuid = readPerm.hostClassUuid + "." + jrole.uuid;
 		readPerm.action = "read";
 		readPerm.type = "relation";
-		readPerm.uuid = uuid3(readPerm.hostClassUuid, readPerm.resourceUuid + readPerm.action);
+		readPerm.uuid = uuid3(uuid3(readPerm.hostClassUuid, readPerm.resourceUuid), readPerm.action);
 		
 		var writePerm = new Permission!RelPermission();
 		writePerm.hostClassName = package.name + "." + class.name;
@@ -19,7 +19,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		writePerm.resourceUuid = writePerm.hostClassUuid + "." + jrole.uuid;
 		writePerm.action = "write";
 		writePerm.type = "relation";
-		writePerm.uuid = uuid3(writePerm.hostClassUuid, writePerm.resourceUuid + writePerm.action);
+		writePerm.uuid = uuid3(uuid3(writePerm.hostClassUuid, writePerm.resourceUuid), writePerm.action);
 		
 		var attachPerm = new Permission!RelPermission();
 		attachPerm.hostClassName = package.name + "." + class.name;
@@ -29,7 +29,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		attachPerm.resourceUuid = attachPerm.hostClassUuid + "." + jrole.uuid;
 		attachPerm.action = "attach";
 		attachPerm.type = "relation";
-		attachPerm.uuid = uuid3(attachPerm.hostClassUuid, attachPerm.resourceUuid + attachPerm.action);
+		attachPerm.uuid = uuid3(uuid3(attachPerm.hostClassUuid, attachPerm.resourceUuid), attachPerm.action);
 		
 		var detachPerm = new Permission!RelPermission();
 		detachPerm.hostClassName = package.name + "." + class.name;
@@ -39,7 +39,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		detachPerm.resourceUuid = detachPerm.hostClassUuid + "." + jrole.uuid;
 		detachPerm.action = "detach";
 		detachPerm.type = "relation";
-		detachPerm.uuid = uuid3(detachPerm.hostClassUuid, detachPerm.resourceUuid + detachPerm.action);
+		detachPerm.uuid = uuid3(uuid3(detachPerm.hostClassUuid, detachPerm.resourceUuid), detachPerm.action);
 		
 		perms.add(readPerm);
 		perms.add(writePerm);

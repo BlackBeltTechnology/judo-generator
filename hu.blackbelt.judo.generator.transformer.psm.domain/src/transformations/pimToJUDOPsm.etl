@@ -42,6 +42,17 @@ post {
 		je.framework = true;
 	}
 	
+	var idType = tgtPSM!JPrimitive.all.select(p | p.useForIdType).first();
+	for (jc in tgtPSM!JClass.all.select(c | c.supertype.isUndefined() and c.participates(tgtPSM!JLayer#PERSISTENCE))) {
+		jc.attributes.add(createDefaultAttribute("auditCreateUser").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
+		jc.attributes.add(createDefaultAttribute("auditCreateTime").uuid(jc.uuid).technical().type(getPSMPrimitiveType("datetime")).private());
+		jc.attributes.add(createDefaultAttribute("auditUpdateUser").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
+		jc.attributes.add(createDefaultAttribute("auditUpdateTime").uuid(jc.uuid).technical().type(getPSMPrimitiveType("datetime")).private());
+		jc.attributes.add(createDefaultAttribute("guid").uuid(jc.uuid).technical().unique().type(getPSMPrimitiveType("String")).private());
+		jc.attributes.add(createDefaultAttribute("xmiid").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
+		jc.attributes.add(createDefaultAttribute("id").uuid(jc.uuid).technical().type(getPSMPrimitiveType("Id")).private());
+	}
+	
 	"POST processing FINISHED.".println();
 }
 
