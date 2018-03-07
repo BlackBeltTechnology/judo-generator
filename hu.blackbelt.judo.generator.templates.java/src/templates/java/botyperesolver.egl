@@ -42,6 +42,6 @@ public class [%=class.name%] implements BoTypeResolver {
 
 [%
 operation boClasses () {
-    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO);
+    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and not c.fwElement);
 }
 %]

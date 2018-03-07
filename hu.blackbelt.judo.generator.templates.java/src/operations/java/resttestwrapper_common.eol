@@ -35,7 +35,7 @@ operation JAVA!JvmMethod parametersSignatureRestTestWrapperT () : String {
 
 @cached
 operation JAVA!JvmType typeDeclaration () : String {
-    if (self.isPrimitive()) {
+    if (self.bare().isPrimitive()) {
         return self.fqName();
     } else if (self.bare().hasFixedEnum()) {
         return self.restDtoEnum().fqName();

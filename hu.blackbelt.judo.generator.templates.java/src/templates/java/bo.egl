@@ -15,6 +15,7 @@
   
   var metainfoMacro = getJavaMacro("metainfo");
   metainfoMacro.populate("class", class);
+  metainfoMacro.populate("onlyFramework", false);
 %]
 
 package [%=class.package.fqName()%];
@@ -103,8 +104,8 @@ public class [%=className%] [%if (class.hasSuper()) {%] extends [%=class.superty
 	[%=equalsHashcodeMacro.process()%]
 	
 	[%if (not class.abstract) {%]
-		public static [%=className%]Builder [%=className.firstToLowerCase()%]Builder() {
-			return new [%=className%]Builder();
+		public static [%=class.boBuilder().fqName()%] [%=className.firstToLowerCase()%]Builder() {
+			return new [%=class.boBuilder().fqName()%]();
 		}
 	[%}%]
 	

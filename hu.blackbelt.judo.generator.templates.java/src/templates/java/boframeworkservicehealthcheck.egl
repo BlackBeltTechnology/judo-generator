@@ -16,17 +16,22 @@ import java.util.List;
 
 @Component(metatype = false, immediate = true)
 @SuppressWarnings({"checkstyle:executablestatementcount", "checkstyle:multiplestringliterals"})
-public class OperationHealthCheck extends AbstractServiceHealthCheck {
+public class ServiceHealthCheck extends AbstractServiceHealthCheck {
 
-public OperationHealthCheck() { }
+public ServiceHealthCheck() { }
 
     @Override
     public List<String> getServiceHaveToBeActiveByObjectClass() {
 
         List<String> services = Lists.newArrayList();
 
-        [% for (dtoOperation in class.packageDtoOperations()) { %]
-            services.add("[%=dtoOperation.fqName()%]");
+		services.add("hu.blackbelt.judo.business.bo.api.BoTypeResolver");
+        services.add("hu.blackbelt.judo.business.bo.api.FrameworkEntityFactoryLocator");
+
+        [% for (boService in class.packageBoFrameworkServiceDefaults()) { %]
+            services.add("[%=boService.fqName()%]");
+            services.add("[%=boService.boServiceInterface().fqName()%]");
+            services.add("[%=boService.boFactoryInterface().fqName()%]");
         [%}%]
 
         return ImmutableList.copyOf(services);
@@ -34,11 +39,7 @@ public OperationHealthCheck() { }
 }
 
 [%
-operation JAVA!JvmClass packageDtoOperations () {
-	if (self.package.framework) {
-		return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#DTO_OPERATION and c.package.framework);
-	} else {
-		return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#DTO_OPERATION and not c.package.framework);
-	}
-}
+operation JAVA!JvmClass packageBoFrameworkServiceDefaults () {
+    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_DEFAULT);
+} 
 %]

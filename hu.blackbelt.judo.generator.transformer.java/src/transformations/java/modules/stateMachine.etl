@@ -24,7 +24,7 @@ rule JTransition
 	extends JElement {
 		t.fromState ::= s.fromState;
 		t.toState ::= s.toState;
-		t.ownerStateMachine ::= s.stateMachine;
+		t.ownerStateMachine ::= s.stateMachine;	
 		t.executingMethod ::= s.executingOperation;
 }
 

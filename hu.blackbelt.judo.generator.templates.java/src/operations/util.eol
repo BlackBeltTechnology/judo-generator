@@ -1,4 +1,3 @@
-
 operation voidType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.name = "Void").first();
 }

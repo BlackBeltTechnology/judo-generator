@@ -29,15 +29,23 @@ rule BoServiceParameter
 	transform s : PSM!JParameter
 	to t : JAVA!JvmMethodParameter
 	extends JParameter {
-	guard : s.input
+	guard : s.input and not s.ownerOperation.ownerClass.framework
 		t.fillFrom(s, "BoServiceOperation", "BoClass");
+}
+
+rule BoFrameworkServiceParameter 
+	transform s : PSM!JParameter
+	to t : JAVA!JvmMethodParameter
+	extends JParameter {
+	guard : s.input and s.ownerOperation.ownerClass.framework
+		t.fillFrom(s, "BoFrameworkServiceOperation", "BoInterface");
 }
 
 rule BoServiceAbstractParameter 
 	transform s : PSM!JParameter
 	to t : JAVA!JvmMethodParameter
 	extends JParameter {
-	guard : s.input
+	guard : s.input and not s.ownerOperation.ownerClass.framework
 		t.fillFrom(s, "BoServiceAbstractOperation", "BoClass");
 }
 
@@ -45,8 +53,24 @@ rule BoServiceWrapperParameter
 	transform s : PSM!JParameter
 	to t : JAVA!JvmMethodParameter
 	extends JParameter {
-	guard : s.input
+	guard : s.input and not s.ownerOperation.ownerClass.framework
 		t.fillFrom(s, "BoServiceWrapperOperation", "BoClass");
+}
+
+rule BoFrameworkServiceWrapperParameter 
+	transform s : PSM!JParameter
+	to t : JAVA!JvmMethodParameter
+	extends JParameter {
+	guard : s.input and s.ownerOperation.ownerClass.framework
+		t.fillFrom(s, "BoFrameworkServiceWrapperOperation", "BoInterface");
+}
+
+rule BoFrameworkServiceDefaultParameter 
+	transform s : PSM!JParameter
+	to t : JAVA!JvmMethodParameter
+	extends JParameter {
+	guard : s.input and s.ownerOperation.ownerClass.framework
+		t.fillFrom(s, "BoFrameworkServiceDefaultOperation", "BoInterface");
 }
 
 rule DtoParameter

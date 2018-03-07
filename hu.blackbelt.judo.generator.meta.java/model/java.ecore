@@ -53,7 +53,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsTenant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tenantMember" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="technicalObject" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsEnum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsTenantUser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsUser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="businessSingleton" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -121,6 +120,8 @@
     <eLiterals name="DETACH" value="10"/>
     <eLiterals name="TRAVERSE_EXPORT" value="11"/>
     <eLiterals name="AVAILABLE_ALL" value="12"/>
+    <eLiterals name="BO_BUILDER" value="13"/>
+    <eLiterals name="BO_INTERFACE" value="14" literal="BO_INTERFACE"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmAttribute" eSuperTypes="#//JvmMember">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -192,6 +193,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="JvmInterface" eSuperTypes="#//JvmCoordinated">
     <eStructuralFeatures xsi:type="ecore:EReference" name="methods" upperBound="-1"
         eType="#//JvmMethod" containment="true" eOpposite="#//JvmMethod/ownerClass"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsEnum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="JvmReferenceType">
     <eLiterals name="OneToOne"/>
@@ -220,7 +222,7 @@
     <eLiterals name="DAO_Q_CLASS" value="17"/>
     <eLiterals name="BO_INTERFACE" value="18"/>
     <eLiterals name="BO_BUILDER_INTERFACE" value="19"/>
-    <eLiterals name="BO_BQL_INTERFACE" value="20"/>
+    <eLiterals name="BO_BQL_FRAMEWORK" value="20"/>
     <eLiterals name="REST_OPERATION" value="21"/>
     <eLiterals name="DTO_BUILDER" value="22"/>
     <eLiterals name="DTO_ENUM" value="23"/>
@@ -247,6 +249,12 @@
     <eLiterals name="REST_TEST_WRAPPER_M" value="44"/>
     <eLiterals name="REST_TEST_WRAPPER_S" value="45"/>
     <eLiterals name="REST_TEST_WRAPPER_T" value="46"/>
+    <eLiterals name="BO_FACTORY_INTERFACE" value="47"/>
+    <eLiterals name="BO_FACTORY" value="48"/>
+    <eLiterals name="BO_FRAMEWORK_SERVICE_INTERFACE" value="49"/>
+    <eLiterals name="BO_FRAMEWORK_SERVICE_DEFAULT" value="50"/>
+    <eLiterals name="BO_FRAMEWORK_SERVICE_HEALTH_CHECK" value="51"/>
+    <eLiterals name="BO_FRAMEWORK_SERVICE_WRAPPER" value="52"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmCoordinated" abstract="true" eSuperTypes="#//JvmType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordinate" eType="#//JvmJudoCoordinate"/>

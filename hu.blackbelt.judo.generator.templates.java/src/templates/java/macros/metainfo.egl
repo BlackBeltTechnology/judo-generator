@@ -12,7 +12,7 @@
         entityInfo = "[%=class.origin.package.name.firstToUpperCase() + class.name %]",
         from = [%if (class.framework) {%][%=class.boInterface().fqName()%][%}else{%][%=class.bo().fqName()%][%}%].class,
 
-        bql = [%if (class.framework) {%][%=class.bqlInterface().fqName()%][%}else{%][%=class.bql().fqName()%][%}%].class,
+        bql = [%=class.bql().fqName()%].class,
 
         tenant = [%=class.tenantMember%],
         framework = [%=class.framework%],
@@ -28,14 +28,19 @@
                         unique = [%=attr.unique%],
                         calculated = [%=attr.calculationScript.isDefined()%],
                         derived = [%=attr.derived%],
-                        regexp = "[%=attr.regexp%]",
+                        [% if (attr.regexp.isDefined()) {%]
+                        regexp = "[%=attr.regexp.replace("\\\\","\\\\\\\\")%]",
+                        [%} else {%]
+                        regexp = "",
+                        [% } %]
                         value = "[% if (attr.calculationScript.isDefined()) {%][%=attr.calculationScript%][%}else{%][%=attr.defaultValueExpression%][%}%]"
                 )[%if (hasMore) {%][%=","%][%}%]
         [%}%]
         },
-
+		[% if (onlyFramework) {%]
         relations = {
         [%for (ref in class.allReferences()) {%]
+        	[% if (ref.ownerClass.framework and ref.opposite.ownerClass.framework) {%]
                 @Relation(
                         thisEnd = @RelationEnd(
                                 field = "[%=ref.name%]",
@@ -47,7 +52,7 @@
                                 maximum = [%=multiplicity.get(ref.upper)%],
                                 navigable = [%=ref.navigable%],
                                 script = "[% if (ref.derived) {%][%=ref.virtualExpressionScript%][%}%]",
-                                description = "[%if (ref.derived) {%][%=ref.derivedDescription%][%}%]",
+                                description = "[%if (ref.derivedDescription.isDefined()) {%][%=ref.derivedDescription%][%}%]",
                                 derived = [%=ref.derived%],
                                 options = "[% if (ref.optionScript.isDefined()) {%][%=ref.optionScript%][%}%]",
                                 value = "[% if (ref.defaultValueExpression.isDefined()) {%][%=ref.defaultValueExpression%][%}%]",
@@ -63,13 +68,53 @@
                                 maximum = [%=multiplicity.get(ref.opposite.upper)%],
                                 navigable = [%=ref.opposite.navigable%],
                                 script = "[% if (ref.opposite.derived) {%][%=ref.opposite.virtualExpressionScript%][%}%]",
-                                description = "[%if (ref.opposite.derived) {%][%=ref.opposite.derivedDescription%])[%}%]",
+                                description = "[%if (ref.opposite.derivedDescription.isDefined()) {%][%=ref.opposite.derivedDescription%][%}%]",
                                 derived = [%=ref.opposite.derived%],
                                 options = "[% if (ref.opposite.optionScript.isDefined()) {%][%=ref.opposite.optionScript%][%}%]",
                                 value = "[% if (ref.opposite.defaultValueExpression.isDefined()) {%][%=ref.opposite.defaultValueExpression%][%}%]",
                                 calculated = false
                         )
                 )[%if (hasMore) {%][%=","%][%}%]
+           [%}%]
+        [%}%]
+        [%} else {%]
+        relations = {
+        [%for (ref in class.allReferences()) {%]
+                @Relation(
+                        thisEnd = @RelationEnd(
+                                field = "[%=ref.name%]",
+                                xmiid = "[%=ref.opposite.originUUID()%]",
+                                collection = [%=ref.type.isCollection()%],
+                                type = [%if (ref.framework) {%][%=ref.type.bare().boInterface().fqName()%][%}else{%][%=ref.type.bare().bo().fqName()%][%}%].class,
+                                kind = [%=kind.get(ref.kind)%],
+                                minimum = [%=multiplicity.get(ref.lower)%],
+                                maximum = [%=multiplicity.get(ref.upper)%],
+                                navigable = [%=ref.navigable%],
+                                script = "[% if (ref.derived) {%][%=ref.virtualExpressionScript%][%}%]",
+                                description = "[%if (ref.derivedDescription.isDefined()) {%][%=ref.derivedDescription%][%}%]",
+                                derived = [%=ref.derived%],
+                                options = "[% if (ref.optionScript.isDefined()) {%][%=ref.optionScript%][%}%]",
+                                value = "[% if (ref.defaultValueExpression.isDefined()) {%][%=ref.defaultValueExpression%][%}%]",
+                                calculated = false
+                        ),
+                        otherEnd = @RelationEnd(
+                                field = "[%=ref.opposite.name%]",
+                                xmiid = "[%=ref.originUUID()%]",
+                                collection = [%=ref.opposite.type.isCollection()%],
+                                type = [%if (ref.framework) {%][%=ref.opposite.type.bare().boInterface().fqName()%][%}else{%][%=ref.opposite.type.bare().bo().fqName()%][%}%].class,
+                                kind = [%=kind.get(ref.opposite.kind)%],
+                                minimum = [%=multiplicity.get(ref.opposite.lower)%],
+                                maximum = [%=multiplicity.get(ref.opposite.upper)%],
+                                navigable = [%=ref.opposite.navigable%],
+                                script = "[% if (ref.opposite.derived) {%][%=ref.opposite.virtualExpressionScript%][%}%]",
+                                description = "[%if (ref.opposite.derivedDescription.isDefined()) {%][%=ref.opposite.derivedDescription%][%}%]",
+                                derived = [%=ref.opposite.derived%],
+                                options = "[% if (ref.opposite.optionScript.isDefined()) {%][%=ref.opposite.optionScript%][%}%]",
+                                value = "[% if (ref.opposite.defaultValueExpression.isDefined()) {%][%=ref.opposite.defaultValueExpression%][%}%]",
+                                calculated = false
+                        )
+                )[%if (hasMore) {%][%=","%][%}%]
+        [%}%]
         [%}%]
         }
 )

@@ -11,14 +11,20 @@ import hu.blackbelt.judo.rdbms.querydsl.api.AbstractQueryDslEntityDao;
 import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslPersistenceProvider;
 import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslSqlQueryFactory;
 import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.ConfigurationPolicy;
+import org.apache.felix.scr.annotations.Properties;
+import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 
-@Component(immediate = true)
+@Component(configurationPid = "hu.blackbelt.querydsl.persistence", immediate = true, policy = ConfigurationPolicy.REQUIRE)
+@Properties(value = {
+        @Property(name = "provider.target", value = "")
+})
 @Service
 public class [%=class.name%] extends AbstractQueryDslEntityDao<[%=class.bo().fqName()%], [%=class.daoQClass().fqName()%], [%=class.po().fqName()%]> implements [%=class.daoMinimal().fqName()%] {
 
-    @Reference(target = "(" + QueryDslPersistenceProvider.PROP_PERSISTENCE_UNIT_NAME + "=[%=class.package.ownerModel().applicationTop.fqName()%])")
+    @Reference(name = "provider")
     QueryDslPersistenceProvider provider;
 
     @Override

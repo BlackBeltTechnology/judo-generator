@@ -13,19 +13,17 @@ import lombok.Data;
 import java.util.List;
 
 public final class Namespace {
-    public static final String REST_BASE_URI = "/rest/{{ package.module|replace(".","/") }}"; 
+    public static final String REST_BASE_URI = "/rest/[%=class.package.restBaseUri("/")%]"; 
     private Namespace() {
     }
 
     public static final VersionInfo VERSION_INFO = VersionInfo.builder()
-        .version("{{ projectVersion }}")
+        .version("development")
         .application("[%=class.package.ownerModel().name.firstToUpperCase()%]")
-        .domain("{{ package.module }}")
-        .commitId("{{ commitId }}")
-        .modules(ImmutableList.<Module>builder()
-            {%- for module in modules|sort(attribute = 'id') %}
-            .add(Module.builder().id("{{ module.id }}").name("{{ module.name }}").version("{{ module.version }}").build())
-            {%- endfor %}
+        .domain("[%=class.package.restBaseUri(".")%]")
+        .commitId("development")
+        .modules(ImmutableList.<Module>builder() 
+            .add(Module.builder().id("[%=class.package.ownerModel().name%]").name("").version("[%=class.package.ownerModel().version%]").build())
             .build())
         .build();
 
@@ -47,3 +45,17 @@ public final class Namespace {
         String version;
     }
 }
+
+[% 
+	operation JAVA!JvmPackage restBaseUri(separator : String) : String {
+		var restBaseUri : String = self.package.name;
+		var currentPackage = self.package.package;
+		
+		while (currentPackage.name <> "blackbelt") {
+			restBaseUri = currentPackage.name + separator + restBaseUri;
+			currentPackage = currentPackage.package;
+		}
+		
+		return restBaseUri;
+	}
+%]

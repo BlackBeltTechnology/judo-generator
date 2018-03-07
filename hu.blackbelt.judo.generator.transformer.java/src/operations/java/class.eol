@@ -1,9 +1,7 @@
-@cached
 operation JAVA!JvmClass attributes () : Collection {
 	return self.members.select( m | m.isTypeOf(JAVA!JvmAttribute)).sortBy(a | a.name);
 }
 
-@cached
 operation JAVA!JvmClass allAttributes () : Collection {
 	var all = self.attributes();
 	if (self.supertype.isDefined()) {
@@ -12,12 +10,10 @@ operation JAVA!JvmClass allAttributes () : Collection {
 	return all.sortBy(a | a.name);
 }
 
-@cached
 operation JAVA!JvmClass references () : Collection {
 	return self.members.select( m | m.isTypeOf(JAVA!JvmReference)).sortBy(r | r.name);
 }
 
-@cached
 operation JAVA!JvmClass allReferences () : Collection {
 	var all = self.references();
 	if (self.supertype.isDefined()) {
@@ -26,12 +22,10 @@ operation JAVA!JvmClass allReferences () : Collection {
 	return all.sortBy(a | a.name);
 }
 
-@cached
 operation JAVA!JvmClass members () : Collection {
 	return self.members.sortBy(r | r.name);
 }
 
-@cached
 operation JAVA!JvmClass guardEnums () : Collection {
 	var allGuards = self.methods.guards.flatten();
 	if (allGuards.notEmpty()) {
@@ -41,7 +35,14 @@ operation JAVA!JvmClass guardEnums () : Collection {
 	}
 }
 
-@cached
 operation JAVA!JvmClass createAllowed () : Boolean {
 	return not (self.abstract and self.references().size() > 0);
+}
+
+operation JAVA!JvmClass setSupertype(supertype : PSM!JClass, domainType : String, fwType : String) { 
+	if (supertype.equivalent(domainType).isDefined()) {
+		self.supertype = supertype.equivalent(domainType);
+	} else {
+		self.supertype = supertype.equivalent(fwType);
+	}
 }

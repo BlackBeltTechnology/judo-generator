@@ -46,7 +46,18 @@ rule BoBqlRole
 	transform s : PSM!JRole
 	to t : JAVA!JvmReference 
 	extends JRole {
-		t.fillFrom(s, "BoBql");
+	t.fillFrom(s, "BoBql");
+	if (t.opposite.isUndefined()) {
+		t.type = s.opposite().ownerClass.equivalent("BoBqlFrameworkClass");
+	}
+}
+
+rule BoBqlFrameworkRole 
+	transform s : PSM!JRole
+	to t : JAVA!JvmReference 
+	extends JRole {
+	guard: s.ownerClass.framework and s.opposite().ownerClass.framework
+	t.fillFrom(s, "BoBqlFramework");
 }
 
 rule DtoRole
@@ -133,10 +144,12 @@ rule RestTestWrapperSRole
         t.fillFrom(s, "RestTestWrapperS");
 }
 
-operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : Any {
+operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : Any {	
 	self.uuid = uuid3(source.uuid, rulPrefix + "Role");
 	self.ownerClass = source.ownerClass.equivalent(rulPrefix + "Class");
-	self.opposite = source.ownerRelationship.roles.select(r | r <> source).first().equivalent(rulPrefix + "Role");
+	
+	self.opposite = source.opposite().equivalent(rulPrefix + "Role");
+	self.navigable = source.navigable;
 	if (source.derivedExpression.isDefined()) {
 		self.virtualExpressionScript = source.derivedExpression.replace("\n", " ");
 	}
@@ -152,7 +165,8 @@ operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : 
 			self.defaultValueExpression = source.value;
 		}
 	}
-	if (self.opposite.ownerClass.isDefined()){
+	
+	if (self.opposite.isDefined() and self.opposite.ownerClass.isDefined()){
 		var typeClass = self.opposite.ownerClass;
 		if (source.upper = -1) {
 			self.type = createJvmList(typeClass);  

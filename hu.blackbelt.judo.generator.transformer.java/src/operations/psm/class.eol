@@ -1,3 +1,27 @@
 operation PSM!JClass hasSuperType () : Boolean {
 	return self.supertype.isDefined();
 }
+
+operation PSM!JClass attributes () : Collection {
+	return self.attributes.sortBy(a | a.name);
+}
+
+operation PSM!JClass allAttributes () : Collection {
+	var all = self.attributes();
+	if (self.supertype.isDefined()) {
+		all.addAll(self.supertype.allAttributes());
+	}
+	return all.sortBy(a | a.name);
+}
+
+operation PSM!JClass roles () : Collection {
+	return self.roles.sortBy(r | r.name);
+}
+
+operation PSM!JClass allRoles () : Collection {
+	var all = self.roles();
+	if (self.supertype.isDefined()) {
+		all.addAll(self.supertype.allRoles());
+	}
+	return all.sortBy(a | a.name);
+}

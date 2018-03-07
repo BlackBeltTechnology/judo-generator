@@ -35,6 +35,10 @@ public RestOperationHealthCheck() { }
 
 [%
 operation JAVA!JvmClass packageRestOperations () {
-    return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#REST_OPERATION and c.origin.package.uuid = self.origin.package.uuid);
+	if (self.package.framework) {
+	    return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#REST_OPERATION and c.package.framework);
+	} else {
+		return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#REST_OPERATION and not c.package.framework);
+	}
 } 
 %]

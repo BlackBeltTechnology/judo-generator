@@ -7,6 +7,9 @@ operation addGuardMethodsAndEnum () : Any {
 				var oClass = state.ownerStateMachine.ownerClass;
 				var enum = new JAVA!JvmEnum;
 				enum.name = key.name.firstToUpperCase() + state.name.firstToUpperCase();
+				
+				enum.name.println("ENUM NAME ITTTT: ");
+				
 				enum.uuid = uuid3(oClass.uuid, enum.name);
 				enum.package = oClass.package;
 				var decideMethod = new JAVA!JvmMethod;

@@ -63,7 +63,11 @@ operation JAVA!JvmEnum fillFrom (source : PSM!JEnumeration, jvmJudoCoordinate : 
 	var cMap = COORDINATES.get(self.coordinate);
 	var suffix = cMap.get(NAME_SUFFIX);
 	self.uuid = uuid3(source.uuid, jvmJudoCoordinate.name + suffix);
-	self.name = source.name + suffix;
+	if (not self.name.endsWith("Enum")) {
+		self.name = source.name + "Enum" + suffix;
+	} else {
+		self.name = source.name + suffix;
+	}	
 	self.origin = source.equivalent("JEnumeration");
 	var p = self.package.findOrCreateChild(cMap.get(PACKAGE_NAME));
 	self.package = p;

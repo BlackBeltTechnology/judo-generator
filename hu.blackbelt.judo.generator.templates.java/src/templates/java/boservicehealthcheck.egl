@@ -36,6 +36,6 @@ public ServiceHealthCheck() { }
 
 [%
 operation JAVA!JvmClass packageBoServiceDefaults () {
-    return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT and c.origin.package.uuid = self.origin.package.uuid);
+	return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT);
 } 
 %]

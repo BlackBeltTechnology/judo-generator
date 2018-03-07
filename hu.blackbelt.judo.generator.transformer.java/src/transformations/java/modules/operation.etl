@@ -30,6 +30,7 @@ rule BoServiceOperation
 	transform s : PSM!JOperation
 	to t : JAVA!JvmMethod
 	extends JOperation {
+	guard : not s.ownerClass.framework
 		t.fillFrom(s, "BoService", "BoClass");
 }
 
@@ -37,6 +38,7 @@ rule BoServiceAbstractOperation
 	transform s : PSM!JOperation
 	to t : JAVA!JvmMethod
 	extends JOperation {
+	guard : not s.ownerClass.framework
 		t.fillFrom(s, "BoServiceAbstract", "BoClass");
 }
 
@@ -44,8 +46,34 @@ rule BoServiceWrapperOperation
 	transform s : PSM!JOperation
 	to t : JAVA!JvmMethod
 	extends JOperation {
+	guard : not s.ownerClass.framework
 		t.fillFrom(s, "BoServiceWrapper", "BoClass");
 }
+
+rule BoFrameworkServiceOperation 
+	transform s : PSM!JOperation
+	to t : JAVA!JvmMethod
+	extends JOperation {
+	guard : s.ownerClass.framework
+		t.fillFrom(s, "BoFrameworkService", "BoInterface");
+}
+
+rule BoFrameworkServiceDefaultOperation 
+	transform s : PSM!JOperation
+	to t : JAVA!JvmMethod
+	extends JOperation {
+	guard : s.ownerClass.framework
+		t.fillFrom(s, "BoFrameworkServiceDefault", "BoInterface");
+}
+
+rule BoFrameworkServiceWrapperOperation 
+	transform s : PSM!JOperation
+	to t : JAVA!JvmMethod
+	extends JOperation {
+	guard : s.ownerClass.framework
+		t.fillFrom(s, "BoFrameworkServiceWrapper", "BoInterface");
+}
+
 
 rule DtoOperation
     transform s : PSM!JOperation

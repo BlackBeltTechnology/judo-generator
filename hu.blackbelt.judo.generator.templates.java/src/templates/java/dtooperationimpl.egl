@@ -29,7 +29,7 @@ import hu.blackbelt.judo.business.dto.api.DtoAccessor;
 
 @org.apache.felix.scr.annotations.Component(immediate=true)
 @org.apache.felix.scr.annotations.Service
-public class [%=class.name%] extends AbstractCrudOperation<[%=class.dto().fqName()%], [%=class.bo().fqName()%]> implements [%=class.dtoOperation().fqName()%] {
+public class [%=class.name%] extends AbstractCrudOperation<[%=class.dto().fqName()%], [%=class.boFqName()%]> implements [%=class.dtoOperation().fqName()%] {
 
     @Reference(policyOption = org.apache.felix.scr.annotations.ReferencePolicyOption.GREEDY)
     private [%=class.boServiceInterface().fqName()%] [%=class.boServiceInterface().name.firstToLowerCase()%];
@@ -41,9 +41,9 @@ public class [%=class.name%] extends AbstractCrudOperation<[%=class.dto().fqName
 
     public [%=class.name%]() {
     }
-
+	
     @Override
-    protected CrudService<[%=class.bo().fqName()%]> getCrudService() {
+    protected CrudService<[%=class.boFqName()%]> getCrudService() {
         return [%=class.boServiceInterface().name.firstToLowerCase()%];
     }
 
@@ -150,13 +150,13 @@ public class [%=class.name%] extends AbstractCrudOperation<[%=class.dto().fqName
             ) throws ValidationException, AuthorizationException {
             getAuthorizationService().amIAllowedTo(CALL).methodWithName("[%=method.name%]").onInstanceOf([%=class.dtoOperation().fqName()%].class);
             [%=method.extractStatements()%]
-            [% if (not method.type.isPrimitive()) { %]
+            [% if (not method.type.bare().isPrimitive()) { %]
                 return convertResult(
                     [%=class.boServiceInterface().name.firstToLowerCase()%].[%=method.name%]([%=method.parameterExtractedNameSequence()%][*{{ service_call_parameters(class, method) }}*])
                     , [%=method.type.bare().dto().fqName()%].class
                 );
             [% } else { %]
-                return [%=class.boServiceInterface().name.firstToLowerCase()%].[%=method.name%]([%=method.parameterNameSequence()%]);
+                return [%=class.boServiceInterface().name.firstToLowerCase()%].[%=method.name%]([%=method.parameterExtractedNameSequence()%]);
             [%}%]
         }
     [%}%]
@@ -186,7 +186,7 @@ operation JAVA!JvmMethod extractStatements () : String {
     var result : Sequence;
     for (param in self.parameters.select(p | not p.type.isPrimitive())) {
         var convertMethod : String = param.type.isCollection().ternary("convertAll", "convert");
-        result.add(param.type.bo().fqName() + " " + param.name + "Input" + " = getConverterService()." + convertMethod + "(" + param.name + ", " + param.type.bare().bo().fqName() + ".class);");
+        result.add(param.type.boFqName() + " " + param.name + "Input" + " = getConverterService()." + convertMethod + "(" + param.name + ", " + param.type.bare().boFqName() + ".class);");
     }
     return result.concat("\n");
 }
@@ -196,7 +196,7 @@ operation JAVA!JvmMethod parameterExtractedNameSequence () : String {
     var result : Sequence;
     for (param in self.parameters) {
         if (param.isPagination()) {
-            result.add("converterService.convert(" + param.name + ", " + param.type.fqName() + ".class)");
+            result.add("converterService.convert(" + param.name + ", " + param.type.bo().fqName() + ".class)");
         } else if (not param.type.isPrimitive() and not param.ownerMethod.isQuery()) {
             result.add(param.name + "Input");
         } else {
@@ -208,5 +208,13 @@ operation JAVA!JvmMethod parameterExtractedNameSequence () : String {
 
 operation bqlCall (class : JAVA!JvmClass, ref : JAVA!JvmElement) : String {
     return class.origin.package.domainBqlClass.fqName() + "." + class.origin.name.firstToLowerCase() + "()." + ref.name + "()";
+}
+
+operation JAVA!JvmType boFqName() : String {
+	if (self.framework or (self.isCollection() and self.componentType.framework)) {
+		return self.boInterface().fqName();
+	} else { 
+		return self.bo().fqName();
+	} 
 }
 %]

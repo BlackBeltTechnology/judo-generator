@@ -1,0 +1,12 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+public interface  [%=class.name%] extends hu.blackbelt.judo.business.bo.api.FrameworkEntityFactory<[%=class.bare().boInterface().fqName()%]> {
+    [%=class.bare().boBuilderInterface().fqName()%] builder();
+}

@@ -7,7 +7,9 @@ operation JAVA!JvmClass attributes () : Collection {
 operation JAVA!JvmClass allAttributes () : Collection {
 	var all = self.attributes().clone();
 	if (self.supertype.isDefined()) {
-		all.addAll(self.supertype.allAttributes());
+		var allNames = all.collect(attr | attr.name);
+		var superAttributes = self.supertype.allAttributes();
+		all.addAll(superAttributes.select(attr | allNames.excludes(attr.name)));
 	}
 	return all.sortBy(a | a.name);
 }
@@ -68,3 +70,15 @@ operation JAVA!JvmClass enumValueClass () : JAVA!JvmClass {
         return ref.opposite.ownerClass.find(self.coordinate);
     }
 }
+
+@cahced
+operation JAVA!JvmClass originAttributeByName(name : String) : JAVA!JvmAttribute {
+	return self.origin.attributes().selectOne(attr | attr.name.equals(name));
+}
+
+@cahced
+operation JAVA!JvmClass originReferenceByName(name : String) : JAVA!JvmReference {
+	return self.origin.references().selectOne(ref | ref.name.equals(name));
+}
+
+

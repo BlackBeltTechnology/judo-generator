@@ -1,0 +1,10 @@
+@cached
+operation PSM!JRole opposite () : PSM!JRole {
+	var role1 : PSM!JRole = self.ownerRelationship.roles.first();
+	var role2 : PSM!JRole = self.ownerRelationship.roles.second();
+	if (self = role1) {
+		return role2;
+	} else {
+		return role1;
+	}
+}

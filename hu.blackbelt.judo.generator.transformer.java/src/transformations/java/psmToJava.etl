@@ -29,29 +29,34 @@ pre {
 			JAVA!JvmJudoCoordinate#BO = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#PO = Map{PACKAGE_NAME = "business.po", NAME_PREFIX = "", NAME_SUFFIX = "Po", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#PO},
 			JAVA!JvmJudoCoordinate#BO_BQL = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "Bql", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
-			JAVA!JvmJudoCoordinate#BO_ENUM = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "Enum", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
-			JAVA!JvmJudoCoordinate#PO_ENUM = Map{PACKAGE_NAME = "business.po", NAME_PREFIX = "", NAME_SUFFIX = "EnumPo", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#PO},
+			JAVA!JvmJudoCoordinate#BO_ENUM = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#PO_ENUM = Map{PACKAGE_NAME = "business.po", NAME_PREFIX = "", NAME_SUFFIX = "Po", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#PO},
 			JAVA!JvmJudoCoordinate#BO_BUILDER = Map{PACKAGE_NAME = "business.bo", NAME_PREFIX = "", NAME_SUFFIX = "Builder", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_FACTORY = Map{PACKAGE_NAME = "business.bo.factory", NAME_PREFIX = "", NAME_SUFFIX = "FactoryRegular", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#BO_ENUM_SERVICE = Map{PACKAGE_NAME = "business.service.regular", NAME_PREFIX = "", NAME_SUFFIX = "EnumService", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE = Map{PACKAGE_NAME = "business.service", NAME_PREFIX = "", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_INTERFACE = Map{PACKAGE_NAME = "api.service", NAME_PREFIX = "", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#BO_SERVICE_ABSTRACT = Map{PACKAGE_NAME = "business.service.regular", NAME_PREFIX = "Abstract", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT = Map{PACKAGE_NAME = "business.service.regular", NAME_PREFIX = "Default", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_DEFAULT = Map{PACKAGE_NAME = "api.service.regular", NAME_PREFIX = "Default", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#BO_SERVICE_WRAPPER = Map{PACKAGE_NAME = "business.service.regular", NAME_PREFIX = "Wrapper", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
+			JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_WRAPPER = Map{PACKAGE_NAME = "api.service.regular", NAME_PREFIX = "Wrapper", NAME_SUFFIX = "Service", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},		
 			JAVA!JvmJudoCoordinate#DAO_MINIMAL = Map{PACKAGE_NAME = "business.dao.minimal", NAME_PREFIX = "Minimal", NAME_SUFFIX = "Dao", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#DAO_Q_CLASS = Map{PACKAGE_NAME = "querydsl", NAME_PREFIX = "Q", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#DAO_QUERY_DSL = Map{PACKAGE_NAME = "business.dao.minimal.querydsl", NAME_PREFIX = "QueryDslMinimal", NAME_SUFFIX = "Dao", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO},
 			JAVA!JvmJudoCoordinate#BO_INTERFACE = Map{PACKAGE_NAME = "api.entity", NAME_PREFIX = "", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO_INTERFACE},
 			JAVA!JvmJudoCoordinate#BO_BUILDER_INTERFACE = Map{PACKAGE_NAME = "api.builder", NAME_PREFIX = "", NAME_SUFFIX = "Builder", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO_INTERFACE},
-			JAVA!JvmJudoCoordinate#BO_BQL_INTERFACE = Map{PACKAGE_NAME = "api.bql", NAME_PREFIX = "", NAME_SUFFIX = "Bql", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO_INTERFACE},
+			JAVA!JvmJudoCoordinate#BO_BQL_FRAMEWORK = Map{PACKAGE_NAME = "api.bql", NAME_PREFIX = "", NAME_SUFFIX = "Bql", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO_INTERFACE},
+			JAVA!JvmJudoCoordinate#BO_FACTORY_INTERFACE = Map{PACKAGE_NAME = "api.factory", NAME_PREFIX = "", NAME_SUFFIX = "Factory", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#BO_INTERFACE},
 			JAVA!JvmJudoCoordinate#DTO = Map{PACKAGE_NAME = "api.dto", NAME_PREFIX = "", NAME_SUFFIX = "Dto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#DTO},
 			JAVA!JvmJudoCoordinate#DTO_BUILDER = Map{PACKAGE_NAME = "api.dto", NAME_PREFIX = "", NAME_SUFFIX = "DtoBuilder", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#DTO},
-			JAVA!JvmJudoCoordinate#DTO_ENUM = Map{PACKAGE_NAME = "api.dto", NAME_PREFIX = "", NAME_SUFFIX = "EnumDto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#DTO},
+			JAVA!JvmJudoCoordinate#DTO_ENUM = Map{PACKAGE_NAME = "api.dto", NAME_PREFIX = "", NAME_SUFFIX = "Dto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#DTO},
 			JAVA!JvmJudoCoordinate#DTO_OPERATION = Map{PACKAGE_NAME = "api.operation", NAME_PREFIX = "", NAME_SUFFIX = "Operation", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#DTO},
             JAVA!JvmJudoCoordinate#DTO_ACCESSOR = Map{PACKAGE_NAME = "api.dto", NAME_PREFIX = "", NAME_SUFFIX = "DtoAccessor", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#DTO},
             JAVA!JvmJudoCoordinate#DTO_OPERATION_IMPL = Map{PACKAGE_NAME = "business.operation", NAME_PREFIX = "Default", NAME_SUFFIX = "Operation", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#DTO},
 			JAVA!JvmJudoCoordinate#REST_DTO = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "", NAME_SUFFIX = "RestDto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
 			JAVA!JvmJudoCoordinate#REST_DTO_BUILDER = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "", NAME_SUFFIX = "RestDtoBuilder", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
-			JAVA!JvmJudoCoordinate#REST_DTO_ENUM = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "", NAME_SUFFIX = "EnumRestDto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
+			JAVA!JvmJudoCoordinate#REST_DTO_ENUM = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "", NAME_SUFFIX = "RestDto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
 			JAVA!JvmJudoCoordinate#REST_OPERATION = Map{PACKAGE_NAME = "rest", NAME_PREFIX = "", NAME_SUFFIX = "RestOperation", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
             JAVA!JvmJudoCoordinate#REST_OPERATION_IMPL = Map{PACKAGE_NAME = "rest.regular", NAME_PREFIX = "Default", NAME_SUFFIX = "RestOperation", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
 			JAVA!JvmJudoCoordinate#FILTER_REST_DTO = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "", NAME_SUFFIX = "FilterRestDto", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_DTO},
@@ -65,11 +70,11 @@ pre {
 
 	addParticipateToAllElement();
 	modifyVoidBusinessMethodsToReturnDeclaringClass();
-	addIdToEntities();
 	
 }
 
 post {
+	
 	repairScrewedUpReferenceOppositeType();
 	hacklongtoPOId();
 	
@@ -79,7 +84,6 @@ post {
 	addHuBlackbeltPackages();
 	addSingleClasses();
 	modifyReferenceTypeToInterfaceForFrameworkEntities();
-	
 }
 
 operation hacklongtoPOId () : Any {

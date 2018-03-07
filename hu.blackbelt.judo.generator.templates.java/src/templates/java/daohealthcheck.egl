@@ -35,6 +35,10 @@ public DaoHealthCheck() { }
 
 [%
 operation JAVA!JvmClass packageDaoMinimals () {
-    return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#DAO_MINIMAL and c.origin.package.uuid = self.origin.package.uuid);
+	if (self.package.framework) {
+	    return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#DAO_MINIMAL and c.package.framework);
+	} else {
+		return JAVA!JvmInterface.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#DAO_MINIMAL and not c.package.framework);
+	}
 } 
 %]

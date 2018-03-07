@@ -40,8 +40,16 @@ rule BoBuilderAttribute
 rule BoBqlAttribute
 	transform s : PSM!JAttribute
 	to t : JAVA!JvmAttribute 
-	extends JAttribute { 
+	extends JAttribute {
 		t.fillFrom(s, "BoBqlClass");
+}
+
+rule BoBqlFrameworkAttribute
+	transform s : PSM!JAttribute
+	to t : JAVA!JvmAttribute 
+	extends JAttribute { 
+	guard : s.ownerClass.framework
+		t.fillFrom(s, "BoBqlFrameworkClass");
 }
 
 rule DtoAttribute
@@ -134,7 +142,7 @@ operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule
 	self.unique = source.unique;
 	self.mandatory = source.mandatory;
 	self.technical = source.technical;
-    self.regexp = source.regexp;
+	self.regexp = source.regexp;
     self.placeholder = source.placeholder;
     if (self.placeholder.isUndefined()) {
         self.placeholder = "";

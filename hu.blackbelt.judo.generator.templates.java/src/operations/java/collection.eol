@@ -8,7 +8,12 @@ operation JAVA!JvmCollection fqName () : String {
 
 @cached
 operation JAVA!JvmCollection bare () : JAVA!JvmType {
-	return self.componentType;
+	if (self.isListofLists()) {
+		return self.componentType.componentType;
+	} else {
+		return self.componentType;
+	}
+	
 }
 
 @cached
@@ -18,17 +23,27 @@ operation JAVA!JvmType javaClassName () : String {
 
 @cached
 operation JAVA!JvmCollection isVoid () : Boolean {
-	return self.componentType.isVoid();
+	return self.bare().isVoid();
 }
 
 @cached
 operation JAVA!JvmCollection isPrimitive () : Boolean {
-    return self.componentType.isPrimitive();
+    return not self.isListofLists() and self.componentType.isPrimitive();
+}
+
+@cached
+operation JAVA!JvmCollection isListofLists () : Boolean {
+    return self.componentType.isKindOf(JAVA!JvmCollection);
 }
 
 @cached
 operation JAVA!JvmCollection bo () : JAVA!JvmCollection {
     return createJvmList(self.bare().bo());
+}
+
+@cached
+operation JAVA!JvmCollection boInterface () : JAVA!JvmCollection {
+    return createJvmList(self.bare().boInterface());
 }
 
 @cached

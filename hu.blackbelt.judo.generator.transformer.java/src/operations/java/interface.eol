@@ -2,3 +2,53 @@
 operation JAVA!JvmInterface methods () : Collection {
 	return self.methods.sortBy(m | m.name);
 }
+
+operation JAVA!JvmInterface createMethodFromAttribute(methodUuid : String, attr : PSM!JAttribute, kind : Any) {
+	var method = new JAVA!JvmMethod();
+	method.uuid = methodUuid;
+	method.name = attr.name;
+	method.type = self;
+	method.kind = kind;
+	
+	var parameter = new JAVA!JvmMethodParameter();
+	parameter.uuid = uuid3(method.uuid, attr.uuid);
+	parameter.name = attr.name;
+	if (attr.upper > 1 or attr.upper = -1) {
+		var list = new JAVA!JvmList();
+		list.name = parameter.name + "_list";
+		list.uuid = uuid3(method.uuid, uuid3(parameter.uuid, "list"));
+		list.package = self.package;
+		parameter.type = list;
+		parameter.type.componentType = attr.type.findJavaPrimitive();
+	} else {
+		parameter.type = attr.type.findJavaPrimitive();
+	}
+	
+	method.parameters.add(parameter);
+	self.methods.add(method);
+}
+
+operation JAVA!JvmInterface createMethodFromRole(methodUuid : String, role : PSM!JRole, kind : Any) {
+	var method = new JAVA!JvmMethod();
+	method.uuid = methodUuid;
+	method.name = role.name;
+	method.type = self;
+	method.kind = kind;
+			
+	var parameter = new JAVA!JvmMethodParameter();
+	parameter.uuid = uuid3(method.uuid, role.uuid);
+	parameter.name = role.name;
+	if (role.upper > 1 or role.upper = -1) {
+		var list = new JAVA!JvmList();
+		list.name = parameter.name + "_list";
+		list.uuid = uuid3(method.uuid, uuid3(parameter.uuid, "list"));
+		list.package = self.package;
+		parameter.type = list;
+		parameter.type.componentType = role.opposite().ownerClass.equivalent("OriginClass");
+	} else {
+		parameter.type = role.opposite().ownerClass.equivalent("OriginClass");
+	}
+	
+	method.parameters.add(parameter);
+	self.methods.add(method);
+}

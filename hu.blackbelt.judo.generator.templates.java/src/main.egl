@@ -8,17 +8,25 @@ var COORDINATE_TO_TEMPLATE = Map {
 		JAVA!JvmJudoCoordinate#BO = "bo",
 		JAVA!JvmJudoCoordinate#BO_ENUM = "enum",
 		JAVA!JvmJudoCoordinate#BO_BUILDER = "bobuilder",
+		JAVA!JvmJudoCoordinate#BO_BUILDER_INTERFACE = "bobuilderinterface",
+		JAVA!JvmJudoCoordinate#BO_INTERFACE = "bointerface",
 		JAVA!JvmJudoCoordinate#BO_BQL = "bobql",
+		JAVA!JvmJudoCoordinate#BO_BQL_FRAMEWORK = "bobql",
+		JAVA!JvmJudoCoordinate#BO_FACTORY_INTERFACE = "bofactoryinterface",
+		JAVA!JvmJudoCoordinate#BO_FACTORY = "bofactory",
 		JAVA!JvmJudoCoordinate#DOMAIN_BQL = "domainbql",
 
 		JAVA!JvmJudoCoordinate#DAO_MINIMAL = "daominimal",
 
 		JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE = "boservice",
+		JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_INTERFACE = "boframeworkservice",
 		
 		JAVA!JvmJudoCoordinate#BO_SERVICE_ABSTRACT = "boserviceabstract",
 		JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT = "boservicedefault",
+		JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_DEFAULT = "boframeworkservicedefault",
 		JAVA!JvmJudoCoordinate#BO_ENUM_SERVICE = "boenumservice",
 		JAVA!JvmJudoCoordinate#BO_SERVICE_WRAPPER = "boservicewrapper",
+		JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_WRAPPER = "boframeworkservicewrapper",
 
 		JAVA!JvmJudoCoordinate#DAO_QUERY_DSL = "daoquerydsl",
 
@@ -43,6 +51,7 @@ var COORDINATE_TO_TEMPLATE = Map {
 		JAVA!JvmJudoCoordinate#BO_SERVICE_HEALTH_CHECK = "boservicehealthcheck",
 		JAVA!JvmJudoCoordinate#DTO_OPERATION_HEALTH_CHECK = "dtooperationhealthcheck",
 		JAVA!JvmJudoCoordinate#REST_OPERATION_HEALTH_CHECK = "restoperationhealthcheck",
+		JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_HEALTH_CHECK = "boframeworkservicehealthcheck",
 
 		JAVA!JvmJudoCoordinate#FILTER_REST_DTO = "filterrestdto",
 
@@ -62,6 +71,7 @@ for (key in COORDINATE_TO_TEMPLATE.keySet()) {
 	getJavaTemplate(COORDINATE_TO_TEMPLATE.get(key)).genJavaFor(key);
 }
 
+genJavaForAbstractCrudService();
 
 operation Template genJavaFor(coordinate : Any) : Any {
 	for (coordinated in filterBy(coordinate)) {
@@ -98,6 +108,12 @@ operation filterBy (coordinate : Any) : Collection {
 									};
 	return JAVA!JvmCoordinated.all.select(c | c.coordinate = coordinate and not (c.framework and toBeRemovedCoordinatesHack.includes(c.coordinate))
 	           and not (c.coordinate = JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C and (c.abstract or c.hasFixedEnum())));
+}
+
+operation genJavaForAbstractCrudService() {
+	var crudTemplate = TemplateFactory.load("templates/java/boframeworkentityserviceabstract.egl");
+	crudTemplate.generate("ABSTRACT_FRAMEWORK_CRUD_SERVICE/hu/blackbelt/judo/framework/api/service/AbstractFrameworkCrudService.java");
+	crudTemplate.reset();
 }
 
 %]

@@ -228,7 +228,7 @@ public class [%=class.name%] extends AbstractCrudRestOperation<[%=class.restDto(
             [%=method.type.fqName()%] result = null;
             [%=method.extractStatements()%]
 
-            [% if (not method.type.isPrimitive()) { %]
+            [% if (not method.type.bare().isPrimitive()) { %]
                 result = converterService.convert[% if (method.type.isCollection()) { %]All[%}%]( [%=class.dtoOperation().name.firstToLowerCase()%].[%=method.name%](
                     [%=method.parameterExtractedNameSequence()%])
                     , [%=method.type.bare().restDto().fqName()%].class);
@@ -258,7 +258,7 @@ public class [%=class.name%] extends AbstractCrudRestOperation<[%=class.restDto(
                 }
             [%}%]
 
-            [% if (not method.type.isPrimitive()) { %]
+            [% if (not method.type.isPrimitive() and not (method.type.isCollection() and method.type.isListofLists())) { %]
                 result = converterService.convert[% if (method.type.isCollection()) { %]All[%}%]( [%=class.dtoOperation().name.firstToLowerCase()%].[%=method.name%](
                     [%=method.parameterExtractedNameSequence()%])
                     , [%=method.type.bare().restDto().fqName()%].class);

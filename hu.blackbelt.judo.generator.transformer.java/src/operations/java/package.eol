@@ -15,6 +15,7 @@ operation JAVA!JvmPackage findOrCreateChildRecursively (packageNames : Sequence)
 			candidate.name = packName;
 			candidate.uuid = uuid3(currentPackage.uuid, packName);
 			candidate.package = currentPackage;
+			candidate.framework = self.framework;
 		}
 		currentPackage = candidate;
 	}

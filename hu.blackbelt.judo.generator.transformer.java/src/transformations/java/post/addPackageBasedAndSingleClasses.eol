@@ -4,11 +4,23 @@ operation addPackageBasedClasses () {
 }
 
 operation addDomainBqlClasses () : Any {
-	for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO).origin.package.asSet()) {
+	for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and not c.framework).origin.package.asSet()) {
 		var domainBqlClass = new JAVA!JvmClass;
 		domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
 		domainBqlClass.name = package.name.firstToUpperCase();
 		domainBqlClass.package = package;
+		domainBqlClass.uuid = uuid3(package.uuid, domainBqlClass.name);
+		domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
+		package.domainBqlClass = domainBqlClass;
+	}
+	for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and c.framework).origin.package.asSet()) {
+		var domainBqlClass = new JAVA!JvmClass;
+		domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
+		domainBqlClass.name = package.name.firstToUpperCase();
+		//JAVA!JvmPackage.all.selectOne(pack | pack.name = "api" and pack.parent.uuid = package.uuid);
+		var pack = package.findOrCreateChildRecursively("api");
+		domainBqlClass.package = pack;
+		
 		domainBqlClass.uuid = uuid3(package.uuid, domainBqlClass.name);
 		domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
 		package.domainBqlClass = domainBqlClass;
@@ -28,13 +40,20 @@ operation addPackageBasedRestDtoClasses () {
         createClassWithOrigin("DefaultNamespaceRestOperation", JAVA!JvmJudoCoordinate#REST_NAMESPACE_OPERATION_IMPL, package, "rest.regular.namespace", dummyOriginClass);
 
         createClassWithOrigin("DaoHealthCheck", JAVA!JvmJudoCoordinate#DAO_HEALTH_CHECK, package, "business.dao.minimal.healthcheck", dummyOriginClass);
-        createClassWithOrigin("ServiceHealthCheck", JAVA!JvmJudoCoordinate#BO_SERVICE_HEALTH_CHECK, package, "business.service.healthcheck", dummyOriginClass);
         createClassWithOrigin("OperationHealthCheck", JAVA!JvmJudoCoordinate#DTO_OPERATION_HEALTH_CHECK, package, "api.operation.healthcheck", dummyOriginClass);
         createClassWithOrigin("RestOperationHealthCheck", JAVA!JvmJudoCoordinate#REST_OPERATION_HEALTH_CHECK, package, "rest.healthcheck", dummyOriginClass);
-
+		
+		if (package.framework) {
+			createClassWithOrigin("ServiceHealthCheck", JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_HEALTH_CHECK, package, "api.service.healthcheck", dummyOriginClass);
+		} else {
+			createClassWithOrigin("ServiceHealthCheck", JAVA!JvmJudoCoordinate#BO_SERVICE_HEALTH_CHECK, package, "business.service.healthcheck", dummyOriginClass);
+		}
+		
         //dummyOriginClass is only used as the common origin of package based classes so its package is not used
         dummyOriginClass.package = new JAVA!JvmPackage;
     }
+    
+    
 }
 
 operation addSingleClasses () {
@@ -54,7 +73,7 @@ operation createClassWithOrigin(name : String, coordinate : Any, parentPackage :
 }
 
 operation addBoTypeResolverClass () {
-    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.first();
+    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
     var boTypeResolverClass = new JAVA!JvmClass;
     boTypeResolverClass.name = mainModel.applicationTop.name.firstToUpperCase() + "BoTypeResolver";
     boTypeResolverClass.coordinate = JAVA!JvmJudoCoordinate#BO_TYPE_RESOLVER;
@@ -63,7 +82,7 @@ operation addBoTypeResolverClass () {
 }
 
 operation addEnumConverterServiceClass () {
-    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.first();
+    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
     var enumConverterClass = new JAVA!JvmClass;
     enumConverterClass.name = mainModel.applicationTop.name.firstToUpperCase() + "EnumResolver";
     enumConverterClass.coordinate = JAVA!JvmJudoCoordinate#ENUM_CONVERTER_SERVICE;

@@ -12,6 +12,7 @@ package [%=class.package.fqName()%];
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 
 import java.io.Serializable;
 import javax.annotation.Nullable;
@@ -98,7 +99,7 @@ public  class [%=className%]
 					}
 				[%}%]
 			[%} else{%]
-				[%if (ref.framework) {%]
+				[%if (ref.type.framework) {%]
 					public <T extends [%=ref.type.bare().boInterface().fqName()%]> [%=className%] [%=ref.name%](T par) {
 						dto.set[%=ref.name.firstToUpperCase()%](([%=ref.type.bare().bo().fqName()%]) par);
 						return this;

@@ -41,7 +41,7 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
     }
 
     [% if (class.isEnum()) { %]
-         public [%=class.restDto().fqName()%] queryByCode([%=class.restDtoEnum().fqName()%] value){
+         public [%=class.restDto().fqName()%] queryByCode([%=class.bare().restDtoEnum().fqName()%] value){
              return super.queryByCode(value);
          }
     [% } else { %]
@@ -54,7 +54,7 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
             [% for (ref in class.allReferences().select(r | not r.derived)) { %]
                     [% if (ref.isMandatory()) { %]
                         [% if (ref.type.bare().isEnum()) { %]
-                            [% if (not ref.type.bare().getEnum().literals.isEmpty()) { %]
+                            [% if (not ref.type.bare().origin.getEnum().literals.isEmpty()) { %]
                                 .[%=ref.name%]([%=ref.type.restTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().queryByCode([%=ref.type.restDtoEnum().fqName()%].[%=ref.type.restDtoEnum().origin().literals.at(0).name%]))
                             [% } else { %]
                                 //nincs enum value: [%=class.name%]
@@ -74,7 +74,7 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
 
         protected void build([%=class.restDto().fqName()%] dto) {
             [% for (ref in class.allReferences().select(r | not r.derived)) { %]
-                    [% if (ref.isMandatory()) { %]
+                    [% if (ref.isMandatory() and ref.upper = 1) { %]
                         [%=ref.type.bare().restDto().fqName()%] [%=ref.name%] = dto.get[%=ref.name.firstToUpperCase()%]();
                         if ([%=ref.name%] != null && [%=ref.name%].getId() == null) {
                             [%=ref.type.bare().restTestClient().fqName()%] client = [%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]();
@@ -85,7 +85,7 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
         }
     [%}%]
 
-    [% if (not class.abstract and not class.isEnum()) { %]
+    [% if (not class.isEnum()) { %]
 
         public ValidatableResponse create([%=class.restDto().fqName()%] dto) {
             build(dto);
@@ -177,27 +177,31 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
 
             public [%=method.type.restDtoOrPrimitive().fqName()%] [%=method.name.firstToLowerCase()%]E(
                     [%=method.parameterSignatureRestDto()%], JudoReqSpec reqSpec) {
-                [% if (not method.type.isPrimitive()) { %]
+                [% if (not method.type.bare().isPrimitive()) { %]
                     return [%=method.type.bare().restTestClient().fqName()%].[%=method.type.bare().origin().name.firstToLowerCase()%]().extractList(
                 [% } else { %]
                     return Arrays.asList(
                 [%}%]
                 [%=method.name.firstToLowerCase()%]([%=method.parameterNameSequence()%], reqSpec)
-                [% if (method.type.isPrimitive()) { %]
-                    .extract().as([%=method.type.bare().restDtoOrPrimitive().fqName()%][].class)
+                [% if (method.type.isListofLists()) { %]
+                	.extract().jsonPath().getList("")
+                [%} else if (method.type.isPrimitive()) {%]
+                	.extract().as([%=method.type.bare().restDtoOrPrimitive().fqName()%][].class)
                 [%}%]);
             }
 
             public [%=method.type.restDtoOrPrimitive().fqName()%] [%=method.name.firstToLowerCase()%]E(
                     [%=method.parameterSignatureRestDto()%]) {
-                [% if (not method.type.isPrimitive()) { %]
+                [% if (not method.type.bare().isPrimitive()) { %]
                     return [%=method.type.bare().restTestClient().fqName()%].[%=method.type.bare().origin().name.firstToLowerCase()%]().extractList(
                 [% } else { %]
                     return Arrays.asList(
                 [%}%]
                 [%=method.name.firstToLowerCase()%]([%=method.parameterNameSequence()%])
-                [% if (method.type.isPrimitive()) { %]
-                    .extract().as([%=method.type.bare().restDtoOrPrimitive().fqName()%][].class)
+                [% if (method.type.isListofLists()) { %]
+                	.extract().jsonPath().getList("")
+                [%} else if (method.type.isPrimitive()) {%]             
+                	.extract().as([%=method.type.bare().restDtoOrPrimitive().fqName()%][].class)
                 [%}%]);
             }
 
@@ -267,9 +271,9 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
                     return [% if (method.type.isCollection()) { %]Arrays.asList([%}%] [%=method.name.firstToLowerCase()%](
                         [%=method.parameterNameSequence()%][% if (not method.parameters.isEmpty()) { %],[%}%] reqSpec
                         [% if (not method.type.isCollection()) { %]
-                            ).extract().as([%=method.type.name%].class);
+                            ).extract().as([%=method.type.bare().name%].class);
                         [% } else { %]
-                            ).extract().as([%=method.type.name%][].class));
+                            ).extract().as([%=method.type.bare().name%][].class));
                         [%}%]
                 [%}%]
             }
@@ -281,9 +285,9 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
                     return [% if (method.type.isCollection()) { %]Arrays.asList([%}%] [%=method.name.firstToLowerCase()%](
                         [%=method.parameterNameSequence()%]
                         [% if (not method.type.isCollection()) { %]
-                            ).extract().as([%=method.type.name%].class);
+                            ).extract().as([%=method.type.bare().name%].class);
                         [% } else { %]
-                            ).extract().as([%=method.type.name%][].class));
+                            ).extract().as([%=method.type.bare().name%][].class));
                         [%}%]
                 [%}%]
             }
@@ -348,13 +352,13 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
 
 [%
 @cached
-operation JAVA!JvmCoordinated isEnum () : Boolean {
-    return JAVA!JvmEnum.all.exists(e | e.name = self.origin().name) and not "Value".isSubstringOf(self.origin().name);
+operation JAVA!JvmInterface isEnum () : Boolean {
+    return self.origin().fixedEnum.isDefined();
 }
 
 @cached
-operation JAVA!JvmCoordinated getEnum () : JAVA!JvmEnum {
-    return JAVA!JvmEnum.all.selectOne(e | e.name = self.origin().name);
+operation JAVA!JvmClass getEnum () : JAVA!JvmEnum {
+    return self.fixedEnum;
 }
 
 @cached
@@ -377,10 +381,11 @@ operation JAVA!JvmMethod parameterNameSequenceReplaceIds (addParams : Sequence) 
 
 @cached
 operation JAVA!JvmType restDtoOrPrimitive () : JAVA!JvmType {
-    if (self.isPrimitive()) {
+    if (self.bare().isPrimitive()) {
         return self;
     } else {
         return self.restDto();
     }
 }
+
 %]
