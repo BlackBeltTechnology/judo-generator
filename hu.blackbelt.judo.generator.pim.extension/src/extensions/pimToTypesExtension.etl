@@ -1,0 +1,31 @@
+
+rule Package
+	transform s : Package
+	to        t : typesEXT!EPackage {
+		t.name = s.name;
+		if ((s.owner.equivalent().isDefined()) and
+			(not s.owner.isTypeOf(Model))) {	
+			s.owner.equivalent("Package").eSubPackages.add(t);
+		} else {
+			getRootPackage().eSubPackages.add(t);
+		} 
+}
+
+rule Class
+	transform s : Class
+	to        t : typesEXT!EClass {
+		t.name = s.name;
+		s.owner.equivalent("Package").eClassifiers.add(t);
+}
+
+rule PrimitiveType
+	transform s : PrimitiveType
+	to        t : typesEXT!EDataType {
+		t.name = s.name;
+		s.owner.equivalent("Package").eClassifiers.add(t);
+}
+	
+@cached
+operation getRootPackage() : typesEXT!EPackage {
+	return typesEXT!EPackage.all.selectOne(p | p.name = "ext");
+}

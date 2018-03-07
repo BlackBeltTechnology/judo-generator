@@ -1,0 +1,33 @@
+var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Target");
+
+for (annotation : pimEXT!EAnnotation in annotations) {
+	var pimClassList = inpPIM!Class.all.select(c | c.name = annotation.details.get("name") or c.qualifiedName = annotation.details.get("name"));
+	if (pimClassList.size() = 1) {
+		var pimClass = pimClassList.first();
+		var targetClass : pimEXT!EClass = annotation.eModelElement;
+		
+		var references : OrderedSet(pimEXT!EReference) = targetClass.getEReferences();
+		for (reference : pimEXT!EReference in references) {
+			var refAnnotation = reference.getEAnnotation("Addition");
+			if (refAnnotation <> null) {
+				
+			}
+		}
+		
+		var attributes : OrderedSet(pimEXT!EAttribute) = targetClass.getEAttributes();
+		for (attribute : pimEXT!EAttribute in attributes) {
+			var attrAnnotation = attribute.getEAnnotation("Addition");
+			if (attrAnnotation <> null) {
+				var newPimAttr = new inpPIM!Property();
+				newPimAttr.name = attribute.name;
+				newPimAttr.datatype = inpPIM!Type.all.selectOne(type | type.name = attribute.getEAttributeType().name);
+				newPimAttr.visibility = inpPIM!VisibilityKind#public; //.selectOne(literal | literal.name = attrAnnotation.get("visibility"));
+				//newPimAttr.static
+				pimClass.ownedAttribute.add(newPimAttr);
+				"ADD SUCCEDED".println();
+			}
+		}
+		var operations : OrderedSet(pimEXT!EOperation) = targetClass.getEOperations();
+		
+	}
+}

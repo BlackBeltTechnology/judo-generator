@@ -14,15 +14,11 @@ import "pre/collectJUDOStereotypes.etl";
 
 pre {
 
-	var modelName = "Model";
+	var modelName = "opm pim";
 	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
 	var tgtModel;
 	inpPIM!rest.allInstances().size().println();
 	var stereotypeApplications : Map = collectJUDOStereotypeInstances();
-	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
-	
-	frameworkPkgPath.println();
-	frameworkQName.println();
 	
 }
 

@@ -38,10 +38,7 @@ rule NamedElement
 	
 	//t.framework = s.qualifiedName.startsWith( frameworkQName ); //  check why XMI2HUTN bridge does not emits this value?
 
-	if ( s.qualifiedName.isDefined()) {
-		s.qualifiedName.startsWith( frameworkQName ).println("s.qualifiedName.startsWith : ");
-		t.framework = s.qualifiedName.startsWith( frameworkQName );
-	} else {
+	
 		s.owner.println("RULE::NamedElement - src.owner : ");
 		s.owner.equivalent("Package").println("RULE::NamedElement - src.owner.equiv : ");
 		if (s.owner.equivalent().isDefined()) {
@@ -49,7 +46,7 @@ rule NamedElement
 		} else {
 			t.framework = false; 
 		}
-	}
+	
 	
 	s.fullyQualifiedPath().println("RULE::NamedElement ON ==> ");
 }
