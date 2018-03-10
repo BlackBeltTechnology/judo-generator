@@ -1,31 +1,67 @@
-
 rule Package
-	transform s : Package
+	transform s : inpPIM!Package
 	to        t : typesEXT!EPackage {
-		t.name = s.name;
+	guard : s.ownerModel().isDefined() and s.ownerModel().name.equals("opm pim")
+	
+		t.name = s.name.replace(" ","");
 		if ((s.owner.equivalent().isDefined()) and
-			(not s.owner.isTypeOf(Model))) {	
+			(not s.owner.isTypeOf(inpPIM!Model))) {	
 			s.owner.equivalent("Package").eSubPackages.add(t);
 		} else {
 			getRootPackage().eSubPackages.add(t);
-		} 
+		}
+		t.nsURI = s.fqName().replace(" ","");
+		t.nsPrefix = t.name;
 }
 
 rule Class
-	transform s : Class
+	transform s : inpPIM!Class
 	to        t : typesEXT!EClass {
+	guard : s.ownerModel().isDefined() and s.ownerModel().name.equals("opm pim")
+	
 		t.name = s.name;
 		s.owner.equivalent("Package").eClassifiers.add(t);
 }
 
+
 rule PrimitiveType
-	transform s : PrimitiveType
+	transform s : inpPIM!PrimitiveType
 	to        t : typesEXT!EDataType {
+	
 		t.name = s.name;
-		s.owner.equivalent("Package").eClassifiers.add(t);
+		if (s.owner.isDefined() and s.owner.equivalent("Package").isDefined()) {
+			s.owner.equivalent("Package").eClassifiers.add(t);
+		} else {
+			getRootPackage().eClassifiers.add(t);
+		}
+		
 }
 	
 @cached
 operation getRootPackage() : typesEXT!EPackage {
 	return typesEXT!EPackage.all.selectOne(p | p.name = "ext");
+}
+
+@cached
+operation Any ownerModel() : inpPIM!Model {
+	if (self.owner.isUndefined()) {
+		return null;
+	} else if (self.owner.isTypeOf(inpPIM!Model)) {
+		return self.owner;
+	} else {
+		return self.owner.ownerModel();
+	}
+}
+
+@cached
+operation inpPIM!Package fqName(): String {
+	var fqName = self.name;
+	var current = self;
+	while(current.owner.isTypeOf(inpPIM!Package)) {
+		fqName = current.owner.name + "." + fqName;
+		current = current.owner;
+	}
+	
+	return fqName;
+
 }

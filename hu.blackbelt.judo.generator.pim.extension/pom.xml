@@ -50,7 +50,7 @@
                                 <resource>
                                     <directory>src/model</directory>
                                     <includes>
-                                        <include>opm_pim_just_imported.uml</include>
+                                        <include>opm_pim_-_Modelio_import.uml</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -60,7 +60,7 @@
             </plugin>
             
 
-            <plugin>
+            <!--plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>epsilon-maven-plugin</artifactId>
                 <version>${project.version}</version>
@@ -84,7 +84,7 @@
                             </metaModels>
                             <models>
                                 <model>
-                                    <artifact>file:${basedir}/src/model/opm_pim_just_imported.uml</artifact>
+                                    <artifact>file:${basedir}/src/model/opm_pim_-_Modelio_import.uml</artifact>
                                     <name>inpPIM</name>
                                     <metaModelUris>
                                         <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
@@ -133,7 +133,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
 
             <plugin>
                 <groupId>${project.groupId}</groupId>
@@ -159,7 +159,7 @@
                             </metaModels>
                             <models>
                                 <model>
-                                    <artifact>${project.build.directory}/opm_pim_just_imported.uml</artifact>
+                                    <artifact>${project.build.directory}/opm_pim_-_Modelio_import.uml</artifact>
                                     <name>inpPIM</name>
                                     <metaModelUris>
                                         <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
@@ -175,16 +175,18 @@
                                     <expand>true</expand>
                                 </model>
                                 <model>
-                                    <artifact>file:${basedir}/src/model/pimExtension.ecore</artifact>
+                                    <artifact>file:${basedir}/src/model/extension_model/pimExtension.ecore</artifact>
                                     <name>pimEXT</name>
                                     <readOnLoad>true</readOnLoad>
+                                    <expand>true</expand>
                                     <storeOnDisposal>false</storeOnDisposal>
                                     <metaModelUris>
                                         <param>http://www.eclipse.org/emf/2002/Ecore</param>
                                     </metaModelUris>
                                 </model>
                                 <model>
-                                    <artifact>${project.build.directory}/typesForExentsion.ecore</artifact>
+                                    <!--artifact>${project.build.directory}/typesForExentsion.ecore</artifact-->
+                                    <artifact>file:${basedir}/src/model/typesForExentsion.ecore</artifact>
                                     <name>typesEXT</name>
                                     <readOnLoad>true</readOnLoad>
                                     <storeOnDisposal>false</storeOnDisposal>

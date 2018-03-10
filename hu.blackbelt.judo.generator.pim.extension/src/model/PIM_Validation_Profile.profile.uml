@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ValidationProfile="http:///schemas/ValidationProfile/_-yBj4B4kEeiQFpMMdNWkbw/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/ValidationProfile/_-yBj4B4kEeiQFpMMdNWkbw/0 UML_Standard_Profile.Validation_Profile.profile.uml#_-y-mIR4kEeiQFpMMdNWkbw">
+  <uml:Profile xmi:id="_18_5_1_ede0357_1506094392783_652113_5402" name="PIM Validation Profile" visibility="public" URI="" metamodelReference="_18_5_1_ede0357_1506094392784_745991_5404">
+    <eAnnotations xmi:id="_-zEs8h4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <contents xmi:type="ecore:EPackage" xmi:id="_-zEs8x4kEeiQFpMMdNWkbw" name="PIMValidationProfile" nsURI="http:///schemas/PIMValidationProfile/_-ygFAB4kEeiQFpMMdNWkbw/0" nsPrefix="PIMValidationProfile">
+        <eAnnotations xmi:id="_-zEs9B4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+          <details xmi:id="_-zEs9R4kEeiQFpMMdNWkbw" key="originalName" value="PIM Validation Profile"/>
+        </eAnnotations>
+        <eSubpackages xmi:id="_-zEs9h4kEeiQFpMMdNWkbw" name="PIMValidations" nsURI="http:///PIMValidationProfile/PIMValidations.ecore" nsPrefix="PIMValidationProfile.PIMValidations">
+          <eAnnotations xmi:id="_-zEs9x4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+            <details xmi:id="_-zEs-B4kEeiQFpMMdNWkbw" key="originalName" value="PIM Validations"/>
+          </eAnnotations>
+          <eAnnotations xmi:id="_-zEs-R4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392784_666626_5403"/>
+          <eSubpackages xmi:id="_-zEs-h4kEeiQFpMMdNWkbw" name="TESTINGSuite" nsURI="http:///PIMValidationProfile/PIMValidations/TESTINGSuite.ecore" nsPrefix="PIMValidationProfile.PIMValidations.TESTINGSuite">
+            <eAnnotations xmi:id="_-zEs-x4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details xmi:id="_-zEs_B4kEeiQFpMMdNWkbw" key="originalName" value="TESTING Suite"/>
+            </eAnnotations>
+            <eAnnotations xmi:id="_-zEs_R4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392785_882649_5405"/>
+            <eSubpackages xmi:id="_-zEs_h4kEeiQFpMMdNWkbw" name="testPackage" nsURI="http:///PIMValidationProfile/PIMValidations/TESTINGSuite/testPackage.ecore" nsPrefix="PIMValidationProfile.PIMValidations.TESTINGSuite.testPackage">
+              <eAnnotations xmi:id="_-zEs_x4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392786_274922_5414"/>
+              <eAnnotations xmi:id="_-zEtAB4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/emf/2002/GenModel">
+                <details xmi:id="_-zEtAR4kEeiQFpMMdNWkbw" key="documentation" value="THIS.name              &#xD;&#xA;anonRecurse(anonSources : Collection(T), anonInit : Collection(T)) : Collection(T) =&#xA;    anonSources->iterate( iterator: T, anonAcc: Collection(T)  |&#xA;        if anonAcc->includes(iterator)&#xA;        then anonAcc&#xA;        else let anonBody : OclAny = owner in&#xA;                let anonResults : Collection(T) = anonAcc->add(iterator) in&#xA;                    if anonBody.oclIsKindOf(CollectionType) &#xA;                    then anonRecurse(anonBody.oclAsType(Collection(T)), anonResults)&#xA;                    else anonRecurse(anonBody->oclAsType(T)->asSet(), anonResult)&#xA;                    endif&#xA;        endif&#xA;         &#xD;&#xA;self.owner->asSet() &#xA;&#xA;-- self.owner&#xA;-- THIS.owner.owner&#xA;-- oclIsUndefined()&#xA;-- if oclIsUndefined(THIS.owner)&#xA;-- then Set{}&#xA;-- else getOwner(THIS.owner)->including(THIS.owner)&#xA;-- endif&#xD;&#xA;bo.allInstances()->collect(e | e.oclAsType(Package))->union(Model.allInstances()->asSet())"/>
+              </eAnnotations>
+            </eSubpackages>
+          </eSubpackages>
+          <eSubpackages xmi:id="_-zEtAh4kEeiQFpMMdNWkbw" name="PermissionValidation" nsURI="http:///PIMValidationProfile/PIMValidations/PermissionValidation.ecore" nsPrefix="PIMValidationProfile.PIMValidations.PermissionValidation">
+            <eAnnotations xmi:id="_-zEtAx4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details xmi:id="_-zEtBB4kEeiQFpMMdNWkbw" key="originalName" value="Permission Validation"/>
+            </eAnnotations>
+            <eAnnotations xmi:id="_-zEtBR4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392785_709302_5406"/>
+            <eAnnotations xmi:id="_-zEtBh4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/emf/2002/GenModel">
+              <details xmi:id="_-zEtBx4kEeiQFpMMdNWkbw" key="documentation" value="self.supplier->forAll( s | s.oclIsTypeOf(Property))&#xD;&#xA;self.supplier->forAll( s | s.oclIsTypeOf(Property))&#xD;&#xA;self.supplier->forAll( s | s.oclIsTypeOf(Class)) or &#xA;self.supplier->forAll( s | s.oclIsTypeOf(JudoProfile::bo))&#xD;&#xA;self.supplier->forAll( s | s.oclIsTypeOf(Class)) or &#xA;self.supplier->forAll( s | s.oclIsTypeOf(JudoProfile::bo))&#xD;&#xA;self.supplier->forAll( s | s.oclIsTypeOf(Class)) or &#xA;self.supplier->forAll( s | s.oclIsTypeOf(JudoProfile::bo))&#xD;&#xA;self.supplier->forAll( s | s.oclIsTypeOf(Class)) or &#xA;self.supplier->forAll( s | s.oclIsTypeOf(JudoProfile::bo))&#xD;&#xA;self.supplier->forAll( s | s.oclIsTypeOf(Operation))&#xD;&#xA;self.supplier->forAll( s | s.oclIsTypeOf(Property) and not s.oclAsType(Property).association.oclIsUndefined())&#xD;&#xA;self.supplier->forAll( s | s.oclIsTypeOf(Property) and not s.oclAsType(Property).association.oclIsUndefined())"/>
+            </eAnnotations>
+          </eSubpackages>
+          <eSubpackages xmi:id="_-zEtCB4kEeiQFpMMdNWkbw" name="RoleValidation" nsURI="http:///PIMValidationProfile/PIMValidations/RoleValidation.ecore" nsPrefix="PIMValidationProfile.PIMValidations.RoleValidation">
+            <eAnnotations xmi:id="_-zEtCR4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details xmi:id="_-zEtCh4kEeiQFpMMdNWkbw" key="originalName" value="Role Validation"/>
+            </eAnnotations>
+            <eAnnotations xmi:id="_-zEtCx4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392785_566297_5407"/>
+            <eAnnotations xmi:id="_-zEtDB4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/emf/2002/GenModel">
+              <details xmi:id="_-zEtDR4kEeiQFpMMdNWkbw" key="documentation" value="self.visibility &lt;> VisibilityKind::private&#xD;&#xA;self.oclAsType(Association).memberEnd->forAll(r | r.name.size() > 0)&#xD;&#xA;let mandatoryEnds : Set(Property) = self.memberEnd->select(p | p.lower > 0 and not p.isDerived)->asSet() in&#xA;    self.ownedEnd->excludesAll(mandatoryEnds)    &#xA;&#xD;&#xA;self.memberEnd->forAll(p | p.lower = 0 or&#xA;                           (p.lower &lt;> 0 and p.upper &lt;> 1))    &#xA;&#xD;&#xA;self.memberEnd->select(p | p.lower &lt;> 0)->size() &lt; 2&#xD;&#xA;not (self.aggregation = AggregationKind::composite) or &#xA;    (self.aggregation = AggregationKind::composite and&#xA;     self.lower &lt;> 0 and self.upper = 1)&#xD;&#xA;self.memberEnd->forAll(e | &#xA;        self.memberEnd->select(oe | &#xA;                oe &lt;> e)->forAll( oe | e.aggregation &lt;> AggregationKind::shared or&#xA;                                        (e.aggregation = AggregationKind::shared and&#xA;                                         e.upper = 1 and oe.lower = 0)))&#xA;&#xA;&#xD;&#xA;self.specification.oclAsType(OpaqueExpression)._'body'->forAll(l | l.matches('[^ \\t\\n\\f\\r\\x0B]+'))&#xA;--self.specification.oclAsType(OpaqueExpression)._'body'->forAll(l | l.size() > 0)&#xA;&#xD;&#xA;self.specification.oclAsType(OpaqueExpression)._'body'->exists(l | l.matches('[^ \\t\\n\\f\\r\\x0B]+'))&#xA;&#xD;&#xA;not  self.oclIsTypeOf(JudoProfile::derived) or&#xA;    (self.oclIsTypeOf(JudoProfile::derived) and&#xA;     self.association.oclIsUndefined()) or&#xA;    (self.oclIsTypeOf(JudoProfile::derived) and&#xA;     self.association.ownedEnd->includesAll( self.association.memberEnd->select(e | e &lt;> self)))        &#xD;&#xA;not  self.oclIsTypeOf(JudoProfile::derived) or&#xA;    (self.oclIsTypeOf(JudoProfile::derived) and&#xA;     self.association.oclIsUndefined()) or&#xA;    (self.oclIsTypeOf(JudoProfile::derived) and&#xA; not self.association.oclIsUndefined() and self.visibility = VisibilityKind::protected) "/>
+            </eAnnotations>
+          </eSubpackages>
+          <eSubpackages xmi:id="_-zEtDh4kEeiQFpMMdNWkbw" name="ConstraintValidation" nsURI="http:///PIMValidationProfile/PIMValidations/ConstraintValidation.ecore" nsPrefix="PIMValidationProfile.PIMValidations.ConstraintValidation">
+            <eAnnotations xmi:id="_-zEtDx4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details xmi:id="_-zEtEB4kEeiQFpMMdNWkbw" key="originalName" value="Constraint Validation"/>
+            </eAnnotations>
+            <eAnnotations xmi:id="_-zEtER4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392785_637570_5408"/>
+            <eAnnotations xmi:id="_-zEtEh4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/emf/2002/GenModel">
+              <details xmi:id="_-zEtEx4kEeiQFpMMdNWkbw" key="documentation" value="let judo_max_len : Integer = 6 in&#xA;self.specification.oclAsType(OpaqueExpression)._'body'->forAll(b | b.size() &lt;= judo_max_len)"/>
+            </eAnnotations>
+          </eSubpackages>
+          <eSubpackages xmi:id="_-zEtFB4kEeiQFpMMdNWkbw" name="AttributeValidation" nsURI="http:///PIMValidationProfile/PIMValidations/AttributeValidation.ecore" nsPrefix="PIMValidationProfile.PIMValidations.AttributeValidation">
+            <eAnnotations xmi:id="_-zEtFR4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details xmi:id="_-zEtFh4kEeiQFpMMdNWkbw" key="originalName" value="Attribute Validation"/>
+            </eAnnotations>
+            <eAnnotations xmi:id="_-zEtFx4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392785_535919_5409"/>
+            <eAnnotations xmi:id="_-zEtGB4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/emf/2002/GenModel">
+              <details xmi:id="_-zEtGR4kEeiQFpMMdNWkbw" key="documentation" value="self.name.matches('^[A-Za-z][A-Za-z0-9_]*$')&#xD;&#xA;self.owner.oclAsType(Class).general&#xD;&#xA;not self.isDerived or&#xA;(self.isDerived and not self.oclIsTypeOf(JudoProfile::calculated)) &#xD;&#xA;let pimTypesModel : Model = Model.allInstances()->select(m | m.name = 'PIMTypes')&#xA;                                                ->asSequence()&#xA;                                                ->first() in&#xA;    let judoPrimitiveTypes : Set(PrimitiveType) = PrimitiveType.allInstances()->select(pt | pt.owner = pimTypesModel) in&#xA;        let umlPrimitiveTypePkg : Package =  Package.allInstances()&#xA;                                                ->select( pkg | pkg.owner = Model.allInstances()&#xA;                                                                                ->select(m | m.name = 'UML2 Metamodel')&#xA;                                                                                ->asSequence()&#xA;                                                                                ->first())&#xA;                                                ->asSequence()&#xA;                                                ->first() in&#xA;            let umlPrimitiveType : Set(PrimitiveType) = PrimitiveType.allInstances()->select(pt | pt.owner = umlPrimitiveTypePkg) in&#xA;                                                      &#xA;-- Q: is this inv. should be checked on non-association member properties ONLY? --> Chosen: YES &#xA;                not self.association.oclIsUndefined() or                &#xA;                umlPrimitiveType->union(judoPrimitiveTypes)->includes(self.type)                            &#xA;&#xD;&#xA;self.constrainedElement->select(e | e.oclIsTypeOf(Property))->forAll(p | p.oclAsType(Property).lower &lt;> 1)"/>
+            </eAnnotations>
+          </eSubpackages>
+          <eSubpackages xmi:id="_-zEtGh4kEeiQFpMMdNWkbw" name="ClassValidation" nsURI="http:///PIMValidationProfile/PIMValidations/ClassValidation.ecore" nsPrefix="PIMValidationProfile.PIMValidations.ClassValidation">
+            <eAnnotations xmi:id="_-zEtGx4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details xmi:id="_-zEtHB4kEeiQFpMMdNWkbw" key="originalName" value="Class Validation"/>
+            </eAnnotations>
+            <eAnnotations xmi:id="_-zEtHR4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392785_48974_5410"/>
+            <eAnnotations xmi:id="_-zEtHh4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/emf/2002/GenModel">
+              <details xmi:id="_-zEtHx4kEeiQFpMMdNWkbw" key="documentation" value="self.attribute->exists(a | a.oclIsKindOf( JudoProfile::representation ))&#xD;&#xA;self.attribute->select(a | a.oclIsKindOf( JudoProfile::representation ))->size() &lt;= 1&#xD;&#xA;self.name.matches('^[A-Za-z][A-Za-z0-9_]*$')&#xD;&#xA;self.general->isEmpty() or&#xA;(not self.general->isEmpty() and&#xA;     self.general->forAll( g | not g.oclIsTypeOf( JudoProfile::implementation)))&#xD;&#xA;Class.allInstances()->select(c | c.general->includes( self) and c.oclIsTypeOf( JudoProfile::implementation) )->size() &lt;= 1"/>
+            </eAnnotations>
+          </eSubpackages>
+          <eSubpackages xmi:id="_-zEtIB4kEeiQFpMMdNWkbw" name="StateMachineValidation" nsURI="http:///PIMValidationProfile/PIMValidations/StateMachineValidation.ecore" nsPrefix="PIMValidationProfile.PIMValidations.StateMachineValidation">
+            <eAnnotations xmi:id="_-zEtIR4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details xmi:id="_-zEtIh4kEeiQFpMMdNWkbw" key="originalName" value="StateMachine Validation"/>
+            </eAnnotations>
+            <eAnnotations xmi:id="_-zEtIx4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392786_200889_5411"/>
+            <eAnnotations xmi:id="_-zEtJB4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/emf/2002/GenModel">
+              <details xmi:id="_-zEtJR4kEeiQFpMMdNWkbw" key="documentation" value="let smOwner : Element = self.container.stateMachine.owner in&#xA;    self.effect.oclIsUndefined() or&#xA;    self.effect.specification.oclIsUndefined() or&#xA;&#xA;-- no Interface is seeked for operation ownership - only Class&#xA;-- sm owner is implementation and operation owner is either this class or its parent&#xA;    (smOwner.oclIsTypeOf(JudoProfile::implementation) and&#xA;      (self.effect.specification.oclAsType(Operation).owner  = smOwner or &#xA;       smOwner.oclAsType(Class).generalization->exists(g | g.general = self.effect.specification.oclAsType(Operation).owner.oclAsType(Class)))&#xA;      ) or&#xA;    &#xA;    self.effect.specification.oclAsType(Operation).owner  = smOwner"/>
+            </eAnnotations>
+          </eSubpackages>
+          <eSubpackages xmi:id="_-zEtJh4kEeiQFpMMdNWkbw" name="DomainValidation" nsURI="http:///PIMValidationProfile/PIMValidations/DomainValidation.ecore" nsPrefix="PIMValidationProfile.PIMValidations.DomainValidation">
+            <eAnnotations xmi:id="_-zEtJx4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details xmi:id="_-zEtKB4kEeiQFpMMdNWkbw" key="originalName" value="Domain Validation"/>
+            </eAnnotations>
+            <eAnnotations xmi:id="_-zEtKR4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_18_5_1_ede0357_1506094392786_385328_5412"/>
+            <eAnnotations xmi:id="_-zEtKh4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/emf/2002/GenModel">
+              <details xmi:id="_-zEtKx4kEeiQFpMMdNWkbw" key="documentation" value="bo.allInstances()->select(p | p.oclIsTypeOf(Package) and p &lt;> self)->forAll(p | p.name &lt;> self.name)&#xD;&#xA;let shortnames : Collection(shortname) = shortname.allInstances() in  &#xA;    let s : Sequence(shortname) = shortname.allInstances()->select(sn | sn.constrainedElement->includes(self))->asSequence() in&#xA;        let  otherBOs  : Sequence(bo) = bo.allInstances()->excluding(self)->asSequence() in&#xA;        s->size() = 1 and&#xA;        s.constrainedElement->size() = 1 and&#xA;        shortnames->select(sn | sn.specification.oclAsType(OpaqueExpression)._'body'->first() = &#xA;                                 s->first().specification.oclAsType(OpaqueExpression)._'body'->first())->select( sn | sn.constrainedElement->excludesAll( otherBOs ))->size() = 0&#xA;"/>
+            </eAnnotations>
+          </eSubpackages>
+        </eSubpackages>
+      </contents>
+    </eAnnotations>
+    <packageImport xmi:id="_18_5_1_ede0357_1506094392784_745991_5404">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0primitiveTypesPIM_Validation_Profile">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypesPIM_Validation_Profile">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392784_666626_5403" name="PIM Validations" visibility="public" URI="">
+      <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392785_882649_5405" name="TESTING Suite" visibility="public" URI="">
+        <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392786_274922_5414" name="testPackage" visibility="public" URI="">
+          <ownedRule xmi:id="_18_5_1_ede0357_1506094392790_143624_5457" name="testClosure" visibility="public">
+            <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Package"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392797_193371_5530" name="" visibility="public">
+              <language>JavaScript</language>
+              <body>THIS.name              </body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_18_5_1_ede0357_1506094392790_356839_5458" name="anonRecurse" visibility="public">
+            <constrainedElement xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.Validation_Profile.profile.uml#_12_0EAPbeta_f720368_1161801304311_480546_109"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392797_387074_5532" name="" visibility="public">
+              <language>OCL2.0</language>
+              <body>anonRecurse(anonSources : Collection(T), anonInit : Collection(T)) : Collection(T) =
+    anonSources->iterate( iterator: T, anonAcc: Collection(T)  |
+        if anonAcc->includes(iterator)
+        then anonAcc
+        else let anonBody : OclAny = owner in
+                let anonResults : Collection(T) = anonAcc->add(iterator) in
+                    if anonBody.oclIsKindOf(CollectionType) 
+                    then anonRecurse(anonBody.oclAsType(Collection(T)), anonResults)
+                    else anonRecurse(anonBody->oclAsType(T)->asSet(), anonResult)
+                    endif
+        endif
+         </body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_18_5_1_ede0357_1506094392790_727991_5459" name="getOwner" visibility="public">
+            <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Package"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392797_587861_5534" name="" visibility="public">
+              <language>OCL2.0</language>
+              <body>self.owner->asSet() 
+
+-- self.owner
+-- THIS.owner.owner
+-- oclIsUndefined()
+-- if oclIsUndefined(THIS.owner)
+-- then Set{}
+-- else getOwner(THIS.owner)->including(THIS.owner)
+-- endif</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_18_5_1_ede0357_1506094392790_107074_5460" name="testsOnProperty" visibility="public">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392797_95156_5536" name="" visibility="public">
+              <language>OCL2.0</language>
+              <body>bo.allInstances()->collect(e | e.oclAsType(Package))->union(Model.allInstances()->asSet())</body>
+            </specification>
+          </ownedRule>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392785_709302_5406" name="Permission Validation" visibility="public" URI="">
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392786_53413_5416" name="permAttributeReadTargetIsProperty" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392791_314071_5462" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Property))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392786_691753_5417" name="permAttributeWriteTargetIsProperty" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392791_825326_5464" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Property))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_949516_5418" name="permObjectCreateTargetIsDomainClass" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392791_947522_5466" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Class)) or 
+self.supplier->forAll( s | s.oclIsTypeOf(JudoProfile::bo))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_157251_5419" name="permObjectReadTargetIsDomainClass" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392791_527781_5468" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Class)) or 
+self.supplier->forAll( s | s.oclIsTypeOf(JudoProfile::bo))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_191544_5420" name="permObjectUpdateTargetIsDomainClass" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392792_487066_5470" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Class)) or 
+self.supplier->forAll( s | s.oclIsTypeOf(JudoProfile::bo))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_308418_5421" name="permObjectFullTargetIsDomainClass" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392792_762078_5472" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Class)) or 
+self.supplier->forAll( s | s.oclIsTypeOf(JudoProfile::bo))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_271359_5422" name="permCallTargetIsOperation" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392792_216586_5474" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Operation))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_922487_5423" name="permAttacheIsRole" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392792_44560_5476" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Property) and not s.oclAsType(Property).association.oclIsUndefined())</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_734438_5424" name="permDetachIsRole" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392792_385445_5478" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.supplier->forAll( s | s.oclIsTypeOf(Property) and not s.oclAsType(Property).association.oclIsUndefined())</body>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392785_566297_5407" name="Role Validation" visibility="public" URI="">
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_247237_5426" name="roleIsNotPrivate" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392792_14612_5480" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.visibility &lt;> VisibilityKind::private</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392787_390540_5427" name="roleNameExists" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Association"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392793_845423_5482" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.oclAsType(Association).memberEnd->forAll(r | r.name.size() > 0)</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_752552_5428" name="roleMandatoryAssociationEndIsNavigable" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Association"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392793_697841_5484" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>let mandatoryEnds : Set(Property) = self.memberEnd->select(p | p.lower > 0 and not p.isDerived)->asSet() in
+    self.ownedEnd->excludesAll(mandatoryEnds)    
+</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_105698_5429" name="roleMandatoryRoleIsNotList" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Association"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392793_44359_5486" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.memberEnd->forAll(p | p.lower = 0 or
+                           (p.lower &lt;> 0 and p.upper &lt;> 1))    
+</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_265051_5430" name="roleMaxOneMandatoryRole" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Association"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392793_757868_5488" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.memberEnd->select(p | p.lower &lt;> 0)->size() &lt; 2</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_234479_5431" name="roleCompositionIsMandatory" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392793_856388_5490" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>not (self.aggregation = AggregationKind::composite) or 
+    (self.aggregation = AggregationKind::composite and
+     self.lower &lt;> 0 and self.upper = 1)</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_115595_5432" name="roleAggregationEndIsNotListAndOtherEndIsNotMandatory" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Association"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392794_793300_5492" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.memberEnd->forAll(e | 
+        self.memberEnd->select(oe | 
+                oe &lt;> e)->forAll( oe | e.aggregation &lt;> AggregationKind::shared or
+                                        (e.aggregation = AggregationKind::shared and
+                                         e.upper = 1 and oe.lower = 0)))
+
+</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_37978_5433" name="roleDerivedExpressionHasSpecification" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392794_483555_5494" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.specification.oclAsType(OpaqueExpression)._'body'->forAll(l | l.matches('[^ \\t\\n\\f\\r\\x0B]+'))
+--self.specification.oclAsType(OpaqueExpression)._'body'->forAll(l | l.size() > 0)
+</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_135467_5434" name="roleDerivedDescriptionHasSpecification" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392794_319418_5496" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.specification.oclAsType(OpaqueExpression)._'body'->exists(l | l.matches('[^ \\t\\n\\f\\r\\x0B]+'))
+</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_275184_5435" name="roleDerivedRoleConsumerIsNotNavigable" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392794_324697_5498" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>not  self.oclIsTypeOf(JudoProfile::derived) or
+    (self.oclIsTypeOf(JudoProfile::derived) and
+     self.association.oclIsUndefined()) or
+    (self.oclIsTypeOf(JudoProfile::derived) and
+     self.association.ownedEnd->includesAll( self.association.memberEnd->select(e | e &lt;> self)))        </body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392788_619469_5436" name="roleDerivedIsProtected" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392794_63419_5500" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>not  self.oclIsTypeOf(JudoProfile::derived) or
+    (self.oclIsTypeOf(JudoProfile::derived) and
+     self.association.oclIsUndefined()) or
+    (self.oclIsTypeOf(JudoProfile::derived) and
+ not self.association.oclIsUndefined() and self.visibility = VisibilityKind::protected) </body>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392785_637570_5408" name="Constraint Validation" visibility="public" URI="">
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_737484_5438" name="shortNameLength" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392794_274890_5502" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>let judo_max_len : Integer = 6 in
+self.specification.oclAsType(OpaqueExpression)._'body'->forAll(b | b.size() &lt;= judo_max_len)</body>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392785_535919_5409" name="Attribute Validation" visibility="public" URI="">
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_22860_5440" name="attributeNamePattern" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392795_597517_5504" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.name.matches('^[A-Za-z][A-Za-z0-9_]*$')</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_505509_5441" name="attributeUniqueInGeneralAxis" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392795_392383_5506" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.owner.oclAsType(Class).general</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_376695_5442" name="attributeDerivedIsNotCalculated" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392795_135988_5508" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>not self.isDerived or
+(self.isDerived and not self.oclIsTypeOf(JudoProfile::calculated)) </body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_469734_5443" name="attrDerivedPropertyIsOfBaseType" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392795_249804_5510" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>let pimTypesModel : Model = Model.allInstances()->select(m | m.name = 'PIMTypes')
+                                                ->asSequence()
+                                                ->first() in
+    let judoPrimitiveTypes : Set(PrimitiveType) = PrimitiveType.allInstances()->select(pt | pt.owner = pimTypesModel) in
+        let umlPrimitiveTypePkg : Package =  Package.allInstances()
+                                                ->select( pkg | pkg.owner = Model.allInstances()
+                                                                                ->select(m | m.name = 'UML2 Metamodel')
+                                                                                ->asSequence()
+                                                                                ->first())
+                                                ->asSequence()
+                                                ->first() in
+            let umlPrimitiveType : Set(PrimitiveType) = PrimitiveType.allInstances()->select(pt | pt.owner = umlPrimitiveTypePkg) in
+                                                      
+-- Q: is this inv. should be checked on non-association member properties ONLY? --> Chosen: YES 
+                not self.association.oclIsUndefined() or                
+                umlPrimitiveType->union(judoPrimitiveTypes)->includes(self.type)                            
+</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_741427_5444" name="attributeListAttrIsOptional" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392795_530252_5512" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.constrainedElement->select(e | e.oclIsTypeOf(Property))->forAll(p | p.oclAsType(Property).lower &lt;> 1)</body>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392785_48974_5410" name="Class Validation" visibility="public" URI="">
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_844913_5446" name="classExistenceOfRepresentation" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392796_572604_5514" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.attribute->exists(a | a.oclIsKindOf( JudoProfile::representation ))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_263159_5447" name="classExcessiveNumberOfRepresentations" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392796_110334_5516" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.attribute->select(a | a.oclIsKindOf( JudoProfile::representation ))->size() &lt;= 1</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_655552_5448" name="classNamePattern" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392796_960024_5518" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.name.matches('^[A-Za-z][A-Za-z0-9_]*$')</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392789_658798_5449" name="classNoImplementationClassInheritance" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392796_41552_5520" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>self.general->isEmpty() or
+(not self.general->isEmpty() and
+     self.general->forAll( g | not g.oclIsTypeOf( JudoProfile::implementation)))</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392790_955998_5450" name="classOneImplementationChild" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392796_582568_5522" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>Class.allInstances()->select(c | c.general->includes( self) and c.oclIsTypeOf( JudoProfile::implementation) )->size() &lt;= 1</body>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392786_200889_5411" name="StateMachine Validation" visibility="public" URI="">
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392790_601865_5452" name="smTransOpOwnerIsTransOwnerOrParent" visibility="public">
+          <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Transition"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392796_292059_5524" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>let smOwner : Element = self.container.stateMachine.owner in
+    self.effect.oclIsUndefined() or
+    self.effect.specification.oclIsUndefined() or
+
+-- no Interface is seeked for operation ownership - only Class
+-- sm owner is implementation and operation owner is either this class or its parent
+    (smOwner.oclIsTypeOf(JudoProfile::implementation) and
+      (self.effect.specification.oclAsType(Operation).owner  = smOwner or 
+       smOwner.oclAsType(Class).generalization->exists(g | g.general = self.effect.specification.oclAsType(Operation).owner.oclAsType(Class)))
+      ) or
+    
+    self.effect.specification.oclAsType(Operation).owner  = smOwner</body>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_18_5_1_ede0357_1506094392786_385328_5412" name="Domain Validation" visibility="public" URI="">
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392790_25056_5454" name="domainUniqueName" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392797_754788_5526" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>bo.allInstances()->select(p | p.oclIsTypeOf(Package) and p &lt;> self)->forAll(p | p.name &lt;> self.name)</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_18_5_1_ede0357_1506094392790_598256_5455" name="domainUniqueShortName" visibility="public">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_18_5_1_ede0357_1506094392797_139845_5528" name="" visibility="public">
+            <language>OCL2.0</language>
+            <body>let shortnames : Collection(shortname) = shortname.allInstances() in  
+    let s : Sequence(shortname) = shortname.allInstances()->select(sn | sn.constrainedElement->includes(self))->asSequence() in
+        let  otherBOs  : Sequence(bo) = bo.allInstances()->excluding(self)->asSequence() in
+        s->size() = 1 and
+        s.constrainedElement->size() = 1 and
+        shortnames->select(sn | sn.specification.oclAsType(OpaqueExpression)._'body'->first() = 
+                                 s->first().specification.oclAsType(OpaqueExpression)._'body'->first())->select( sn | sn.constrainedElement->excludesAll( otherBOs ))->size() = 0
+</body>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_11_5_f720368_1159529670215_231387_1profileApplicationPIM_Validation_Profile">
+      <eAnnotations xmi:id="_-2kFxB4kEeiQFpMMdNWkbw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_-y-mIR4kEeiQFpMMdNWkbw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#_11_5_f720368_1159529670215_231387_1"/>
+    </profileApplication>
+  </uml:Profile>
+  <ValidationProfile:validationSuite xmi:id="_-2kFxR4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392786_385328_5412"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFxh4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392786_200889_5411"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFxx4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392785_48974_5410"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFyB4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392785_535919_5409"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFyR4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392785_637570_5408"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFyh4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392785_566297_5407"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFyx4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392785_882649_5405"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFzB4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392785_709302_5406"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFzR4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392786_274922_5414"/>
+  <ValidationProfile:validationSuite xmi:id="_-2kFzh4kEeiQFpMMdNWkbw" base_Package="_18_5_1_ede0357_1506094392784_666626_5403"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2pB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392790_598256_5455" abbreviation="NAME" errorMessage="Domain does not have unique shortname in the application"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2pR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392790_25056_5454" abbreviation="DMN"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2ph4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_658798_5449" abbreviation="INH" errorMessage="Class can not be inherited from an implementation class. "/>
+  <ValidationProfile:validationRule xmi:id="_-2t2px4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392790_955998_5450" abbreviation="INH" errorMessage="Class has more than one subtypes with implementation stereotype."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2qB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_655552_5448" abbreviation="NAME" errorMessage="Wrong class name."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2qR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_263159_5447" abbreviation="REPR" errorMessage="Class has more than one representation attributes." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2qh4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_844913_5446" abbreviation="REPR" errorMessage="Class has no representation attribute."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2qx4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392790_601865_5452"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2rB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_22860_5440" abbreviation="NAME" errorMessage="Wrong attribute name."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2rR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_469734_5443" abbreviation="TYPE" errorMessage="Attribute Type is Not a BaseType."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2rh4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_376695_5442" abbreviation="DERIV" errorMessage="Derived attribute is not allowed to be calculated."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2rx4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_741427_5444"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2sB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_737484_5438" abbreviation="NAME" errorMessage="Too long short name (>6)."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2sR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_275184_5435" abbreviation="NAVIGATION" errorMessage="Derived association other end should not be navigable."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2sh4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_619469_5436" abbreviation="VISIBILITY" errorMessage="Derived association end should be protected."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2sx4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392789_505509_5441"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2tB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_135467_5434" abbreviation="SPEC" errorMessage="Derived association has no description."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2tR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_105698_5429" abbreviation="MUL" errorMessage="Mandatory association end should not be a list."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2th4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_115595_5432" abbreviation="NAVIGATION" errorMessage="Invalid aggregation."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2tx4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_37978_5433" abbreviation="SPEC" errorMessage="Derived association has no expression"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2uB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_265051_5430" abbreviation="MUL" errorMessage="Association is not allowed to be mandatory on both ends."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2uR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_752552_5428" abbreviation="NAVIGATION" errorMessage="Mandatory association end should be navigable."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2uh4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_390540_5427" abbreviation="NAME" errorMessage="Missing role name."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2ux4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_247237_5426" abbreviation="VISIBILITY" errorMessage="Private association end." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2vB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392788_234479_5431"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2vR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_734438_5424"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2vh4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_922487_5423"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2vx4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_271359_5422"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2wB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392786_691753_5417" abbreviation="PERM" errorMessage="Wrong permission type."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2wR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392786_53413_5416" abbreviation="PERM" errorMessage="Wrong permission type."/>
+  <ValidationProfile:validationRule xmi:id="_-2t2wh4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_308418_5421"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2wx4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392790_107074_5460"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2xB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_157251_5419"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2xR4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392790_143624_5457"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2xh4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_949516_5418"/>
+  <ValidationProfile:validationRule xmi:id="_-2t2xx4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392787_191544_5420"/>
+  <ValidationProfile:definition xmi:id="_-3Axlx4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392790_356839_5458"/>
+  <ValidationProfile:definition xmi:id="_-3AxmB4kEeiQFpMMdNWkbw" base_Constraint="_18_5_1_ede0357_1506094392790_727991_5459"/>
+</xmi:XMI>

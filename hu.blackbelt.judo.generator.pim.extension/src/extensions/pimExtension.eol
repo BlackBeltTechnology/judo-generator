@@ -1,33 +1,117 @@
-var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Target");
+var visibilityMap = Map {
+	"public" = inpPIM!VisibilityKind#public,
+	"protected" = inpPIM!VisibilityKind#protected
+};
 
+var associationList = new Map<String, inpPIM!Asscoiation>();
+
+
+
+var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Target");
 for (annotation : pimEXT!EAnnotation in annotations) {
+
 	var pimClassList = inpPIM!Class.all.select(c | c.name = annotation.details.get("name") or c.qualifiedName = annotation.details.get("name"));
 	if (pimClassList.size() = 1) {
 		var pimClass = pimClassList.first();
 		var targetClass : pimEXT!EClass = annotation.eModelElement;
 		
+		var attributes : OrderedSet(pimEXT!EAttribute) = targetClass.getEAttributes();	
+		for (attribute : pimEXT!EAttribute in attributes) {
+			transformAttribute(attribute, pimClass);
+		}
+		
 		var references : OrderedSet(pimEXT!EReference) = targetClass.getEReferences();
 		for (reference : pimEXT!EReference in references) {
-			var refAnnotation = reference.getEAnnotation("Addition");
-			if (refAnnotation <> null) {
-				
-			}
+			transformReference(reference, pimClass);			
 		}
 		
-		var attributes : OrderedSet(pimEXT!EAttribute) = targetClass.getEAttributes();
-		for (attribute : pimEXT!EAttribute in attributes) {
-			var attrAnnotation = attribute.getEAnnotation("Addition");
-			if (attrAnnotation <> null) {
-				var newPimAttr = new inpPIM!Property();
-				newPimAttr.name = attribute.name;
-				newPimAttr.datatype = inpPIM!Type.all.selectOne(type | type.name = attribute.getEAttributeType().name);
-				newPimAttr.visibility = inpPIM!VisibilityKind#public; //.selectOne(literal | literal.name = attrAnnotation.get("visibility"));
-				//newPimAttr.static
-				pimClass.ownedAttribute.add(newPimAttr);
-				"ADD SUCCEDED".println();
-			}
-		}
 		var operations : OrderedSet(pimEXT!EOperation) = targetClass.getEOperations();
-		
+		for (op : pimEXT!EOperation in operations) {
+			transformOperation(op, pimClass);	
+		}
 	}
+}
+
+operation transformAttribute(attribute : pimEXT!EAttribute, pimClass : inpPIM!Class) {
+	var attrAnnotation = attribute.getEAnnotation("Addition");
+	if (attrAnnotation <> null) {
+	
+		var newPimAttr = new inpPIM!Property();
+		newPimAttr.name = attribute.name;
+		newPimAttr.type = inpPIM!Type.all.selectOne(type | type.name = attribute.getEAttributeType().name);
+		
+		attribute.println("ATTR: ");
+		
+		newPimAttr.visibility = visibilityMap.get(attrAnnotation.details.get("visibility"));
+		newPimAttr.isDerived = attribute.derived;
+		
+		pimClass.ownedAttribute.add(newPimAttr);
+		"ATTR ADD SUCCEDED".println();
+	}
+}
+
+operation transformReference(reference : pimEXT!EReference, pimClass : inpPIM!Class) {
+	var refAnnotation = reference.getEAnnotation("Addition");
+	if (refAnnotation <> null) {
+		var newPimRef = new inpPIM!Property();
+		
+		newPimRef.name = reference.name;
+		newPimRef.type = inpPIM!Class.all.selectOne(class | class.name.equals(reference.eReferenceType.name));
+		newPimRef.visibility = visibilityMap.get(refAnnotation.details.get("visibility"));				
+				
+		var descAnnotation = reference.getEAnnotation("DerivedExpression");
+		if (descAnnotation <> null) {
+			//newPimRef.valami = descAnnotation.get("expression");
+		}
+				
+		var pimAssoc = associationList.get(reference.eOpposite.id);
+		if (pimAssoc = null) {
+			pimAssoc = new inpPIM!Association();
+			associationList.put(reference.id, pimAssoc);
+			}
+				
+		if (refAnnotation.details.get("navigable").equals("true")) {
+			pimClass.ownedAttribute.add(newPimRef);					
+		} else {				
+			pimAssoc.ownedEnd.add(newPimRef);
+		}
+				
+		pimAssoc.memberEnd.add(newPimRef);
+		"REF ADD SUCCEDED".println();
+	}		
+}
+
+operation transformOperation(op : pimEXT!EOperation, pimClass : inpPIM!Class) {
+	var opAnnotation = op.getEAnnotation("Addition");
+	if (opAnnotation <> null) {
+		var newPimOp = new inpPIM!Operation();
+		
+		newPimOp.visibility = visibilityMap.get(opAnnotation.details.get("visibility"));
+		newPimOp.isStatic = opAnnotation.details.get("static").asBoolean();
+		for (parameter in op.eParameters) {
+			var newPimParameter = new inpPIM!Parameter();
+					
+			if (parameter.eType.isTypeOf(pimEXT!EClass)) {
+				parameter.eType.println("CLASS ETYPE: ");
+				newPimParameter.type = inpPIM!Class.all.selectOne(class | class.name.equals(parameter.eType.name));
+				newPimParameter.type.println("CONVERTED ETYPE: ");
+			} else {
+				parameter.eType.println("DATATYPE ETYPE: ");
+				parameter.eType.name.println("DATATYPE ETYPE NAME: ");			
+				newPimParameter.type = inpPIM!Type.all.selectOne(type | type.name = parameter.eType.name);
+				newPimParameter.type.println("CONVERTED ETYPE: ");
+			}
+			
+			newPimOp.ownedParameter.add(newPimParameter);
+		}
+		
+		if (op.eType.isDefined()) {
+			var returnParam = new inpPIM!Parameter();
+			returnParam.type = inpPIM!Class.all.selectOne(class | class.name.equals(op.eType.name));
+			returnParam.direction = inpPIM!ParameterDirectionKind#`return`;
+			newPimOp.ownedParameter.add(returnParam);		
+		}
+				
+		pimClass.ownedOperation.add(newPimOp);								
+	}		
 }
