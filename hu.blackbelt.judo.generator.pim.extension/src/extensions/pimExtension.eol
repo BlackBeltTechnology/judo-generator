@@ -3,6 +3,14 @@ var visibilityMap = Map {
 	"protected" = inpPIM!VisibilityKind#protected
 };
 
+var ecoreUMLTypeMap = Map {
+	"EString" = inpPIM!Type.all.selectOne(type | type.name = "String"),
+	"EBoolean" = inpPIM!Type.all.selectOne(type | type.name = "Boolean"),
+	"EFloat" = inpPIM!Type.all.selectOne(type | type.name = "Float"),
+	"Date" = inpPIM!Type.all.selectOne(type | type.name = "date")
+	//"DateTime" = inpPIM!Type.all.selectOne(type | type.name = "datetime")
+};
+
 var associationList = new Map<String, inpPIM!Asscoiation>();
 
 
@@ -38,9 +46,7 @@ operation transformAttribute(attribute : pimEXT!EAttribute, pimClass : inpPIM!Cl
 	
 		var newPimAttr = new inpPIM!Property();
 		newPimAttr.name = attribute.name;
-		newPimAttr.type = inpPIM!Type.all.selectOne(type | type.name = attribute.getEAttributeType().name);
-		
-		attribute.println("ATTR: ");
+		newPimAttr.type = inpPIM!Type.all.selectOne(type | type.name = ecoreUMLTypeMap.get(attribute.getEAttributeType().name));
 		
 		newPimAttr.visibility = visibilityMap.get(attrAnnotation.details.get("visibility"));
 		newPimAttr.isDerived = attribute.derived;
@@ -98,8 +104,8 @@ operation transformOperation(op : pimEXT!EOperation, pimClass : inpPIM!Class) {
 			} else {
 				parameter.eType.println("DATATYPE ETYPE: ");
 				parameter.eType.name.println("DATATYPE ETYPE NAME: ");			
-				newPimParameter.type = inpPIM!Type.all.selectOne(type | type.name = parameter.eType.name);
-				newPimParameter.type.println("CONVERTED ETYPE: ");
+				newPimParameter.type = inpPIM!Type.all.selectOne(type | type.name = ecoreUMLTypeMap.get(parameter.eType.name));
+				newPimParameter.type.println("CONVERTED NOT ECLASS ETYPE: ");
 			}
 			
 			newPimOp.ownedParameter.add(newPimParameter);

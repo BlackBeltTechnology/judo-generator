@@ -5,8 +5,8 @@ package ext;
 
 import "http://hu.blackbelt.judo.generator.meta.pim.extension.classes";
 
-datatype date : java.lang.LocalDateTime;
-datatype datetime : java.lang.LocalDateTime;
+datatype Date : java.lang.Date;
+datatype DateTime : java.lang.DateTime;
 
 @Target("name"="User")
 class User {}
@@ -66,7 +66,7 @@ class PatientUser {
 	ref MedicalRecord[*]#medicalRecordPatient lastMedicalRecords;
 	
 	@Addition("visibility"="public", "static"="false")
-	op void registerNewTreatmentWithCurrentUser(Protocol protocol, date startDate, date endDate);
+	op void registerNewTreatmentWithCurrentUser(Protocol protocol, Date startDate, Date endDate);
 	
 	@Addition("visibility"="public", "static"="true")
 	op void createTasksFromExpiredPrimerData();
@@ -208,7 +208,7 @@ class AndroidExtension {
 									Float patientId, Float pif, Float fvc, Float fev, Float fev1, Float fev6, Float fiv, Float fiv6, Float pef, 
 									Float fef25, Float fef50, Float fef75, Float fef2575, Float fet, Float fif25, Float fif50, Float fif75, Float fif2575, 
 									Float fit, Float fev1Pct, Float pefPct, Float fvcPct, Float fev1PerFvcPct, Float fefPct2575, Float fiv1, 
-									OpmUser recorder, datetime referredEventTime, String note, String allFile);
+									OpmUser recorder, Date referredEventTime, String note, String allFile);
 									
 	@Addition("visibility"="public", "static"="true")
 	op OpenTask[*] openTasks(String patientId);

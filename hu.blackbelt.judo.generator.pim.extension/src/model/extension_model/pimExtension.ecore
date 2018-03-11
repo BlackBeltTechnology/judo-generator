@@ -2,8 +2,8 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ext" nsURI="hu.blackbelt.judo.generator.meta.pim.extension"
     nsPrefix="pim">
-  <eClassifiers xsi:type="ecore:EDataType" name="date" instanceClassName="java.lang.LocalDateTime"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="datetime" instanceClassName="java.lang.LocalDateTime"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Date" instanceClassName="java.lang.Date"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DateTime" instanceClassName="java.lang.DateTime"/>
   <eClassifiers xsi:type="ecore:EClass" name="User">
     <eAnnotations source="Target">
       <details key="name" value="User"/>
@@ -12,6 +12,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="OpmUser">
     <eAnnotations source="Target">
       <details key="name" value="OpmUser"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DoctorUser">
+    <eAnnotations source="Target">
+      <details key="name" value="DoctorUser"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Task">
@@ -78,11 +83,6 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DoctorUser">
-    <eAnnotations source="Target">
-      <details key="name" value="DoctorUser"/>
-    </eAnnotations>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatientUser">
     <eAnnotations source="Target">
       <details key="name" value="PatientUser"/>
@@ -93,8 +93,8 @@
         <details key="static" value="false"/>
       </eAnnotations>
       <eParameters name="protocol" eType="#//Protocol"/>
-      <eParameters name="startDate" eType="#//date"/>
-      <eParameters name="endDate" eType="#//date"/>
+      <eParameters name="startDate" eType="#//Date"/>
+      <eParameters name="endDate" eType="#//Date"/>
     </eOperations>
     <eOperations name="createTasksFromExpiredPrimerData">
       <eAnnotations source="Addition">
@@ -404,7 +404,7 @@
       <eParameters name="fefPct2575" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
       <eParameters name="fiv1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
       <eParameters name="recorder" eType="#//OpmUser"/>
-      <eParameters name="referredEventTime" eType="#//datetime"/>
+      <eParameters name="referredEventTime" eType="#//DateTime"/>
       <eParameters name="note" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="allFile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
