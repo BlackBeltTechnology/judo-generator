@@ -1,3 +1,5 @@
+import "../operations/importAll.eol";
+
 var visibilityMap = Map {
 	"public" = inpPIM!VisibilityKind#public,
 	"protected" = inpPIM!VisibilityKind#protected
@@ -15,7 +17,7 @@ var associationList = new Map<String, inpPIM!Asscoiation>();
 
 
 
-var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Target");
+var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Target" and an.eModelElement.isTypeOf(pimEXT!EClass));
 for (annotation : pimEXT!EAnnotation in annotations) {
 
 	var pimClassList = inpPIM!Class.all.select(c | c.name = annotation.details.get("name") or c.qualifiedName = annotation.details.get("name"));
@@ -40,6 +42,13 @@ for (annotation : pimEXT!EAnnotation in annotations) {
 	}
 }
 
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EClass));
+for (annotation : pimEXT!EAnnotation in annotations) {
+
+
+}
+
+
 operation transformAttribute(attribute : pimEXT!EAttribute, pimClass : inpPIM!Class) {
 	var attrAnnotation = attribute.getEAnnotation("Addition");
 	if (attrAnnotation <> null) {
@@ -47,6 +56,8 @@ operation transformAttribute(attribute : pimEXT!EAttribute, pimClass : inpPIM!Cl
 		var newPimAttr = new inpPIM!Property();
 		newPimAttr.name = attribute.name;
 		newPimAttr.type = inpPIM!Type.all.selectOne(type | type.name = ecoreUMLTypeMap.get(attribute.getEAttributeType().name));
+		newPimAttr.lower = attribute.lowerBound;
+		newPimAttr.upper = attribute.upperBound;
 		
 		newPimAttr.visibility = visibilityMap.get(attrAnnotation.details.get("visibility"));
 		newPimAttr.isDerived = attribute.derived;
@@ -63,7 +74,9 @@ operation transformReference(reference : pimEXT!EReference, pimClass : inpPIM!Cl
 		
 		newPimRef.name = reference.name;
 		newPimRef.type = inpPIM!Class.all.selectOne(class | class.name.equals(reference.eReferenceType.name));
-		newPimRef.visibility = visibilityMap.get(refAnnotation.details.get("visibility"));				
+		newPimRef.visibility = visibilityMap.get(refAnnotation.details.get("visibility"));
+		newPimRef.lower = reference.lowerBound;
+		newPimRef.upper = reference.upperBound;				
 				
 		var descAnnotation = reference.getEAnnotation("DerivedExpression");
 		if (descAnnotation <> null) {
@@ -83,6 +96,9 @@ operation transformReference(reference : pimEXT!EReference, pimClass : inpPIM!Cl
 		}
 				
 		pimAssoc.memberEnd.add(newPimRef);
+		
+		var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = pimClass.package.fqName());
+		pimPackage.packagedElement.add(pimAssoc);
 		"REF ADD SUCCEDED".println();
 	}		
 }
@@ -92,11 +108,15 @@ operation transformOperation(op : pimEXT!EOperation, pimClass : inpPIM!Class) {
 	if (opAnnotation <> null) {
 		var newPimOp = new inpPIM!Operation();
 		
+		newPimOp.name = op.name;
 		newPimOp.visibility = visibilityMap.get(opAnnotation.details.get("visibility"));
 		newPimOp.isStatic = opAnnotation.details.get("static").asBoolean();
 		for (parameter in op.eParameters) {
 			var newPimParameter = new inpPIM!Parameter();
-					
+			newPimParameter.name = parameter.name;
+			newPimParameter.lower = parameter.lowerBound;
+			newPimParameter.upper = parameter.upperBound;
+			
 			if (parameter.eType.isTypeOf(pimEXT!EClass)) {
 				parameter.eType.println("CLASS ETYPE: ");
 				newPimParameter.type = inpPIM!Class.all.selectOne(class | class.name.equals(parameter.eType.name));
@@ -115,9 +135,12 @@ operation transformOperation(op : pimEXT!EOperation, pimClass : inpPIM!Class) {
 			var returnParam = new inpPIM!Parameter();
 			returnParam.type = inpPIM!Class.all.selectOne(class | class.name.equals(op.eType.name));
 			returnParam.direction = inpPIM!ParameterDirectionKind#`return`;
+			returnParam.lower = op.lowerBound;
+			returnParam.upper = op.upperBound;
+			
 			newPimOp.ownedParameter.add(returnParam);		
 		}
 				
-		pimClass.ownedOperation.add(newPimOp);								
+		pimClass.ownedOperation.add(newPimOp);	
 	}		
 }

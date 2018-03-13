@@ -1,0 +1,23 @@
+@cached
+operation inpPIM!Package fqName(): String {
+	var fqName = self.name;
+	var current = self;
+	while(current.owner.isTypeOf(inpPIM!Package)) {
+		fqName = current.owner.name + "." + fqName;
+		current = current.owner;
+	}
+	
+	return fqName;
+}
+
+@cached
+operation pimEXT!EPackage fqName(): String {
+	var fqName = self.name;
+	var current = self;
+	while(current.eSuperPackage.isTypeOf(pimEXT!EPackage)) {
+		fqName = current.eSuperPackage.name + "." + fqName;
+		current = current.eSuperPackage;
+	}
+	
+	return fqName;
+}
