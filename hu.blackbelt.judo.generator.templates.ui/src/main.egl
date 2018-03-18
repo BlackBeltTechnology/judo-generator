@@ -1,6 +1,6 @@
 [%
 	var ui : Template = TemplateFactory.load("templates/JsonMain.egl");
-	ui.generate("uimeta.txt");
+	ui.generate("ui-meta.json");
 	var resources : Template = TemplateFactory.load("templates/Resources.egl");
-	resources.generate("resources.txt");
+	resources.generate("ui-resource.json");
 %]
