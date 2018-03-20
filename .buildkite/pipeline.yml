@@ -8,7 +8,7 @@ steps:
       mvn versions:set -DnewVersion=$PROJECT_VERSION
       mvn versions:set -DnewVersion=$PROJECT_VERSION -f hu.blackbelt.judo.generator.parent
       mvn versions:set -DnewVersion=$PROJECT_VERSION -f hu.blackbelt.judo.generator.epsilon-maven-plugin
-      mvn clean deploy -DaltDeploymentRepository=blackbelt-nexus-distribution::default::${NEXUS3_URL}/repository/maven-judo-release
+      mvn clean deploy -DaltDeploymentRepository=blackbelt-nexus-distribution::default::${NEXUS3_URL}/repository/maven-judo-generator-release
       git tag -a ${PROJECT_VERSION} -m '${PROJECT_VERSION}' && git push origin ${PROJECT_VERSION}
     agents:
       target: assembler
