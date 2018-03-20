@@ -1,0 +1,5 @@
+@cached
+operation RDBMS!RdbmsRelationExpression statement () : String {
+	return "COALESCE(CAST(" + self.field.fieldExpression() + " AS VARCHAR(255)), '')";
+}
+
