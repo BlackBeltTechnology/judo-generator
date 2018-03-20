@@ -1,0 +1,13 @@
+operation createAbbreviatedName(packageName : String, name : String, roleName : String) : String {
+	var abbreviated : String;
+	
+	 if (packageName = "framework") {
+    	abbreviated = "Frw";
+    } else {
+	    abbreviated = abbreviate(packageName, 6).firstToUpperCase();
+    }
+    
+    abbreviated = abbreviated + abbreviate(name, 6).firstToUpperCase() + abbreviate(roleName, 6).firstToUpperCase();
+    
+    return abbreviated;
+}

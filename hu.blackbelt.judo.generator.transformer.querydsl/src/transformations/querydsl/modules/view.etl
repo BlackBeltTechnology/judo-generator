@@ -1,9 +1,14 @@
 import "../../../operations/_importAll.eol";
 
-rule RdbmsViewToQueryDslTable
+rule RdbmsViewToQueryDslView
     transform s : RDBMS!RdbmsView
     to t : QUERYDSL!QueryDslView {
+    	t.uuid = uuid3(s.uuid, "QueryDslView");
         t.name = s.name;
         t.sqlName = s.sqlName;
-        t.originUuid = s.originUuid;
+        t.originUuid = s.originUuid;      
+        
+        t.fields.addAll(s.fields.select(field | field.isKindOf(RDBMS!RdbmsViewTableField)).equivalent());
+        
+        targetModel.views.add(t);
     }

@@ -1,0 +1,28 @@
+@abstract
+rule QueryDslJunctionFieldGeneric
+	transform s : RDBMS!RdbmsField
+	to t : QUERYDSL!QueryDslSqlElement {
+		t.uuid = uuid3(s.uuid, "QueryDslJunctionField");
+		t.originUuid = s.uuid;
+		t.name = s.name.split("\\.").last();             
+	}
+
+@lazy
+rule RdbmsIdentifierFieldToQueryDslJunctionField
+    transform s : RDBMS!RdbmsIdentifierField
+    to t : QUERYDSL!QueryDslJunctionTablePrimaryKey 
+    extends QueryDslJunctionFieldGeneric {
+    	//t.typeName = s.type.name;
+    	t.sqlName = s.sqlName; 
+    }
+    
+@lazy
+rule RdbmsForeignKeyToQueryDslJunctionField
+    transform s : RDBMS!RdbmsForeignKey
+    to t : QUERYDSL!QueryDslJunctionTableForeignKey
+    extends QueryDslJunctionFieldGeneric {
+    	//t.typeName = s.type.name;
+    	t.sqlName = s.referenceKey.sqlName; 
+    	t.view = RDBMS!RdbmsView.all.selectOne(view | view.primaryTable.table = s.referenceKey.table).equivalent("RdbmsViewToQueryDslView");
+    	t.javaClass = JAVA!JvmClass.all.selectOne(class | class.fqBaseName() = t.view.name).equivalent("JvmClassToQueryDslClass");
+    }

@@ -4,11 +4,10 @@ import "modules/view.etl";
 import "modules/field.etl";
 import "modules/role.etl";
 import "modules/attribute.etl";
+import "modules/junctionTable.etl";
+import "modules/junctionTableField.etl";
 
 pre {
 	var targetModel : QUERYDSL!QueryDslModel;
-}	
-
-post {
 }
 

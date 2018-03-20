@@ -8,10 +8,11 @@ rule JvmClassToQueryDslClass
             and s.fqName() <> "javax.ws.rs.core.Response" /*Skip Response class*/
 
         t.name = "Q" + s.name;
+        t.uuid = uuid3(s.uuid, "Q");
         t.originUuid = s.uuid;
         t.originName = s.name;
         t.packageName = s.package.fqName();
         t.supertype = s.supertype.equivalent("JvmClassToQueryDslClass");
-        t.view = RDBMS!RdbmsView.all.selectOne(rt | rt.originUuid = t.originUuid).equivalent("RdbmsViewToQueryDslTable");
+        t.view = RDBMS!RdbmsView.all.selectOne(rt | rt.originUuid = t.originUuid).equivalent("RdbmsViewToQueryDslView");
         targetModel.queryDslClasses.add(t);
     }

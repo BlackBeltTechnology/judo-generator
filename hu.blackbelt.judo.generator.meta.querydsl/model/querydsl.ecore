@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="querydsl" nsURI="http://blackbelt.hu/judo/meta/psm/querydsl"
     nsPrefix="querydsl">
-  <eClassifiers xsi:type="ecore:EClass" name="QueryDslModel">
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslModel" eSuperTypes="#//QueryDslElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="topPackageName" lowerBound="1"
@@ -11,6 +11,10 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="queryDslClasses" upperBound="-1"
         eType="#//QueryDslClass" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="views" upperBound="-1"
+        eType="#//QueryDslView" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="junctionTables" upperBound="-1"
+        eType="#//QueryDslJunctionTable" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="QueryDslClass" eSuperTypes="#//QueryDslElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
@@ -23,39 +27,96 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="supertype" eType="#//QueryDslClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="view" eType="#//QueryDslView"
-        containment="true" eOpposite="#//QueryDslView/class"/>
+        eOpposite="#//QueryDslView/class"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="QueryDslAttribute" eSuperTypes="#//QueryDslElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" lowerBound="1"
         eType="#//QueryDslClass" eOpposite="#//QueryDslClass/attributes"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeFqName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributeIdentifierField"
+        lowerBound="1" upperBound="-1" eType="#//QueryDslAttributeField" eOpposite="#//QueryDslAttributeField/javaAttribute"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="QueryDslReference" eSuperTypes="#//QueryDslElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" lowerBound="1"
         eType="#//QueryDslClass" eOpposite="#//QueryDslClass/references"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeFqName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" lowerBound="1"
+        eType="#//QueryDslReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relationIdentifierField"
+        lowerBound="1" upperBound="-1" eType="#//QueryDslReferenceField" eOpposite="#//QueryDslReferenceField/javaReference"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="options" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="QueryDslElement">
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="originUuid" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="QueryDslView" eSuperTypes="#//QueryDslSqlElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="class" eType="#//QueryDslClass"
         eOpposite="#//QueryDslClass/view"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
         eType="#//QueryDslField" containment="true" eOpposite="#//QueryDslField/view"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nmKeys" upperBound="-1"
+        eType="#//QueryDslJunctionTableForeignKey" eOpposite="#//QueryDslJunctionTableForeignKey/view"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="QueryDslField" eSuperTypes="#//QueryDslSqlElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="view" eType="#//QueryDslView"
-        eOpposite="#//QueryDslView/fields"/>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslField" abstract="true" eSuperTypes="#//QueryDslSqlElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="view" eType="#//QueryDslView"
+        eOpposite="#//QueryDslView/fields"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rdbmsTypeName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="QueryDslSqlElement" eSuperTypes="#//QueryDslElement">
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslSqlElement" abstract="true"
+      eSuperTypes="#//QueryDslElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sqlName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslIdentifierField" eSuperTypes="#//QueryDslAttributeField"/>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslRelationIdentifierField" eSuperTypes="#//QueryDslReferenceField">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="foreignKeyName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslValueField" eSuperTypes="#//QueryDslAttributeField"/>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslAttributeField" abstract="true"
+      eSuperTypes="#//QueryDslField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="javaAttribute" lowerBound="1"
+        eType="#//QueryDslAttribute" eOpposite="#//QueryDslAttribute/attributeIdentifierField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslJunctionTable" eSuperTypes="#//QueryDslSqlElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKey" lowerBound="1"
+        eType="#//QueryDslJunctionTablePrimaryKey" containment="true" eOpposite="#//QueryDslJunctionTablePrimaryKey/junctionTable"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="packageName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foreignKey1" lowerBound="1"
+        eType="#//QueryDslJunctionTableForeignKey" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="foreignKey2" lowerBound="1"
+        eType="#//QueryDslJunctionTableForeignKey" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslInverseRelationIdentifierField"
+      eSuperTypes="#//QueryDslReferenceField"/>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslReferenceField" abstract="true"
+      eSuperTypes="#//QueryDslField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="javaReference" lowerBound="1"
+        eType="#//QueryDslReference" eOpposite="#//QueryDslReference/relationIdentifierField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslJunctionTablePrimaryKey" eSuperTypes="#//QueryDslSqlElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="junctionTable" lowerBound="1"
+        eType="#//QueryDslJunctionTable" eOpposite="#//QueryDslJunctionTable/primaryKey"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryDslJunctionTableForeignKey" eSuperTypes="#//QueryDslSqlElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="view" eType="#//QueryDslView"
+        eOpposite="#//QueryDslView/nmKeys"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="javaClass" lowerBound="1"
+        eType="#//QueryDslClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="junctionTable" lowerBound="1"
+        eType="#//QueryDslJunctionTable"/>
   </eClassifiers>
 </ecore:EPackage>

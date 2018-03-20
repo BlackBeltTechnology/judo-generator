@@ -1,0 +1,33 @@
+import "../../../operations/_importAll.eol";
+
+rule RdbmsJunctionTableToQueryDslJunctionTable
+    transform s : RDBMS!RdbmsJunctionTable
+    to t : QUERYDSL!QueryDslJunctionTable {
+    		
+    	t.originUuid = s.uuid;
+        t.sqlName = s.sqlName;
+        t.uuid = uuid3(s.uuid, "QueryDslJunctionTable");
+        t.packageName = targetModel.topPackageName + ".querydsl";
+    	
+    	t.primaryKey = s.primaryKey.equivalent("RdbmsIdentifierFieldToQueryDslJunctionField");
+    	t.foreignKey1 = s.field1.equivalent("RdbmsForeignKeyToQueryDslJunctionField");
+    	t.foreignKey1.junctionTable = t;
+    	t.foreignKey2 = s.field2.equivalent("RdbmsForeignKeyToQueryDslJunctionField");
+    	t.foreignKey2.junctionTable = t;
+    	
+    	var splitName : Sequence(String) = s.name.split(" ");
+    	
+    	var currentPart : Sequence(String) = splitName.first().split("\\.").invert();
+    	var className : String = currentPart.first();
+    	var packageName : String = currentPart.second();	
+    	var abbreviatedfirstName = createAbbreviatedName(packageName, className, t.foreignKey1.name);
+
+		currentPart = splitName.third().split("\\.").invert();
+    	className = currentPart.first();
+    	packageName = currentPart.second();
+    	var abbreviatedsecondName = createAbbreviatedName(packageName, className, t.foreignKey2.name);
+    	
+    	t.name = "Q" + abbreviatedfirstName + "To" + abbreviatedsecondName;
+    	
+    	targetModel.junctionTables.add(t);
+    }

@@ -1,5 +1,6 @@
 import "../../../operations/_importAll.eol";
 
+@lazy
 rule JvmReferenceToQueryDslReference
     transform s : JAVA!JvmReference
     to t : QUERYDSL!QueryDslReference {
@@ -8,5 +9,7 @@ rule JvmReferenceToQueryDslReference
         t.name = s.name;
         t.originUuid = s.uuid;
         t.typeFqName = s.type.po().fqName();
-        t.ownerClass = s.ownerClass.equivalent("JvmClassToQueryDslClass");
+        t.lower = s.lower;
+        t.upper = s.upper;
+        t.options = s.optionScript;
     }

@@ -1,0 +1,20 @@
+@cached
+operation QUERYDSL!QueryDslView getForeignKeys() : OrderedSet(QUERYDSL!QueryDslRelationIdentifierField) {
+	return self.fields.select(field | field.isTypeOf(QUERYDSL!QueryDslRelationIdentifierField));
+}
+
+@cached
+operation QUERYDSL!QueryDslView getInvKeys() : OrderedSet(QUERYDSL!QueryDslRelationIdentifierField) {
+	/*return RDBMS!RdbmsViewRelationIdentifierField
+				.all
+				.select(field | field.view.primaryTable.table.includes(field.tableField.table) 
+				or field.view.superTypes.collect(al | al.table).includes(field.tableField.table))
+				.equivalent();*/
+				
+	return self.fields.select(field | field.isTypeOf(QUERYDSL!QueryDslInverseRelationIdentifierField));		
+}
+
+@cached
+operation QUERYDSL!QueryDslView getNmKeys() : OrderedSet(QUERYDSL!QueryDslRelationIdentifierField) {
+	return self.nmKeys;
+}

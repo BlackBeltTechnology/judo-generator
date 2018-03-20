@@ -1,25 +1,67 @@
 import "../../../operations/_importAll.eol";
 
+@abstract
 rule QueryDslFieldGeneric
-    transform s : RDBMS!RdbmsViewAliasField
+    transform s : RDBMS!RdbmsViewField
     to t : QUERYDSL!QueryDslField {
+    	t.uuid = uuid3(uuid3(s.view.uuid, s.uuid), "RdbmsViewTableField");
+    	t.originUuid = s.uuid;
         t.name = s.name.split("\\.").last();
         t.sqlName = s.sqlName;
-        t.typeName = s.tableField.type.name;
-        t.view = s.view.equivalent("RdbmsViewToQueryDslTable");
+        t.view = s.view.equivalent("RdbmsViewToQueryDslView");
+        
+        t.typeName = "String";
+        t.rdbmsTypeName = "VARCHAR";
+        }
+    
+@abstract
+rule QueryDslFieldGenericWithTypeName
+    transform s : RDBMS!RdbmsViewTableField
+    to t : QUERYDSL!QueryDslField 
+    extends QueryDslFieldGeneric {
+    	t.typeName = s.tableField.type.name;
+        if (s.tableField.type.rdbmsTypeName.toUpperCase() = "INT") {
+        	t.rdbmsTypeName = "INTEGER";
+        } else {
+        	t.rdbmsTypeName = s.tableField.type.rdbmsTypeName.toUpperCase();
+        }  
     }
-
+    
+rule RdbmsViewExpressionFieldToQueryDslField
+    transform s : RDBMS!RdbmsViewExpressionField
+    to t : QUERYDSL!QueryDslValueField
+    extends QueryDslFieldGeneric {
+    	t.javaAttribute = transformExpressionAttributeField(s);
+    }
+    
 rule RdbmsViewValueFieldToQueryDslField
     transform s : RDBMS!RdbmsViewValueField
-    to t : QUERYDSL!QueryDslField
-    extends QueryDslFieldGeneric {}
+    to t : QUERYDSL!QueryDslValueField
+    extends QueryDslFieldGenericWithTypeName {
+    guard : s.tableField.table = s.view.primaryTable.table
+    	t.javaAttribute = transformAttributeField(s);
+    }
 
 rule RdbmsViewIdentifierFieldToQueryDslField
     transform s : RDBMS!RdbmsViewIdentifierField
-    to t : QUERYDSL!QueryDslField
-    extends QueryDslFieldGeneric {}
+    to t : QUERYDSL!QueryDslIdentifierField
+    extends QueryDslFieldGenericWithTypeName {
+    guard : s.tableField.isTypeOf(RDBMS!RdbmsIdentifierField) and not s.tableField.type.name.equals("Id")
+    	t.javaAttribute = transformAttributeField(s);
+    }
 
 rule RdbmsViewRelationIdentifierFieldToQueryDslField
-    transform s : RDBMS!RdbmsViewRelationIdentifierField
-    to t : QUERYDSL!QueryDslField
-    extends QueryDslFieldGeneric {}
+    transform s : RDBMS!RdbmsViewIdentifierField
+    to t : QUERYDSL!QueryDslRelationIdentifierField
+    extends QueryDslFieldGenericWithTypeName {
+    guard : s.tableField.isTypeOf(RDBMS!RdbmsForeignKey)
+       	t.javaReference = transformReferenceField(s);
+       	t.foreignKeyName = "$" + t.name + "Id";
+    }
+    
+rule RdbmsViewInverseRelationIdentifierFieldToQueryDslField
+    transform s : RDBMS!RdbmsViewForeignIdentifierField
+    to t : QUERYDSL!QueryDslInverseRelationIdentifierField
+    extends QueryDslFieldGenericWithTypeName {
+    	t.javaReference = transformInverseReferenceField(s);
+    }

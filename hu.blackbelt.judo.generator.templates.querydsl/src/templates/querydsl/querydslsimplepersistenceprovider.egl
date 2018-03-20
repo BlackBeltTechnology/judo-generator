@@ -134,15 +134,14 @@ public class [%=className%] implements QueryDslPersistenceProvider {
         if (SQLTemplateInfoUtil.isClobUsed(configuration.getTemplates())) {
             ClobAsStringType cast = new ClobAsStringType();
 
-        {%- for table in sqlmodel.views -%}
-            {%- for field in table.fields %}
-                {%- if field.umltype == 'memo' %}
-                    configuration.register("{{ table.name }}", "{{ field.name }}", cast);
-                {% endif -%}
-            {%- endfor -%}
-        {%- endfor -%}
-        }
-
+		[% for (view in QUERYDSL!QueryDslView.all) {
+				for (field in view.fields) {
+					if (field.typeName = "Memo") {%]
+		configuration.register("[%=view.sqlName%]", "[%=field.sqlName%]", cast);
+					[%}
+				}
+			}%]
+		}
         // Add log if neccessary
         if (logSql) {
             configuration.addListener(new LoggingSqlListener(configuration));

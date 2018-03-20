@@ -1,0 +1,8 @@
+@cached
+operation RDBMS!RdbmsForeignKey otherForeignKey() : RDBMS!RdbmsForeignKey {
+	if (self.table.field1 = self) {
+		return self.table.field2;
+	} else {
+		return self.table.field1;
+	}
+}

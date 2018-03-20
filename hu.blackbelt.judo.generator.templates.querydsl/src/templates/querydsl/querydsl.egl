@@ -45,7 +45,7 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
 
     // Constructors
     /**
-     * Contsucts [%=class.name%] and sets the PathBase. It inherits the parent schema and all reured property which is shared
+     * Constructs [%=class.name%] and sets the PathBase. It inherits the parent schema and all reured property which is shared
      * in the query which created by the root.
      *
      * @param parent
@@ -58,7 +58,7 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
     }
 
     /**
-     * Contsucts [%=class.name%] and sets the PathBase. It initializes all required metadata to connect other entities.
+     * Constructs [%=class.name%] and sets the PathBase. It initializes all required metadata to connect other entities.
      *
      * @param variable The alias name of table. In the queries, joins and projections this name will be used
      */
@@ -68,7 +68,7 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
     }
 
     /**
-     * Contsucts [%=class.name%] and sets the PathBase. The DB Schema and alternative table name can be given. It is usefull
+     * Constructs [%=class.name%] and sets the PathBase. The DB Schema and alternative table name can be given. It is usefull
      * when there are tables with same structure as original and every other things are handled same. It
      * initializes all required metadata to connect other entities.
      *
@@ -83,41 +83,31 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
 
     // Attribute definitions
     public final NumberPath<Long> id = createNumber("id", Long.class);
-    //TODO: {%- if attr.enum %}{%- endif %}
-    [% for (attr in class.attributes()) { %]
-        public final EnumPath<{{ attr.type.pack.business.po._name_ }}Po> [%=attr.name%] = createEnum("[%=attr.name%]", {{ attr.type.pack.business.po._name_ }}Po.class);
-    [%}%]
+    [% for (field in class.view.fields) { 
+    		if (not field.isTypeOf(QUERYDSL!QueryDslInverseRelationIdentifierField)) {%]
+    		[% if (field.isTypeOf(QUERYDSL!QueryDslRelationIdentifierField)) {%]
+        		public final [%=field.pathType()%] [%=field.foreignKeyName%] = [%=field.pathFactory()%]("[%=field.foreignKeyName%]"[%=(field.pathGeneric().length > 0).ternary(", " + field.pathGeneric(), "")%]);
+        	[%} else {%]
+        		public final [%=field.pathType()%] [%=field.name%] = [%=field.pathFactory()%]("[%=field.name%]"[%=(field.pathGeneric().length > 0).ternary(", " + field.pathGeneric(), "")%]);
+        	[%}%]
+    [%}}%]
 
-    //TODO: {%- if not field.enum %}{%- endif %}
-    [% for (field in class.view.fields) { %]
-        public final [%=field.pathType()%] [%=field.name%] = [%=field.pathFactory()%]("[%=field.name%]"[%=(field.pathGeneric().length > 0).ternary(", " + field.pathGeneric(), "")%]);
-    [%}%]
-
-    /* It is not used, because initialization can be circular
-    // Relations to other direct entities
-    {%- for foreignKey in table.foreignKeys %}
-    public {{ foreignKey.ref.type.bare.querydsl }}.Q{{ foreignKey.otherTable.umlname }} {{ foreignKey.qdslnamefk }};
-    {%- endfor %}
-    {%- for invKey in table.invKeys %}
-    public {{ invKey.otherref.type.bare.querydsl }}.Q{{ invKey.table.umlname }} {{ invKey.qdslinvnamefk }};
-    {%- endfor %}
-    */
     // Physical key and foreig key definitions
     public class PrimaryKeys {
-        public final com.querydsl.sql.PrimaryKey<[%=class.name%]> {{ class.name|lower }} = createPrimaryKey(id);
+        public final com.querydsl.sql.PrimaryKey<[%=class.name%]> [%=class.name.toLowerCase()%] = createPrimaryKey(id);
     }
 
     // Forign key handles normal relation when this table references the other and invers relation when the other table references to our table
     public class ForeignKeys {
-        {%- for foreignKey in table.foreignKeys %}
-        public final com.querydsl.sql.ForeignKey<{{ foreignKey.ref.type.bare.querydsl }}.Q{{ foreignKey.otherTable.umlname }}> {{ foreignKey.qdslnamefk }} = createForeignKey({{ foreignKey.qdslname }}, "ID");
-        {%- endfor %}
-        {%- for invKey in table.invKeys %}
-        public final com.querydsl.sql.ForeignKey<{{ invKey.otherref.type.bare.querydsl }}.Q{{ invKey.table.umlname }}> {{ invKey.qdslinvnamefk }} = createInvForeignKey(id, "{{ invKey.name }}");
-        {%- endfor %}
-        {%- for nmkey in table.nmKeys %}
-        public final com.querydsl.sql.ForeignKey<{{ nmkey.junction.package }}.Q{{ nmkey.junction.qtypname }}> junction_{{ nmkey.qdslnamefk }} = createInvForeignKey(id, "{{ nmkey.invField.name }}");
-        {%- endfor %}
+        [% for (foreignKey in class.view.getForeignKeys()) {%]
+        public final com.querydsl.sql.ForeignKey<[%=foreignKey.getOppositeOwnerClass().packageFqName()%].[%=foreignKey.getOppositeOwnerClass().name%]> [%=foreignKey.name%] = createForeignKey([%=foreignKey.foreignKeyName%], "ID");
+        [% } %]
+        [% for (invKey in class.view.getInvKeys()) {%]
+        public final com.querydsl.sql.ForeignKey<[%=invKey.getOppositeOwnerClass().packageFqName()%].[%=invKey.getOppositeOwnerClass().name%]> [%=invKey.name%] = createInvForeignKey(id, "[%=invKey.getOppositeForeignKey().sqlName%]");
+        [%}%]
+        [% for (nmKey in class.view.getNmKeys()) {%]
+        public final com.querydsl.sql.ForeignKey<[%=nmKey.junctionTable.packageName%].[%=nmKey.junctionTable.name%]> junction_[%=nmKey.name%] = createInvForeignKey(id, "[%=nmKey.otherForeignKey().sqlName%]");
+        [%}%] 
     }
 
     public final PrimaryKeys pk = new PrimaryKeys();
@@ -127,38 +117,51 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
     // It maps the attributes and relations to phisical database fields and foreign keys
     private void addMetadata() {
         addMetadata("id", id, ColumnMetadata.named("id").ofType(Types.BIGINT));
-        {%- for field in table.fields %}
-        addMetadata("{{ field.qdslname }}", {{ field.qdslname }}, ColumnMetadata.named("{{ field.name }}").ofType(Types.{{ field.qsqltype }}));
-        {%- endfor %}
-        {%- for foreignKey in table.foreignKeys %}
-        addRelationInfo("{{ foreignKey.fkattrname }}", "{{ foreignKey.ref.otherName }}", {{ foreignKey.ref.type.bare.querydsl }}.Q{{ foreignKey.otherTable.umlname }}.class, null, {{ foreignKey.ref.type.bare.business.po._name_Po }}.class, fk.{{ foreignKey.qdslnamefk }},
-            {%- if foreignKey.qdslupper == "1" %}false{% else %}true{% endif %}, false, {% if foreignKey.qdslinvlower == "1" %}true{% else %}false{%  endif %}, "{{ foreignKey.ref.options or '' }}");
-        {%- endfor %}
-        {%- for invKey in table.invKeys %}
-        addRelationInfo("{{ invKey.fkotherattrname }}", "{{ invKey.otherref.otherName }}", {{ invKey.otherref.type.bare.querydsl }}.Q{{ invKey.table.umlname }}.class, null, {{ invKey.otherref.type.bare.business.po._name_Po }}.class, fk.{{ invKey.qdslinvnamefk }},
-            {%- if invKey.qdslinvupper == "1" %}false{% else %}true{%  endif %}, true, {% if invKey.qdslinvlower == "1" %}true{% else %}false{%  endif %}, "{{ invKey.otherref.options or ''}}");
-        {%- endfor %}
-        {%- for nmkey in table.nmKeys %}
-        addRelationInfo("{{ nmkey.fkattrname }}", "{{ nmkey.ref.otherName }}", {{ nmkey.ref.type.bare.querydsl.Q_name_  }}.class, {{ nmkey.junction.package }}.Q{{ nmkey.junction.qtypname }}.class, {{ nmkey.ref.type.bare.business.po._name_Po }}.class, fk.junction_{{ nmkey.qdslnamefk }}, true, true, false, "");
-        {%- endfor %}
+        [% for (field in class.view.fields) {%]
+        [% if (not field.isTypeOf(QUERYDSL!QueryDslInverseRelationIdentifierField)) {%]
+        	[% if (field.isTypeOf(QUERYDSL!QueryDslRelationIdentifierField)) {%]
+        		addMetadata("[%=field.foreignKeyName%]", [%=field.foreignKeyName%], ColumnMetadata.named("[%=field.sqlName%]").ofType(Types.[%=field.rdbmsTypeName%]));
+        	[%} else {%]
+        		addMetadata("[%=field.name%]", [%=field.name%], ColumnMetadata.named("[%=field.sqlName%]").ofType(Types.[%=field.rdbmsTypeName%]));
+        	[%}%]
+        [%}%]
+        [% } %]
+        [% for (foreignKey in class.view.getForeignKeys()) {%]
+        addRelationInfo("[%=foreignKey.javaReference.name%]", "[%=foreignKey.javaReference.opposite.name%]", [%=foreignKey.getOppositeOwnerClass().packageFqName()%].[%=foreignKey.getOppositeOwnerClass().name%].class, null, [%=foreignKey.getOppositeOwnerClass().poClassFqName()%].class, fk.[%=foreignKey.name%],
+            [% if(foreignKey.javaReference.upper = 1) { out.print(false);} else {out.print(true);}%], false, [% if(foreignKey.javaReference.lower = 1) { out.print(true);} else {out.print(false);}%], "[%=foreignKey.javaReference.options%]");
+        [% } %]
+        [% for (invKey in class.view.getInvKeys()) {%]
+        addRelationInfo("[%=invKey.javaReference.name%]", "[%=invKey.javaReference.opposite.name%]", [%=invKey.getOppositeOwnerClass().packageFqName()%].[%=invKey.getOppositeOwnerClass().name%].class, null, [%=invKey.getOppositeOwnerClass().poClassFqName()%].class, fk.[%=invKey.name%],
+            [% if(invKey.javaReference.upper = 1) { out.print(false);} else {out.print(true);}%], true, [% if(invKey.javaReference.lower = 1) { out.print(true);} else {out.print(false);}%], "[%=invKey.javaReference.options%]");
+        [%}%]
+        [% for (nmKey in class.view.getNmKeys()) {%]
+        addRelationInfo("[%=nmKey.name%]", "[%=nmKey.otherForeignKey().name%]", [%=nmKey.otherForeignKey().javaClass.packageFqName()%].[%=nmKey.otherForeignKey().javaClass.name%].class, [%=nmKey.junctionTable.packageName%].[%=nmKey.junctionTable.name%].class, [%=nmKey.otherForeignKey().javaClass.poClassFqName()%].class, fk.junction_[%=nmKey.name%], true, true, false, "");
+        [%}%]
     }
 
 
     private static final Map<String, Getter<[%=class.poClassName()%], ?>> getters = ImmutableMap.<String, Getter<[%=class.poClassName()%], ?>>builder()
-        [% for (attr in class.allAttributes()) { %]
-            .put("[%=attr.name%][*{{ attr.name|lower_first }}*]", new Getter<[%=class.poClassName()%], [%=attr.typeFqName%][*{{ attr.type.pack.business.po._name_Po }}*]>() {
+    		.put("id", new Getter<[%=class.poClassName()%], Long>() {
+            		@Nullable
+            		@Override
+            		public Long get(@Nullable [%=class.poClassName()%] instance) {
+                		return instance.getId();
+            		}
+        	})
+        [% for (attr in class.attributes()) { %]
+            .put("[%=attr.name.firstToLowerCase()%]", new Getter<[%=class.poClassName()%], [%=attr.typeFqName%]>() {
                     @Nullable
                     @Override
-                    public [%=attr.typeFqName%][*{{ attr.type.pack.business.po._name_Po }}*] get(@Nullable [%=class.poClassName()%] input) {
+                    public [%=attr.typeFqName%] get(@Nullable [%=class.poClassName()%] input) {
                         return input.get[%=attr.name.firstToUpperCase()%]();
                     }
             })
         [%}%]
-        [% for (ref in class.allReferences()) { %]
-            .put("[%=ref.name%][*{{ ref.name|lower_first }}*]", new Getter<[%=class.poClassName()%], [%=ref.typeFqName%][*{{ ref.type.pack.business.po._name_Po }}*]>() {
+        [% for (ref in class.references()) { %]
+            .put("[%=ref.name.firstToLowerCase()%]", new Getter<[%=class.poClassName()%], [%=ref.typeFqName%]>() {
                     @Nullable
                     @Override
-                    public [%=ref.typeFqName%][*{{ ref.type.pack.business.po._name_Po }}*] get(@Nullable [%=class.poClassName()%] input) {
+                    public [%=ref.typeFqName%] get(@Nullable [%=class.poClassName()%] input) {
                         return input.get[%=ref.name.firstToUpperCase()%]();
                     }
             })
@@ -166,21 +169,28 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
         .build();
 
     private static final Map<String, Setter<[%=class.poClassName()%], Object>> setters = ImmutableMap.<String, Setter<[%=class.poClassName()%], Object>>builder()
-        [% for (attr in class.allAttributes()) { %]
+    		.put("id", new Setter<[%=class.poClassName()%], Object>() {
+            	@Nullable
+            	@Override
+            	public void set(@Nullable [%=class.poClassName()%] instance, @Nullable Object value) {
+                	instance.setId((Long) value);
+           		}
+        	})
+        [% for (attr in class.attributes()) { %]
             .put("[%=attr.name%]", new Setter<[%=class.poClassName()%], Object>() {
                 @Nullable
                 @Override
                 public void set(@Nullable [%=class.poClassName()%] instance, @Nullable Object value) {
-                    instance.set[%=attr.name.firstToUpperCase()%](([%=attr.typeFqName%][*{{ attr.type.pack.business.po._name_Po }}*]) value);
+                    instance.set[%=attr.name.firstToUpperCase()%](([%=attr.typeFqName%]) value);
                 }
             })
         [%}%]
-        [% for (ref in class.allReferences()) { %]
+        [% for (ref in class.references()) { %]
             .put("[%=ref.name%]", new Setter<[%=class.poClassName()%], Object>() {
                 @Nullable
                 @Override
                 public void set(@Nullable [%=class.poClassName()%] instance, @Nullable Object value) {
-                    instance.set[%=ref.name.firstToUpperCase()%](([%=ref.typeFqName%][*{{ ref.type.pack.business.po._name_Po }}*]) value);
+                    instance.set[%=ref.name.firstToUpperCase()%](([%=ref.typeFqName%]) value);
                 }
             })
         [%}%]

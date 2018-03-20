@@ -1,0 +1,68 @@
+@cached
+operation transformAttributeField(s : RDBMS!RdbmsViewAliasField) : QUERYDSL!QueryDslAttribute {
+	var jvmAttr = JAVA!JvmAttribute.all.selectOne(attr | attr.uuid = s.tableField.uuid);
+    return transformJvmAttribute(jvmAttr, s);
+}
+
+@cached
+operation transformExpressionAttributeField(s : RDBMS!RdbmsViewField) : QUERYDSL!QueryDslAttribute {
+	var jvmAttrName : String = s.name.split("\\.").last();
+	var jvmAttr = JAVA!JvmAttribute.all.selectOne(attr | attr.ownerClass.fqBaseName() = s.view.name and attr.name = jvmAttrName);
+	
+	s.name.println("VIEWFIELD NAME: ");
+	jvmAttr.name.println("JVMATTR NAME: ");
+	
+	return transformJvmAttribute(jvmAttr, s);
+}
+
+operation transformJvmAttribute(jvmAttr : JAVA!JvmAttribute, s : RDBMS!RdbmsViewField) {
+	var javaAttribute : QUERYDSL!QueryDslAttribute;
+    
+    if (s.inherited) {
+    	javaAttribute = new QUERYDSL!QueryDslAttribute();
+    	javaAttribute.name = jvmAttr.name;
+        javaAttribute.originUuid = jvmAttr.uuid;
+        javaAttribute.typeFqName = jvmAttr.type.fqName();
+    	
+    } else {
+    	javaAttribute = jvmAttr.equivalent("JvmAttributeToQueryDslAttribute");
+    }
+    
+    javaAttribute.uuid = uuid3(uuid3(s.view.uuid, s.uuid), "javaAttribute");
+   	javaAttribute.ownerClass =  JAVA!JvmClass.all.selectOne(class | class.fqBaseName() = s.view.name).equivalent("JvmClassToQueryDslClass");
+   	
+   	return javaAttribute;
+}
+
+@cached
+operation transformReferenceField(s : RDBMS!RdbmsViewTableField) : QUERYDSL!QueryDslReference {
+	var jvmReference = JAVA!JvmReference.all.selectOne(ref | ref.uuid = s.tableField.uuid);
+	return transformJvmReference(jvmReference, s);
+}
+
+@cached
+operation transformInverseReferenceField(s : RDBMS!RdbmsViewTableField) : QUERYDSL!QueryDslReference {
+	var jvmReference = JAVA!JvmReference.all.selectOne(ref | ref.uuid = s.tableField.uuid).opposite;
+	return transformJvmReference(jvmReference, s);
+    
+}
+
+operation transformJvmReference(jvmReference : JAVA!JvmReference, s : RDBMS!RdbmsViewTableField) : QUERYDSL!QueryDslReference {
+	var javaReference : QUERYDSL!QueryDslReference;
+    
+    if (s.inherited) {
+    	javaReference = new QUERYDSL!QueryDslReference();
+    	javaReference.name = jvmReference.name;
+        javaReference.originUuid = jvmReference.uuid;
+        javaReference.typeFqName = jvmReference.type.po().fqName();
+
+    } else {
+    	javaReference = jvmReference.equivalent("JvmReferenceToQueryDslReference");
+    }
+
+    javaReference.uuid = uuid3(uuid3(s.view.uuid, s.uuid), "javaReference");
+   	javaReference.ownerClass = JAVA!JvmClass.all.selectOne(class | class.fqBaseName() = s.view.name).equivalent("JvmClassToQueryDslClass");
+   	javaReference.opposite = jvmReference.opposite.equivalent("JvmReferenceToQueryDslReference");					
+   	
+	return javaReference;
+}

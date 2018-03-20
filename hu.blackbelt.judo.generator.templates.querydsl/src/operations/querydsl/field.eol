@@ -34,3 +34,13 @@ operation getFieldProperty(field : QUERYDSL!QueryDslField, propertyName : String
     };
     return fieldTypeMapping.get(field.typeName).get(propertyName);
 }
+
+operation QUERYDSL!QueryDslReferenceField getOppositeOwnerClass() : QUERYDSL!QueryDslClass {
+	return self.javaReference.opposite.ownerClass;
+}
+
+operation QUERYDSL!QueryDslInverseRelationIdentifierField getOppositeForeignKey() : QUERYDSL!QueryDslRelationIdentifierField {
+	return self.javaReference.opposite.relationIdentifierField.first();
+
+
+}

@@ -4,12 +4,12 @@
   out.setContentType("Java");
 %]
 
-package {{ package }};
+package [%=topPackageName + ".querydsl"%];
 
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.sql.ColumnMetadata;
-import {{ junction.field1.jtype.bare.querydsl }}.Q{{ junction.field1.jtype.name }};
-import {{ junction.field2.jtype.bare.querydsl }}.Q{{ junction.field2.jtype.name }};
+import [%=junction.foreignKey1.javaClass.packageName + ".querydsl"%].[%=junction.foreignKey1.javaClass.name%];
+import [%=junction.foreignKey2.javaClass.packageName + ".querydsl"%].[%=junction.foreignKey2.javaClass.name%];
 import hu.blackbelt.judo.rdbms.querydsl.api.JunctionPo;
 import hu.blackbelt.judo.rdbms.querydsl.api.QueryDslContext;
 import com.querydsl.sql.ForeignKey;
@@ -25,36 +25,36 @@ import static com.querydsl.core.types.PathMetadataFactory.forVariable;
  */
 
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
-public class Q{{ junction.qtypname }} extends QueryDslContext<Q{{ junction.qtypname }}, JunctionPo> {
-    public static final Q{{ junction.qtypname }} q = new Q{{ junction.qtypname }}("{{ junction.name }}");
+public class [%=junction.name%] extends QueryDslContext<[%=junction.name%], JunctionPo> {
+    public static final [%=junction.name%] q = new [%=junction.name%]("[%=junction.sqlName%]");
 
     // Constructors
 
     /**
-     * Contsucts Q{{ junction.qtypname }} and sets the PathBase. It inherits the parent schema and all reured property which is shared
+     * Contsucts [%=junction.name%] and sets the PathBase. It inherits the parent schema and all reured property which is shared
      * in the query which created by the root.
      *
      * @param parent
      */
-    public Q{{ junction.qtypname }}(QueryDslContext parent) {
-        super(Q{{ junction.qtypname }}.class, JunctionPo.class,
-                forVariable(parent.getAliasGenerator().getNextForName("{{ junction.field1.name | upper }}{{ junction.field2.name | upper }}")), parent.getSchemaName(), "{{ junction.name }}");
+    public [%=junction.name%](QueryDslContext parent) {
+        super([%=junction.name%].class, JunctionPo.class,
+                forVariable(parent.getAliasGenerator().getNextForName("[%=junction.foreignKey1.sqlName.toUpperCase()%][%=junction.foreignKey2.sqlName.toUpperCase()%]")), parent.getSchemaName(), "[%=junction.sqlName%]");
         super.setAliasGenerator(parent.getAliasGenerator());
         addMetadata();
     }
 
     /**
-     * Contsucts Q{{ junction.qtypname }} and sets the PathBase. It initializes all required metadata to connect other entities.
+     * Constructs [%=junction.name%] and sets the PathBase. It initializes all required metadata to connect other entities.
      *
      * @param variable The alias name of table. In the queries, joins and projections this name will be used
      */
-    public Q{{ junction.qtypname }}(String variable) {
-        super(Q{{ junction.qtypname }}.class, JunctionPo.class, forVariable(variable), null, "{{ junction.name }}");
+    public [%=junction.name%](String variable) {
+        super([%=junction.name%].class, JunctionPo.class, forVariable(variable), null, "[%=junction.sqlName%]");
         addMetadata();
     }
 
     /**
-     * Contsucts Q{{ junction.qtypname }} and sets the PathBase. The DB Schema and alternative table name can be given. It is usefull
+     * Constructs [%=junction.name%] and sets the PathBase. The DB Schema and alternative table name can be given. It is usefull
      * when there are tables with same structure as original and every other things are handled same. It
      * initializes all required metadata to connect other entities.
      *
@@ -62,29 +62,29 @@ public class Q{{ junction.qtypname }} extends QueryDslContext<Q{{ junction.qtypn
      * @param schema   The schema name of table (prefix)
      * @param table    The table name is used for mapping
      */
-    public Q{{ junction.qtypname }}(String variable, String schema, String table) {
-        super(Q{{ junction.qtypname }}.class, JunctionPo.class, forVariable(variable), schema, table);
+    public [%=junction.name%](String variable, String schema, String table) {
+        super([%=junction.name%].class, JunctionPo.class, forVariable(variable), schema, table);
         addMetadata();
     }
 
     // Attribute definitions
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> {{ junction.field1.fkattrname }} = createNumber("mId", Long.class);
-    public final NumberPath<Long> {{ junction.field2.fkattrname }} = createNumber("nId", Long.class);
+    public final NumberPath<Long> [%=junction.foreignKey1.name%] = createNumber("mId", Long.class);
+    public final NumberPath<Long> [%=junction.foreignKey2.name%] = createNumber("nId", Long.class);
 
     /* It is not used, because initialization can be circular
     // Relations to other direct entities
     */
     // Physical key and foreig key definitions
     public class PrimaryKeys {
-        public final PrimaryKey<Q{{ junction.qtypname }}> classn1m1 = createPrimaryKey(id);
+        public final PrimaryKey<[%=junction.name%]> classn1m1 = createPrimaryKey(id);
     }
 
     // Forign key handles normal relation when this table references the other and invers relation when the other table references to our table
     public class ForeignKeys {
-        public final ForeignKey<Q{{ junction.field1.jtype.name }}> m = createForeignKey(Q{{ junction.qtypname }}.this.{{ junction.field1.fkattrname }}, "ID");
-        public final ForeignKey<Q{{ junction.field2.jtype.name }}> n = createForeignKey(Q{{ junction.qtypname }}.this.{{ junction.field2.fkattrname }}, "ID");
+        public final ForeignKey<[%=junction.foreignKey1.javaClass.name%]> m = createForeignKey([%=junction.name%].this.[%=junction.foreignKey1.otherForeignKey().name%], "ID");
+        public final ForeignKey<[%=junction.foreignKey2.javaClass.name%]> n = createForeignKey([%=junction.name%].this.[%=junction.foreignKey2.otherForeignKey().name%], "ID");
     }
 
     public final PrimaryKeys pk = new PrimaryKeys();
@@ -94,10 +94,10 @@ public class Q{{ junction.qtypname }} extends QueryDslContext<Q{{ junction.qtypn
     // It maps the attributes and relations to phisical database fields and foreign keys
     private void addMetadata() {
         addMetadata("id", id, ColumnMetadata.named("id").ofType(Types.BIGINT));
-        addMetadata("{{ junction.field1.fkattrname }}", {{ junction.field1.fkattrname }}, ColumnMetadata.named("{{ junction.field1.name }}").ofType(Types.BIGINT));
-        addMetadata("{{ junction.field2.fkattrname }}", {{ junction.field2.fkattrname }}, ColumnMetadata.named("{{ junction.field2.name }}").ofType(Types.BIGINT));
-        addRelationInfo("{{ junction.field1.fkattrname }}", "{{ junction.field2.fkattrname }}", Q{{ junction.field1.jtype.name }}.class, null, {{ junction.field1.jtype.bare.business.po._name_Po }}.class, fk.m, false, false, false, "");
-        addRelationInfo("{{ junction.field2.fkattrname }}", "{{ junction.field1.fkattrname }}", Q{{ junction.field2.jtype.name }}.class, null, {{ junction.field2.jtype.bare.business.po._name_Po }}.class, fk.n, false, false, false, "");
+        addMetadata("[%=junction.foreignKey1.name%]", [%=junction.foreignKey1.name%], ColumnMetadata.named("[%=junction.foreignKey1.sqlName%]").ofType(Types.BIGINT));
+        addMetadata("[%=junction.foreignKey2.name%]", [%=junction.foreignKey2.name%], ColumnMetadata.named("[%=junction.foreignKey2.sqlName%]").ofType(Types.BIGINT));
+        addRelationInfo("[%=junction.foreignKey1.name%]", "[%=junction.foreignKey2.name%]", [%=junction.foreignKey1.otherForeignKey().javaClass.name%].class, null, [%=junction.foreignKey1.otherForeignKey().javaClass.poClassFqName()%].class, fk.m, false, false, false, "");
+        addRelationInfo("[%=junction.foreignKey2.name%]", "[%=junction.foreignKey1.name%]", [%=junction.foreignKey2.otherForeignKey().javaClass.name%].class, null, [%=junction.foreignKey2.otherForeignKey().javaClass.poClassFqName()%].class, fk.n, false, false, false, "");
     }
 
     @Override
@@ -105,10 +105,10 @@ public class Q{{ junction.qtypname }} extends QueryDslContext<Q{{ junction.qtypn
         if ("id".equals(memberName)) {
             return obj.getId();
         }
-        else if ("{{ junction.field1.fkattrname }}".equals(memberName)) {
+        else if ("[%=junction.foreignKey1.name%]".equals(memberName)) {
             return obj.getMId();
         }
-        else if ("{{ junction.field2.fkattrname }}".equals(memberName)) {
+        else if ("[%=junction.foreignKey2.name%]".equals(memberName)) {
             return obj.getNId();
         }
         throw new IllegalArgumentException("Unknown member: " + memberName);
@@ -119,10 +119,10 @@ public class Q{{ junction.qtypname }} extends QueryDslContext<Q{{ junction.qtypn
         if ("id".equals(memberName)) {
             obj.setId((Long) value);
         }
-        else if ("{{ junction.field1.fkattrname }}".equals(memberName)) {
+        else if ("[%=junction.foreignKey1.name%]".equals(memberName)) {
             obj.setMId((Long) value);
         }
-        else if ("{{ junction.field2.fkattrname }}".equals(memberName)) {
+        else if ("[%=junction.foreignKey2.name%]".equals(memberName)) {
             obj.setNId((Long) value);
         }
         throw new IllegalArgumentException("Unknown member: " + memberName);

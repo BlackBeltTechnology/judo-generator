@@ -17,6 +17,19 @@ operation fqNameInternal (pe : JAVA!JvmPackagableElement) : String {
 }
 
 @cached
+operation JAVA!JvmPackagableElement fqBaseName() : String {
+	var fqName : String = self.name;
+	var currentPackage = self.package;
+	
+	while (currentPackage.isDefined() and currentPackage.name <> "blackbelt") {
+		fqName = currentPackage.name + "." + fqName;
+		currentPackage = currentPackage.package;
+	} 
+	
+	return fqName;
+} 
+
+@cached
 operation JAVA!JvmPackagableElement rootPackage () : JAVA!JvmPackage {
     if (self.package.isDefined()) {
         return self.package.rootPackage();

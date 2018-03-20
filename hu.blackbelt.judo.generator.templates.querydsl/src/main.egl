@@ -8,13 +8,19 @@ getQueryDslTemplate("querydslsimplepersistenceprovider").genQueryDslSimplePersis
 operation Template genQueryDsl () {
     for (class in QUERYDSL!QueryDslClass.all) {
         self.populate("class", class);
-        self.generate("QUERYDSL/" + class.packageName.replaceAll("\\.", "/") + "/" + class.name + ".java");
+        self.generate("QUERYDSL/" + class.packageFqName().replaceAll("\\.", "/") + "/" + class.name + ".java");
         self.reset();
     }
 }
 
 operation Template genQueryDslJunction () {
-   
+	var queryDslModel = QUERYDSL!QueryDslModel.all.first();
+	self.populate("topPackageName", queryDslModel.topPackageName);
+	for (junction in QUERYDSL!QueryDslJunctionTable.all) {
+		self.populate("junction", junction);
+		self.generate("QUERYDSL_JUNCTION/" + queryDslModel.topPackageName.replaceAll("\\.", "/") + "/querydsl/" + junction.name + ".java");
+		self.reset();
+	}
 }
 
 operation Template genQueryDslSimplePersistenceProvider () {

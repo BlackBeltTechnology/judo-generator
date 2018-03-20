@@ -1,0 +1,7 @@
+operation QUERYDSL!QueryDslJunctionTableForeignKey otherForeignKey() : QUERYDSL!QueryDslJunctionTableForeignKey {
+	if (self.junctionTable.foreignKey1 = self) {
+		return self.junctionTable.foreignKey2;
+	} else {
+		return self.junctionTable.foreignKey1;
+	}
+}

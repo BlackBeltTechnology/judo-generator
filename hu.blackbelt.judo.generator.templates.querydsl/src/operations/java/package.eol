@@ -1,0 +1,10 @@
+operation JAVA!JvmPackage fqName() : String {
+	var fqName : String = self.name;
+	var currentPackage = self.package;
+	while(currentPackage.isDefined()) {
+		fqName = currentPackage.name + "." + fqName;
+		currentPackage = currentPackage.package;
+	}
+
+	return fqName;
+}

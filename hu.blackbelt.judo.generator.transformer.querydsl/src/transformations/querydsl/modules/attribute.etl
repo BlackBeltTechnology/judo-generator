@@ -1,5 +1,6 @@
 import "../../../operations/_importAll.eol";
 
+@lazy
 rule JvmAttributeToQueryDslAttribute
     transform s : JAVA!JvmAttribute
     to t : QUERYDSL!QueryDslAttribute {
@@ -8,5 +9,4 @@ rule JvmAttributeToQueryDslAttribute
         t.name = s.name;
         t.originUuid = s.uuid;
         t.typeFqName = s.type.fqName();
-        t.ownerClass = s.ownerClass.equivalent("JvmClassToQueryDslClass");
     }
