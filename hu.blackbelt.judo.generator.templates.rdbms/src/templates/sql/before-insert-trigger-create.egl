@@ -5,6 +5,23 @@
   out.setContentType("Java");
 %]
 
+
+-- {{ ddlmacro.CREATE_TRIGGER('BI_' + table.name, table.name, 'BEFORE', 'INSERT') }}
+--    {{ ddlmacro.BEGIN }}
+--        IF ({{ddlmacro.NEW}}.ID IS NULL) THEN
+--            {{ ddlmacro.nextval( ddlmacro.NEW + '.ID' ) }}
+--        END IF;
+--
+--        {{ ddlmacro.RETURN_NEW }}
+--    END;
+-- {{ ddlmacro.END_TRIGGER() }}
+--
+-- {%- macro CREATE_TRIGGER(name, table, timing, type) -%}
+-- {%- set _ = glob.update({'CURRENT_TRIGGER_NAME':name}) -%}
+-- CREATE TRIGGER {{ name }} {{ timing }} {{ type }} ON {{ table }}
+--     FOR EACH ROW
+-- {%- endmacro -%}
+
 [%for (junction in junctions) {%]
 --changeset generator:before_insert_trigger_create_[%=junction.sqlName%]#[%=version()%] logicalFilePath:triggersViewsConstraintCreate stripComments:true
 	[% if (dialect() = 'Oracle') {%]
@@ -14,19 +31,3 @@
 			
 	[%}%]
 [%}%]
-
-{{ ddlmacro.CREATE_TRIGGER('BI_' + table.name, table.name, 'BEFORE', 'INSERT') }}
-    {{ ddlmacro.BEGIN }}
-        IF ({{ddlmacro.NEW}}.ID IS NULL) THEN
-            {{ ddlmacro.nextval( ddlmacro.NEW + '.ID' ) }}
-        END IF;
-
-        {{ ddlmacro.RETURN_NEW }}
-    END;
-{{ ddlmacro.END_TRIGGER() }}
-
-{%- macro CREATE_TRIGGER(name, table, timing, type) -%}
-{%- set _ = glob.update({'CURRENT_TRIGGER_NAME':name}) -%}
-CREATE TRIGGER {{ name }} {{ timing }} {{ type }} ON {{ table }}
-    FOR EACH ROW
-{%- endmacro -%}

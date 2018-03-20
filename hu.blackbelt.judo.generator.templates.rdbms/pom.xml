@@ -19,6 +19,7 @@
 				<artifactId>epsilon-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
+				<!-- 
 					<execution>
 						<id>template-model-hsqldb</id>
 						<phase>generate-resources</phase>
@@ -47,6 +48,7 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
+					-->
 
 					<execution>
 						<id>template-model-postgres</id>
@@ -76,7 +78,7 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
-
+					<!-- 
 					<execution>
 						<id>template-model-oracle</id>
 						<phase>generate-resources</phase>
@@ -105,7 +107,7 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
-
+					-->
 				</executions>
 				<dependencies>
 					<dependency>

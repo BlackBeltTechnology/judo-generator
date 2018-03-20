@@ -60,6 +60,7 @@ rule JAttributeToViewIdFieldWithoutView
 		v.description = s.ownerClass.name + "." + s.name;
 }
 
+@lazy
 rule JAttributeToViewIdField
 	transform s : PSM!JAttribute
 	to v : RDBMS!RdbmsViewIdentifierField 
@@ -108,7 +109,7 @@ rule JAttributeToUniqueKey
 	transform s : PSM!JAttribute
 	to u : RDBMS!RdbmsUniqueKey 
 	extends JElementToRdbmsElement { 
-		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.unique == true
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.unique == true and not s.isPrimaryKey() and not s.derived
 	    
 	    if (not s.uuid.isDefined() or s.uuid.isEmpty()) {
 	        u.uuid  = uuid3(s.ownerClass.uuid, s.name);
@@ -119,7 +120,9 @@ rule JAttributeToUniqueKey
 		u.sqlName = 'U_' + u.table.sqlName + "_" + s.fieldSqlName(); 
 		u.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
 		u.description = s.ownerClass.name + "." + s.name;
-//	    ('Unique found U_' + u.table.sqlName + "_" + s.fieldSqlName()).println();
+		u.field = s.equivalent("JAttributeToTableValueField");
+		
+		//	    ('Unique found U_' + u.table.sqlName + "_" + s.fieldSqlName()).println();
 	    //u.table.uniqueKeys.add(u);
 }
 

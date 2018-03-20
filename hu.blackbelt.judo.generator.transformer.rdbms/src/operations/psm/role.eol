@@ -36,7 +36,8 @@ operation PSM!JRole roleFkSqlName() : String {
 
 @cached
 operation PSM!JRole roleIdSqlName() : String {
-    return "C_" + self.opposite().ownerClass.sqlName() + "_ID";
+    --    return "C_" +  self.ownerClass.package.sqlName() + "_" + self.opposite().ownerClass.sqlName()+ "_ID" + "_" + self.sqlName();
+    return "C_" +  self.sqlName() + "_ID";
 }
 
 @cached

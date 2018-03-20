@@ -6,7 +6,7 @@ rule Model
 	to        t : tgtPSM!JModel 
 	extends NamedElement {
 	
-	guard : (s.name = "Model")
+	guard : (s.name = modelName)
 	
 	tgtModel = t;
 	

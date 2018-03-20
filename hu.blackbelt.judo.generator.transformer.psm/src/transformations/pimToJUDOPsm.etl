@@ -13,11 +13,13 @@ import "modules/stateMachine.etl";
 import "pre/collectJUDOStereotypes.etl";
 
 pre {
-
-	var modelName = "Model";
+//	modelName.println("MODEL: ");
 	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
 	var tgtModel;
-	inpPIM!rest.allInstances().size().println();
+//	inpPIM!Model.allInstances().println("Lofasz geci: ");
+//	var tgtModel = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).equivalent();
+//	tgtModel.name.println("Found: ");
+//	inpPIM!rest.allInstances().size().println();
 	var stereotypeApplications : Map = collectJUDOStereotypeInstances();
 	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
 	

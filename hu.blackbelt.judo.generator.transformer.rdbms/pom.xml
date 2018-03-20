@@ -32,7 +32,7 @@
 									<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
 									<version>${project.version}</version>
 									<type>md5</type>
-									<classifier>psmFromHutn</classifier>
+									<classifier>psm</classifier>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}</outputDirectory>
 									<destFileName>psm.md5</destFileName>
@@ -79,6 +79,7 @@
 					</dependency>
 				</dependencies>
 				<executions>
+					<!-- 
 					<execution>
 						<id>transform-hsqldb</id>
 						<phase>generate-resources</phase>
@@ -103,7 +104,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -128,7 +129,7 @@
 									</metaModelUris>
 									<expand>true</expand>
 								</model>
-								<!-- Target -->
+
 								<model>
 									<artifact>${project.build.directory}/rdbmsHsqldb.model</artifact>
 									<name>RDBMS</name>
@@ -155,6 +156,7 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
+					-->
 
 					<execution>
 						<id>transform-postgresql</id>
@@ -181,7 +183,7 @@
 
 								<model>
 
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -217,7 +219,6 @@
                                     <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.psm.domain/target/domainPsm.model</platformAlias>
                                 </model>
 
-								<!-- Target -->
 								<model>
 									<artifact>${project.build.directory}/rdbmsPostgres.model</artifact>
 									<name>RDBMS</name>
@@ -244,7 +245,7 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
-
+					<!-- 
 					<execution>
 						<id>transform-oracle</id>
 						<phase>generate-resources</phase>
@@ -296,7 +297,6 @@
 									<expand>true</expand>
 								</model>
 
-								<!-- Target -->
 								<model>
 									<artifact>${project.build.directory}/rdbmsOracle.model</artifact>
 									<name>RDBMS</name>
@@ -322,8 +322,7 @@
 								</Etl>
 							</eolPrograms>
 						</configuration>
-					</execution>
-
+					</execution> -->
 				</executions>
 			</plugin>
 
@@ -356,21 +355,25 @@
 						</goals>
 						<configuration>
 							<artifacts>
+<!-- 
 								<artifact>
 									<file>${project.build.directory}/rdbmsHsqldb.model</file>
 									<type>model</type>
 									<classifier>rdbmsHsqldb</classifier>
 								</artifact>
+-->
 								<artifact>
 									<file>${project.build.directory}/rdbmsPostgres.model</file>
 									<type>model</type>
 									<classifier>rdbmsPostgres</classifier>
 								</artifact>
+<!-- 
 								<artifact>
 									<file>${project.build.directory}/rdbmsOracle.model</file>
 									<type>model</type>
 									<classifier>rdbmsOracle</classifier>
 								</artifact>
+-->
 							</artifacts>
 						</configuration>
 					</execution>

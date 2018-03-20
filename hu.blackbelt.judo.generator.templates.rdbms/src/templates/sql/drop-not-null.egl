@@ -10,8 +10,8 @@
 -- oracke ALTER TABLE {{ table }} MODIFY ({{ field }} NOT NULL, ...);
 [%for (table in tables) {%]
 	[%if (hasFeature('SupportMultipleColumnModificationInOneStatement')) {%]
-		--changeset generator:set_not_null_[%= table.sqlName %]#[%= version() %] logicalFilePath:createTable stripComments:true
-		ALTER TABLE [%=table.sqlName%] 
+--changeset generator:set_not_null_[%= table.sqlName %]#[%= version() %] logicalFilePath:createTable stripComments:true
+ALTER TABLE [%=table.sqlName%] 
 		[%if (dialect() == 'Oracle') {%]
 			MODIFY (
 		[%}%]
@@ -33,8 +33,8 @@
 		;[% out.println("\n");%]
 	[%} else {%]
 		[%for (field in table.fields) {%]
-			--changeset generator:set_not_null_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:createTable stripComments:true
-			ALTER TABLE [%=table.sqlName%] ALTER COLUMN [%=field.sqlName%] SET NULL;
+--changeset generator:set_not_null_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:createTable stripComments:true
+ALTER TABLE [%=table.sqlName%] ALTER COLUMN [%=field.sqlName%] SET NULL;
 			[% out.println("\n");%]
 		[%}%]
 	[%}%]

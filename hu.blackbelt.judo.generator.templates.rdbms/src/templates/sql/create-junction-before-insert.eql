@@ -1,0 +1,18 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+-- {% for table in model.junctions %}
+-- --changeset generator:create_function_BI_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+-- {{ ddlmacro.CREATE_TRIGGER('BI_' + table.name, table.name, 'BEFORE', 'INSERT') }}
+--     {{ ddlmacro.BEGIN }}
+--         IF ({{ddlmacro.NEW}}.ID IS NULL) THEN
+--             {{ ddlmacro.nextval( ddlmacro.NEW + '.ID' ) }}
+--         END IF;
+-- 
+--         {{ ddlmacro.RETURN_NEW }}
+--     END;
+-- {{ ddlmacro.END_TRIGGER() }}

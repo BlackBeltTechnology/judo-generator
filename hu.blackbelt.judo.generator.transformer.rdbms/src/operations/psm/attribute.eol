@@ -25,6 +25,16 @@ operation PSM!JAttribute isXmiid () : Boolean {
 
 @cached
 operation PSM!JAttribute fieldSqlName() : String {
-    return "C_" + self.sqlName();
+    if (self.name = "auditUpdateUser") {
+	    return "C_AUU";
+    } else if (self.name = "auditUpdateTime") {
+	    return "C_AUT";
+    } else if (self.name = "auditCreateUser") {
+	    return "C_ACU";
+    } else if (self.name = "auditCreateTime") {
+	    return "C_ACT";
+    } else {
+	    return "C_" + self.sqlName();
+	}
 }
 

@@ -5,6 +5,7 @@ getDdlTemplate("create-table").genCreateTables(getTables());
 getDdlTemplate("set-not-null").genSetNotNull(getTables());
 getDdlTemplate("drop-not-null").genDropNotNull(getTables());
 getDdlTemplate("create-foreignkey").genCreateForeignKeys(getForeignKeys());
+getDdlTemplate("create-view").genViews(getViews());
 
 operation Template genCreateTables(tables : Collection) : Any {
 	self.populate("tables", tables);
@@ -30,6 +31,14 @@ operation Template genCreateForeignKeys(foreignKeys : Collection) : Any {
 	self.reset();
 }
 
+
+operation Template genViews(views : Collection) : Any {
+	self.populate("views", views);
+	self.generate(getGenPath() + "create_views.sql");
+	self.reset();
+}
+
+
 operation getDdlTemplate (templateName : String) : Any {
     var formatter = new Native("hu.blackbelt.judo.generator.formatter.sql.SqlCreateTableFormatter");
 	var tf = TemplateFactory.load("templates/sql/" + templateName + ".egl");
@@ -42,6 +51,9 @@ operation getTables () : Collection {
 	return RDBMS!RdbmsTable.all;
 }
 
+operation getViews () : Collection {
+	return RDBMS!RdbmsView.all;
+}
 
 operation getForeignKeys () : Collection {
 	return RDBMS!RdbmsForeignKey.all;

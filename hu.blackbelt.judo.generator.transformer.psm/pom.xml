@@ -12,6 +12,13 @@
     <artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
     <packaging>pom</packaging>
     
+    <properties>
+    	<!--  <src.model>opm_pim_just_imported</src.model> -->
+    	<src.model>JUDO_Car</src.model>
+    	<target.model>car</target.model>
+    	<model>Model</model>
+    </properties>
+    
     <dependencies>
         <dependency>
             <artifactId>hu.blackbelt.judo.generator.transformer.psm.domain</artifactId>
@@ -45,7 +52,7 @@
                             <classifier>psm</classifier>
                             <overWrite>true</overWrite>
                             <outputDirectory>${project.build.directory}</outputDirectory>
-                            <destFileName>carPsm.model</destFileName>
+                            <destFileName>${target.model}.model</destFileName>
                         </artifactItem>
                     </artifactItems>
                 </configuration>
@@ -75,7 +82,7 @@
 							</metaModels>
 							<models>
 								<model>
-									<artifact>file:${basedir}/src/model/JUDO_Car.uml</artifact>
+									<artifact>file:${basedir}/src/model/${src.model}.uml</artifact>
 									<name>inpPIM</name>
 									<metaModelUris>
 										<param>http://www.eclipse.org/uml2/5.0.0/UML</param>
@@ -97,7 +104,7 @@
 									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
 								</model>
 								<model>
-									<artifact>${project.build.directory}/carPsm.model</artifact>
+									<artifact>${project.build.directory}/${target.model}.model</artifact>
 									<name>tgtPSM</name>
 									<readOnLoad>true</readOnLoad>
 									<storeOnDisposal>true</storeOnDisposal>
@@ -109,6 +116,12 @@
 							<eolPrograms>
 								<Etl>
 									<source>src/transformations/pimToJUDOPsm.etl</source>
+									<parameters>
+										<parameter>
+											<name>modelName</name>
+											<value>${model}</value>
+										</parameter>
+									</parameters>
 								</Etl>
 							</eolPrograms>
 						</configuration>
@@ -174,7 +187,7 @@
 		          </goals>
 			      <configuration>
 			       <ignoreMissingFile>false</ignoreMissingFile>
-			       <file>${project.build.directory}/target.model</file>
+			       <file>${project.build.directory}/${target.model}.model</file>
 			        <replacements>
 			          <replacement>
 			            <token>\.\.\/\.\.\/(.*)\.model</token>
@@ -192,7 +205,7 @@
 		          </goals>
 			      <configuration>
 			       <ignoreMissingFile>false</ignoreMissingFile>
-			       <file>${project.build.directory}/carPsm.model</file>
+			       <file>${project.build.directory}/${target.model}.model</file>
 			        <replacements>
 			          <replacement>
 			            <token>\.\.\/\.\.\/(.*)\.model</token>
@@ -219,12 +232,12 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>${project.build.directory}/carPsm.model</file>
+                                    <file>${project.build.directory}/${target.model}.model</file>
                                     <type>model</type>
                                     <classifier>psm</classifier>
                                 </artifact>
                                 <artifact>
-                                    <file>${project.build.directory}/carPsm.model.md5</file>
+                                    <file>${project.build.directory}/${target.model}.model.md5</file>
                                     <type>md5</type>
                                     <classifier>psm</classifier>
                                 </artifact>

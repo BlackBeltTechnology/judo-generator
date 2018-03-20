@@ -5,7 +5,7 @@ operation PSM!JElement participates (jLayerEnum : Any) : Boolean {
 @cached
 operation PSM!JElement sqlName() : String {
     if (self.shortName.isDefined()) {
-	    return self.shortName.toUpperCase();
+	    return self.shortName.replaceAll("(.)([A-Z][a-z]+)","$1\\_$2").replaceAll("([a-z0-9])([A-Z])","$1\\_$2").toUpperCase();
 	} else {
     	return abbreviate(self.name, 6).toUpperCase();
 	}
