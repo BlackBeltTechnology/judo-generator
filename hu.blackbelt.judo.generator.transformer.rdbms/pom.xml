@@ -28,7 +28,7 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<groupId>${groupId}</groupId>
+									<groupId>${project.groupId}</groupId>
 									<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
 									<version>${project.version}</version>
 									<type>md5</type>
@@ -87,14 +87,14 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
 									<name>PSMTYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -103,7 +103,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -112,7 +112,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesHsqldb:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesHsqldb:${project.version}</artifact>
 									<name>RDBMSTYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -121,7 +121,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:typeMappingHsqldb:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:typeMappingHsqldb:${project.version}</artifact>
 									<name>RTM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms/mapping</param>
@@ -164,14 +164,14 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
 									<name>PSMTYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -181,7 +181,7 @@
 
 								<model>
 
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -190,7 +190,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesPostgres:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesPostgres:${project.version}</artifact>
 									<name>RDBMSTYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -199,7 +199,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:typeMappingPostgres:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:typeMappingPostgres:${project.version}</artifact>
 									<name>RTM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms/mapping</param>
@@ -207,7 +207,7 @@
 									<expand>true</expand>
 								</model>
                                 <model>
-                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm.domain:model:psm:${project.version}</artifact>
+                                    <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm.domain:model:psm:${project.version}</artifact>
                                     <name>DOMAINPSM</name>
                                     <readOnLoad>true</readOnLoad>
                                     <storeOnDisposal>false</storeOnDisposal>
@@ -253,14 +253,14 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:psmToRdbmsTypeMapping:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
 									<name>PSMTYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -270,7 +270,7 @@
 
 								<model>
 
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -279,7 +279,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesOracle:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:rdbmsTypesOracle:${project.version}</artifact>
 									<name>RDBMSTYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -288,7 +288,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:typeMappingOracle:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:model:typeMappingOracle:${project.version}</artifact>
 									<name>RTM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms/mapping</param>

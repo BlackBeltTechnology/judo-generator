@@ -28,7 +28,7 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<groupId>${groupId}</groupId>
+									<groupId>${project.groupId}</groupId>
 									<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
 									<version>${project.version}</version>
 									<type>md5</type>
@@ -79,12 +79,12 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.permission:ecore:permission:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.permission:ecore:permission:${project.version}</metaModel>
 							</metaModels>
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
 									<name>PSMTYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -93,7 +93,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>

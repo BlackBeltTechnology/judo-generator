@@ -27,13 +27,13 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:ui:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:resources:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:ui:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.ui:ecore:resources:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.ui:model:uiTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.ui:model:uiTypes:${project.version}</artifact>
 									<name>UITYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/ui</param>
@@ -41,7 +41,7 @@
 									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model</platformAlias>
 								</model>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.ui:model:ui:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.ui:model:ui:${project.version}</artifact>
 									<name>UI</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/ui</param>
@@ -49,7 +49,7 @@
 									<expand>true</expand>
 								</model>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.ui:model:resources:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.ui:model:resources:${project.version}</artifact>
 									<name>Resources</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/ui/resources</param>

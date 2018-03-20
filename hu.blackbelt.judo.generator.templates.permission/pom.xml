@@ -27,11 +27,11 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.permission:ecore:permission:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.permission:ecore:permission:${project.version}</metaModel>
 							</metaModels>
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.permission:model:permission:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.permission:model:permission:${project.version}</artifact>
 									<name>Permission</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/permission</param>

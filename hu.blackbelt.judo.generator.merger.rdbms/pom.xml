@@ -27,7 +27,7 @@
             </goals>
             <configuration>
               <metaModels>
-                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>             
+                <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>             
               </metaModels>
                 <models>
                     <model>

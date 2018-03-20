@@ -26,14 +26,14 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:ecore:psmToJavaTypeMapping:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:ecore:psmToJavaTypeMapping:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
 									<name>PSMTYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -42,7 +42,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -51,7 +51,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
 									<name>JAVATYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/java</param>
@@ -60,7 +60,7 @@
 								</model>
 
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:model:typeMapping:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:typeMapping:${project.version}</artifact>
 									<name>JTM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/java/mapping</param>
@@ -69,7 +69,7 @@
 								</model>
 								
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:model:frameworkElements:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:frameworkElements:${project.version}</artifact>
 									<name>FWELEMENTS</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/java</param>

@@ -26,16 +26,16 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<!-- <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml2_5:${project.version}</metaModel> -->
-								<!-- <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml_standard_profile:${project.version}</metaModel> -->
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<!-- <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml2_5:${project.version}</metaModel> -->
+								<!-- <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:uml_standard_profile:${project.version}</metaModel> -->
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
 
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
 							</metaModels>
 							<models>
 								<model>
@@ -53,7 +53,7 @@
 									<expand>true</expand>
 								</model>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
 									<name>psmTypes</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>

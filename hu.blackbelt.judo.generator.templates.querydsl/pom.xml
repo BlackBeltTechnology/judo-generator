@@ -27,12 +27,12 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.querydsl:ecore:querydsl:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.querydsl:ecore:querydsl:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.querydsl:model:querydsl:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.querydsl:model:querydsl:${project.version}</artifact>
 									<name>QUERYDSL</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/querydsl</param>

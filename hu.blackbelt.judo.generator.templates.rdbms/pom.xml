@@ -27,12 +27,12 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsHsqldb:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsHsqldb:${project.version}</artifact>
 									<name>RDBMS</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -56,12 +56,12 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsPostgres:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsPostgres:${project.version}</artifact>
 									<name>RDBMS</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -85,12 +85,12 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsOracle:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsOracle:${project.version}</artifact>
 									<name>RDBMS</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>

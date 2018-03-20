@@ -26,12 +26,12 @@
 						</goals>
 						<configuration>
 							<metaModels>
-								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
+								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
 							</metaModels>
 
 							<models>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:model:frameworkElements:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:frameworkElements:${project.version}</artifact>
 									<name>FWELEMENTS</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/java</param>
@@ -39,7 +39,7 @@
 									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/frameworkElements.model</platformAlias>
 								</model>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
 									<name>JAVATYPES</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/java</param>
@@ -47,7 +47,7 @@
 									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
 								</model>
 								<model>
-									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.java:model:java:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.java:model:java:${project.version}</artifact>
 									<name>JAVA</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm/java</param>
