@@ -7,15 +7,10 @@ rule JRoleToRdbmsJunctionTable
 	to t : RDBMS!RdbmsJunctionTable, p : RDBMS!RdbmsIdentifierField, f1 : RDBMS!RdbmsForeignKey, f2 : RDBMS!RdbmsForeignKey  
 	extends JElementToRdbmsElement {
 	guard : s.isJunction()
-		t.sqlName = s.relationSqlName(); // junctionTableSqlName(s);
-				
-		var primaryRole : PSM!JRole = s.primaryRole();
-		var secondaryRole : PSM!JRole = s.secondaryRole();
-	    t.name = primaryRole.ownerClass.package.fqName() + "." + primaryRole.ownerClass.name + " to " + secondaryRole.ownerClass.package.fqName() + "." + secondaryRole.ownerClass.name;
+		t.sqlName = junctionTableSqlName(s);
 		
-		
-		f1.fillFromRole(primaryRole);
-		f2.fillFromRole(secondaryRole);
+		f1.fillFromRole(s.primaryRole());
+		f2.fillFromRole(s.secondaryRole());
 
 		t.field1 = f1;
 		t.field2 = f2;
@@ -24,11 +19,11 @@ rule JRoleToRdbmsJunctionTable
 		p.sqlName = "ID";
 		p.mandatory = true;
 		p.type = idType();
-		p.uuid =  uuid3(primaryRole.uuid, secondaryRole.uuid);
+		p.uuid =  uuid3(s.ownerClass.uuid, s.uuid);
 		
 		t.fields.add(f1);
 		t.fields.add(f2);
 		t.fields.add(p);
 		
-		targetModel.rdbmsTables.add(t);
+		targetModel.rdbmsTables.add(p);
 	}

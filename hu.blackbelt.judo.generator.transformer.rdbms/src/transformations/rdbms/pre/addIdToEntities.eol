@@ -1,20 +1,11 @@
 operation addIdToEntities () : Any {
 	var entities = PSM!JClass.all.select(c | c.participates(PSM!JLayer#PERSISTENCE));
 	var idType : PSM!JPrimitive  = PSMTYPES!JPrimitive.all.select(p | p.useForIdType).first();
-	for (e in entities) { 	
-		var id : PSM!JAttribute;
-		for (a in e.attributes) {
-			if (a.name == "id") {
-				id = a;
-				id.type = idType;
-			}
-		}
-		if (id.isUndefined()) {
-			id = new PSM!JAttribute;
-			id.ownerClass = e;
-			id.name = "id";
-			id.type = idType;
-			id.uuid = uuid3(e.uuid, id.name);
-		}
+	for (e in entities) { 
+		var id = new PSM!JAttribute;
+		id.ownerClass = e;
+		id.name = "id";
+		id.type = idType;
+		id.uuid = uuid3(e.uuid, id.name);
 	}
 }

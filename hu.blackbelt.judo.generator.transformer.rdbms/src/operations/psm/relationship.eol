@@ -31,30 +31,23 @@ operation PSM!JRelationship isJunction () : Boolean {
 }
 
 @cached
-operation PSM!JRelationship primaryRole() : PSM!JRole {
-    var c1 : PSM!JRole =  self.roles.first();
-    var c2 : PSM!JRole =  self.roles.second();
+operation PSM!JRelationship primaryRole() : PSM!JRoles {
+    var c1 : PSM!JClass =  relation.roles.first().ownerClass;
+    var c2 : PSM!JClass =  relation.roles.second().ownerClass;
     var primary = c1;
     var secondary = c2;
     if (c1.name > c2.name) {
     	primary = c2;
     	secondary = c1;
     }
-    if (primary.isUndefined) {
-    	throw "No primary role found: " + self.name;
-    }
-    if (secondary.isUndefined) {
-    	throw "No secondary role found: " + self.name;
-    }
     return primary;
 }
 
 @cached
-operation PSM!JRelationship secondaryRole() : PSM!JRole {
-    return self.primaryRole().opposite();
+operation PSM!JRelationship secondaryRole() : PSM!JRoles {
+    self.primaryRole().opposite();
 }
 
-@cached
-operation PSM!JRelationship relationSqlName() : String {
-    return "T_" + self.primaryRole().ownerClass.sqlName() + "_" + self.secondaryRole().ownerClass.sqlName();
+operation relationSqlName(relation : PSM!JRelationship) : String {
+    return "T_" + relation.primaryRole().ownerClass.sqlName() + "_" + relation.secondaryRole().ownerClass.sqlName();
 }

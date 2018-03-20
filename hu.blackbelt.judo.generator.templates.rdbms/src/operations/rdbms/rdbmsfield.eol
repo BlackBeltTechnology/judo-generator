@@ -1,4 +1,3 @@
 operation RDBMS!RdbmsField isPrimary () : Boolean {
 	return self.table.primaryKey == self;
 }
-

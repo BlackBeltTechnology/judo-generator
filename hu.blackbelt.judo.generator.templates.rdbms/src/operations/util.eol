@@ -11,12 +11,3 @@ operation version() : String {
 operation dialect() : String {
 	return RDBMS!RdbmsConfiguration.all.first().dialect;
 }
-
-@cached
-operation fieldLiteral() : String {
-	if (dialect() == 'Oracle') {
-		return "\"";
-	} else {
-		return "";
-	}
-}

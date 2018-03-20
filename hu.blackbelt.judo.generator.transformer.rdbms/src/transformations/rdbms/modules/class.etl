@@ -12,10 +12,9 @@ rule JClassToRdbmsTable
         for (c : PSM!JClass in s.allDescandences()) {
 			t.fields.add(s.createForeginKey(c));
 	    }
-        /* TODO: Later implement it, now ignored
         for (c : PSM!JClass in s.allSupertypes()) {
         	t.fields.add(s.createForeginKey(c));
-	    } */  
+	    }   
 	    targetModel.rdbmsTables.add(t);
 }
 
@@ -29,98 +28,57 @@ rule JClassToRdbmsView
 	    v.originUuid = s.uuid;
 
 	    // Base alias is a reference for base table    
-	    var baseAlias : RDBMS!RdbmsTableAlias = v.createBaseAlias(s);
-
-		// Add primary key
-	    for (a : PSM!JAttribute in s.attributes.select(a | a.isPrimaryKey())) {
-	   		v.addPrimaryKeyField(a);	   		
-	    }
-		
-		// Iterate all roles contained in base table and add as a field.
-		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
-			r.name.println("Role (owned) found: ");
-			v.addOwnedRelationField(r);
-		}
-
+	    v.createBaseAlias(s);
 
         // Convert attributes to be able to clone supertypes
-	    for (a : PSM!JAttribute in s.attributes.select(a | not a.isPrimaryKey() and not a.derived)) {
-	   		v.addValueField(a);	   		
+	    for (a : PSM!JAttribute in s.attributes) {
+	   		v.addField(a);	   		
 	    }
 
+		// Iterate all roles contained in base table and add as a field.
+		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
+			r.name.println("Role (self) found: ");
+			v.addRelationField(r);
+		}
+
+/*
+		// Iterate all roles not contained in base table, but single relation as a field.
+		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and r.isSingle() and not r.ownerRelationship.isJunction())) {
+			r.name.println("Role (foreign) found: ");
+			v.addRelationField(r.opposite());
+		}
+*/
+	        
 	    // Inherited aliases and attributes
 	    if (s.supertype.isDefined()) {
-		   	var baseView : RDBMS!RdbmsView = s.supertype.equivalent("JClassToRdbmsView");
-			var superAlias : RDBMS!RdbmsTableAlias;
+	    	var baseView : RDBMS!RdbmsView = s.supertype.equivalent("JClassToRdbmsView");
+
 			// Clone super types aliases
 	    	for (f : RDBMS!RdbmsTableAlias in baseView.tables.clone()) {
-
 	    		var created : RDBMS!RdbmsTableAlias = f.clone();
 				v.tables.add(created);
 	    		created.uuid = uuid3(f.uuid, v.name);
 	    		created.description = "Super " + f.table.name;
 	    		created.sqlName = "SUP_" + f.table.sqlName;
-
-				if (baseView.primaryTable == f) {
-					superAlias = created;
-				}
-
-	    		created.println("Created: ");
 	    	}
-
-	    	// Create relation to super type
-	    	v.findOrAddRelation(v.primaryTable, superAlias, v.primaryIdentifierField.tableField, baseView.primaryIdentifierField.tableField);    	    	
-	    
 	    
 	    	// Clone attributes
 	    	for (a : RDBMS!RdbmsViewField in baseView.fields) {
 	    		var created : RDBMS!RdbmsViewField = a.clone();
 	    		v.fields.add(created);
-	    		created.uuid = uuid3(a.uuid, v.name);
-	    		created.inherited = true;
 	    		created.view = v;
 
 	    		// Set alias instance link to cloned alias
 	    		if (created.isKindOf(RDBMS!RdbmsViewAliasField)) {
-	    		    if (created.tableField = created.tableField.table.primaryKey and created.isTypeOf(RDBMS!RdbmsViewIdentifierField)) {
+	    		    if (created.isTypeOf(RDBMS!RdbmsViewIdentifierField)) {
 	    		    	created.sqlName = "C_" + created.`alias`.table.sqlName + "_ID";
 	    		    }
-					created.`alias` = v.tables.select(e | e.name == created.`alias`.name).first();
-	    		} else if (created.isKindOf(RDBMS!RdbmsViewForeignIdentifierField)) {
-					created.referenceIdentifier = v.fields.select(f | f.name == a.referenceIdentifier.name).first();
-	    		} else if (created.isKindOf(RDBMS!RdbmsViewExpressionField)) {
-	    			for (exp : RDBMS!RdbmsViewExpressionField in created.expressions) {
-	    				if (exp.isKindOf(RDMS!RdbmsRelationExpression)) {
-	    					exp.field = v.fields.select(f | f.name == exp.field.name).first();
-	    				}
-	    			}
+	    		    created.name.println("Field: ");
+	    		    created.`alias`.println("Alias: ");
+					created.`alias` = v.tables.select(e | e.name = created.`alias`.name).first();
 	    		}
 	    	}
-
-
-	    	// Clone relations
-	    	for (r : RDBMS!RdbmsViewRelation in baseView.relations) {
-	    		var created : RDBMS!RdbmsViewRelation = r.clone();
-	    		v.relations.add(created);
-	    		created.fromAlias = v.tables.select(f | f.name == r.fromAlias.name).first(); 
-	    		created.toAlias = v.tables.select(f | f.name == r.toAlias.name).first(); 
-	    	}
-
-	    	// Remap primary ID
-	    	v.primaryIdentifierField = v.fields.select(f | f.name = baseView.primaryIdentifierField.name).first();
 	    } 
-
-		// Iterate all roles contained in the other table and add as a field.
-		for (r : PSM!JRole in s.roles.select(r | not r.isForeign() and not r.ownerRelationship.derived and not r.ownerRelationship.isJunction())) {
-			r.name.println("Role (foreign owned) found: ");
-			v.addForeignRelationField(r);
-		}
-
-		// Adding derived fields last, becaause the referenced fields have to be exists.
-	    for (a : PSM!JAttribute in s.attributes.select(a | a.derived)) {
-	   		v.addExpressionField(a);	   		
-	    }
-
         targetModel.rdbmsViews.add(v);
 }
 

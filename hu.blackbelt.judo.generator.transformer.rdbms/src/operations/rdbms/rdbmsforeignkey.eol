@@ -3,9 +3,9 @@ operation RDBMS!RdbmsForeignKey fillFromRole(role : PSM!JRole) : RDBMS!RdbmsFore
 	    self.referenceKey = role.ownerClass.equivalent().primaryKey;
 	    self.sqlName = role.roleFkSqlName();	    
 		self.table = role.ownerClass.equivalent("JClassToRdbmsTable");
-		self.uuid = uuid3(role.uuid, "junctionForeignKey");
-		self.type = idType();
-		self.description = role.name + "(" + role.opposite().ownerClass.name + ")";
+		self.uuid = uuid3(role.uuid, s.uuid);
+		self.type = getIdType();
+		self.description = s.name + "(" + self.opposite().ownerClass.name + ")";
 		return self;
 }
 
