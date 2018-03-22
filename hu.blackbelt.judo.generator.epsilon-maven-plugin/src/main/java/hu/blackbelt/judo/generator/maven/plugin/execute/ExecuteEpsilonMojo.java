@@ -5,6 +5,10 @@ import com.google.common.collect.Maps;
 import hu.blackbelt.judo.generator.maven.plugin.AbstractEpsilonMojo;
 import hu.blackbelt.judo.generator.maven.plugin.EmfModelUtils;
 import hu.blackbelt.judo.generator.maven.plugin.Model;
+import hu.blackbelt.judo.generator.utils.AbbreviateUtils;
+import hu.blackbelt.judo.generator.utils.MD5Utils;
+import hu.blackbelt.judo.generator.utils.UUIDUtils;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -14,6 +18,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.emf.tools.EmfTool;
 import org.eclipse.epsilon.eol.IEolExecutableModule;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -91,6 +96,7 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
                         if (params == null) {
                             params = Lists.newArrayList();
                         }
+                                                
                         getLog().info("Running program: " + eolProgram.source);
 
                         executeModule(eolModule, eolProgram.source,
@@ -141,7 +147,12 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
                 throw new MojoExecutionException("Parse error");
             }
             for (Variable parameter : parameters) {
-                eolModule.getContext().getFrameStack().put(parameter);
+            	// Adding static utils
+            	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("UUIDUtils", new UUIDUtils()));
+            	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("MD5Utils", new MD5Utils()));
+            	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("AbbreviateUtils", new AbbreviateUtils()));
+            	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("EMFTool", new EmfTool()));
+            	eolModule.getContext().getFrameStack().put(parameter);
             }
 
             if (profile) {

@@ -127,6 +127,12 @@
 			<artifactId>plexus-build-api</artifactId>
 			<version>0.0.7</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>hu.blackbelt.judo.generator.utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.epsilon/epsilon-workflow -->
 		<dependency>
@@ -164,6 +170,14 @@
 			<groupId>org.skife.url</groupId>
 			<artifactId>url-scheme-registry</artifactId>
 			<version>0.0.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.16.20</version>
+		    <scope>provided</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.twdata.maven/mojo-executor -->
