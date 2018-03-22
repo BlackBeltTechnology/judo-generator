@@ -79,7 +79,6 @@
 					</dependency>
 				</dependencies>
 				<executions>
-					<!-- 
 					<execution>
 						<id>transform-hsqldb</id>
 						<phase>generate-resources</phase>
@@ -156,7 +155,6 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
-					-->
 
 					<execution>
 						<id>transform-postgresql</id>
@@ -245,7 +243,6 @@
 							</eolPrograms>
 						</configuration>
 					</execution>
-					<!-- 
 					<execution>
 						<id>transform-oracle</id>
 						<phase>generate-resources</phase>
@@ -322,7 +319,7 @@
 								</Etl>
 							</eolPrograms>
 						</configuration>
-					</execution> -->
+					</execution>
 				</executions>
 			</plugin>
 
@@ -355,25 +352,21 @@
 						</goals>
 						<configuration>
 							<artifacts>
-<!-- 
 								<artifact>
 									<file>${project.build.directory}/rdbmsHsqldb.model</file>
 									<type>model</type>
 									<classifier>rdbmsHsqldb</classifier>
 								</artifact>
--->
 								<artifact>
 									<file>${project.build.directory}/rdbmsPostgres.model</file>
 									<type>model</type>
 									<classifier>rdbmsPostgres</classifier>
 								</artifact>
-<!-- 
 								<artifact>
 									<file>${project.build.directory}/rdbmsOracle.model</file>
 									<type>model</type>
 									<classifier>rdbmsOracle</classifier>
 								</artifact>
--->
 							</artifacts>
 						</configuration>
 					</execution>
