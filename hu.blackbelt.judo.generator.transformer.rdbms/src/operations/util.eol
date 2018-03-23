@@ -6,6 +6,10 @@ operation uuid3 (namespace : String, name : String) : String {
 	return UUIDUtils.uuid3(namespace, name);
 }
 
+operation md5 (name : String) : String {
+	return MD5Utils.md5(name);
+}
+
 operation abbreviate(text : String, maxLength : Integer) : String {
 	return AbbreviateUtils.abbreviate(text, maxLength);
 }

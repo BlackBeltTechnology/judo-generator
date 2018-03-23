@@ -56,5 +56,19 @@ operation PSM!JRelationship secondaryRole() : PSM!JRole {
 
 @cached
 operation PSM!JRelationship relationSqlName() : String {
-    return "T_" + self.primaryRole().ownerClass.sqlName() + "_" + self.secondaryRole().ownerClass.sqlName();
+
+	// TODO: Now it is undeterministic which is the first
+ 	var role1 : PSM!JRole = self.primaryRole();
+ 	var role2 : PSM!JRole = self.secondaryRole();
+
+	// TODO: Now it is undeterministic which is the first
+	//var role1 : PSM!JRole = self.roles.first();
+	// var role2 : PSM!JRole = self.roles.second();
+ 
+    var fullname = role1.ownerClass.package.shortName + role1.ownerClass.shortName + role1.shortName + 
+    role2.ownerClass.package.shortName + role2.ownerClass.shortName + role2.shortName;
+    
+    fullname.println("JUNCTION: ");
+
+    return "T_" + role1.ownerClass.sqlName() + "_" + role2.ownerClass.sqlName() + "_" + md5(fullname).substring(0,6).toUpperCase();
 }

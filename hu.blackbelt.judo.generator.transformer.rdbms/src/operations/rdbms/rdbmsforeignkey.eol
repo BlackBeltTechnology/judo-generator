@@ -1,7 +1,8 @@
 operation RDBMS!RdbmsForeignKey fillFromRole(role : PSM!JRole) : RDBMS!RdbmsForeignKey {
 	    self.name = role.name;
 	    self.referenceKey = role.ownerClass.equivalent().primaryKey;
-	    self.sqlName = role.roleFkSqlName();	    
+	    self.foreignKeySqlName = role.roleFkSqlName();	    
+	    self.sqlName = role.roleIdSqlName();	    
 		self.table = role.ownerClass.equivalent("JClassToRdbmsTable");
 		self.uuid = uuid3(role.uuid, "junctionForeignKey");
 		self.type = idType();

@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="ASCII"?>
 <psmToRdbms:Mappings xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:psmToRdbms="http://blackbelt.hu/judo/meta/psm/rdbms/mapping" xmi:id="_Ee47sNwcEeeNA-CmHjdGOA">
   <mappings xmi:id="_OEZdYNwcEeeNA-CmHjdGOA" name="memo">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_rVz-cNwbEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_sB5sAAJcEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_rVz-cNwbEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_sB5sAAJcEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_rLBjYNweEeeNA-CmHjdGOA" name="boolean">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_d7pC4NwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_OHrYYPzUEeaBFPkGdGK2hw"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_d7pC4NwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_OHrYYPzUEeaBFPkGdGK2hw"/>
   </mappings>
   <mappings xmi:id="_u6rsANweEeeNA-CmHjdGOA" name="currency">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_UGmlgNweEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_2Dr6AAJcEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_UGmlgNweEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_2Dr6AAJcEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_xs6jENweEeeNA-CmHjdGOA" name="date">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_TUC8oNwdEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Rls6AAJcEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_TUC8oNwdEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Rls6AAJcEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_0v9dUNweEeeNA-CmHjdGOA" name="datetime">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_aMaioNwdEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_XciKgAJcEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_aMaioNwdEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_XciKgAJcEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_3ks10NweEeeNA-CmHjdGOA" name="file">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_OEHTkC3sEei7E4IheeIQIg"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_QFfPAAJdEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_OEHTkC3sEei7E4IheeIQIg"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_QFfPAAJdEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_J-1O0NwfEeeNA-CmHjdGOA" name="float">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_8nJ4gNwdEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_vALbAAJcEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_8nJ4gNwdEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_vALbAAJcEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_NMW6wNwfEeeNA-CmHjdGOA" name="gps">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ig8fgAJdEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ig8fgAJdEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_SbTE0NwfEeeNA-CmHjdGOA" name="integer">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_3jME0NwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_3jME0NwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw"/>
   </mappings>
   <mappings xmi:id="_a2mdMNwfEeeNA-CmHjdGOA" name="percentage">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_HnCGcNweEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_yU4tAAJcEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_HnCGcNweEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_yU4tAAJcEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_eX-SMNwfEeeNA-CmHjdGOA" name="string">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Rb7XYPzUEeaBFPkGdGK2hw"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Rb7XYPzUEeaBFPkGdGK2hw"/>
   </mappings>
   <mappings xmi:id="_lnwSoNwfEeeNA-CmHjdGOA" name="text">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_t4zNsNwdEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_pN2QAAJcEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_t4zNsNwdEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_pN2QAAJcEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_n8_EoNwfEeeNA-CmHjdGOA" name="time">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_lg-AENwdEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_amLcAAJcEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_lg-AENwdEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_amLcAAJcEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_sBh4INwfEeeNA-CmHjdGOA" name="track">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_MZ9_gAJdEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_MZ9_gAJdEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_u8EWoNwfEeeNA-CmHjdGOA" name="uuid">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_TeZEgAJdEeePbOdRMfS3CA"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_TeZEgAJdEeePbOdRMfS3CA"/>
   </mappings>
   <mappings xmi:id="_NX9cYOcYEeeYfrHaLgBi0Q" name="ipAddress">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_V7dkMOQHEeeiFLS-7unXRw"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_V7dkMOQHEeeiFLS-7unXRw"/>
   </mappings>
   <mappings xmi:id="_YktBoOcYEeeYfrHaLgBi0Q" name="natural">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_3jME0NwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Pf9gYOQHEeeiFLS-7unXRw"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_3jME0NwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Pf9gYOQHEeeiFLS-7unXRw"/>
   </mappings>
   <mappings xmi:id="_dhazQOcYEeeYfrHaLgBi0Q" name="url">
-    <rdbmsFieldType href="rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
-    <psmType href="../../hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_dE8IUOQHEeeiFLS-7unXRw"/>
+    <rdbmsFieldType href="platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"/>
+    <psmType href="platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_dE8IUOQHEeeiFLS-7unXRw"/>
   </mappings>
 </psmToRdbms:Mappings>
