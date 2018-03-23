@@ -37,8 +37,8 @@
 									<value>platform:/resource/$1.model</value>
 								</replacement>
 								<replacement>
-									<token>rdbmsTypesHsqldb.model</token>
-									<value>platform:/resource/${project.artifactId}/library/rdbmsTypesHsqldb.model</value>
+									<token>"rdbmsTypesHsqldb.model</token>
+									<value>"platform:/resource/${project.artifactId}/library/rdbmsTypesHsqldb.model</value>
 								</replacement>
 							</replacements>
 						</configuration>
@@ -59,8 +59,8 @@
 									<value>platform:/resource/$1.model</value>
 								</replacement>
 								<replacement>
-									<token>rdbmsTypesPostgres.model</token>
-									<value>platform:/resource/${project.artifactId}/library/rdbmsTypesPostgres.model</value>
+									<token>"rdbmsTypesPostgres.model</token>
+									<value>"platform:/resource/${project.artifactId}/library/rdbmsTypesPostgres.model</value>
 								</replacement>
 							</replacements>
 						</configuration>
@@ -81,8 +81,8 @@
 									<value>platform:/resource/$1.model</value>
 								</replacement>
 								<replacement>
-									<token>rdbmsTypesOracle.model</token>
-									<value>platform:/resource/${project.artifactId}/library/rdbmsTypesOracle.model</value>
+									<token>"rdbmsTypesOracle.model</token>
+									<value>"platform:/resource/${project.artifactId}/library/rdbmsTypesOracle.model</value>
 								</replacement>
 							</replacements>
 						</configuration>
