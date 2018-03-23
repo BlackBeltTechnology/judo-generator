@@ -1,0 +1,393 @@
+[%
+	var fwModule : UI!UIModule =  UI!UIModule.all.selectOne(module | module.fullyQualifiedName = "judo.framework");
+	var fwClasses : OrderedSet(UI!UIClass) = fwModule.classes;
+	
+	var auditLog = fwClasses.selectOne(class | class.name = "AuditLog");
+	var user = fwClasses.selectOne(class | class.name = "User");
+	var userConfig = fwClasses.selectOne(class | class.name = "UserConfig");
+	var config = fwClasses.selectOne(class | class.name = "Config");
+	var configEntry = fwClasses.selectOne(class | class.name = "ConfigEntry");
+	var profile = fwClasses.selectOne(class | class.name = "Profile");
+	var profileEntry = fwClasses.selectOne(class | class.name = "ProfileEntry");
+	var rule = fwClasses.selectOne(class | class.name = "Rule");
+	var table = fwClasses.selectOne(class | class.name = "Table");
+	var header = fwClasses.selectOne(class | class.name = "Header");
+	var operator = fwClasses.selectOne(class | class.name = "Operator");
+	var expression = fwClasses.selectOne(class | class.name = "Expression");
+	var permission = fwClasses.selectOne(class | class.name = "Permission");
+%]
+
+const CONSTANTS = {};
+CONSTANTS.GRID_COLUMN_SUFFIX = '_table-column';
+CONSTANTS.CLASS_FIELDSET_NAMESPACE_SUFFIX = '_judo-view-container';
+CONSTANTS.CLASS_VIEWFIELD_NAMESPACE_SUFFIX = '_judo-view-field';
+CONSTANTS.CLASS_VIEWSINGLE_NAMESPACE_SUFFIX = '_judo-view-single';
+CONSTANTS.CLASS_VIEWLIST_NAMESPACE_SUFFIX = '_judo-view-list';
+CONSTANTS.FILTER_PARAM_FIELDS = 'f';
+CONSTANTS.FILTER_PARAM_QUERY = 'q';
+CONSTANTS.FILTER_PARAM_PAGE = 'p';
+CONSTANTS.FILTER_PARAM_COUNT = 'c';
+CONSTANTS.FILTER_PARAM_SORT = 's';
+CONSTANTS.FILTER_SEPARATOR = 'and';
+CONSTANTS.FILTER_MENU_SEPARATOR = ';';
+CONSTANTS.FILTER_FILL = ' ';
+CONSTANTS.FILTER_MENU_FILL = ':';
+CONSTANTS.FILTER_OPERATORS = {
+  EQUALS: 'eq',
+  NOT_EQUALS: 'neq',
+  BETWEEN: 'between',
+  LT: 'lt',
+  GT: 'gt',
+  GTE: 'gte',
+  LTE: 'lte',
+  IN: 'in',
+  NOT_IN: 'notin',
+  LIKE: 'like',
+  NOT_LIKE: 'notlike',
+};
+CONSTANTS.LANGUAGE_FILTER_KEY = 'language.code';
+CONSTANTS.CODE_STORE_ATTRIBUTE_KEY = 'code';
+CONSTANTS.MENU_TRACK_SEPARATOR = ':';
+CONSTANTS.RELATIONS_PRELOAD_COUNT = 10;
+
+CONSTANTS.STORE_TYPES = {
+  INMEMORY: 'judoCache',
+  SESSION: 'session',
+  LOCAL: 'local',
+};
+
+CONSTANTS.STORE_SETTINGS = {
+  NAMESPACE: 'judo',
+  DRIVER: CONSTANTS.STORE_TYPES.SESSION,
+  SEPARATOR: '.',
+  EVENT_ENABLED: false,
+};
+CONSTANTS.STATE_KEYS = {
+  APP_HOME: 'app.home',
+};
+CONSTANTS.STORE_KEYS = {
+  STATE_CACHE: 'state-cache',
+  LOCALE: 'locale',
+  TABLE_STATE: 'table-state',
+  TOKEN: 'auth-token',
+  TOKEN_ID: 'auth-token_id',
+  TENANT: 'tenant',
+  USER_PROFILE: 'user-profile',
+  TABLE_COLUMNS: 'table-columns',
+  LISTFILTERS: 'listFilters',
+  LISTS: 'lists',
+  VIEW_SETTINGS: 'view-settings',
+  TABLE_COLUMNS_SORTING: 'table_column_sorting',
+  USER: 'user',
+  MENU_CONFIG_ENTRY_KEY: 'menu-config',
+  USER_STATE: 'user-state',
+  NAV_POS: 'nav-pos',
+  REQUEST_LOG: 'request-log',
+};
+CONSTANTS.XMIID = {
+  FRAMEWORK_MODULE: '[%=fwModule.uuid%]',      
+  AUDITLOG_CLASS: '[%=auditLog.uuid%]',         
+  AUDITLOG_CRUD_SERVICE: '[%=auditLog.uuid%]',  
+  USER_CLASS: '[%=user.uuid%]',             
+  CONFIG_CLASS: '[%=fwClasses.selectOne(class | class.name = "Config").uuid%]',           
+  CONFIG_IMPORT_CONFIG_OP: '[%=config.actions.selectOne(action | action.name = "importConfig").uuid%]',
+  CONFIG_EXPORT_CONFIG_OP: '[%=config.actions.selectOne(action | action.name = "exportConfig").uuid%]',
+  CONFIG_ENTRY_CLASS: '[%=configEntry.uuid%]',
+  CONFIG_ENTRY_UPGRADE_OP: '[%=configEntry.actions.selectOne(action | action.name = "upgrade").uuid%]',
+  CONFIG_ENTRY_RESET_OP: '[%=configEntry.actions.selectOne(action | action.name = "reset").uuid%]',
+  USER_LOGIN_NAME_FIELD: '[%=user.attributes.selectOne(field | field.name = "loginName").uuid%]',
+  PROFILE_CLASS: '[%=profile.uuid%]',
+  PROFILE_DATA_CLASS: '[%=profileEntry.uuid%]',
+  PROFILE_DATA_LIST: '[%=profile.attributes.selectOne(field | field.name = "entries").uuid%]',
+  USER_PROFILE_SINGLE: '[%=user.attributes.selectOne(field | field.name = "profile").uuid%]',
+  USER_CONFIG_CLASS: '[%=userConfig.uuid%]',
+  USER_CONFIG_MERGED_OP: '[%=userConfig.actions.selectOne(action | action.name = "mergedEntries").uuid%]',
+  USER_CONFIG_MERGED_ENTRY_OP: '[%=userConfig.actions.selectOne(action | action.name = "mergedEntry").uuid%]',
+  USER_CONFIG_RESET_OP: '[%=userConfig.actions.selectOne(action | action.name = "reset").uuid%]',
+  USER_CONFIG_STORE_OP: '[%=userConfig.actions.selectOne(action | action.name = "store").uuid%]',
+  DECISION_MODEL_TABLE: '[%=rule.attributes.selectOne(field | field.name = "table").uuid%]',
+  DECISION_MODEL_TABLE_PARENT: '[%=table.uuid%]',
+  DECISION_MODEL_TABLE_RULES: '[%=table.attributes.selectOne(field | field.name = "rules").uuid%]',
+  DECISION_MODEL_TABLE_HEADERS: '[%=table.attributes.selectOne(field | field.name = "headers").uuid%]',
+  DECISION_MODEL_TABLE_ADD_HEADER: '[%=table.actions.selectOne(action | action.name = "addHeader").uuid%]',
+  DECISION_MODEL_TABLE_MOVE_HEADER: '[%=header.actions.selectOne(action | action.name = "move").uuid%]',
+  DECISION_MODEL_TABLE_ADD_HEADER_PV: '[%=table.actions.selectOne(action | action.name = "addHeader").paramView.uuid%]',
+  DECISION_MODEL_TABLE_ADD_RULE: '[%=table.actions.selectOne(action | action.name = "addRule").uuid%]',
+  DECISION_MODEL_TABLE_ADD_RULE_PV: '[%=table.actions.selectOne(action | action.name = "addRule").paramView.uuid%]',
+  DECISION_MODEL_RULE: '[%=rule.uuid%]',
+  DECISION_MODEL_RULE_INDEX: '[%=rule.attributes.selectOne(field | field.name = "index").uuid%]',
+  DECISION_MODEL_RULE_EXPRESSIONS: '[%=rule.attributes.selectOne(field | field.name = "expressions").uuid%]',
+  DECISION_MODEL_OPERATOR: '[%=operator.uuid%]',
+  DECISION_MODEL_EXPRESSION: '[%=expression.uuid%]',
+  DECISION_MODEL_HEADER: '[%=header.uuid%]',
+  DECISION_MODEL_HEADER_ADD_TYPE: '[%=table.actions.selectOne(action | action.name = "addHeader").parameters.selectOne(param | param.name = "type").uuid%]',
+  DECISION_MODEL_HEADER_INDEX: '[%=header.attributes.selectOne(field | field.name = "index").uuid%]',
+  DECISION_MODEL_HEADER_EXPRESSIONS: '[%=header.attributes.selectOne(field | field.name = "expressions").uuid%]',
+  DECISION_MODEL_HEADER_TABLE: '[%=header.attributes.selectOne(field | field.name = "table").uuid%]',
+  CHANGE_PASSWORD_ACTION: '[%=user.actions.selectOne(action | action.name = "changePassword").uuid%]',
+  FORGOTTEN_PASSWORD: '[%=user.actions.selectOne(action | action.name = "forgottenPassword").uuid%]',
+  CHANGE_PASSWORD__NEW_PASSWORD: '[%=user.actions.selectOne(action | action.name = "changePassword").parameters.selectOne(param | param.name = "newPassword").uuid%]',
+  CHANGE_PASSWORD__OLD_PASSWORD: '[%=user.actions.selectOne(action | action.name = "changePassword").parameters.selectOne(param | param.name = "oldPassword").uuid%]',
+  PERMISSION_CLASS: '[%=permission.uuid%]',
+};
+CONSTANTS.HEADERS = {
+  TOTAL_COUNT: 'x-total-count',
+};
+CONSTANTS.META_CATEGORIES = {
+  MENUS: 'menus',
+  MODULES: 'modules',
+  INFO: 'info',
+  CLASSES: 'classes',
+  SINGLES: 'singles',
+  FIELDS: 'fields',
+  LISTS: 'lists',
+  VIEW_SINGLES: 'viewSingles',
+  VIEW_FIELDS: 'viewFields',
+  VIEW_LISTS: 'viewLists',
+  OBJECT_VIEWS: 'objectViews',
+  CREATE_VIEWS: 'createViews',
+  LIST_VIEWS: 'listViews',
+  VIEW_FIELD_SETS: 'viewFieldSets',
+  LIST_VIEW_FIELD_SETS: 'listViewFieldSets',
+  PARAM_VIEWS: 'paramViews',
+  ACTIONS: 'actions',
+  EXTRA_ACTIONS: 'extraActions',
+  RESULTS: 'results',
+  RESULT_LIST_VIEWS: 'resultListViews',
+};
+
+CONSTANTS.CACHE_KEYS_PREFIX = {
+  MULTI_MODAL: 'multiModal',
+  SINGLE_MODAL: 'singleModal',
+  MOVE_MODAL: 'moveModal',
+  AUDIT_LOG_MODAL: 'auditlogModal',
+};
+
+CONSTANTS.DECISION_TABLE = {
+  WILDCARD_OPERATOR_CODE: 'ANY',
+  EXPRESSION_WILDCARD_VALUE: '*',
+  OUTCOME_STATIC_RESULT: 'staticResult',
+  OUTCOME_DYNAMIC_RESULT: 'dynamicResult',
+  OUTCOME_ERROR_CODE: 'errorCode',
+};
+
+CONSTANTS.EVENTS = {
+  LISTVIEW_FILTER_TOGGLED: 'listView_filter_toggled',
+  LISTVIEW_FILTER_APPLIED: 'listView_filter_applied',
+  SAVE_COLUMN_STATE: 'saveColumnState',
+  UPGRADE_COLUMN_STATE: 'upgradeColumnState',
+  COLUMN_STATE_SAVED: 'columnStateSaved',
+  RESTORE_COLUMN_STATE: 'restoreColumnState',
+  RESET_COLUMN_FACTORY: 'resetColumnFactory',
+  RESET_COLUMN_STATE: 'resetColumnState',
+  RESET_TABLE_FILTERS: 'resetTableFilters',
+  TABLE_PANEL_MANAGER: 'tablePanelManager',
+  SAVE_COLUMN_STATE_TO_STATE_CACHE: 'saveColumnStateToStateCache',
+  FILE_LOADING_IN_PROGRESS: 'fileLoadingInProgress',
+  PROFILE_IMPORTED: 'profile_imported',
+  COLUMNS_READY: 'columns_ready',
+  DECISION_TABLE_RULE_ADD: 'decisionTableRuleAdd',
+  DECISION_TABLE_HEADER_DELETE: 'decisionTableHeaderDelete',
+  DECISION_TABLE_HEADER_ADD: 'decisionTableHeaderAdd',
+  HEALTH_CHECK_STATUS_REPORT: 'systemHealthCheckStatusReport',
+  SINGLE_DEPENDENCY_SATISFIED: 'singleDependencySatisfied',
+  DETAILS_CHANGED: 'detailsChanged',
+  LOCALE_REFRESHED: 'locale_refreshed',
+  REQUEST_LOG_ADDED: 'requestLogAdded',
+  COLUMN_STATE_CELL_FORMATTING: 'columnStateCellFormating',
+  EXPORT: 'export',
+  LISTVIEW_REFRESH: 'listview-refresh',
+  LISTVIEW_REFRESH_SIZE: 'listview-refresh-size',
+  LISTVIEW_REFRESH_LISTDATA: 'listview-refresh-listdata',
+  REFRESH_TOKEN: 'refresh-token',
+  USER_LOGGED_IN: 'user-logged-in',
+  TOKEN_EXPIRED: 'token-expired',
+  LOGOUT: 'logout',
+  LIST_DATA_RECEIVED: 'list-data-received',
+  FILE_ADDED: 'file-added',
+  FILE_REMOVED: 'file-removed',
+};
+
+CONSTANTS.CELL_FORMAT = {
+  BALANCED: 'cellFormatBalanced',
+  AUTO: 'cellFormatAuto',
+};
+
+CONSTANTS.SYSTEM = {
+  HEALTH_CHECK_INTERVAL: 60000,
+  HEALTH_CHECK_ERROR_INTERVAL: 3000,
+};
+
+CONSTANTS.HEALTH_CHECK = {
+  STATUS_UP: 'UP',
+  STATUS_DOWN: 'DOWN',
+};
+
+CONSTANTS.SESSION_EXPIRATION_WARNING_TIME = 60;
+
+// Hotkeys
+CONSTANTS.HOTKEY = {
+  CTRL_SHIFT: 'ctrl+shift',
+  FORM_SAVE: 'ctrl+shift+enter',
+  MODAL_CONFIRM: 'ctrl+shift+k',
+  FILTER_TOGGLE: 'ctrl+shift+f',
+  CREATE_NEW: 'ctrl+shift+plus',
+  DELETE_ELEMENT: 'ctrl+shift+-',
+  PAGE_GO_BACK: 'ctrl+backspace',
+  SHIFT: 'shift',
+  F2: 'f2',
+};
+
+CONSTANTS.FILE_TYPE_MAPPER = {
+  xls: {
+    accept: 'application/vnd.ms-excel',
+    type: 'arraybuffer',
+  },
+  xlsx: {
+    accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    type: 'arraybuffer',
+  },
+  pdf: {
+    accept: 'application/json',
+    type: 'arraybuffer',
+  },
+  txt: {
+    accept: 'application/text',
+    type: 'arraybuffer',
+  },
+  anything: {
+    accept: '*/*',
+    type: 'arraybuffer',
+  },
+};
+
+CONSTANTS.JUDO_TYPE = {
+  SINGLE: 'JudoSingle',
+  LIST: 'JudoList',
+  FIELD: 'JudoField',
+  INFO: 'JudoInfo',
+};
+
+CONSTANTS.ANGULAR_TYPE = {
+  SERVICE: 'service',
+  CONTROLLER: 'controller',
+};
+
+CONSTANTS.REQUEST_LOG = {
+  ENDPOINT_IDENTIFIER: 'services/rest/',
+};
+
+CONSTANTS.ROUTE_COLOR = {
+  IDLE: '#87B38D',
+  UNKOWN: '#C8AFA3', // grey
+  SLOW: '#0000FF', // blue
+  NORMAL: '#00FF00', // green
+  FAST: '#FF7700', // orange
+  VERY_FAST: '#FF0000', // red
+};
+
+CONSTANTS.ACTION_RESULT = {
+  FIELD: 'field',
+  SINGLE: 'singe',
+  LIST: 'list',
+  ELEMENT: 'element',
+};
+
+CONSTANTS.LIST_OPERATION = {
+  DELETE: 'delete',
+  ATTACH: 'attach',
+  DETACH: 'detach',
+  MOVE: 'move',
+};
+
+CONSTANTS.HTTP_ERRORS = {
+  CHANGE_PASSWORD: 459,
+  INVALID_LOGIN: 401,
+  FORGOTTEN_PASSWORD: 501,
+  ERROR: 400,
+  NOT_IMPLEMENTED: 501,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+};
+
+CONSTANTS.JUDO_ERRORS = {
+  REL_ATTACH: 'REL_ATTACH',
+};
+
+CONSTANTS.UI_RROUTER_STATENAMES = {
+  USER_DATA_LOADER: 'app.user-data-loader',
+  LOGIN: 'app.login',
+};
+
+CONSTANTS.DEFAULT_TENANT = '-';
+
+CONSTANTS.RULES = {
+  TYPE: {
+    COMPOSITE_VALIDATION: 'compositeValidation',
+    COMMAND: 'command',
+    TARGET: 'target',
+    PARTICIPIANT: 'participiant',
+    MEDIATOR: 'Mediator',
+  },
+  COMMAND: {
+    METHODS: {
+      SET_VALIDITY: {
+        name: 'setValidity',
+        callIfConditionEvaluatedToFalse: true,
+      },
+      SET_VISIBLE: {
+        name: 'setVisible',
+        callIfConditionEvaluatedToFalse: true,
+      },
+      SET_DISABLE: {
+        name: 'setDisable',
+        callIfConditionEvaluatedToFalse: true,
+      },
+      SET_REQUIRED: {
+        name: 'setRequired',
+        callIfConditionEvaluatedToFalse: true,
+      },
+      SET_VALUE: {
+        name: 'setValue',
+        callIfConditionEvaluatedToFalse: false,
+      },
+      SET_SINGLE_ATTRIBUTE_VALUE: {
+        name: 'setSingleAttributeValue',
+        callIfConditionEvaluatedToFalse: false,
+      },
+    },
+    PARAMETERS: {
+      CONDITION_RESULT: '_conditionResult',
+    },
+    DETAIL_EXTENDER: {
+      CONDITION_RESULT: '_conditionResult',
+      USER: '_user',
+    },
+  },
+};
+
+CONSTANTS.VIEW_COMPONENTS = {
+  TYPE: {
+    CELL: 'cell',
+    FORM_ELEMENT: 'form_element',
+  },
+};
+
+CONSTANTS.DATA_CHANGE_OPERATIONS = {
+  ATTRIBUTE_CHANGE: 'attributeChange',
+  SINGLE_ATTACH: 'singleAttach',
+  SINGLE_DELETE: 'singleDelete',
+  SINGLE_DETACH: 'singleDetach',
+  OBJECT_INIT: 'objectInit',
+  OBJECT_CREATE: 'objectCreate',
+  OBJECT_UPDATE: 'objectUpdate',
+};
+
+CONSTANTS.AUTHORIZATION = {};
+CONSTANTS.AUTHORIZATION.TYPES = {
+  FIELD: 'field',
+  SINGLE: 'single',
+  LIST: 'list',
+};
+
+export default CONSTANTS;

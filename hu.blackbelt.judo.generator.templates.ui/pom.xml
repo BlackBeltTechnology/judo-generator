@@ -73,10 +73,10 @@
 						</goals>				
 						<configuration>
 							<modifiedJson>
-								${project.build.directory}/classes/resources.txt
+								${project.build.directory}/classes/ui-resource.json
 							</modifiedJson>
 							<newJson>
-								${project.build.directory}/generated-sources/resources.txt
+								${project.build.directory}/generated-sources/ui-resource.json
 							</newJson>
 						</configuration>
 					</execution>

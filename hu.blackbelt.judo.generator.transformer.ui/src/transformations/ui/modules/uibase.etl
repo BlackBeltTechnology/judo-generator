@@ -36,10 +36,11 @@ rule UIBase
 			
 			uiInfo.submodels.add(submodel.name);
 		}
-		for (jclass in PSM!JClass.all) {
-			if (jclass.representsUser) {
-				uiInfo.userClass = jclass.uuid;
-			}
+	}
+	
+	for (jclass in PSM!JClass.all) {
+		if (jclass.representsUser) {
+			uiInfo.userClass = jclass.uuid;
 		}
 	}
 	

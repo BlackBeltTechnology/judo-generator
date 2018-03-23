@@ -1,3 +1,5 @@
+[%import "../operations/_importAll.eol";%]
+
 [% 		
 	if (UI!UIBase.all.size() > 1) {
 		out.println("[");
@@ -105,10 +107,10 @@
 	"pageSize" : [%=self.pageSize%],
 	"default" : [%=self.isDefault%],
 	[% if(self.isTypeOf(UI!UIListView)) {%]
-		"detail" : "[%=self.detailView.uuid%]",
+	"detail" : "[%=self.detailView.uuid%]",
 	[%}%]
 	[% if(self.isTypeOf(UI!UIClassView)) {%]
-		"rules" : [],
+	"rules" : [],
 	[% } %]
 	"viewFieldSets" : [
 	[% if(not self.viewFieldSets.isEmpty())  { %]
@@ -127,18 +129,10 @@
 	"search" : [%=self.searchable%],
 	"name" : "[%=self.name%]",
 	"show" : [%=self.show%],
-	[% if (self.componentType.upper > 1 or self.componentType.upper = -1) {%]
-	"list" : true,
-	[%} else {%]
-	"list" : false,
-	[% } %]
+	"list" : [%=self.isList()%],
 	"order" : [%=self.order%],
 	"field" : "[%=self.componentType.id%]",
-	[% if (not self.componentType.isTypeOf(UI!UIBaseComponentType) and self.componentType.upper = 1) {%]
-	"single" : true,
-	[%} else {%]
-	"single" : false,
-	[% } %]
+	"single" : [%=self.isSingle()%],
 	"position" : [%=self.position%],
 	"id" : "[%=self.id%]"
 }
@@ -195,7 +189,7 @@
 		[%}%]	
 	[% } %]
 	],
-	"id" : "[%=self.id%]",
+	"id" : "[%=self.uuid%]",
 	[% if (not self.version.isDefined()) {%]
 	"version" : "",
 	[% } else {%]
@@ -389,7 +383,7 @@
 	[% } else { %]
 	"interval" : "",
 	[% } %]
-	[% if (self.referenced.isDefined() and self.upper > 1) {%]
+	[% if (self.referenced.isDefined() and (self.upper > 1 or self.upper = -1)) {%]
 	"list" : true,
 	[% } else {%]
 	"list" : false,

@@ -1,0 +1,19 @@
+operation UI!UIViewField isList() : Boolean {
+	if (not self.componentType.isTypeOf(UI!UIBaseComponentType) 
+		and self.componentType.referenced.isDefined() 
+		and (self.componentType.upper > 1 or self.componentType.upper = -1)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+operation UI!UIViewField isSingle() : Boolean {
+	if (not self.componentType.isTypeOf(UI!UIBaseComponentType) 
+		and self.componentType.referenced.isDefined() 
+		and self.componentType.upper <> -1) {
+		return true;
+	} else {
+		return false;
+	}
+}

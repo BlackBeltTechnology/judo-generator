@@ -28,26 +28,3 @@ operation UI!UIComponentType createIntervals(intervalString : String, classUuid 
 		}
 	}	
 }
-
-//hack balaton style :-) this method should have been in an epsilon Tool, but I did not managed to make it work
-operation uuid3 (namespace : String, name : String) : String {
-	var nameSpace_OID_uuid = getUuidNativeStub().fromString(namespace);
-
-	var msb = nameSpace_OID_uuid.getMostSignificantBits();
-	var lsb = nameSpace_OID_uuid.getLeastSignificantBits();
-
-	var outputStreamString = new Native("java.io.ByteArrayOutputStream");
-	var i = 0;
-	while (i < 8) {
-		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(msb, 8 * (7 - i))).intValue());
-		i++;
-	}
-	while (i < 16) {
-		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(lsb, 8 * (7 - i))).intValue());
-		i++;
-	}
-	
-	outputStreamString.write(name.getBytes());
-
-	return getUuidNativeStub().nameUUIDFromBytes(outputStreamString.toByteArray()).toString();
-}

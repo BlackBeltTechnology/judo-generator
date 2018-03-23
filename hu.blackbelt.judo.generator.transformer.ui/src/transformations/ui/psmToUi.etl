@@ -71,6 +71,10 @@ post {
 		}
 	}
 	
+	for (filter in PSM!JUIFilter) {
+		filter.equivalent("UIFilter").attribute = filter.attribute.equivalent("UIBaseComponentType").uuid;
+	}
+	
 }
 
 

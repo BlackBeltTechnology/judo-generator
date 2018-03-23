@@ -8,7 +8,6 @@ rule UIFilter
 		}
 		
 		uiFilter.uuid = uuid3(jUIFilter.uuid, "UIFilter");
-		uiFilter.attribute = jUIFilter.attribute.uuid;
 		uiFilter.operator = jUIFilter.operator.toString();
 		uiFilter.value = jUIFilter.value;
 	}

@@ -1,6 +1,11 @@
 [%
-	var ui : Template = TemplateFactory.load("templates/JsonMain.egl");
+	var ui : Template = TemplateFactory.load("templates/jsonMain.egl");
 	ui.generate("ui-meta.json");
-	var resources : Template = TemplateFactory.load("templates/Resources.egl");
+		
+	var resources : Template = TemplateFactory.load("templates/resources.egl");
 	resources.generate("ui-resource.json");
+	
+	var constants : Template = TemplateFactory.load("templates/constants.egl");
+	constants.generate("constants.js");
+	
 %]
