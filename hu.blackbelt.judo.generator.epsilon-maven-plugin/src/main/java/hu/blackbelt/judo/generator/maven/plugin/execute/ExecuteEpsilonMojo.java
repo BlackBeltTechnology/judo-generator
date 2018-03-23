@@ -146,12 +146,14 @@ public class ExecuteEpsilonMojo extends AbstractEpsilonMojo {
                 }
                 throw new MojoExecutionException("Parse error");
             }
-            for (Variable parameter : parameters) {
-            	// Adding static utils
-            	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("UUIDUtils", new UUIDUtils()));
-            	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("MD5Utils", new MD5Utils()));
-            	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("AbbreviateUtils", new AbbreviateUtils()));
-            	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("EMFTool", new EmfTool()));
+            
+            // Adding static utils
+        	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("UUIDUtils", new UUIDUtils()));
+        	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("MD5Utils", new MD5Utils()));
+        	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("AbbreviateUtils", new AbbreviateUtils()));
+        	eolModule.getContext().getFrameStack().put(Variable.createReadOnlyVariable("EMFTool", new EmfTool()));
+            
+            for (Variable parameter : parameters) {       	
             	eolModule.getContext().getFrameStack().put(parameter);
             }
 
