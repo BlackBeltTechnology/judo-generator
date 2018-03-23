@@ -83,8 +83,8 @@ public class [%=junction.name%] extends QueryDslContext<[%=junction.name%], Junc
 
     // Forign key handles normal relation when this table references the other and invers relation when the other table references to our table
     public class ForeignKeys {
-        public final ForeignKey<[%=junction.foreignKey1.javaClass.name%]> m = createForeignKey([%=junction.name%].this.[%=junction.foreignKey1.otherForeignKey().name%], "ID");
-        public final ForeignKey<[%=junction.foreignKey2.javaClass.name%]> n = createForeignKey([%=junction.name%].this.[%=junction.foreignKey2.otherForeignKey().name%], "ID");
+        public final ForeignKey<[%=junction.foreignKey2.javaClass.name%]> m = createForeignKey([%=junction.name%].this.[%=junction.foreignKey2.otherForeignKey().name%], "ID");
+        public final ForeignKey<[%=junction.foreignKey1.javaClass.name%]> n = createForeignKey([%=junction.name%].this.[%=junction.foreignKey1.otherForeignKey().name%], "ID");
     }
 
     public final PrimaryKeys pk = new PrimaryKeys();

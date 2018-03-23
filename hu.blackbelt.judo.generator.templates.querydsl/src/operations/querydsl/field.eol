@@ -26,9 +26,6 @@ operation getFieldProperty(field : QUERYDSL!QueryDslField, propertyName : String
         "Float"      = Map{"PATH_TYPE" = "NumberPath<Float>",                "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Float.class" },
         "Percentage" = Map{"PATH_TYPE" = "NumberPath<Float>",                "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Float.class" },
         "Currency"   = Map{"PATH_TYPE" = "NumberPath<java.math.BigDecimal>", "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "java.math.BigDecimal.class" },
-        "Uuid"       = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
-        "Gps"        = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
-        "Track"      = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
         "File"       = Map{"PATH_TYPE" = "SimplePath<URL>",                  "PATH_FACTORY" = "createSimple",   "PATH_GENERIC" = "URL.class" },
         "Id"         = Map{"PATH_TYPE" = "NumberPath<Long>",                 "PATH_FACTORY" = "createNumber",     "PATH_GENERIC" = "Long.class" }
     };

@@ -8,10 +8,6 @@ operation transformAttributeField(s : RDBMS!RdbmsViewAliasField) : QUERYDSL!Quer
 operation transformExpressionAttributeField(s : RDBMS!RdbmsViewField) : QUERYDSL!QueryDslAttribute {
 	var jvmAttrName : String = s.name.split("\\.").last();
 	var jvmAttr = JAVA!JvmAttribute.all.selectOne(attr | attr.ownerClass.fqBaseName() = s.view.name and attr.name = jvmAttrName);
-	
-	s.name.println("VIEWFIELD NAME: ");
-	jvmAttr.name.println("JVMATTR NAME: ");
-	
 	return transformJvmAttribute(jvmAttr, s);
 }
 

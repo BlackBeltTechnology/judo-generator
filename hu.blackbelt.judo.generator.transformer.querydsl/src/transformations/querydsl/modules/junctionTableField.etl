@@ -12,7 +12,6 @@ rule RdbmsIdentifierFieldToQueryDslJunctionField
     transform s : RDBMS!RdbmsIdentifierField
     to t : QUERYDSL!QueryDslJunctionTablePrimaryKey 
     extends QueryDslJunctionFieldGeneric {
-    	//t.typeName = s.type.name;
     	t.sqlName = s.sqlName; 
     }
     
@@ -21,8 +20,7 @@ rule RdbmsForeignKeyToQueryDslJunctionField
     transform s : RDBMS!RdbmsForeignKey
     to t : QUERYDSL!QueryDslJunctionTableForeignKey
     extends QueryDslJunctionFieldGeneric {
-    	//t.typeName = s.type.name;
-    	t.sqlName = s.referenceKey.sqlName; 
+    	t.sqlName = s.sqlName; 
     	t.view = RDBMS!RdbmsView.all.selectOne(view | view.primaryTable.table = s.referenceKey.table).equivalent("RdbmsViewToQueryDslView");
     	t.javaClass = JAVA!JvmClass.all.selectOne(class | class.fqBaseName() = t.view.name).equivalent("JvmClassToQueryDslClass");
     }

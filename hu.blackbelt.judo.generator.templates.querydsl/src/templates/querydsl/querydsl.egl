@@ -94,7 +94,7 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
 
     // Physical key and foreig key definitions
     public class PrimaryKeys {
-        public final com.querydsl.sql.PrimaryKey<[%=class.name%]> [%=class.name.toLowerCase()%] = createPrimaryKey(id);
+        public final com.querydsl.sql.PrimaryKey<[%=class.name%]> [%=class.name.substring(1).toLowerCase()%] = createPrimaryKey(id);
     }
 
     // Forign key handles normal relation when this table references the other and invers relation when the other table references to our table
