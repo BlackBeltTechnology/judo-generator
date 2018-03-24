@@ -16,10 +16,12 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
         eType="#//RdbmsField" containment="true" eOpposite="#//RdbmsField/table"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueKeys" upperBound="-1"
-        eType="#//RdbmsUniqueKey" containment="true" eOpposite="#//RdbmsUniqueKey/table"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueConstraints" upperBound="-1"
+        eType="#//RdbmsUniqueConstraint" containment="true" eOpposite="#//RdbmsUniqueConstraint/table"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKey" lowerBound="1"
         eType="#//RdbmsIdentifierField"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="indexes" upperBound="-1"
+        eType="#//RdbmsIndex" containment="true" eOpposite="#//RdbmsIndex/table"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsField" abstract="true" eSuperTypes="#//RdbmsElement">
     <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
@@ -43,10 +45,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deferred" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RdbmsUniqueKey" eSuperTypes="#//RdbmsElement">
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsUniqueConstraint" eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"
-        eOpposite="#//RdbmsTable/uniqueKeys"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="field" lowerBound="1" eType="#//RdbmsField"/>
+        eOpposite="#//RdbmsTable/uniqueConstraints"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fields" lowerBound="1"
+        upperBound="-1" eType="#//RdbmsField"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsJunctionTable" eSuperTypes="#//RdbmsTable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="field1" lowerBound="1"
@@ -192,5 +195,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewForeignIdentifierField" eSuperTypes="#//RdbmsViewTableField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="referenceIdentifier" lowerBound="1"
         eType="#//RdbmsViewIdentifierField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsIndex" eSuperTypes="#//RdbmsElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"
+        eOpposite="#//RdbmsTable/indexes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fields" lowerBound="1"
+        upperBound="-1" eType="#//RdbmsField"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
 </ecore:EPackage>

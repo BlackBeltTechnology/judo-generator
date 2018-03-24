@@ -24,11 +24,11 @@
 [* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
 
 [%for (foreignKey in foreignKeys) {%]
-		--changeset generator:create_foreign_key_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:createTable stripComments:true
-		ALTER TABLE [%=foreignKey.table.sqlName%] 
-		ADD CONSTRAINT [%=foreignKey.foreignKeySqlName%]
-		FOREIGN KEY ([%=foreignKey.sqlName%])
-		REFERENCES [%=foreignKey.referenceKey.sqlName%] (ID)
+--changeset generator:create_foreign_key_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:createForeignKey stripComments:true
+ALTER TABLE [%=foreignKey.table.sqlName%] 
+ADD CONSTRAINT [%=foreignKey.foreignKeySqlName%]
+FOREIGN KEY ([%=foreignKey.sqlName%])
+REFERENCES [%=foreignKey.referenceKey.sqlName%] (ID)
 		[% if (foreignKey.deleteOnCascade) {%]
 			ON DELETE CASCADE
 		[%} else if (not foreignKey.mandatory)% {%]
@@ -40,5 +40,5 @@
 				ON DELETE RESTRICT
 			[%}%]
 		[%}%]
-		;[% out.println("\n");%]
+;[% out.println("\n");%]
 [%}%]

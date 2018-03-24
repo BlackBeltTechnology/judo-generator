@@ -1,0 +1,81 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+--changeset generator:create_function_INS_{{ view.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+{{ ddlmacro.CREATE_TRIGGER('INS_' + view.name, view.name, 'INSTEAD OF', 'INSERT') }}
+    {{ ddlmacro.DECLARE }}
+        {{ ddlmacro.DEFVAR('SERIAL_ID', 'INTEGER') }}
+    {{ ddlmacro.BEGIN }}
+        IF ({{ ddlmacro.NEW }}.ID IS NOT NULL) THEN
+            {{ ddlmacro.RAISE( 'Field ID in view "' + view.name + '" is not allowed to set' ) }}
+        END IF;
+
+        IF ({{ ddlmacro.NEW }}.C_XMIID IS NOT NULL) THEN
+            {{ ddlmacro.RAISE( 'Field C_XMIID in view "' + view.name + '" is not allowed to set' ) }}
+        END IF;
+
+        {%- for table in view.tables %}
+        {%- for field in table.savefields %}
+        {%- if field.forcedunique %}
+        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL) THEN
+            {%- if field.othernull %}
+            UPDATE {{ table.name }} SET {{ field.name }} = NULL WHERE {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }};
+            {%- else %}
+            {{ ddlmacro.RAISE( 'Not null constraint violation.' ) }}
+            {%- endif %}
+        END IF;
+        {%- endif %}
+        {%- endfor %}
+        {%- endfor %}
+
+        {{ ddlmacro.nextval( 'SERIAL_ID' ) }}
+        {{ ddlmacro.setnewid ( 'SERIAL_ID' ) }}
+
+        INSERT INTO {{ view.roottable.name }} (
+            ID,
+            C_XMIID
+            {%- for field in view.roottable.savefields %}
+            {%- if not field.isxmiid %},
+            {{ field.name }}
+            {%- endif %}
+            {%- endfor %}
+        ) VALUES (
+            SERIAL_ID,
+            '{{ view.node.xmiid }}'
+            {%- for field in view.roottable.savefields %}
+            {%- if not field.isxmiid %},
+            {{ ddlmacro.NEW }}.{{ field.name }}
+            {%- endif %}
+            {%- endfor %}
+        );
+
+        {%- for table in view.nonroottables %}
+        INSERT INTO {{ table.name }} (
+            ID
+            {%- for field in table.savefields %},
+            {{ field.name }}
+            {%- endfor %}
+        ) VALUES (
+            SERIAL_ID
+            {%- for field in table.savefields %},
+            {{ ddlmacro.NEW }}.{{ field.name }}
+            {%- endfor %}
+        );
+        {%- endfor %}
+
+        {%- if view.nonroottables|length > 0 %}
+        UPDATE {{ view.roottable.name }} SET
+            {%- for table in view.nonroottables %}
+            C_{{ table.name }}_ID = SERIAL_ID{% if not loop.last %},{% endif %}
+            {%- endfor %}
+        WHERE ID = SERIAL_ID;
+        {%- endif %}
+
+        {{ ddlmacro.RETURN_NEW }}
+    END;
+{{ ddlmacro.END_TRIGGER() }}
+{% endfor %}

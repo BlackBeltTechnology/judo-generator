@@ -12,3 +12,6 @@
 -- {%- endif %}
 -- {% endfor %}
 -- {% endfor %}
+
+[%for (index in indexes) {%]
+[%}%]

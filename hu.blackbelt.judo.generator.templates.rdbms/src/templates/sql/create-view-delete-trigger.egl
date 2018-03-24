@@ -1,0 +1,15 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+--changeset generator:create_function_DEL_{{ view.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+{{ ddlmacro.CREATE_TRIGGER('DEL_' + view.name, view.name, 'INSTEAD OF', 'DELETE') }}
+    {{ ddlmacro.BEGIN }}
+        DELETE FROM {{ view.roottable.name }} WHERE ID = {{ ddlmacro.OLD }}.ID;
+
+        {{ ddlmacro.RETURN_OLD }}
+    END;
+{{ ddlmacro.END_TRIGGER() }}

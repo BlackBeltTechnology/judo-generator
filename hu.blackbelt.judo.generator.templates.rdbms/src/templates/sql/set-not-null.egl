@@ -36,7 +36,7 @@ ALTER TABLE [%=table.sqlName%]
 		[%if (dialect() == 'Oracle') {%]
 			)
 		[%}%]
-		;[% out.println("\n");%]
+;[% out.println("\n");%]
 	[%} else {%]
 		[%for (field in table.fields) {%]
 --changeset generator:set_not_null_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:createTable stripComments:true

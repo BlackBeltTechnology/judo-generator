@@ -5,7 +5,7 @@
   out.setContentType("Java");
 %]
 
-
+-- {%- if table.before_insert %}
 -- {{ ddlmacro.CREATE_TRIGGER('BI_' + table.name, table.name, 'BEFORE', 'INSERT') }}
 --    {{ ddlmacro.BEGIN }}
 --        IF ({{ddlmacro.NEW}}.ID IS NULL) THEN
@@ -21,13 +21,8 @@
 -- CREATE TRIGGER {{ name }} {{ timing }} {{ type }} ON {{ table }}
 --     FOR EACH ROW
 -- {%- endmacro -%}
+-- {%- endif %}
 
-[%for (junction in junctions) {%]
---changeset generator:before_insert_trigger_create_[%=junction.sqlName%]#[%=version()%] logicalFilePath:triggersViewsConstraintCreate stripComments:true
-	[% if (dialect() = 'Oracle') {%]
-		CREATE TRIGGER BI_[%=junction.sqlName%] BEFORE INSERT ON [%=junction.sqlName%]
-		FOR EACH ROW
-			BEGIN
-			
-	[%}%]
+[%for (table in tables) {%]
+--changeset generator:before_insert_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:beforeInsertTableTriggerCreate stripComments:true
 [%}%]

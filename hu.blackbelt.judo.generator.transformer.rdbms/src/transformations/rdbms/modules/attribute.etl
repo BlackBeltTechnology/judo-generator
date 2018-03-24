@@ -107,7 +107,7 @@ rule JAttributeToViewExpressionField
 
 rule JAttributeToUniqueKey
 	transform s : PSM!JAttribute
-	to u : RDBMS!RdbmsUniqueKey 
+	to u : RDBMS!RdbmsUniqueConstraint 
 	extends JElementToRdbmsElement { 
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.unique == true and not s.isPrimaryKey() and not s.derived
 	    
@@ -120,7 +120,7 @@ rule JAttributeToUniqueKey
 		u.sqlName = 'U_' + u.table.sqlName + "_" + s.fieldSqlName(); 
 		u.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
 		u.description = s.ownerClass.name + "." + s.name;
-		u.field = s.equivalent("JAttributeToTableValueField");
+		u.fields.add(s.equivalent("JAttributeToTableValueField"));
 		
 		//	    ('Unique found U_' + u.table.sqlName + "_" + s.fieldSqlName()).println();
 	    //u.table.uniqueKeys.add(u);

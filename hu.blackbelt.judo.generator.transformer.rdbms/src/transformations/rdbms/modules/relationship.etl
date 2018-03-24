@@ -4,21 +4,42 @@ import "element.etl";
 @primary
 rule JRoleToRdbmsJunctionTable
 	transform s : PSM!JRelationship
-	to t : RDBMS!RdbmsJunctionTable, p : RDBMS!RdbmsIdentifierField, f1 : RDBMS!RdbmsForeignKey, f2 : RDBMS!RdbmsForeignKey  
+	to t : RDBMS!RdbmsJunctionTable, p : RDBMS!RdbmsIdentifierField, f1 : RDBMS!RdbmsForeignKey, f2 : RDBMS!RdbmsForeignKey, i1 : RDBMS!RdbmsIndex, i2 : RDBMS!RdbmsIndex, uq : RDBMS!RdbmsUniqueConstraint  
 	extends JElementToRdbmsElement {
 	guard : s.isJunction()
-		t.sqlName = s.relationSqlName(); // junctionTableSqlName(s);
+		t.sqlName = s.relationSqlTableName(); // junctionTableSqlName(s);
 				
 		var primaryRole : PSM!JRole = s.primaryRole();
 		var secondaryRole : PSM!JRole = s.secondaryRole();
 	    t.name = primaryRole.ownerClass.package.fqName() + "." + primaryRole.ownerClass.name + " to " + secondaryRole.ownerClass.package.fqName() + "." + secondaryRole.ownerClass.name;
+	
+	
+		t.field1 = f1.fillFromRole(primaryRole);
+		t.field2 = f2.fillFromRole(secondaryRole);
 		
+		t.field1.mandatory = true;
+		t.field2.mandatory = true;
 		
-		f1.fillFromRole(primaryRole);
-		f2.fillFromRole(secondaryRole);
+		i1.name = t.name + " " + primaryRole.name;
+		i1.sqlName = "IDX_" + s.relationSqlName() + "_" + primaryRole.sqlName();
+		i1.fields.add(t.field1);
+		i1.table = t;
 
-		t.field1 = f1;
-		t.field2 = f2;
+		i2.name = t.name + " " + secondaryRole.name;
+		i2.sqlName = "IDX_" + s.relationSqlName() + "_" + secondaryRole.sqlName();
+		i2.fields.add(t.field1);
+		i2.table = t;
+		
+		t.indexes.add(i1);
+		t.indexes.add(i2);
+
+		uq.name = t.name + " " + primaryRole.name + ", " + secondaryRole.name;
+		uq.sqlName = "UQ_" + s.relationSqlName();
+		uq.fields.add(t.field1);
+		uq.fields.add(t.field2);
+		uq.table = t;
+		
+		t.uniqueConstraints.add(uq);
 		
 		p.name = "id";
 		p.sqlName = "ID";

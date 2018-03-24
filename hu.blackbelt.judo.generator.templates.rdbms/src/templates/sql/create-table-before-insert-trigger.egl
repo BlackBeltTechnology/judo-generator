@@ -1,0 +1,39 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+{%- if table.before_update %}
+--changeset generator:create_function_BU_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+{{ ddlmacro.CREATE_TRIGGER('BU_' + table.name, table.name, 'BEFORE', 'UPDATE') }}
+    {{ ddlmacro.BEGIN }}
+        {% for field in table.savefields -%}
+        {%- if field.notupdate %}
+        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NULL AND {{ ddlmacro.OLD }}.{{ field.name }} IS NOT NULL) OR ({{ ddlmacro.NEW }}.{{ field.name }} <> {{ ddlmacro.OLD }}.{{ field.name }}) THEN
+            {{ ddlmacro.RAISE( 'Field ' + field.name + ' in table "' + table.name + '" is not allowed to update' ) }}
+        END IF;
+        {%- endif %}
+        {%- endfor %}
+
+        {%- if not table.general %}
+        {{ ddlmacro.SETVAR(ddlmacro.NEW + '.C_AUT', ddlmacro.TR_TIME) }}
+        {%- endif %}
+
+        {{ ddlmacro.RETURN_NEW }}
+    END;
+{{ ddlmacro.END_TRIGGER() }}
+{%- endif %}
+
+--
+-- {%- macro CREATE_TRIGGER(name, table, timing, type) -%}
+-- {%- set _ = glob.update({'CURRENT_TRIGGER_NAME':name}) -%}
+-- CREATE TRIGGER {{ name }} {{ timing }} {{ type }} ON {{ table }}
+--     FOR EACH ROW
+-- {%- endmacro -%}
+-- {%- endif %}
+
+[%for (table in tables) {%]
+--changeset generator:before_update_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:beforeUpdateTableTriggerCreate stripComments:true
+[%}%]

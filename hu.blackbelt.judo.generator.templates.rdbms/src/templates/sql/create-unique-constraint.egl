@@ -1,0 +1,9 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+--changeset generator:add_constraint_UQ_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true
+ALTER TABLE {{ table.name }} ADD CONSTRAINT UQ_{{ table.name }} UNIQUE ({{ table.field1.name }}, {{ table.field2.name }});

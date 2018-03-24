@@ -54,6 +54,7 @@ operation PSM!JRelationship secondaryRole() : PSM!JRole {
     return self.primaryRole().opposite();
 }
 
+
 @cached
 operation PSM!JRelationship relationSqlName() : String {
 
@@ -68,7 +69,11 @@ operation PSM!JRelationship relationSqlName() : String {
     var fullname = role1.ownerClass.package.shortName + role1.ownerClass.shortName + role1.shortName + 
     role2.ownerClass.package.shortName + role2.ownerClass.shortName + role2.shortName;
     
-    fullname.println("JUNCTION: ");
+    return role1.ownerClass.sqlName() + "_" + role2.ownerClass.sqlName() + "_" + md5(fullname).substring(0,6).toUpperCase();
+}
 
-    return "T_" + role1.ownerClass.sqlName() + "_" + role2.ownerClass.sqlName() + "_" + md5(fullname).substring(0,6).toUpperCase();
+@cached
+operation PSM!JRelationship relationSqlTableName() : String {
+
+    return "T_" + self.relationSqlName();
 }

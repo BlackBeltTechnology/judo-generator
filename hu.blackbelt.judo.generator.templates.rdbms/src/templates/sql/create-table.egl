@@ -6,6 +6,21 @@
 %]
 
 
+-- {%- for stmnt in model.statements.createTables %}
+-- --changeset generator:create_table_{{ stmnt.table }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:schemaChanges stripComments:true
+-- CREATE TABLE {{ stmnt.table }} (
+--    ID INTEGER NOT NULL PRIMARY KEY
+-- );
+-- {% endfor %}
+-- {% for stmnt in model.statements.addFields %}
+-- --changeset generator:add_column_{{ stmnt.table }}_{{ stmnt.field }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:schemaChanges stripComments:true
+-- ALTER TABLE {{ stmnt.table }} ADD {{ stmnt.field }} {{ stmnt.field_type }};
+-- {% if stmnt.default %}
+-- -- UPDATE {{ stmnt.table }} SET {{ stmnt.field }} = '{{ stmnt.default }}';
+-- {%- endif %}
+-- {%- endfor %}
+
+
 [%for (table in tables) {%]
 --changeset generator:create_table_[%=table.sqlName%]#[%=version()%] logicalFilePath:createTable stripComments:true
 -- [%=table.name%] [%=table.uuid%]

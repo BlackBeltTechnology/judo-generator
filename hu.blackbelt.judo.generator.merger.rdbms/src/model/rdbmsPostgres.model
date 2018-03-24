@@ -26,9 +26,9 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Workflow.auditCreateTime" uuid="cce69137-8140-3313-9865-d7fa0a24322d" description="Workflow.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Workflow.id" uuid="d864c1d3-6bb2-39a4-ad61-495f9b0640f4" description="Workflow.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkProcess.workflow" uuid="f47ccdb9-c4e4-41fa-b531-8bc9b11d0afd" description="workflow (Process)" sqlName="C_FRW_PRCSS_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.31/@fields.8" foreignKeySqlName="FK_d5210b5b-351e-3391-bb24-d93e36f06ec2"/>
-    <uniqueKeys name="judo.framework.Workflow.key" uuid="5e63ea2f-c05a-46a3-a437-8cd737ebeb6b" description="Workflow.key" sqlName="U_T_FRW_WORKFW_C_KEY"/>
-    <uniqueKeys name="judo.framework.Workflow.guid" uuid="0647e566-6775-3b39-82c0-9043b5596ee1" description="Workflow.guid" sqlName="U_T_FRW_WORKFW_C_GUID"/>
-    <uniqueKeys name="judo.framework.Workflow.externalId" uuid="ce43d3ee-08d0-4b27-9fb8-5cedab6d8b40" description="Workflow.externalId" sqlName="U_T_FRW_WORKFW_C_EXTNLD"/>
+    <uniqueConstraints name="judo.framework.Workflow.key" uuid="5e63ea2f-c05a-46a3-a437-8cd737ebeb6b" description="Workflow.key" sqlName="U_T_FRW_WORKFW_C_KEY"/>
+    <uniqueConstraints name="judo.framework.Workflow.guid" uuid="0647e566-6775-3b39-82c0-9043b5596ee1" description="Workflow.guid" sqlName="U_T_FRW_WORKFW_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Workflow.externalId" uuid="ce43d3ee-08d0-4b27-9fb8-5cedab6d8b40" description="Workflow.externalId" sqlName="U_T_FRW_WORKFW_C_EXTNLD"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.UserInfo" uuid="a0f3a6b1-2a7e-414d-aea6-41b03a610c1c" description="UserInfo" sqlName="T_FRW_USRINF" primaryKey="//@rdbmsTables.1/@fields.12">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.UserInfo.xmiid" uuid="7830c416-b0c4-3dfb-94d9-5eb89eb5a0e1" description="UserInfo.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -45,8 +45,8 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.UserInfo.auditCreateTime" uuid="ba9e5ee3-a2ba-3787-82a2-8a0e948e7853" description="UserInfo.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.UserInfo.id" uuid="4521a260-6aed-3265-83ad-d672bdc1bc39" description="UserInfo.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkUser.userInfo" uuid="b1909b4f-cdf0-4177-b948-883cdfd2a6d6" description="userInfo (User)" sqlName="C_FRW_USER_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.11/@fields.20" foreignKeySqlName="FK_54c56055-b607-32ca-9639-18b25e29e984"/>
-    <uniqueKeys name="judo.framework.UserInfo.loginName" uuid="e6ba9f8f-d3d5-4ccc-8ebf-b193ca00539e" description="UserInfo.loginName" sqlName="U_T_FRW_USRINF_C_LOGNNM"/>
-    <uniqueKeys name="judo.framework.UserInfo.guid" uuid="006ec224-6471-3694-b9cf-62a6769b9d77" description="UserInfo.guid" sqlName="U_T_FRW_USRINF_C_GUID"/>
+    <uniqueConstraints name="judo.framework.UserInfo.loginName" uuid="e6ba9f8f-d3d5-4ccc-8ebf-b193ca00539e" description="UserInfo.loginName" sqlName="U_T_FRW_USRINF_C_LOGNNM"/>
+    <uniqueConstraints name="judo.framework.UserInfo.guid" uuid="006ec224-6471-3694-b9cf-62a6769b9d77" description="UserInfo.guid" sqlName="U_T_FRW_USRINF_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.UserConfig" uuid="7772c603-3b28-4de2-9ce7-08086f2c5f12" description="UserConfig" sqlName="T_FRW_USRCNG" primaryKey="//@rdbmsTables.2/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.UserConfig.id" uuid="5494d9e8-ab8f-3324-a058-5cc12a2db802" description="UserConfig.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.51/@fields.0 //@rdbmsTables.11/@fields.21"/>
@@ -132,7 +132,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTask.assignee" uuid="14b8167b-dcb4-4c22-b2d3-fc570439c9be" description="assignee (Task)" sqlName="C_FRW_TASK_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.17/@fields.12" foreignKeySqlName="FK_7f67c9a6-fd6d-35d4-ae5d-7e5350d3fac1"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkProcessComment.commenter" uuid="85d68dc9-178d-4aa3-9380-4c48e2afde3a" description="commenter (ProcessComment)" sqlName="C_FRW_PRSCMT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.30/@fields.6" foreignKeySqlName="FK_df1a277b-5e37-3a05-8112-4c20e4fb4949"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkComment.commenter" uuid="82e4ee48-4f94-4b83-a870-48580b23281a" description="commenter (Comment)" sqlName="C_FRW_COMMNT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.52/@fields.7" foreignKeySqlName="FK_5df2a6ea-36d4-36f4-a8c7-550cf8d696b3"/>
-    <uniqueKeys name="judo.framework.User.guid" uuid="40c659cb-3711-319d-98a5-292fa8cf17bc" description="User.guid" sqlName="U_T_FRW_USER_C_GUID"/>
+    <uniqueConstraints name="judo.framework.User.guid" uuid="40c659cb-3711-319d-98a5-292fa8cf17bc" description="User.guid" sqlName="U_T_FRW_USER_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.TypeValue" uuid="19e46fc9-c156-3d3d-8346-0ebc8074e171" description="TypeValue" sqlName="T_FRW_TYPVL" primaryKey="//@rdbmsTables.12/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TypeValue.xmiid" uuid="846e6dca-7375-3d22-8ed4-4a3e123971d6" description="TypeValue.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -143,7 +143,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TypeValue.auditCreateUser" uuid="b1dd02e4-bb0c-3d98-b0d7-ccc677e2acfa" description="TypeValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TypeValue.auditCreateTime" uuid="8f5d4dc7-de58-3199-bc61-978a4d6adbe5" description="TypeValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.TypeValue.id" uuid="a10ac4ea-6782-3f5d-8925-7f4eb6792afb" description="TypeValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.13/@fields.9 //@rdbmsTables.38/@fields.8"/>
-    <uniqueKeys name="judo.framework.TypeValue.guid" uuid="93555766-5bb0-3cf9-93e8-4aec4ea2a1e1" description="TypeValue.guid" sqlName="U_T_FRW_TYPVL_C_GUID"/>
+    <uniqueConstraints name="judo.framework.TypeValue.guid" uuid="93555766-5bb0-3cf9-93e8-4aec4ea2a1e1" description="TypeValue.guid" sqlName="U_T_FRW_TYPVL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Type" uuid="d818b4ad-f930-4414-9337-052c0718e7b7" description="Type" sqlName="T_FRW_TYPE" primaryKey="//@rdbmsTables.13/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Type.xmiid" uuid="f9482b21-07a9-3600-a183-47fa4b96e217" description="Type.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -158,7 +158,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTypeValue.type" uuid="08636e92-2ab0-3eab-98a8-4984c23d8d2c" description="type (TypeValue)" sqlName="C_FRW_TYPVL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.12/@fields.7" foreignKeySqlName="FK_857c4c08-7259-3a45-8c65-cb51d8212227"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTable.resultType" uuid="3ab31c92-0745-35d5-bd30-84efeefb0e69" description="resultType (Table)" sqlName="C_FRW_TABLE_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.20/@fields.10" foreignKeySqlName="FK_d4dcee29-eee9-30fa-a468-6879c2c39ee1"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkHeader.type" uuid="6a59f57e-fa9a-3023-a539-478cea5c6b00" description="type (Header)" sqlName="C_FRW_HEADER_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.41/@fields.10" foreignKeySqlName="FK_8e8b7132-bb36-3e6a-b72a-7838babcceca"/>
-    <uniqueKeys name="judo.framework.Type.guid" uuid="cbef7be8-b1b1-3efa-b49b-0896132e4437" description="Type.guid" sqlName="U_T_FRW_TYPE_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Type.guid" uuid="cbef7be8-b1b1-3efa-b49b-0896132e4437" description="Type.guid" sqlName="U_T_FRW_TYPE_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.TenantUser" uuid="b16646f4-9fc3-416d-bc70-59b13c550fab" description="TenantUser" sqlName="T_FRW_TENTUR" primaryKey="//@rdbmsTables.14/@fields.6">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TenantUser.xmiid" uuid="1dd49b88-2c30-3272-bc04-0b066284a01a" description="TenantUser.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -168,7 +168,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TenantUser.auditCreateUser" uuid="0077ead2-74f5-327e-8c1c-2fa96f643e67" description="TenantUser.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TenantUser.auditCreateTime" uuid="9e26ab84-bf4f-3964-bf46-733fbbe87d49" description="TenantUser.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.TenantUser.id" uuid="b79947bd-72ca-3a8a-bc18-414a4a4eae5a" description="TenantUser.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.11/@fields.23 //@rdbmsTables.16/@fields.8"/>
-    <uniqueKeys name="judo.framework.TenantUser.guid" uuid="b9329960-f958-3015-82c1-81d671fd8af1" description="TenantUser.guid" sqlName="U_T_FRW_TENTUR_C_GUID"/>
+    <uniqueConstraints name="judo.framework.TenantUser.guid" uuid="b9329960-f958-3015-82c1-81d671fd8af1" description="TenantUser.guid" sqlName="U_T_FRW_TENTUR_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.TenantRole" uuid="075477b5-8dc8-4e76-9924-ec78e80ee1e3" description="TenantRole" sqlName="T_FRW_TENTRL" primaryKey="//@rdbmsTables.15/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.TenantRole.id" uuid="7aea1ed4-cf75-3ab7-a91f-cec821df8633" description="TenantRole.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.25/@fields.0"/>
@@ -183,7 +183,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Tenant.auditCreateTime" uuid="aae23a51-be0f-3d72-aca6-da6562ccc8a8" description="Tenant.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Tenant.id" uuid="d7650ff0-fc1e-38ee-83e6-0b37edd50be6" description="Tenant.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTenantUser.myTenant" uuid="bd78f73b-bf3f-4e24-97a7-76ddca0fc218" description="myTenant (TenantUser)" sqlName="C_FRW_TENTUR_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.14/@fields.6" foreignKeySqlName="FK_d19d7dbe-d7a5-39c5-959f-d2319fb6e568"/>
-    <uniqueKeys name="judo.framework.Tenant.guid" uuid="169581b3-77cf-3bd7-8bfe-b538558ed625" description="Tenant.guid" sqlName="U_T_FRW_TENANT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Tenant.guid" uuid="169581b3-77cf-3bd7-8bfe-b538558ed625" description="Tenant.guid" sqlName="U_T_FRW_TENANT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Task" uuid="312f9c6e-2d26-4780-9110-2ab9d8b41813" description="Task" sqlName="T_FRW_TASK" primaryKey="//@rdbmsTables.17/@fields.12">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Task.xmiid" uuid="fc7663b6-28c0-3d14-83e8-b5d2d40b038a" description="Task.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -205,8 +205,8 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkComment.task" uuid="548d2511-21a0-4101-8b10-f429dad1d216" description="task (Comment)" sqlName="C_FRW_COMMNT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.52/@fields.7" foreignKeySqlName="FK_47355475-20b7-3ddf-a210-301939b04fbb"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkChecklist.task" uuid="9642f7da-2955-447f-b62c-e3f8d954d42a" description="task (Checklist)" sqlName="C_FRW_CHCKLT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.54/@fields.6" foreignKeySqlName="FK_8e758c6e-a76d-3a33-bc5d-6c6c95c78e50"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkCandidate.task" uuid="b787bdba-3d08-4dbe-b0b7-bfea85fb3931" description="task (Candidate)" sqlName="C_FRW_CANDDT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.55/@fields.8" foreignKeySqlName="FK_9c61f382-2a98-3781-a95e-32b37a90dca4"/>
-    <uniqueKeys name="judo.framework.Task.guid" uuid="33fec14a-324b-3b33-9402-9405696457fa" description="Task.guid" sqlName="U_T_FRW_TASK_C_GUID"/>
-    <uniqueKeys name="judo.framework.Task.externalId" uuid="15f9dbb8-6cbd-4e09-beb4-e64a0994bb13" description="Task.externalId" sqlName="U_T_FRW_TASK_C_EXTNLD"/>
+    <uniqueConstraints name="judo.framework.Task.guid" uuid="33fec14a-324b-3b33-9402-9405696457fa" description="Task.guid" sqlName="U_T_FRW_TASK_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Task.externalId" uuid="15f9dbb8-6cbd-4e09-beb4-e64a0994bb13" description="Task.externalId" sqlName="U_T_FRW_TASK_C_EXTNLD"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.TableTestInput" uuid="f2a93608-e6bd-4164-9608-5ccc08e4ccbf" description="TableTestInput" sqlName="T_FRW_TATSIT" primaryKey="//@rdbmsTables.18/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TableTestInput.xmiid" uuid="f64e629c-7ba1-32f6-b5cd-2bc3e5bdfe56" description="TableTestInput.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -218,7 +218,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TableTestInput.auditCreateUser" uuid="132ada6c-de19-3e98-9201-086fbd800dd5" description="TableTestInput.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TableTestInput.auditCreateTime" uuid="38e775eb-237e-324a-9198-0da93ae90013" description="TableTestInput.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.TableTestInput.id" uuid="f0753ce0-6975-3f01-af38-ad6fc485d944" description="TableTestInput.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.19/@fields.11"/>
-    <uniqueKeys name="judo.framework.TableTestInput.guid" uuid="6f692a6f-c5af-3886-8348-1d93a71819fb" description="TableTestInput.guid" sqlName="U_T_FRW_TATSIT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.TableTestInput.guid" uuid="6f692a6f-c5af-3886-8348-1d93a71819fb" description="TableTestInput.guid" sqlName="U_T_FRW_TATSIT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.TableTest" uuid="434e92d5-c08f-4936-9b92-191a4968c537" description="TableTest" sqlName="T_FRW_TABLTT" primaryKey="//@rdbmsTables.19/@fields.10">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TableTest.xmiid" uuid="f316155c-a5fb-33c4-9b6e-7ece0a7ce611" description="TableTest.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -233,7 +233,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.TableTest.auditCreateTime" uuid="e49623b7-cfcb-319e-a1ea-cb4cb79d81dd" description="TableTest.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.TableTest.id" uuid="85e371d7-ef15-338d-9ec3-1f019005bcd9" description="TableTest.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.20/@fields.11"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTableTestInput.test" uuid="8f1173e3-2d2f-4239-9fbe-b8640da2b058" description="test (TableTestInput)" sqlName="C_FRW_TATSIT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.18/@fields.8" foreignKeySqlName="FK_da1afee7-cfc5-360f-9a92-2ef4ca025aa4"/>
-    <uniqueKeys name="judo.framework.TableTest.guid" uuid="eb397626-aaac-32c0-87fe-4e0abfe840a2" description="TableTest.guid" sqlName="U_T_FRW_TABLTT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.TableTest.guid" uuid="eb397626-aaac-32c0-87fe-4e0abfe840a2" description="TableTest.guid" sqlName="U_T_FRW_TABLTT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Table" uuid="3297bb12-28ab-4a17-87e6-b9e16327eff8" description="Table" sqlName="T_FRW_TABLE" primaryKey="//@rdbmsTables.20/@fields.10">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Table.xmiid" uuid="819f204d-2b62-324e-b90d-432f66a4e669" description="Table.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -250,7 +250,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTableTest.table" uuid="b78747bf-42fd-4e4b-94af-74f4755ed745" description="table (TableTest)" sqlName="C_FRW_TABLTT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.19/@fields.10" foreignKeySqlName="FK_7257ccca-ef48-349d-9ff6-92126ed221c1"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkHeader.table" uuid="25bdf734-73b0-49b5-a087-21cc3c63accc" description="table (Header)" sqlName="C_FRW_HEADER_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.41/@fields.10" foreignKeySqlName="FK_a0b86a06-07fd-3843-a62e-08ca51aa114b"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkRule.table" uuid="d732fd6f-bc0a-40b4-9ea0-2e621f0b6da7" description="table (Rule)" sqlName="C_FRW_RULE_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.24/@fields.12" foreignKeySqlName="FK_898dc70f-81e9-3777-a1c0-8df74930fc32"/>
-    <uniqueKeys name="judo.framework.Table.guid" uuid="7811e7be-653a-3998-81d6-10f28e2fdad9" description="Table.guid" sqlName="U_T_FRW_TABLE_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Table.guid" uuid="7811e7be-653a-3998-81d6-10f28e2fdad9" description="Table.guid" sqlName="U_T_FRW_TABLE_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.StepOutput" uuid="9b9b9660-1c37-4c1a-8c96-30b4090762f9" description="StepOutput" sqlName="T_FRW_STPOTT" primaryKey="//@rdbmsTables.21/@fields.6">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.StepOutput.xmiid" uuid="b34cbe30-e8f1-3ba9-9412-3bf53281ec95" description="StepOutput.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -261,7 +261,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.StepOutput.auditCreateTime" uuid="ea8e6221-2679-3894-af93-3faf5d3609aa" description="StepOutput.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.StepOutput.id" uuid="5a362f93-9b8a-3cd1-a5bd-5725007b2e79" description="StepOutput.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkStepItem.stepoutput" uuid="c2aece4b-58cf-4605-b877-d3a111b9b301" description="stepoutput (StepItem)" sqlName="C_FRW_STPITM_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.22/@fields.8" foreignKeySqlName="FK_f3c0705a-7686-3cfd-bc05-516f9b6cccf3"/>
-    <uniqueKeys name="judo.framework.StepOutput.guid" uuid="9593f998-b38c-39fd-b9a2-5cea224b1172" description="StepOutput.guid" sqlName="U_T_FRW_STPOTT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.StepOutput.guid" uuid="9593f998-b38c-39fd-b9a2-5cea224b1172" description="StepOutput.guid" sqlName="U_T_FRW_STPOTT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.StepItem" uuid="4383091c-ff0a-442d-9c5b-3d031d547f89" description="StepItem" sqlName="T_FRW_STPITM" primaryKey="//@rdbmsTables.22/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.StepItem.xmiid" uuid="a3548e07-365e-3092-8b39-530d304921f2" description="StepItem.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -273,7 +273,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.StepItem.auditCreateUser" uuid="291ba5d8-e915-324f-9148-2355fc995a49" description="StepItem.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.StepItem.auditCreateTime" uuid="60f10c09-abe8-37e5-9363-d7c6555c4834" description="StepItem.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.StepItem.id" uuid="f8638182-e6f3-3c88-803a-8d9d5a742421" description="StepItem.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.21/@fields.7 //@rdbmsTables.23/@fields.10"/>
-    <uniqueKeys name="judo.framework.StepItem.guid" uuid="1924a12f-8140-3fc8-8529-0b0277073ae5" description="StepItem.guid" sqlName="U_T_FRW_STPITM_C_GUID"/>
+    <uniqueConstraints name="judo.framework.StepItem.guid" uuid="1924a12f-8140-3fc8-8529-0b0277073ae5" description="StepItem.guid" sqlName="U_T_FRW_STPITM_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.StepInput" uuid="47ef572a-c580-40a0-9cf8-f2e62f9d6eac" description="StepInput" sqlName="T_FRW_STPINT" primaryKey="//@rdbmsTables.23/@fields.9">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.StepInput.xmiid" uuid="78585110-90df-3a90-8c1d-bad7b68d78ad" description="StepInput.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -287,7 +287,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.StepInput.auditCreateTime" uuid="915f3853-b216-31b6-b0ee-05ef6779d6fa" description="StepInput.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.StepInput.id" uuid="331c3f49-42a8-36b8-8113-254855926b94" description="StepInput.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkStepItem.stepInput" uuid="1ff2dad8-7321-4c89-8ca2-b1e02f0ea8ec" description="stepInput (StepItem)" sqlName="C_FRW_STPITM_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.22/@fields.8" foreignKeySqlName="FK_ca2e5d5c-6302-34e5-9312-bd1eb28e3d28"/>
-    <uniqueKeys name="judo.framework.StepInput.guid" uuid="be0356af-d83b-3074-bcf8-9aea80148d99" description="StepInput.guid" sqlName="U_T_FRW_STPINT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.StepInput.guid" uuid="be0356af-d83b-3074-bcf8-9aea80148d99" description="StepInput.guid" sqlName="U_T_FRW_STPINT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Rule" uuid="f37639d2-8384-4337-941d-321225f05d9a" description="Rule" sqlName="T_FRW_RULE" primaryKey="//@rdbmsTables.24/@fields.12">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Rule.xmiid" uuid="c581442f-77d5-3965-a95c-1a1487a66f61" description="Rule.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -304,7 +304,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Rule.auditCreateTime" uuid="2fec2c6f-be05-33fa-bea5-5c22913e5ae9" description="Rule.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Rule.id" uuid="9fcbcb48-96ce-34b9-8a6e-1664d1f9837e" description="Rule.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.20/@fields.13"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkExpression.rule" uuid="d94eb636-0852-452f-af55-0184df4cab05" description="rule (Expression)" sqlName="C_FRW_EXPRSN_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.44/@fields.8" foreignKeySqlName="FK_ba4bff6d-4728-3cbe-8e10-d862c060dd4f"/>
-    <uniqueKeys name="judo.framework.Rule.guid" uuid="e6173cf5-bd28-3530-99a7-b1f292a13e51" description="Rule.guid" sqlName="U_T_FRW_RULE_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Rule.guid" uuid="e6173cf5-bd28-3530-99a7-b1f292a13e51" description="Rule.guid" sqlName="U_T_FRW_RULE_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Role" uuid="c561268d-c874-457c-a4b4-831a8f628b5a" description="Role" sqlName="T_FRW_ROLE" primaryKey="//@rdbmsTables.25/@fields.9">
     <fields xsi:type="rdbms:RdbmsForeignKey" name="TenantRole" uuid="b2f3b4dc-30bf-30cf-b47a-ef4d6978a5c4" description="TenantRoleid" sqlName="C_T_FRW_TENTRL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.15/@fields.0" inheritenceBased="true"/>
@@ -317,7 +317,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Role.auditCreateUser" uuid="89cb1515-5c21-3f8d-a7b8-0c3bcaa2d83f" description="Role.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Role.auditCreateTime" uuid="10f8ced3-4b00-31f0-b8e6-0d85eccc5fec" description="Role.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Role.id" uuid="18cbb7ff-f40b-33bf-a0e5-e6eeafb7c3aa" description="Role.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
-    <uniqueKeys name="judo.framework.Role.guid" uuid="a4badaf6-bf45-3bb4-9c84-444bfecec161" description="Role.guid" sqlName="U_T_FRW_ROLE_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Role.guid" uuid="a4badaf6-bf45-3bb4-9c84-444bfecec161" description="Role.guid" sqlName="U_T_FRW_ROLE_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Resolution" uuid="0cc747fe-7c87-4b0f-b88a-1ccf85209d3f" description="Resolution" sqlName="T_FRW_RESLTN" primaryKey="//@rdbmsTables.26/@fields.10">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Resolution.xmiid" uuid="8696d73a-919b-3b55-b1c1-be0d25176eb5" description="Resolution.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -331,8 +331,8 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Resolution.auditCreateUser" uuid="e760a465-50f6-382b-b490-7de0ba5eb0f8" description="Resolution.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Resolution.auditCreateTime" uuid="a1a584e7-6ca4-3351-9084-993ff7b71cd2" description="Resolution.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Resolution.id" uuid="c4b7badd-a9e3-36a9-b913-9915cd028237" description="Resolution.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.17/@fields.13 //@rdbmsTables.17/@fields.14"/>
-    <uniqueKeys name="judo.framework.Resolution.guid" uuid="eea2b0a2-8541-3961-8512-62c2fa7410ea" description="Resolution.guid" sqlName="U_T_FRW_RESLTN_C_GUID"/>
-    <uniqueKeys name="judo.framework.Resolution.externalId" uuid="8faa41f5-f283-4b6e-8f49-43c21452fbe9" description="Resolution.externalId" sqlName="U_T_FRW_RESLTN_C_EXTNLD"/>
+    <uniqueConstraints name="judo.framework.Resolution.guid" uuid="eea2b0a2-8541-3961-8512-62c2fa7410ea" description="Resolution.guid" sqlName="U_T_FRW_RESLTN_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Resolution.externalId" uuid="8faa41f5-f283-4b6e-8f49-43c21452fbe9" description="Resolution.externalId" sqlName="U_T_FRW_RESLTN_C_EXTNLD"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.ProfileEntry" uuid="13f40b88-dd8b-46eb-8970-8ac1364f2144" description="ProfileEntry" sqlName="T_FRW_PRFENY" primaryKey="//@rdbmsTables.27/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProfileEntry.xmiid" uuid="ae270b09-4044-3741-beb9-fb11f4284fc1" description="ProfileEntry.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -344,7 +344,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProfileEntry.auditCreateUser" uuid="1bc7d11f-cd6a-35c7-a0ff-e2fd9e9b92e3" description="ProfileEntry.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProfileEntry.auditCreateTime" uuid="2f9c398a-15ae-35de-9312-23769a8a6460" description="ProfileEntry.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.ProfileEntry.id" uuid="8098b2c3-82a5-3cf8-a247-eefd877aaf38" description="ProfileEntry.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.28/@fields.9"/>
-    <uniqueKeys name="judo.framework.ProfileEntry.guid" uuid="7f66065f-4944-3c26-9eae-4cfb0e5ab644" description="ProfileEntry.guid" sqlName="U_T_FRW_PRFENY_C_GUID"/>
+    <uniqueConstraints name="judo.framework.ProfileEntry.guid" uuid="7f66065f-4944-3c26-9eae-4cfb0e5ab644" description="ProfileEntry.guid" sqlName="U_T_FRW_PRFENY_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Profile" uuid="32fc39e0-a00b-4ea3-806e-261b679431a3" description="Profile" sqlName="T_FRW_PRFL" primaryKey="//@rdbmsTables.28/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Profile.xmiid" uuid="d842a33a-6a4e-35a1-ab34-279c314a2d4f" description="Profile.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -357,7 +357,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Profile.id" uuid="2fa19578-2192-31c5-90ef-4eb470468f9c" description="Profile.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkUser.profile" uuid="f669652e-66a4-4d25-ad26-7f7fa2e8deaa" description="profile (User)" sqlName="C_FRW_USER_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.11/@fields.20" foreignKeySqlName="FK_c1a7b525-2be2-34c9-8f08-e79d01f83d68"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkProfileEntry.profile" uuid="88fd9843-e714-4f59-9e4b-34ac5af1fbd0" description="profile (ProfileEntry)" sqlName="C_FRW_PRFENY_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.27/@fields.8" foreignKeySqlName="FK_afbe1e5c-98d2-3501-8a40-7def6c5da16e"/>
-    <uniqueKeys name="judo.framework.Profile.guid" uuid="f7fdf6bf-c058-3fd3-84db-ecd9ed84714b" description="Profile.guid" sqlName="U_T_FRW_PRFL_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Profile.guid" uuid="f7fdf6bf-c058-3fd3-84db-ecd9ed84714b" description="Profile.guid" sqlName="U_T_FRW_PRFL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.ProcessData" uuid="e3f5638c-7e41-4be9-af6d-0c7e691c44d8" description="ProcessData" sqlName="T_FRW_PRSSDT" primaryKey="//@rdbmsTables.29/@fields.6">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProcessData.xmiid" uuid="3dbbb110-0752-35e2-919f-af0460078989" description="ProcessData.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -367,7 +367,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProcessData.auditCreateUser" uuid="f86e65f4-cc04-3ea8-a1ea-4358f59ea796" description="ProcessData.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProcessData.auditCreateTime" uuid="9ab28a43-cb84-32bd-a10e-44c5c3535575" description="ProcessData.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.ProcessData.id" uuid="a6696d79-fb61-3acb-ac59-0265ac8c1115" description="ProcessData.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.31/@fields.9"/>
-    <uniqueKeys name="judo.framework.ProcessData.guid" uuid="fef93209-45d1-3e5e-a58d-a8a9999d9f45" description="ProcessData.guid" sqlName="U_T_FRW_PRSSDT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.ProcessData.guid" uuid="fef93209-45d1-3e5e-a58d-a8a9999d9f45" description="ProcessData.guid" sqlName="U_T_FRW_PRSSDT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.ProcessComment" uuid="e8ad9245-11eb-4d66-aba3-bfe1079c4e42" description="ProcessComment" sqlName="T_FRW_PRSCMT" primaryKey="//@rdbmsTables.30/@fields.6">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProcessComment.xmiid" uuid="fbfe325e-41c4-3e10-bbda-afdb4528ed14" description="ProcessComment.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -377,7 +377,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProcessComment.auditCreateUser" uuid="1ddeab54-ff38-39c4-b27b-839c2dc44def" description="ProcessComment.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ProcessComment.auditCreateTime" uuid="122df652-408c-3787-935b-5e05ea3daad5" description="ProcessComment.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.ProcessComment.id" uuid="8734bc5d-4346-30d3-94b9-c75cb8c4c6d7" description="ProcessComment.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.31/@fields.10 //@rdbmsTables.11/@fields.25"/>
-    <uniqueKeys name="judo.framework.ProcessComment.guid" uuid="f72efc44-910c-3778-9b9c-5b018086163a" description="ProcessComment.guid" sqlName="U_T_FRW_PRSCMT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.ProcessComment.guid" uuid="f72efc44-910c-3778-9b9c-5b018086163a" description="ProcessComment.guid" sqlName="U_T_FRW_PRSCMT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Process" uuid="f1b41c02-ea20-418e-bd4c-1377cb076f1f" description="Process" sqlName="T_FRW_PRCSS" primaryKey="//@rdbmsTables.31/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Process.xmiid" uuid="17e6490e-e8da-323f-9696-adfd47c402e1" description="Process.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -392,8 +392,8 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkProcessData.process" uuid="ddbb6cc9-cb4a-4232-a271-fd2fc634c4a9" description="process (ProcessData)" sqlName="C_FRW_PRSSDT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.29/@fields.6" foreignKeySqlName="FK_d186487e-3b38-3c30-a0e1-929898af9c91"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkProcessComment.process" uuid="1df09903-d9d0-41ce-b904-895131208015" description="process (ProcessComment)" sqlName="C_FRW_PRSCMT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.30/@fields.6" foreignKeySqlName="FK_5b41e4b3-b53d-3958-bbd3-cda44679b177"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTask.process" uuid="f85e0506-e17c-41ad-a02a-bd3596dac764" description="process (Task)" sqlName="C_FRW_TASK_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.17/@fields.12" foreignKeySqlName="FK_1e19c2f1-2ec9-3f8c-b9ee-b84b48af1d39"/>
-    <uniqueKeys name="judo.framework.Process.guid" uuid="e86445a4-fd5f-398e-910a-d5def93ad00e" description="Process.guid" sqlName="U_T_FRW_PRCSS_C_GUID"/>
-    <uniqueKeys name="judo.framework.Process.externalId" uuid="a44e36d9-fde7-4914-9bbe-1ed9a88b8307" description="Process.externalId" sqlName="U_T_FRW_PRCSS_C_EXTNLD"/>
+    <uniqueConstraints name="judo.framework.Process.guid" uuid="e86445a4-fd5f-398e-910a-d5def93ad00e" description="Process.guid" sqlName="U_T_FRW_PRCSS_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Process.externalId" uuid="a44e36d9-fde7-4914-9bbe-1ed9a88b8307" description="Process.externalId" sqlName="U_T_FRW_PRCSS_C_EXTNLD"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.PriorityValue" uuid="407a510d-e21f-3173-adad-dec0cf30e8eb" description="PriorityValue" sqlName="T_FRW_PRTYVL" primaryKey="//@rdbmsTables.32/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.PriorityValue.xmiid" uuid="ea99cb57-3e6c-3de1-8a0b-4d2a02feea19" description="PriorityValue.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -404,7 +404,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.PriorityValue.auditCreateUser" uuid="779ea5d5-6cfc-3da2-b79e-a77369d1c221" description="PriorityValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.PriorityValue.auditCreateTime" uuid="4da9e3e2-bc9a-3ff1-b53f-388ea948d161" description="PriorityValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.PriorityValue.id" uuid="39f1f68c-f0cc-3295-aa10-2c5a7788bd1e" description="PriorityValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.33/@fields.10 //@rdbmsTables.38/@fields.9"/>
-    <uniqueKeys name="judo.framework.PriorityValue.guid" uuid="c6ed72f6-82bf-38b3-8779-11136eaefcb5" description="PriorityValue.guid" sqlName="U_T_FRW_PRTYVL_C_GUID"/>
+    <uniqueConstraints name="judo.framework.PriorityValue.guid" uuid="c6ed72f6-82bf-38b3-8779-11136eaefcb5" description="PriorityValue.guid" sqlName="U_T_FRW_PRTYVL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Priority" uuid="6c3f709b-3193-4685-821b-4a09c342a766" description="Priority" sqlName="T_FRW_PRRTY" primaryKey="//@rdbmsTables.33/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Priority.xmiid" uuid="fd3fe2ad-4b45-30ef-b8a6-188be307cbfa" description="Priority.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -418,7 +418,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Priority.id" uuid="f41e4354-729f-3b06-b8f2-e393fbc98f66" description="Priority.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTask.priority" uuid="cbcb691d-a8b4-3cdd-a8f8-4ae84eff5b8d" description="priority (Task)" sqlName="C_FRW_TASK_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.17/@fields.12" foreignKeySqlName="FK_5ec02ca8-948a-3e51-b1a6-f265fc76c0cc"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkPriorityValue.priority" uuid="521b0f81-4b8b-3a7e-a1d3-1542a1d0fe4d" description="priority (PriorityValue)" sqlName="C_FRW_PRTYVL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.32/@fields.7" foreignKeySqlName="FK_30f92e23-fa30-35b8-be3e-23bd2c1de0fb"/>
-    <uniqueKeys name="judo.framework.Priority.guid" uuid="252c1876-e4cc-30dd-9ee7-2283f4b89149" description="Priority.guid" sqlName="U_T_FRW_PRRTY_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Priority.guid" uuid="252c1876-e4cc-30dd-9ee7-2283f4b89149" description="Priority.guid" sqlName="U_T_FRW_PRRTY_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Permission" uuid="f01565a4-ad7c-4ab6-8a74-9feba3d7ad6b" description="Permission" sqlName="T_FRW_PERMSN" primaryKey="//@rdbmsTables.34/@fields.9">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Permission.xmiid" uuid="6f20030c-b8c2-3785-b076-db50f3f32dbc" description="Permission.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -431,7 +431,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Permission.auditCreateTime" uuid="eaa73e67-09e9-3b5d-91a8-7b264d96b1d9" description="Permission.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Permission.action" uuid="e85d8812-2bc3-4e1b-8a37-79cdcceb3adf" description="Permission.action" sqlName="C_ACTION" type="//@rdbmsFieldTypes.2" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Permission.id" uuid="0d0fcdb4-3bc9-3ea8-9773-fe97d73485da" description="Permission.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
-    <uniqueKeys name="judo.framework.Permission.guid" uuid="516470a1-b68d-33f8-95e3-237814165690" description="Permission.guid" sqlName="U_T_FRW_PERMSN_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Permission.guid" uuid="516470a1-b68d-33f8-95e3-237814165690" description="Permission.guid" sqlName="U_T_FRW_PERMSN_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.OperatorValue" uuid="faccc16e-ba32-3228-88dd-a4ef191937f5" description="OperatorValue" sqlName="T_FRW_OPTRVL" primaryKey="//@rdbmsTables.35/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.OperatorValue.xmiid" uuid="afabfd2b-df91-3dcc-9cb8-37f3de5cdca9" description="OperatorValue.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -442,7 +442,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.OperatorValue.auditCreateUser" uuid="72e45718-d6bd-32b2-8d36-8f3dbc27c55e" description="OperatorValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.OperatorValue.auditCreateTime" uuid="349bb5d4-c3e4-3ab0-bdf1-f131801d4d51" description="OperatorValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.OperatorValue.id" uuid="f49ada8b-6845-34a2-af83-64371ccc4d3a" description="OperatorValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.36/@fields.9 //@rdbmsTables.38/@fields.10"/>
-    <uniqueKeys name="judo.framework.OperatorValue.guid" uuid="fae93041-ed73-30fa-83f1-e4e01c153407" description="OperatorValue.guid" sqlName="U_T_FRW_OPTRVL_C_GUID"/>
+    <uniqueConstraints name="judo.framework.OperatorValue.guid" uuid="fae93041-ed73-30fa-83f1-e4e01c153407" description="OperatorValue.guid" sqlName="U_T_FRW_OPTRVL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Operator" uuid="09703168-74ff-4a1f-a280-cbf896eabacb" description="Operator" sqlName="T_FRW_OPRTR" primaryKey="//@rdbmsTables.36/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Operator.xmiid" uuid="8a3ece8e-9006-3ee1-b55b-fa9aadb629d9" description="Operator.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -456,7 +456,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Operator.id" uuid="5be5af3f-8109-3d14-b526-691cf159e8d5" description="Operator.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkOperatorValue.operator" uuid="6ea04869-2edf-3b0f-aec5-053949a6a38b" description="operator (OperatorValue)" sqlName="C_FRW_OPTRVL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.35/@fields.7" foreignKeySqlName="FK_f1db205a-b96a-3d72-bff6-3c69c2b4e124"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkExpression.operator" uuid="d641913b-3f94-3c6c-a475-79e228e5c36d" description="operator (Expression)" sqlName="C_FRW_EXPRSN_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.44/@fields.8" foreignKeySqlName="FK_588217fa-ea7e-36e6-a350-d6772b157933"/>
-    <uniqueKeys name="judo.framework.Operator.guid" uuid="5cc34edb-618b-359c-93f5-289aa240f196" description="Operator.guid" sqlName="U_T_FRW_OPRTR_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Operator.guid" uuid="5cc34edb-618b-359c-93f5-289aa240f196" description="Operator.guid" sqlName="U_T_FRW_OPRTR_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Model" uuid="97b48547-a43d-4c77-9105-13c177058f48" description="Model" sqlName="T_FRW_MODEL" primaryKey="//@rdbmsTables.37/@fields.9">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Model.xmiid" uuid="99ce218e-5197-3240-85a1-ca252b36aab2" description="Model.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -470,7 +470,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Model.auditCreateTime" uuid="7cb57770-0854-3b5b-a647-156659bdfd97" description="Model.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Model.id" uuid="8b9f18f0-4e01-391e-98cd-00daaf4c65f5" description="Model.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTable.model" uuid="4e6a647a-3b90-40ff-8537-95d4656b4e02" description="model (Table)" sqlName="C_FRW_TABLE_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.20/@fields.10" foreignKeySqlName="FK_39f21904-ac87-3e42-9d92-a480996dab39"/>
-    <uniqueKeys name="judo.framework.Model.guid" uuid="2a7daff6-69e9-3848-a469-413228c4c8c7" description="Model.guid" sqlName="U_T_FRW_MODEL_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Model.guid" uuid="2a7daff6-69e9-3848-a469-413228c4c8c7" description="Model.guid" sqlName="U_T_FRW_MODEL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Language" uuid="eff97dce-9f78-4dc8-8821-66027ae710b2" description="Language" sqlName="T_FRW_LANGG" primaryKey="//@rdbmsTables.38/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Language.xmiid" uuid="47a840fa-e8e3-3d6e-b304-e1d64ca6616d" description="Language.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -490,7 +490,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsNotificationStatusValue.language" uuid="51c087c7-efd1-33b7-9c63-1044710ea813" description="language (NotificationStatusValue)" sqlName="C_TRTMNS_NOCSTL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.87/@fields.7" foreignKeySqlName="FK_9e466817-ae9f-3043-8bd9-5929d03b0de9"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="commonTimeUnitValue.language" uuid="fdc17f97-9790-3456-b59d-2711f04f1093" description="language (TimeUnitValue)" sqlName="C_COMMON_TIMNTL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.93/@fields.7" foreignKeySqlName="FK_2c4610b0-d7d8-3eac-a84e-a5dacd0415fe"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkCustomFieldTypeValue.language" uuid="4e739f31-815f-3ac3-bfac-e1baf758c666" description="language (CustomFieldTypeValue)" sqlName="C_FRW_CUTMDL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.46/@fields.7" foreignKeySqlName="FK_513d5c42-c69b-38d2-92c5-0818d55750fc"/>
-    <uniqueKeys name="judo.framework.Language.guid" uuid="cda8aa9a-d7be-3af3-abf5-55aeca7ef7f5" description="Language.guid" sqlName="U_T_FRW_LANGG_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Language.guid" uuid="cda8aa9a-d7be-3af3-abf5-55aeca7ef7f5" description="Language.guid" sqlName="U_T_FRW_LANGG_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.InstanceStateValue" uuid="82714383-836f-3773-a07d-3b40038d3e26" description="InstanceStateValue" sqlName="T_FRW_INNCTL" primaryKey="//@rdbmsTables.39/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.InstanceStateValue.xmiid" uuid="684bfed7-b33e-3be5-b18f-c3350dfa811f" description="InstanceStateValue.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -501,7 +501,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.InstanceStateValue.auditCreateUser" uuid="c9654273-56d3-36f5-a5cb-c200e70c3c9b" description="InstanceStateValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.InstanceStateValue.auditCreateTime" uuid="c71b178c-2a5d-3a19-9258-66ae5942a859" description="InstanceStateValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.InstanceStateValue.id" uuid="a3158e9a-b2bb-304e-9015-4ce67bd67a4e" description="InstanceStateValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.38/@fields.11 //@rdbmsTables.40/@fields.11"/>
-    <uniqueKeys name="judo.framework.InstanceStateValue.guid" uuid="d11919e0-3057-3a07-be8f-c7c5b2852222" description="InstanceStateValue.guid" sqlName="U_T_FRW_INNCTL_C_GUID"/>
+    <uniqueConstraints name="judo.framework.InstanceStateValue.guid" uuid="d11919e0-3057-3a07-be8f-c7c5b2852222" description="InstanceStateValue.guid" sqlName="U_T_FRW_INNCTL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.InstanceState" uuid="60a9b815-a52c-4fa5-9272-8bd7bdd07793" description="InstanceState" sqlName="T_FRW_INTCST" primaryKey="//@rdbmsTables.40/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.InstanceState.xmiid" uuid="2d031499-44eb-3e21-ad4d-4dfc2017a720" description="InstanceState.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -516,7 +516,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTask.state" uuid="9787d174-e364-3a97-a2aa-12c4a63793d3" description="state (Task)" sqlName="C_FRW_TASK_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.17/@fields.12" foreignKeySqlName="FK_61ad5702-b64e-3bde-9d4d-e2272e4b5c28"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkProcess.state" uuid="8ebe045e-de5b-34ea-97a0-66597beb25cd" description="state (Process)" sqlName="C_FRW_PRCSS_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.31/@fields.8" foreignKeySqlName="FK_63ce559d-3511-3164-b9fa-810d54d21a53"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkInstanceStateValue.instanceState" uuid="271f8880-df76-3492-b101-eee887680c42" description="instanceState (InstanceStateValue)" sqlName="C_FRW_INNCTL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.39/@fields.7" foreignKeySqlName="FK_0d94898a-4ff8-3da7-9db3-98e13c73eeef"/>
-    <uniqueKeys name="judo.framework.InstanceState.guid" uuid="061b93bf-34be-3027-bc40-73264d5f730b" description="InstanceState.guid" sqlName="U_T_FRW_INTCST_C_GUID"/>
+    <uniqueConstraints name="judo.framework.InstanceState.guid" uuid="061b93bf-34be-3027-bc40-73264d5f730b" description="InstanceState.guid" sqlName="U_T_FRW_INTCST_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Header" uuid="c52f813a-02d6-42e4-8e98-7b150bfda54e" description="Header" sqlName="T_FRW_HEADER" primaryKey="//@rdbmsTables.41/@fields.10">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Header.xmiid" uuid="a855d615-1ce8-3d9b-ac17-6c9a6eb03929" description="Header.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -531,7 +531,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Header.auditCreateTime" uuid="ccb36e1f-ad00-3e32-8a14-fbc87d5af2de" description="Header.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Header.id" uuid="364af307-b4b1-3548-85c3-96dab05f613b" description="Header.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.20/@fields.12 //@rdbmsTables.13/@fields.11"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkExpression.header" uuid="3e057201-832d-448f-a00c-4eb96e911742" description="header (Expression)" sqlName="C_FRW_EXPRSN_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.44/@fields.8" foreignKeySqlName="FK_2aa197e3-8ccb-3868-8973-e7b6338a5647"/>
-    <uniqueKeys name="judo.framework.Header.guid" uuid="957badf7-a23f-39da-a48c-607ab86e4ecf" description="Header.guid" sqlName="U_T_FRW_HEADER_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Header.guid" uuid="957badf7-a23f-39da-a48c-607ab86e4ecf" description="Header.guid" sqlName="U_T_FRW_HEADER_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.GroupCandidate" uuid="74b00d94-b29d-44db-a661-21db38e5a911" description="GroupCandidate" sqlName="T_FRW_GRPCNT" primaryKey="//@rdbmsTables.42/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.GroupCandidate.id" uuid="98ae1b84-54c5-377b-96f7-fce92b963430" description="GroupCandidate.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.55/@fields.1"/>
@@ -551,7 +551,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Gps.auditCreateTime" uuid="b3989b0b-e24f-3c02-98bc-d8d5dac4df67" description="Gps.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Gps.accuracy" uuid="80ec8ba5-c8bc-434b-b820-6b62df6a7db6" description="Gps.accuracy" sqlName="C_ACCRCY" type="//@rdbmsFieldTypes.9" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Gps.id" uuid="bf441fb5-5da6-36c3-9d32-5c78971e7037" description="Gps.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
-    <uniqueKeys name="judo.framework.Gps.guid" uuid="5480448f-8235-3333-875c-2c8105e17a7c" description="Gps.guid" sqlName="U_T_FRW_GPS_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Gps.guid" uuid="5480448f-8235-3333-875c-2c8105e17a7c" description="Gps.guid" sqlName="U_T_FRW_GPS_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Expression" uuid="f558fdfb-b940-4689-9a81-f8f2dcdc13e8" description="Expression" sqlName="T_FRW_EXPRSN" primaryKey="//@rdbmsTables.44/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Expression.xmiid" uuid="0843467f-d726-35d1-811c-1c4eb2dbadec" description="Expression.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -563,7 +563,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Expression.auditCreateUser" uuid="99165581-2272-3234-95c5-829be46e552d" description="Expression.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Expression.auditCreateTime" uuid="7cd595be-1126-3ac8-8ce4-14c59b0128aa" description="Expression.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Expression.id" uuid="4803116b-e4d5-3fc4-87ff-c4f48f76b07f" description="Expression.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.41/@fields.11 //@rdbmsTables.24/@fields.13 //@rdbmsTables.36/@fields.10"/>
-    <uniqueKeys name="judo.framework.Expression.guid" uuid="ebca0257-bca8-32b6-8323-6ed217c5bfe7" description="Expression.guid" sqlName="U_T_FRW_EXPRSN_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Expression.guid" uuid="ebca0257-bca8-32b6-8323-6ed217c5bfe7" description="Expression.guid" sqlName="U_T_FRW_EXPRSN_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Event" uuid="0f4e2ea3-4b74-4990-a66c-035e017375a1" description="Event" sqlName="T_FRW_EVENT" primaryKey="//@rdbmsTables.45/@fields.11">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Event.xmiid" uuid="d1b840af-2f63-3685-85b2-95c5c5878179" description="Event.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -578,7 +578,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Event.auditCreateTime" uuid="5682eaf0-c423-3ce3-a315-1f37f23c3fb7" description="Event.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Event.attributeName" uuid="ca539a73-0a6f-4d36-aa8c-cfa85e12ec7e" description="Event.attributeName" sqlName="C_ATTBTM" type="//@rdbmsFieldTypes.2"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Event.id" uuid="fede15f0-a125-3b4a-bbb2-c1be76417a5e" description="Event.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
-    <uniqueKeys name="judo.framework.Event.guid" uuid="d7e38982-a511-349b-b7f8-45d774ec7d92" description="Event.guid" sqlName="U_T_FRW_EVENT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Event.guid" uuid="d7e38982-a511-349b-b7f8-45d774ec7d92" description="Event.guid" sqlName="U_T_FRW_EVENT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.CustomFieldTypeValue" uuid="0146bfe9-03da-3d13-8f4a-ebeb6be4b4fd" description="CustomFieldTypeValue" sqlName="T_FRW_CUTMDL" primaryKey="//@rdbmsTables.46/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.CustomFieldTypeValue.xmiid" uuid="aadee238-71a1-3f91-8bbe-caa133a364bc" description="CustomFieldTypeValue.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -589,7 +589,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.CustomFieldTypeValue.auditCreateUser" uuid="d030f8b9-78a5-3310-8041-1448d6cbb871" description="CustomFieldTypeValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.CustomFieldTypeValue.auditCreateTime" uuid="eb584980-5735-30ae-9673-180cd27cf354" description="CustomFieldTypeValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.CustomFieldTypeValue.id" uuid="2d4afabd-851c-34f1-ac5a-82458bee391c" description="CustomFieldTypeValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.38/@fields.16 //@rdbmsTables.47/@fields.9"/>
-    <uniqueKeys name="judo.framework.CustomFieldTypeValue.guid" uuid="255e4f4f-cb5a-39f2-80e1-48e2f8129970" description="CustomFieldTypeValue.guid" sqlName="U_T_FRW_CUTMDL_C_GUID"/>
+    <uniqueConstraints name="judo.framework.CustomFieldTypeValue.guid" uuid="255e4f4f-cb5a-39f2-80e1-48e2f8129970" description="CustomFieldTypeValue.guid" sqlName="U_T_FRW_CUTMDL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.CustomFieldType" uuid="5498ca88-768e-47e8-a188-639b349221d9" description="CustomFieldType" sqlName="T_FRW_CUSFDP" primaryKey="//@rdbmsTables.47/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.CustomFieldType.xmiid" uuid="6c579211-954e-34f5-8796-b7a8798c1129" description="CustomFieldType.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -603,7 +603,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.CustomFieldType.id" uuid="0e3ba499-2323-344a-9ba8-bee0c23833ab" description="CustomFieldType.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkCustomFieldTypeValue.customFieldType" uuid="c5781850-ba55-3b8b-ab03-59f63197c2b9" description="customFieldType (CustomFieldTypeValue)" sqlName="C_FRW_CUTMDL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.46/@fields.7" foreignKeySqlName="FK_9e7e1071-fc95-3bac-8df6-d6398c258a84"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkCustomFieldDescriptor.type" uuid="58ec5696-36e5-3e7c-bd9a-d19489e3011a" description="type (CustomFieldDescriptor)" sqlName="C_FRW_CUSFDR_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.48/@fields.10" foreignKeySqlName="FK_ffe0f358-e006-33d3-b6b1-cb173d956631"/>
-    <uniqueKeys name="judo.framework.CustomFieldType.guid" uuid="81ded3d1-ddf2-39cd-b71f-553722eaed38" description="CustomFieldType.guid" sqlName="U_T_FRW_CUSFDP_C_GUID"/>
+    <uniqueConstraints name="judo.framework.CustomFieldType.guid" uuid="81ded3d1-ddf2-39cd-b71f-553722eaed38" description="CustomFieldType.guid" sqlName="U_T_FRW_CUSFDP_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.CustomFieldDescriptor" uuid="8e839a50-820f-461a-a21c-79f9d73a9e32" description="CustomFieldDescriptor" sqlName="T_FRW_CUSFDR" primaryKey="//@rdbmsTables.48/@fields.10">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.CustomFieldDescriptor.xmiid" uuid="34e852e3-15b9-363a-b6eb-51bb423fa181" description="CustomFieldDescriptor.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -617,7 +617,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.CustomFieldDescriptor.auditCreateUser" uuid="4e26d602-9d8b-391c-a0af-70fc9ce84fce" description="CustomFieldDescriptor.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.CustomFieldDescriptor.auditCreateTime" uuid="8f5da52c-204e-3c08-8661-0b41163540c6" description="CustomFieldDescriptor.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.CustomFieldDescriptor.id" uuid="a3e6fe10-4fde-3317-af67-915c2b0f4154" description="CustomFieldDescriptor.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.47/@fields.10"/>
-    <uniqueKeys name="judo.framework.CustomFieldDescriptor.guid" uuid="8e5122c8-cb8b-31bf-8e22-99f0e385eb6e" description="CustomFieldDescriptor.guid" sqlName="U_T_FRW_CUSFDR_C_GUID"/>
+    <uniqueConstraints name="judo.framework.CustomFieldDescriptor.guid" uuid="8e5122c8-cb8b-31bf-8e22-99f0e385eb6e" description="CustomFieldDescriptor.guid" sqlName="U_T_FRW_CUSFDR_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Counter" uuid="5c90a544-1338-4750-bbe5-49149958a207" description="Counter" sqlName="T_FRW_CONTR" primaryKey="//@rdbmsTables.49/@fields.9">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Counter.xmiid" uuid="41a701ec-5135-320e-a478-d30b7439801a" description="Counter.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -630,7 +630,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Counter.auditCreateUser" uuid="5a0147a6-8b64-3d3c-971b-2d5eb0d20808" description="Counter.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Counter.auditCreateTime" uuid="bf36497b-f627-3f5a-a109-9c2b85065f63" description="Counter.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Counter.id" uuid="e6a08f51-67bc-377f-8124-b46e7d2bdaee" description="Counter.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
-    <uniqueKeys name="judo.framework.Counter.guid" uuid="cce2715d-5719-3c70-8fb1-26179a567da1" description="Counter.guid" sqlName="U_T_FRW_CONTR_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Counter.guid" uuid="cce2715d-5719-3c70-8fb1-26179a567da1" description="Counter.guid" sqlName="U_T_FRW_CONTR_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.ConfigEntry" uuid="f4f17186-2469-4ec0-8a5c-45d902ff1d02" description="ConfigEntry" sqlName="T_FRW_COFENY" primaryKey="//@rdbmsTables.50/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ConfigEntry.xmiid" uuid="38eca9b9-552a-32b5-85e2-70ca09d393bf" description="ConfigEntry.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -642,7 +642,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ConfigEntry.auditCreateUser" uuid="0b675030-ea1e-316e-a252-2af0f101f294" description="ConfigEntry.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ConfigEntry.auditCreateTime" uuid="d400043d-adb2-3dde-aaee-df6c07462470" description="ConfigEntry.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.ConfigEntry.id" uuid="49f27cdd-c5a2-3e00-89b7-bba06e420127" description="ConfigEntry.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.51/@fields.9"/>
-    <uniqueKeys name="judo.framework.ConfigEntry.guid" uuid="98ccfa6d-685e-32ce-b45c-4bd3c4c46aef" description="ConfigEntry.guid" sqlName="U_T_FRW_COFENY_C_GUID"/>
+    <uniqueConstraints name="judo.framework.ConfigEntry.guid" uuid="98ccfa6d-685e-32ce-b45c-4bd3c4c46aef" description="ConfigEntry.guid" sqlName="U_T_FRW_COFENY_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Config" uuid="471eb9a7-5a71-4371-82c6-47495ae07a31" description="Config" sqlName="T_FRW_CONFIG" primaryKey="//@rdbmsTables.51/@fields.8">
     <fields xsi:type="rdbms:RdbmsForeignKey" name="UserConfig" uuid="f0a297da-1c1d-3c6c-8039-2c53ab628273" description="UserConfigid" sqlName="C_T_FRW_USRCNG_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.2/@fields.0" inheritenceBased="true"/>
@@ -655,7 +655,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Config.auditCreateTime" uuid="cdc769a3-88a1-3d00-911b-e885163e3db3" description="Config.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Config.id" uuid="97174980-8a21-306e-adac-efacfe3c780e" description="Config.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkConfigEntry.config" uuid="918bfad5-9148-4a76-a453-e9ad988718b0" description="config (ConfigEntry)" sqlName="C_FRW_COFENY_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.50/@fields.8" foreignKeySqlName="FK_6ea3969a-f2ba-3461-8c9a-7e5d7d142263"/>
-    <uniqueKeys name="judo.framework.Config.guid" uuid="ff88a973-c0be-3f86-ac14-6d43fbc9d2d0" description="Config.guid" sqlName="U_T_FRW_CONFIG_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Config.guid" uuid="ff88a973-c0be-3f86-ac14-6d43fbc9d2d0" description="Config.guid" sqlName="U_T_FRW_CONFIG_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Comment" uuid="b1352def-ef60-4381-a9be-4d0fa3d61fac" description="Comment" sqlName="T_FRW_COMMNT" primaryKey="//@rdbmsTables.52/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Comment.xmiid" uuid="bc685450-59d5-3ac9-adca-edccdc727fbb" description="Comment.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -667,7 +667,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Comment.auditCreateTime" uuid="bda3ffea-ae72-361e-803c-4d6efa97eaf9" description="Comment.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Comment.id" uuid="e92502e6-7b29-30ac-895c-dc8e177892ec" description="Comment.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.11/@fields.26 //@rdbmsTables.17/@fields.16"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkTask.completeComment" uuid="212916fb-b14f-4ef4-8960-70851f63e91e" description="completeComment (Task)" sqlName="C_FRW_TASK_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.17/@fields.12" foreignKeySqlName="FK_fdaef149-facc-31c7-b984-9bedbb264ebe"/>
-    <uniqueKeys name="judo.framework.Comment.guid" uuid="d7c89bfc-321d-3e13-8003-12a43394bc82" description="Comment.guid" sqlName="U_T_FRW_COMMNT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Comment.guid" uuid="d7c89bfc-321d-3e13-8003-12a43394bc82" description="Comment.guid" sqlName="U_T_FRW_COMMNT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.ChecklistItem" uuid="acdfa32c-fbcd-46e1-83a2-dbd1cd735f5d" description="ChecklistItem" sqlName="T_FRW_CHLTIM" primaryKey="//@rdbmsTables.53/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ChecklistItem.xmiid" uuid="37d63e3c-2995-3346-bf3e-5c423d68b4cf" description="ChecklistItem.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -679,7 +679,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ChecklistItem.auditCreateUser" uuid="68df0eb5-0a26-315a-9d62-6e3a3498e769" description="ChecklistItem.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.ChecklistItem.auditCreateTime" uuid="0b8bdec1-b02e-3f17-b4eb-5dc9e12a2648" description="ChecklistItem.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.ChecklistItem.id" uuid="88ad9abf-150b-3ef5-b542-39e028717145" description="ChecklistItem.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.54/@fields.7"/>
-    <uniqueKeys name="judo.framework.ChecklistItem.guid" uuid="54c4656e-7c43-3050-b3c7-37ae83bfcd06" description="ChecklistItem.guid" sqlName="U_T_FRW_CHLTIM_C_GUID"/>
+    <uniqueConstraints name="judo.framework.ChecklistItem.guid" uuid="54c4656e-7c43-3050-b3c7-37ae83bfcd06" description="ChecklistItem.guid" sqlName="U_T_FRW_CHLTIM_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Checklist" uuid="6e563aa6-f31f-4efc-858f-6c8507c4c4a2" description="Checklist" sqlName="T_FRW_CHCKLT" primaryKey="//@rdbmsTables.54/@fields.6">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Checklist.xmiid" uuid="3faad04f-4ded-3f14-841e-80f6e4ea3466" description="Checklist.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -690,7 +690,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Checklist.auditCreateTime" uuid="ce4c75a3-a225-317d-a16b-a1cf5b7bb4cc" description="Checklist.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Checklist.id" uuid="3f890425-99e0-35d1-997b-d243adbda508" description="Checklist.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.17/@fields.17"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkChecklistItem.checklist" uuid="3f45a91f-48dd-4be6-b878-d5e32d77be9b" description="checklist (ChecklistItem)" sqlName="C_FRW_CHLTIM_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.53/@fields.8" foreignKeySqlName="FK_89eaefe5-db5f-3664-a41d-ad632ce88416"/>
-    <uniqueKeys name="judo.framework.Checklist.guid" uuid="0e165f58-64a4-3950-b65b-a7b6e19faf48" description="Checklist.guid" sqlName="U_T_FRW_CHCKLT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Checklist.guid" uuid="0e165f58-64a4-3950-b65b-a7b6e19faf48" description="Checklist.guid" sqlName="U_T_FRW_CHCKLT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.Candidate" uuid="84f1cedc-921b-48c0-8120-7fa594e66448" description="Candidate" sqlName="T_FRW_CANDDT" primaryKey="//@rdbmsTables.55/@fields.8">
     <fields xsi:type="rdbms:RdbmsForeignKey" name="UserCandidate" uuid="f92b2328-d1c4-301d-9498-386bdc5b0709" description="UserCandidateid" sqlName="C_T_FRW_USRCNT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.3/@fields.0" inheritenceBased="true"/>
@@ -702,7 +702,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Candidate.auditCreateUser" uuid="23ad8259-32d9-3ea5-a016-6084846e9b55" description="Candidate.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.Candidate.auditCreateTime" uuid="2f8230c5-62f2-3cea-ae74-e5e37750f936" description="Candidate.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.Candidate.id" uuid="bdbe6458-1093-3c91-b48d-71e799178d2e" description="Candidate.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.17/@fields.18"/>
-    <uniqueKeys name="judo.framework.Candidate.guid" uuid="7714a7d9-e7ce-38e3-8057-f1c169fc855c" description="Candidate.guid" sqlName="U_T_FRW_CANDDT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.Candidate.guid" uuid="7714a7d9-e7ce-38e3-8057-f1c169fc855c" description="Candidate.guid" sqlName="U_T_FRW_CANDDT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.BusinessReference" uuid="8b466734-3fc4-44fe-97e8-c176cd9e9de7" description="BusinessReference" sqlName="T_FRW_BUSSRC" primaryKey="//@rdbmsTables.56/@fields.13">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.BusinessReference.xmiid" uuid="03aa2b44-830d-3020-aaac-ac7633ac0089" description="BusinessReference.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -720,7 +720,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.BusinessReference.aggregation" uuid="9bd799c6-7c15-4e5c-959b-213180d048b5" description="BusinessReference.aggregation" sqlName="C_AGGRGN" type="//@rdbmsFieldTypes.1" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.BusinessReference.id" uuid="ff71a924-a948-3f80-b6d2-72681029cf4a" description="BusinessReference.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.56/@fields.14 //@rdbmsTables.58/@fields.11 //@rdbmsTables.58/@fields.12"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkBusinessReference.oppositeFrom" uuid="f246598f-39d4-4435-9935-320575559c25" description="oppositeFrom (BusinessReference)" sqlName="C_FRW_BUSSRC_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.56/@fields.13" foreignKeySqlName="FK_e5b1510f-f28c-3fc5-b7ba-651a3178be85"/>
-    <uniqueKeys name="judo.framework.BusinessReference.guid" uuid="5e0c6f84-e50f-3138-99ce-47605a6f6f7e" description="BusinessReference.guid" sqlName="U_T_FRW_BUSSRC_C_GUID"/>
+    <uniqueConstraints name="judo.framework.BusinessReference.guid" uuid="5e0c6f84-e50f-3138-99ce-47605a6f6f7e" description="BusinessReference.guid" sqlName="U_T_FRW_BUSSRC_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.BusinessDomain" uuid="b75c9d49-57e9-4f28-bab6-39965153e4aa" description="BusinessDomain" sqlName="T_FRW_BUNSDN" primaryKey="//@rdbmsTables.57/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.BusinessDomain.xmiid" uuid="0466dfb2-a6da-38ef-a2da-b48b285180d4" description="BusinessDomain.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -732,7 +732,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.BusinessDomain.auditCreateTime" uuid="5c310568-e0eb-375a-b362-5c7573d09eb6" description="BusinessDomain.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.BusinessDomain.id" uuid="16ee58a8-f293-3cff-a7bb-3039fdb686d1" description="BusinessDomain.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkBusinessClass.businessDomain" uuid="8c89c9a6-e0c6-42b3-8df7-ce636ff3303d" description="businessDomain (BusinessClass)" sqlName="C_FRW_BUNSCS_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.58/@fields.10" foreignKeySqlName="FK_4fbe42e4-f52d-36a3-b6f1-11062376c969"/>
-    <uniqueKeys name="judo.framework.BusinessDomain.guid" uuid="3d910c20-1b56-375d-9c7d-d11c65bef094" description="BusinessDomain.guid" sqlName="U_T_FRW_BUNSDN_C_GUID"/>
+    <uniqueConstraints name="judo.framework.BusinessDomain.guid" uuid="3d910c20-1b56-375d-9c7d-d11c65bef094" description="BusinessDomain.guid" sqlName="U_T_FRW_BUNSDN_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.BusinessClass" uuid="9662c59d-4fb4-47d4-9fae-be124928a615" description="BusinessClass" sqlName="T_FRW_BUNSCS" primaryKey="//@rdbmsTables.58/@fields.10">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.BusinessClass.xmiid" uuid="6ed2ecb7-a148-323b-bd61-2bd5b9329128" description="BusinessClass.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -750,7 +750,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkBusinessReference.referenced" uuid="13163e91-4a8b-4a6c-b714-32530ab17d01" description="referenced (BusinessReference)" sqlName="C_FRW_BUSSRC_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.56/@fields.13" foreignKeySqlName="FK_1cdf31e0-3511-3738-847d-5506139551b9"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkBusinessClass.superclass" uuid="682b2355-95b8-4725-a5eb-4036c2b60658" description="superclass (BusinessClass)" sqlName="C_FRW_BUNSCS_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.58/@fields.10" foreignKeySqlName="FK_2cb8eaca-ef35-3a50-9d48-f036b099692b"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="judo.frameworkBusinessAttribute.busniessClass" uuid="1b6472fc-81d0-4c1e-aac7-b5c2f76d2133" description="busniessClass (BusinessAttribute)" sqlName="C_FRW_BUSNAT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.59/@fields.10" foreignKeySqlName="FK_8957c78b-5bf9-3bf4-8335-0dc15b54edd5"/>
-    <uniqueKeys name="judo.framework.BusinessClass.guid" uuid="7b2a6fd3-ec73-3f2e-b4f2-e4908c49193b" description="BusinessClass.guid" sqlName="U_T_FRW_BUNSCS_C_GUID"/>
+    <uniqueConstraints name="judo.framework.BusinessClass.guid" uuid="7b2a6fd3-ec73-3f2e-b4f2-e4908c49193b" description="BusinessClass.guid" sqlName="U_T_FRW_BUNSCS_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.BusinessAttribute" uuid="0b4e6a8b-6786-45bf-9617-cb9bd0705abb" description="BusinessAttribute" sqlName="T_FRW_BUSNAT" primaryKey="//@rdbmsTables.59/@fields.10">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.BusinessAttribute.xmiid" uuid="bb044d9c-07e5-3a99-95a3-729c5e81a57a" description="BusinessAttribute.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -764,7 +764,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.BusinessAttribute.auditCreateUser" uuid="e8a2a128-730c-3844-a831-de61a6b4b808" description="BusinessAttribute.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.BusinessAttribute.auditCreateTime" uuid="bfa7e116-b147-33e3-9559-78d31f3f0dfb" description="BusinessAttribute.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.BusinessAttribute.id" uuid="120846e7-6cdb-37ba-82ef-f98ffe672ab5" description="BusinessAttribute.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.58/@fields.14"/>
-    <uniqueKeys name="judo.framework.BusinessAttribute.guid" uuid="4dec3728-948d-38a3-8e82-3ac2df6f0d48" description="BusinessAttribute.guid" sqlName="U_T_FRW_BUSNAT_C_GUID"/>
+    <uniqueConstraints name="judo.framework.BusinessAttribute.guid" uuid="4dec3728-948d-38a3-8e82-3ac2df6f0d48" description="BusinessAttribute.guid" sqlName="U_T_FRW_BUSNAT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="judo.framework.AuditLog" uuid="616601ff-d002-4cdb-8272-91d017aabd42" description="AuditLog" sqlName="T_FRW_AUDTLG" primaryKey="//@rdbmsTables.60/@fields.14">
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.AuditLog.xmiid" uuid="d19441dc-d267-39a1-a672-b48cbedf475e" description="AuditLog.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -782,7 +782,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.AuditLog.auditCreateTime" uuid="c3981e6c-72dd-3140-836b-c4f054903799" description="AuditLog.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="judo.framework.AuditLog.attributes" uuid="1a9ab1bf-4477-476e-8dfb-328c18a98854" description="AuditLog.attributes" sqlName="C_ATTRBS" type="//@rdbmsFieldTypes.0"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="judo.framework.AuditLog.id" uuid="9c2eca07-3649-3da6-91df-b18857659306" description="AuditLog.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
-    <uniqueKeys name="judo.framework.AuditLog.guid" uuid="c5500cb5-3de9-3701-9398-308662f0177d" description="AuditLog.guid" sqlName="U_T_FRW_AUDTLG_C_GUID"/>
+    <uniqueConstraints name="judo.framework.AuditLog.guid" uuid="c5500cb5-3de9-3701-9398-308662f0177d" description="AuditLog.guid" sqlName="U_T_FRW_AUDTLG_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="users.SexualityKindValue" uuid="386d51b8-3b0b-358f-97b7-a290a543f579" description="SexualityKindValue" sqlName="T_USERS_SETYNL" primaryKey="//@rdbmsTables.61/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="users.SexualityKindValue.xmiid" uuid="d005b3b9-b675-3264-910c-5062d3c3597a" description="SexualityKindValue.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -793,7 +793,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="users.SexualityKindValue.auditCreateUser" uuid="69469bc5-3c94-3250-b8d6-71f90621c6ca" description="SexualityKindValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="users.SexualityKindValue.auditCreateTime" uuid="cf627f4a-99ac-35f6-86c3-82a0dd928eeb" description="SexualityKindValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="users.SexualityKindValue.id" uuid="f958c641-0ea3-3122-a3f3-acaf16b889f3" description="SexualityKindValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.38/@fields.12 //@rdbmsTables.62/@fields.9"/>
-    <uniqueKeys name="users.SexualityKindValue.guid" uuid="6115021b-f128-3b15-99f6-eddadcf3b058" description="SexualityKindValue.guid" sqlName="U_T_USERS_SETYNL_C_GUID"/>
+    <uniqueConstraints name="users.SexualityKindValue.guid" uuid="6115021b-f128-3b15-99f6-eddadcf3b058" description="SexualityKindValue.guid" sqlName="U_T_USERS_SETYNL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="users.SexualityKind" uuid="6b63ff3c-a3b7-4f96-9e97-4651957a2bc4" description="SexualityKind" sqlName="T_USERS_SELYKD" primaryKey="//@rdbmsTables.62/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="users.SexualityKind.xmiid" uuid="5f64b18a-d1ed-3b6e-9546-fbbfa6ee9f9a" description="SexualityKind.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -807,7 +807,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="users.SexualityKind.id" uuid="427b60eb-a466-3d25-95a7-92eb7fac1299" description="SexualityKind.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="usersSexualityKindValue.sexualityKind" uuid="db8b81dc-df47-318c-b6b8-15574c1dea1a" description="sexualityKind (SexualityKindValue)" sqlName="C_USERS_SETYNL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.61/@fields.7" foreignKeySqlName="FK_1a501831-7b84-3dbe-9d5e-fb7183b2d9af"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="usersPatientUser.sexuality" uuid="cbb7de6c-e02f-342c-9098-f0cb03a8507c" description="sexuality (PatientUser)" sqlName="C_USERS_PATTUR_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.4/@fields.0" foreignKeySqlName="FK_46f55f28-940d-38f5-b502-b1d33953d192"/>
-    <uniqueKeys name="users.SexualityKind.guid" uuid="45a94d84-3940-34b3-b529-4e54e9e50557" description="SexualityKind.guid" sqlName="U_T_USERS_SELYKD_C_GUID"/>
+    <uniqueConstraints name="users.SexualityKind.guid" uuid="45a94d84-3940-34b3-b529-4e54e9e50557" description="SexualityKind.guid" sqlName="U_T_USERS_SELYKD_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.protocols.TaskScheduleScheme" uuid="57fc34de-2329-4d14-9386-8e4885592790" description="TaskScheduleScheme" sqlName="T_PRTCLS_TASDSM" primaryKey="//@rdbmsTables.63/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.protocols.TaskScheduleScheme.id" uuid="e472661d-48de-3e14-b5ea-fd96791d4625" description="TaskScheduleScheme.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.82/@fields.0 //@rdbmsTables.92/@fields.1 //@rdbmsTables.68/@fields.9"/>
@@ -837,7 +837,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.protocols.ProtocolMRTypeBinding.auditCreateUser" uuid="5fedbd5d-2a8e-3d41-9c61-3caa8fc4be70" description="ProtocolMRTypeBinding.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.protocols.ProtocolMRTypeBinding.auditCreateTime" uuid="0d49adc0-a614-3782-843a-427f8c995c6a" description="ProtocolMRTypeBinding.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.protocols.ProtocolMRTypeBinding.id" uuid="d6ee0b46-ae62-39ee-8ce5-fea79cafd080" description="ProtocolMRTypeBinding.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.70/@fields.14 //@rdbmsTables.68/@fields.10 //@rdbmsTables.94/@fields.10"/>
-    <uniqueKeys name="treatments.protocols.ProtocolMRTypeBinding.guid" uuid="9b4efb9a-9f08-3ceb-b5f7-b5eccbcbdf6d" description="ProtocolMRTypeBinding.guid" sqlName="U_T_PRTCLS_PRMRYG_C_GUID"/>
+    <uniqueConstraints name="treatments.protocols.ProtocolMRTypeBinding.guid" uuid="9b4efb9a-9f08-3ceb-b5f7-b5eccbcbdf6d" description="ProtocolMRTypeBinding.guid" sqlName="U_T_PRTCLS_PRMRYG_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.protocols.Protocol" uuid="0aa750d7-0d71-47fc-bebb-20bdcc10b4aa" description="Protocol" sqlName="T_PRTCLS_PRTCL" primaryKey="//@rdbmsTables.68/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.protocols.Protocol.xmiid" uuid="ccf02733-5a24-35d8-8faa-9e9ba3e5f67d" description="Protocol.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -851,7 +851,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsProtocolCfg.protocol" uuid="5dd642c5-7b25-433a-a4c2-92699dd0b905" description="protocol (ProtocolCfg)" sqlName="C_TRTMNS_PRTLCG_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.86/@fields.9" foreignKeySqlName="FK_ec84b014-4ec1-35d3-82fb-8fdea6f82cd2"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatments.protocolsTaskScheduleScheme.protocol" uuid="d0b35b61-df64-48f2-be74-5914448ad216" description="protocol (TaskScheduleScheme)" sqlName="C_PRTCLS_TASDSM_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.63/@fields.0" foreignKeySqlName="FK_a5ab54a1-3702-31bb-a2aa-063c959577f3"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatments.protocolsProtocolMRTypeBinding.protocol" uuid="25d8cffe-2226-49eb-a45e-d9066a331225" description="protocol (ProtocolMRTypeBinding)" sqlName="C_PRTCLS_PRMRYG_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.67/@fields.9" foreignKeySqlName="FK_9d1b6ad8-9348-3f99-91e3-49636ac2f642"/>
-    <uniqueKeys name="treatments.protocols.Protocol.guid" uuid="f63f6f10-8c02-349f-b36c-4cf5c931f6bb" description="Protocol.guid" sqlName="U_T_PRTCLS_PRTCL_C_GUID"/>
+    <uniqueConstraints name="treatments.protocols.Protocol.guid" uuid="f63f6f10-8c02-349f-b36c-4cf5c931f6bb" description="Protocol.guid" sqlName="U_T_PRTCLS_PRTCL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.protocols.PrimerDataType" uuid="31a99c29-fba5-4137-a77d-63df51d4bb78" description="PrimerDataType" sqlName="T_PRTCLS_PRMDTP" primaryKey="//@rdbmsTables.69/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.protocols.PrimerDataType.id" uuid="d1a9e31c-9039-3132-937a-0d55654a8e55" description="PrimerDataType.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.70/@fields.3"/>
@@ -877,7 +877,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatments.protocolsProtocolMRTypeBinding.mrType" uuid="f193e87b-1275-4459-b8cc-854595e35fde" description="mrType (ProtocolMRTypeBinding)" sqlName="C_PRTCLS_PRMRYG_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.67/@fields.9" foreignKeySqlName="FK_ca327aeb-7c90-3c4d-bf2c-606350dc7596"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="commonMetaParameter.mrType" uuid="59a5584e-a67d-4fec-a9d3-70d493fa9f86" description="mrType (MetaParameter)" sqlName="C_COMMON_METPRR_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.96/@fields.8" foreignKeySqlName="FK_bca26d8a-36b8-36eb-b484-7f704778639c"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="opm.domainMRTypeTuple.medicalRecordTypeExtension" uuid="a6e5138d-72b6-46a1-aa06-dc4fffe6c443" description="medicalRecordTypeExtension (MRTypeTuple)" sqlName="C_DOMAIN_MRTPTL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.100/@fields.6" foreignKeySqlName="FK_a180d4cc-0d4d-35ab-8a0c-635424c34839"/>
-    <uniqueKeys name="treatments.protocols.MedicalRecordType.guid" uuid="ac5e7ccc-8c5a-3009-8b64-90dd7b126e6a" description="MedicalRecordType.guid" sqlName="U_T_PRTCLS_MEDCCP_C_GUID"/>
+    <uniqueConstraints name="treatments.protocols.MedicalRecordType.guid" uuid="ac5e7ccc-8c5a-3009-8b64-90dd7b126e6a" description="MedicalRecordType.guid" sqlName="U_T_PRTCLS_MEDCCP_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.protocols.DecisionOption" uuid="e868f7ac-4629-4c23-baf3-fcc0da496af0" description="DecisionOption" sqlName="T_PRTCLS_DECSON" primaryKey="//@rdbmsTables.71/@fields.9">
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.protocols.DecisionOption.xmiid" uuid="ef8a27af-1906-3a4e-91af-35f0b800740c" description="DecisionOption.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -890,7 +890,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.protocols.DecisionOption.auditCreateUser" uuid="d44e7ef8-c778-3614-a4ee-1f9dfd155813" description="DecisionOption.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.protocols.DecisionOption.auditCreateTime" uuid="7a1add42-f49b-3d76-9b08-8d836b8be3db" description="DecisionOption.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.protocols.DecisionOption.id" uuid="a990a5a1-0cd7-3b2a-ade5-f503f5fd1640" description="DecisionOption.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.64/@fields.1"/>
-    <uniqueKeys name="treatments.protocols.DecisionOption.guid" uuid="267c7fe8-795c-3cf9-a5c4-f1a4ef32c614" description="DecisionOption.guid" sqlName="U_T_PRTCLS_DECSON_C_GUID"/>
+    <uniqueConstraints name="treatments.protocols.DecisionOption.guid" uuid="267c7fe8-795c-3cf9-a5c4-f1a4ef32c614" description="DecisionOption.guid" sqlName="U_T_PRTCLS_DECSON_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.datatypes.TextType" uuid="7f369a2c-636c-4076-869a-e17eecaddcad" description="TextType" sqlName="T_DATTYS_TEXTTP" primaryKey="//@rdbmsTables.72/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.datatypes.TextType.id" uuid="5949dcfa-9142-3b47-8fce-bcf04b9c7603" description="TextType.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.80/@fields.0"/>
@@ -931,7 +931,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.datatypes.ChoiceValueSpecification.auditCreateUser" uuid="8049ed19-6559-3a1a-941c-30c927f35ac4" description="ChoiceValueSpecification.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.datatypes.ChoiceValueSpecification.auditCreateTime" uuid="f8cd32c0-9e56-3ed9-944a-b2c3525c0828" description="ChoiceValueSpecification.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.datatypes.ChoiceValueSpecification.id" uuid="0b2962fd-92bf-34e6-b91c-9219d679146e" description="ChoiceValueSpecification.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.79/@fields.2"/>
-    <uniqueKeys name="treatments.datatypes.ChoiceValueSpecification.guid" uuid="0ff10117-9dc0-3411-9b41-d46ca47eb3ed" description="ChoiceValueSpecification.guid" sqlName="U_T_DATTYS_CHCVSN_C_GUID"/>
+    <uniqueConstraints name="treatments.datatypes.ChoiceValueSpecification.guid" uuid="0ff10117-9dc0-3411-9b41-d46ca47eb3ed" description="ChoiceValueSpecification.guid" sqlName="U_T_DATTYS_CHCVSN_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.datatypes.ChoiceType" uuid="f84d3b7f-a65f-4186-8494-66a81a72718d" description="ChoiceType" sqlName="T_DATTYS_CHCTYP" primaryKey="//@rdbmsTables.79/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.datatypes.ChoiceType.id" uuid="8a13fb76-7d6d-34da-bbb9-cb61b86635f5" description="ChoiceType.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.80/@fields.6"/>
@@ -962,7 +962,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsBasicDataValueSpecification.typeDef" uuid="bbb9cde1-3262-4b38-8617-8d9003993db8" description="typeDef (BasicDataValueSpecification)" sqlName="C_TRTMNS_BACVSN_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.91/@fields.0" foreignKeySqlName="FK_f027a058-893d-3c39-b71c-e9eb10e42d74"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatments.protocolsMedicalRecordType.basicDataType" uuid="f38ed2b5-955b-4f18-bd2a-b7945e6def55" description="basicDataType (MedicalRecordType)" sqlName="C_PRTCLS_MEDCCP_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.70/@fields.12" foreignKeySqlName="FK_abbfabec-4b62-3462-bac8-d3c1232394d3"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="commonMetaParameter.basicDataType" uuid="080bafbe-4e1c-4287-9ab0-0e0bbfe0f23a" description="basicDataType (MetaParameter)" sqlName="C_COMMON_METPRR_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.96/@fields.8" foreignKeySqlName="FK_7db4dca0-cf96-3ceb-91a4-b3b36c5d040b"/>
-    <uniqueKeys name="treatments.datatypes.BasicDataType.guid" uuid="b2ce642b-35b9-32fb-ac5c-746795c14c8a" description="BasicDataType.guid" sqlName="U_T_DATTYS_BASDTP_C_GUID"/>
+    <uniqueConstraints name="treatments.datatypes.BasicDataType.guid" uuid="b2ce642b-35b9-32fb-ac5c-746795c14c8a" description="BasicDataType.guid" sqlName="U_T_DATTYS_BASDTP_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.TaskSchedule" uuid="05dd467b-9ba2-4388-a86f-ced953c3fad7" description="TaskSchedule" sqlName="T_TRTMNS_TASSCL" primaryKey="//@rdbmsTables.81/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.TaskSchedule.id" uuid="7af74429-571b-3e74-8f3f-ae6361eb3036" description="TaskSchedule.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.82/@fields.1 //@rdbmsTables.92/@fields.2 //@rdbmsTables.86/@fields.10"/>
@@ -986,7 +986,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.TaskResultKindValue.auditCreateUser" uuid="802119a2-ae73-328b-9305-fc7871d801bd" description="TaskResultKindValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.TaskResultKindValue.auditCreateTime" uuid="7e485b1c-852d-3a97-b678-3a3a3a1de336" description="TaskResultKindValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.TaskResultKindValue.id" uuid="c8aa2821-df13-3518-9f89-c5e58adbcbb5" description="TaskResultKindValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.38/@fields.13 //@rdbmsTables.84/@fields.9"/>
-    <uniqueKeys name="treatments.TaskResultKindValue.guid" uuid="79620dfa-0099-350a-b65e-4eb21efaea27" description="TaskResultKindValue.guid" sqlName="U_T_TRTMNS_TAKRTL_C_GUID"/>
+    <uniqueConstraints name="treatments.TaskResultKindValue.guid" uuid="79620dfa-0099-350a-b65e-4eb21efaea27" description="TaskResultKindValue.guid" sqlName="U_T_TRTMNS_TAKRTL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.TaskResultKind" uuid="f4e9f245-23d8-4f1a-ab9c-287c39e3b83c" description="TaskResultKind" sqlName="T_TRTMNS_TASSTD" primaryKey="//@rdbmsTables.84/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.TaskResultKind.xmiid" uuid="e6846541-9b02-36c5-935f-1dfa695fdbee" description="TaskResultKind.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1000,7 +1000,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.TaskResultKind.id" uuid="623e9e8f-2986-3431-8afa-f1455c5ba555" description="TaskResultKind.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsTaskResultKindValue.taskResultKind" uuid="a90dddb0-7ef0-316d-9b6e-93b5eba99e2a" description="taskResultKind (TaskResultKindValue)" sqlName="C_TRTMNS_TAKRTL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.83/@fields.7" foreignKeySqlName="FK_91bc12a7-e041-310f-84dc-c7e3550f791b"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsTask.taskResult" uuid="3d8f041c-aa99-3e95-b7d6-50bd1917464b" description="taskResult (Task)" sqlName="C_TRTMNS_TASK_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.85/@fields.0" foreignKeySqlName="FK_0551a26d-791d-3869-a506-0dff5a18b24f"/>
-    <uniqueKeys name="treatments.TaskResultKind.guid" uuid="fde0c698-968f-35c7-b685-eee4adcc95c1" description="TaskResultKind.guid" sqlName="U_T_TRTMNS_TASSTD_C_GUID"/>
+    <uniqueConstraints name="treatments.TaskResultKind.guid" uuid="fde0c698-968f-35c7-b685-eee4adcc95c1" description="TaskResultKind.guid" sqlName="U_T_TRTMNS_TASSTD_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.Task" uuid="83212ea3-7508-4a65-967c-d3824eccbf34" description="Task" sqlName="T_TRTMNS_TASK" primaryKey="//@rdbmsTables.85/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.Task.id" uuid="6bc49220-0569-3f18-881a-45055b579d14" description="Task.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.92/@fields.3 //@rdbmsTables.4/@fields.8 //@rdbmsTables.81/@fields.1 //@rdbmsTables.69/@fields.3 //@rdbmsTables.84/@fields.10 //@rdbmsTables.99/@fields.7"/>
@@ -1022,7 +1022,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.ProtocolCfg.id" uuid="192a4b57-0de0-3013-a828-70ec35c54e37" description="ProtocolCfg.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.4/@fields.9 //@rdbmsTables.6/@fields.3 //@rdbmsTables.68/@fields.8"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsTaskSchedule.protocolCfg" uuid="a2f01cb9-0750-492a-bbfc-7fb3478e9961" description="protocolCfg (TaskSchedule)" sqlName="C_TRTMNS_TASSCL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.81/@fields.0" foreignKeySqlName="FK_2259fb37-fdb6-39ca-9ffc-863f00d41d51"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsNotification.protocolCfg" uuid="77253b40-4718-4226-832c-1fc9f075999c" description="protocolCfg (Notification)" sqlName="C_TRTMNS_NOTFCN_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.89/@fields.9" foreignKeySqlName="FK_88f58548-684a-3aac-9842-427fce0abca5"/>
-    <uniqueKeys name="treatments.ProtocolCfg.guid" uuid="b6a10d56-0a26-398b-b499-e5bb938f41bc" description="ProtocolCfg.guid" sqlName="U_T_TRTMNS_PRTLCG_C_GUID"/>
+    <uniqueConstraints name="treatments.ProtocolCfg.guid" uuid="b6a10d56-0a26-398b-b499-e5bb938f41bc" description="ProtocolCfg.guid" sqlName="U_T_TRTMNS_PRTLCG_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.NotificationStatusValue" uuid="d9da06e3-2578-3d7d-8f3b-9b50c876d898" description="NotificationStatusValue" sqlName="T_TRTMNS_NOCSTL" primaryKey="//@rdbmsTables.87/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.NotificationStatusValue.xmiid" uuid="ff199c93-5117-310e-8e32-d9a57222b6d9" description="NotificationStatusValue.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1033,7 +1033,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.NotificationStatusValue.auditCreateUser" uuid="0d8196b5-5fbe-3e56-8f28-1ca28fb00ff7" description="NotificationStatusValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.NotificationStatusValue.auditCreateTime" uuid="3ae5a68c-f610-31c6-a29e-7a98c750d1ed" description="NotificationStatusValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.NotificationStatusValue.id" uuid="72e8c30f-149d-38a6-908f-04b01b559f31" description="NotificationStatusValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.38/@fields.14 //@rdbmsTables.88/@fields.9"/>
-    <uniqueKeys name="treatments.NotificationStatusValue.guid" uuid="78cf14a0-344d-35ac-89c2-ead0cfdb4db4" description="NotificationStatusValue.guid" sqlName="U_T_TRTMNS_NOCSTL_C_GUID"/>
+    <uniqueConstraints name="treatments.NotificationStatusValue.guid" uuid="78cf14a0-344d-35ac-89c2-ead0cfdb4db4" description="NotificationStatusValue.guid" sqlName="U_T_TRTMNS_NOCSTL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.NotificationStatus" uuid="bb9d6169-5114-3ade-a356-79ff438c2159" description="NotificationStatus" sqlName="T_TRTMNS_NOTTSS" primaryKey="//@rdbmsTables.88/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.NotificationStatus.xmiid" uuid="b43984f1-1cab-3dfc-adde-dabbcbbf4be6" description="NotificationStatus.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1047,7 +1047,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.NotificationStatus.id" uuid="93926fb7-30c1-3d1e-881d-e3af14505cd0" description="NotificationStatus.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsNotificationStatusValue.notificationStatus" uuid="7deafe27-9ac2-3bfe-acd3-257b9e6fdb78" description="notificationStatus (NotificationStatusValue)" sqlName="C_TRTMNS_NOCSTL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.87/@fields.7" foreignKeySqlName="FK_8918ac24-fde3-372d-b93b-5f723911442b"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsNotification.status" uuid="6381ac2b-0d72-3949-ace3-a6e13223d319" description="status (Notification)" sqlName="C_TRTMNS_NOTFCN_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.89/@fields.9" foreignKeySqlName="FK_80b2b896-c092-3801-a749-8ef98e2e1e75"/>
-    <uniqueKeys name="treatments.NotificationStatus.guid" uuid="cb43997f-1155-3296-9467-c2d54fb0eb3f" description="NotificationStatus.guid" sqlName="U_T_TRTMNS_NOTTSS_C_GUID"/>
+    <uniqueConstraints name="treatments.NotificationStatus.guid" uuid="cb43997f-1155-3296-9467-c2d54fb0eb3f" description="NotificationStatus.guid" sqlName="U_T_TRTMNS_NOTTSS_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.Notification" uuid="49f1bab1-7958-464f-be21-2523252029f8" description="Notification" sqlName="T_TRTMNS_NOTFCN" primaryKey="//@rdbmsTables.89/@fields.9">
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.Notification.xmiid" uuid="5a1189fa-70d1-3cc1-a79f-606377d88b73" description="Notification.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1060,7 +1060,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.Notification.auditCreateUser" uuid="4ad4ec20-a6e4-35c7-bcfb-cd7a11f5b04c" description="Notification.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.Notification.auditCreateTime" uuid="63318a3c-f067-36a2-bfcb-d6792a56960f" description="Notification.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.Notification.id" uuid="b36074c3-1dfe-3680-9713-1a658a3b8bbe" description="Notification.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.86/@fields.11 //@rdbmsTables.10/@fields.9 //@rdbmsTables.88/@fields.10"/>
-    <uniqueKeys name="treatments.Notification.guid" uuid="c9f5ef90-290f-3891-9f81-5979a7d4f5d2" description="Notification.guid" sqlName="U_T_TRTMNS_NOTFCN_C_GUID"/>
+    <uniqueConstraints name="treatments.Notification.guid" uuid="c9f5ef90-290f-3891-9f81-5979a7d4f5d2" description="Notification.guid" sqlName="U_T_TRTMNS_NOTFCN_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="treatments.MedicalRecord" uuid="420b74f6-ca3c-4a80-84fc-1e28e5c698ac" description="MedicalRecord" sqlName="T_TRTMNS_MEDCRD" primaryKey="//@rdbmsTables.90/@fields.0">
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.MedicalRecord.id" uuid="b84f6bc5-ccac-380f-a592-7258168dbe6c" description="MedicalRecord.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.92/@fields.4 //@rdbmsTables.4/@fields.10 //@rdbmsTables.10/@fields.10 //@rdbmsTables.70/@fields.13 //@rdbmsTables.99/@fields.8"/>
@@ -1089,7 +1089,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="treatments.BasicDataValueHost.auditCreateTime" uuid="f226f48e-ef81-34aa-bfb0-f5b740a2d77a" description="BasicDataValueHost.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="treatments.BasicDataValueHost.id" uuid="466b9a78-046e-3bf3-9e1f-10fa3790ca75" description="BasicDataValueHost.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsBasicDataValueSpecification.host" uuid="2bbc5d77-70c7-4e55-9a30-ea1026495c25" description="host (BasicDataValueSpecification)" sqlName="C_TRTMNS_BACVSN_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.91/@fields.0" foreignKeySqlName="FK_73ef86f3-c7d5-39f1-a587-c698e1f1a97c"/>
-    <uniqueKeys name="treatments.BasicDataValueHost.guid" uuid="3873929f-888f-3823-b427-5b8c1783ce71" description="BasicDataValueHost.guid" sqlName="U_T_TRTMNS_BASDVT_C_GUID"/>
+    <uniqueConstraints name="treatments.BasicDataValueHost.guid" uuid="3873929f-888f-3823-b427-5b8c1783ce71" description="BasicDataValueHost.guid" sqlName="U_T_TRTMNS_BASDVT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="common.TimeUnitValue" uuid="8d62f455-04eb-3d43-80b0-4af2723adcf1" description="TimeUnitValue" sqlName="T_COMMON_TIMNTL" primaryKey="//@rdbmsTables.93/@fields.7">
     <fields xsi:type="rdbms:RdbmsValueField" name="common.TimeUnitValue.xmiid" uuid="080fab64-e63b-3b75-840d-de6ca1bde440" description="TimeUnitValue.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1100,7 +1100,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="common.TimeUnitValue.auditCreateUser" uuid="51c5e6cb-3564-3cda-8bc1-9ab7e2b2c811" description="TimeUnitValue.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="common.TimeUnitValue.auditCreateTime" uuid="1301531e-b15b-3c32-852f-f1887bc7a68c" description="TimeUnitValue.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="common.TimeUnitValue.id" uuid="02438581-c747-3fcb-8d94-59a0948f75f8" description="TimeUnitValue.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.38/@fields.15 //@rdbmsTables.94/@fields.11"/>
-    <uniqueKeys name="common.TimeUnitValue.guid" uuid="7268e897-33e7-38e9-b5bd-d34ec4449005" description="TimeUnitValue.guid" sqlName="U_T_COMMON_TIMNTL_C_GUID"/>
+    <uniqueConstraints name="common.TimeUnitValue.guid" uuid="7268e897-33e7-38e9-b5bd-d34ec4449005" description="TimeUnitValue.guid" sqlName="U_T_COMMON_TIMNTL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="common.TimeUnit" uuid="d7115b50-9c3f-44e5-9985-eff8e9d0dfe7" description="TimeUnit" sqlName="T_COMMON_TIMUNT" primaryKey="//@rdbmsTables.94/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="common.TimeUnit.xmiid" uuid="3b4d0d82-952c-3560-a49e-82209252e402" description="TimeUnit.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1115,7 +1115,7 @@
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsTaskScheduleAbstract.repetitionUnit" uuid="3691a741-5158-3e25-94e4-50f7f5806b64" description="repetitionUnit (TaskScheduleAbstract)" sqlName="C_TRTMNS_TASHAT_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.82/@fields.2" foreignKeySqlName="FK_a86ef05a-162f-3d86-993c-7a2f95d001b6"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatments.protocolsProtocolMRTypeBinding.validityDurationCategory" uuid="9d9ef729-cc2e-3356-967f-0a0eb8b21125" description="validityDurationCategory (ProtocolMRTypeBinding)" sqlName="C_PRTCLS_PRMRYG_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.67/@fields.9" foreignKeySqlName="FK_1ecfdf83-b87a-39ee-8f61-77d9da200431"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="commonTimeUnitValue.timeUnit" uuid="7cc6764f-1ae1-345b-bcdd-1c48fb5d0b3a" description="timeUnit (TimeUnitValue)" sqlName="C_COMMON_TIMNTL_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.93/@fields.7" foreignKeySqlName="FK_e0458920-c9a8-35d7-a871-03f295682ef1"/>
-    <uniqueKeys name="common.TimeUnit.guid" uuid="ddf0b599-81b6-3d23-b081-4fc4a774c476" description="TimeUnit.guid" sqlName="U_T_COMMON_TIMUNT_C_GUID"/>
+    <uniqueConstraints name="common.TimeUnit.guid" uuid="ddf0b599-81b6-3d23-b081-4fc4a774c476" description="TimeUnit.guid" sqlName="U_T_COMMON_TIMUNT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="common.Period" uuid="3da8e3c1-7e59-4995-a9a8-cbca36168dba" description="Period" sqlName="T_COMMON_PERIOD" primaryKey="//@rdbmsTables.95/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="common.Period.xmiid" uuid="6caf83e9-8edd-3584-9178-53bfc22a71c4" description="Period.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1127,7 +1127,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="common.Period.auditCreateUser" uuid="3bc45cd7-ed20-3f24-bf36-0369fe4872a1" description="Period.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="common.Period.auditCreateTime" uuid="4ea6adb9-6eb1-3345-b981-07ee60cd9191" description="Period.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="common.Period.id" uuid="769f1608-8259-3b83-8b06-bc1975d45542" description="Period.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
-    <uniqueKeys name="common.Period.guid" uuid="120e97d5-10d5-350f-8e95-bfb45516a046" description="Period.guid" sqlName="U_T_COMMON_PERIOD_C_GUID"/>
+    <uniqueConstraints name="common.Period.guid" uuid="120e97d5-10d5-350f-8e95-bfb45516a046" description="Period.guid" sqlName="U_T_COMMON_PERIOD_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="common.MetaParameter" uuid="b49b1d97-a044-41a3-8fff-ec22cc0b1474" description="MetaParameter" sqlName="T_COMMON_METPRR" primaryKey="//@rdbmsTables.96/@fields.8">
     <fields xsi:type="rdbms:RdbmsValueField" name="common.MetaParameter.xmiid" uuid="bc61d4f5-e43e-3956-9845-a0a9a33c7fa4" description="MetaParameter.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1139,7 +1139,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="common.MetaParameter.auditCreateUser" uuid="80d212fa-b8a4-3182-870b-0a2278978940" description="MetaParameter.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="common.MetaParameter.auditCreateTime" uuid="35e1064a-7b48-3a59-aa55-9927235caf3b" description="MetaParameter.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="common.MetaParameter.id" uuid="0e34df33-8a5d-3f2f-8a02-c197c5512092" description="MetaParameter.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.70/@fields.15 //@rdbmsTables.80/@fields.22"/>
-    <uniqueKeys name="common.MetaParameter.guid" uuid="c81e2fc1-3e63-378c-a4bd-c6b095759b65" description="MetaParameter.guid" sqlName="U_T_COMMON_METPRR_C_GUID"/>
+    <uniqueConstraints name="common.MetaParameter.guid" uuid="c81e2fc1-3e63-378c-a4bd-c6b095759b65" description="MetaParameter.guid" sqlName="U_T_COMMON_METPRR_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="common.Institute" uuid="5cb43410-f9bb-4957-9c85-e162112461ce" description="Institute" sqlName="T_COMMON_INSTTT" primaryKey="//@rdbmsTables.97/@fields.10">
     <fields xsi:type="rdbms:RdbmsValueField" name="common.Institute.xmiid" uuid="55bf7971-0076-3599-bb30-5c25a3cf9512" description="Institute.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1154,7 +1154,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="common.Institute.address" uuid="a8e9fdf4-c7a3-4b04-977b-34cf7957acc0" description="Institute.address" sqlName="C_ADDRSS" type="//@rdbmsFieldTypes.2" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="common.Institute.id" uuid="2c2812fa-f776-3b16-bb32-26ccfc340b6a" description="Institute.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="commonDailyOpeningHours.institute" uuid="265d3e62-45f2-4fdc-81ef-eb485e26aa74" description="institute (DailyOpeningHours)" sqlName="C_COMMON_DAYNGS_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.98/@fields.9" foreignKeySqlName="FK_bdab878c-b4da-3a49-b289-6c4a665579cc"/>
-    <uniqueKeys name="common.Institute.guid" uuid="2b52f3ee-b35d-3576-a2a1-78f801f5059d" description="Institute.guid" sqlName="U_T_COMMON_INSTTT_C_GUID"/>
+    <uniqueConstraints name="common.Institute.guid" uuid="2b52f3ee-b35d-3576-a2a1-78f801f5059d" description="Institute.guid" sqlName="U_T_COMMON_INSTTT_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="common.DailyOpeningHours" uuid="e0b3c83a-78f5-4070-8e4a-5d5f61995b47" description="DailyOpeningHours" sqlName="T_COMMON_DAYNGS" primaryKey="//@rdbmsTables.98/@fields.9">
     <fields xsi:type="rdbms:RdbmsValueField" name="common.DailyOpeningHours.xmiid" uuid="1aa6d47c-5718-3693-93ef-91dc0a0c7150" description="DailyOpeningHours.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1167,7 +1167,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="common.DailyOpeningHours.auditCreateUser" uuid="7d77a07f-95cc-3a19-8c7b-e15e73d76c9f" description="DailyOpeningHours.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="common.DailyOpeningHours.auditCreateTime" uuid="0c89bb82-a1d6-32c2-8411-c57cc04fe913" description="DailyOpeningHours.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="common.DailyOpeningHours.id" uuid="e98c728f-960c-3615-b0f7-637c970a6d23" description="DailyOpeningHours.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.6/@fields.2 //@rdbmsTables.97/@fields.11"/>
-    <uniqueKeys name="common.DailyOpeningHours.guid" uuid="965d2572-35ad-34c8-916a-252d5a126113" description="DailyOpeningHours.guid" sqlName="U_T_COMMON_DAYNGS_C_GUID"/>
+    <uniqueConstraints name="common.DailyOpeningHours.guid" uuid="965d2572-35ad-34c8-916a-252d5a126113" description="DailyOpeningHours.guid" sqlName="U_T_COMMON_DAYNGS_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="opm.domain.OpenTask" uuid="a0091ec3-b9f4-444b-84bc-46a9a8333c32" description="OpenTask" sqlName="T_DOMAIN_OPNTSK" primaryKey="//@rdbmsTables.99/@fields.6">
     <fields xsi:type="rdbms:RdbmsValueField" name="opm.domain.OpenTask.xmiid" uuid="23aac6a1-aa83-3592-95b3-fc62e23192a6" description="OpenTask.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1179,7 +1179,7 @@
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="opm.domain.OpenTask.id" uuid="de2a264f-1752-3264-affc-26fcd799f349" description="OpenTask.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsTask.task" uuid="f3f77f28-40ba-4f88-a57e-ca23ad30a5dd" description="task (Task)" sqlName="C_TRTMNS_TASK_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.85/@fields.0" foreignKeySqlName="FK_536e76a8-6858-3413-b50d-d96ca804f661"/>
     <fields xsi:type="rdbms:RdbmsForeignKey" name="treatmentsMedicalRecord.openTask" uuid="88ad67bb-dfb6-4c4e-8065-6ff16fbada53" description="openTask (MedicalRecord)" sqlName="C_TRTMNS_MEDCRD_ID" type="//@rdbmsFieldTypes.12" referenceKey="//@rdbmsTables.90/@fields.0" foreignKeySqlName="FK_3aa7017d-1e36-3d2d-90cb-ac6e0bf7427e"/>
-    <uniqueKeys name="opm.domain.OpenTask.guid" uuid="ae4ab32c-be40-3f4b-9bd5-fba6a9f4a335" description="OpenTask.guid" sqlName="U_T_DOMAIN_OPNTSK_C_GUID"/>
+    <uniqueConstraints name="opm.domain.OpenTask.guid" uuid="ae4ab32c-be40-3f4b-9bd5-fba6a9f4a335" description="OpenTask.guid" sqlName="U_T_DOMAIN_OPNTSK_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="opm.domain.MRTypeTuple" uuid="bef4154d-e9e9-465d-8897-3151daf368d6" description="MRTypeTuple" sqlName="T_DOMAIN_MRTPTL" primaryKey="//@rdbmsTables.100/@fields.6">
     <fields xsi:type="rdbms:RdbmsValueField" name="opm.domain.MRTypeTuple.xmiid" uuid="4ef0cb63-7439-3fb2-8f15-e68a19ff7bc9" description="MRTypeTuple.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1189,7 +1189,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="opm.domain.MRTypeTuple.auditCreateUser" uuid="ceed5a3f-64b5-344f-837e-4138e0d89853" description="MRTypeTuple.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="opm.domain.MRTypeTuple.auditCreateTime" uuid="e4dd560c-5f5b-3a28-982b-8f408036374e" description="MRTypeTuple.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="opm.domain.MRTypeTuple.id" uuid="56af9f57-68eb-34ff-8499-4ee720a3d35c" description="MRTypeTuple.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true" foreignKeys="//@rdbmsTables.90/@fields.4 //@rdbmsTables.70/@fields.16"/>
-    <uniqueKeys name="opm.domain.MRTypeTuple.guid" uuid="ead8b358-4db6-3b4b-b3b2-d35dc5257b09" description="MRTypeTuple.guid" sqlName="U_T_DOMAIN_MRTPTL_C_GUID"/>
+    <uniqueConstraints name="opm.domain.MRTypeTuple.guid" uuid="ead8b358-4db6-3b4b-b3b2-d35dc5257b09" description="MRTypeTuple.guid" sqlName="U_T_DOMAIN_MRTPTL_C_GUID"/>
   </rdbmsTables>
   <rdbmsTables name="opm.domain.Android" uuid="bdeec7ab-b7b4-4c1b-b6e2-93e05009c08e" description="Android" sqlName="T_DOMAIN_ANDRD" primaryKey="//@rdbmsTables.101/@fields.6">
     <fields xsi:type="rdbms:RdbmsValueField" name="opm.domain.Android.xmiid" uuid="b6c658d7-17fe-3ef7-9929-2b244d7b39a3" description="Android.xmiid" sqlName="C_XMIID" type="//@rdbmsFieldTypes.2" mandatory="true" technical="true"/>
@@ -1199,7 +1199,7 @@
     <fields xsi:type="rdbms:RdbmsValueField" name="opm.domain.Android.auditCreateUser" uuid="72f3e7c4-d89d-3b6d-9e43-00504c571b2a" description="Android.auditCreateUser" sqlName="C_AUCTUR" type="//@rdbmsFieldTypes.2" technical="true"/>
     <fields xsi:type="rdbms:RdbmsValueField" name="opm.domain.Android.auditCreateTime" uuid="2d450be9-7326-3c23-b46b-300b675681f0" description="Android.auditCreateTime" sqlName="C_AUDTRM" type="//@rdbmsFieldTypes.6" technical="true"/>
     <fields xsi:type="rdbms:RdbmsIdentifierField" name="opm.domain.Android.id" uuid="dfb587f6-e40f-3c7f-80a6-940eeb23b511" description="Android.id" sqlName="ID" type="//@rdbmsFieldTypes.12" mandatory="true"/>
-    <uniqueKeys name="opm.domain.Android.guid" uuid="2ee6dc68-ba9c-3b6f-89c0-2c58d10d7542" description="Android.guid" sqlName="U_T_DOMAIN_ANDRD_C_GUID"/>
+    <uniqueConstraints name="opm.domain.Android.guid" uuid="2ee6dc68-ba9c-3b6f-89c0-2c58d10d7542" description="Android.guid" sqlName="U_T_DOMAIN_ANDRD_C_GUID"/>
   </rdbmsTables>
   <rdbmsViews name="judo.framework.ProcessData" uuid="e3f5638c-7e41-4be9-af6d-0c7e691c44d8" sqlName="V_FRW_PRSSDT" primaryTable="//@rdbmsViews.0/@tables.0">
     <fields xsi:type="rdbms:RdbmsViewValueField" name="judo.framework.ProcessData.xmiid" uuid="de705771-2dd0-3ecf-9111-1fe96dca1c8b" description="ProcessData.xmiid" sqlName="C_XMIID" alias="//@rdbmsViews.0/@tables.0" tableField="//@rdbmsTables.29/@fields.0"/>

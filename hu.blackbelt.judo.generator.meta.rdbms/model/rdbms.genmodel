@@ -22,8 +22,9 @@
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsTable">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/fields"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/uniqueKeys"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/uniqueConstraints"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/primaryKey"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/indexes"/>
     </genClasses>
     <genClasses image="false" ecoreClass="rdbms.ecore#//RdbmsField">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsField/table"/>
@@ -37,9 +38,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsForeignKey/deleteOnCascade"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsForeignKey/deferred"/>
     </genClasses>
-    <genClasses ecoreClass="rdbms.ecore#//RdbmsUniqueKey">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsUniqueKey/table"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsUniqueKey/field"/>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsUniqueConstraint">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsUniqueConstraint/table"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsUniqueConstraint/fields"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsJunctionTable">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsJunctionTable/field1"/>
@@ -139,6 +140,11 @@
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsViewForeignIdentifierField">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewForeignIdentifierField/referenceIdentifier"/>
+    </genClasses>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsIndex">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsIndex/table"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsIndex/fields"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsIndex/unique"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

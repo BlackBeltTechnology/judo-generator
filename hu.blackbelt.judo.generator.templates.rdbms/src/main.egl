@@ -2,10 +2,26 @@
 import "operations/_importAll.eol";
 
 getDdlTemplate("create-table").genCreateTables(getTables());
+getDdlTemplate("create-foreignkey").genCreateForeignKeys(getForeignKeys());
+getDdlTemplate("create-table-before-insert-trigger").genCreateTableBeforeInsertTrigger(getTables());
+getDdlTemplate("create-table-before-update-trigger").genCreateTableBeforeUpdateTrigger(getTables());
+
+getDdlTemplate("create-table-after-insert-event-trigger").genCreateTableAfterInsertEventTrigger(getTables());
+getDdlTemplate("create-table-after-update-event-trigger").genCreateTableAfterUpdateEventTrigger(getTables());
+getDdlTemplate("create-table-after-delete-event-trigger").genCreateTableAfterDeleteEventTrigger(getTables());
+
 getDdlTemplate("set-not-null").genSetNotNull(getTables());
 getDdlTemplate("drop-not-null").genDropNotNull(getTables());
-getDdlTemplate("create-foreignkey").genCreateForeignKeys(getForeignKeys());
-getDdlTemplate("create-view").genViews(getViews());
+getDdlTemplate("create-junction-before-insert-trigger").genCreateJunctionBeforeInsertTrigger(getJunctionTables());
+getDdlTemplate("create-unique-constraint").genCreateUniqueConstraints(getUniqueContraints());
+
+getDdlTemplate("create-view").genCreateViews(getViews());
+getDdlTemplate("create-view-insert-trigger").genCreateViewInsertTriggers(getViews());
+getDdlTemplate("create-view-update-trigger").genCreateViewUpdateTriggers(getViews());
+getDdlTemplate("create-view-delete-trigger").genCreateViewDeleteTriggers(getViews());
+
+getDdlTemplate("create-index").genCreateIndexes(getIndexes());
+
 
 operation Template genCreateTables(tables : Collection) : Any {
 	self.populate("tables", tables);
@@ -25,6 +41,43 @@ operation Template genDropNotNull(tables : Collection) : Any {
 	self.reset();
 }
 
+operation Template genCreateTableBeforeInsertTrigger(tables : Collection) : Any {
+	self.populate("tables", tables);
+	self.generate(getGenPath() + "create_table_before_insert_triggers.sql");
+	self.reset();
+}
+
+operation Template genCreateTableBeforeUpdateTrigger(tables : Collection) : Any {
+	self.populate("tables", tables);
+	self.generate(getGenPath() + "create_table_before_update_triggers.sql");
+	self.reset();
+}
+
+operation Template genCreateTableAfterDeleteEventTrigger(tables : Collection) : Any {
+	self.populate("tables", tables);
+	self.generate(getGenPath() + "create_table_after_delete_event_triggers.sql");
+	self.reset();
+}
+
+operation Template genCreateTableAfterInsertEventTrigger(tables : Collection) : Any {
+	self.populate("tables", tables);
+	self.generate(getGenPath() + "create_table_after_insert_event_triggers.sql");
+	self.reset();
+}
+
+operation Template genCreateTableAfterUpdateEventTrigger(tables : Collection) : Any {
+	self.populate("tables", tables);
+	self.generate(getGenPath() + "create_table_after_update_event_triggers.sql");
+	self.reset();
+}
+
+operation Template genCreateJunctionBeforeInsertTrigger(junctionTables : Collection) : Any {
+	self.populate("junctionTables", junctionTables);
+	self.generate(getGenPath() + "create_junction_before_insert_triggers.sql");
+	self.reset();
+}
+
+
 operation Template genCreateForeignKeys(foreignKeys : Collection) : Any {
 	self.populate("foreignKeys", foreignKeys);
 	self.generate(getGenPath() + "create_foreignkeys.sql");
@@ -32,9 +85,40 @@ operation Template genCreateForeignKeys(foreignKeys : Collection) : Any {
 }
 
 
-operation Template genViews(views : Collection) : Any {
+operation Template genCreateViews(views : Collection) : Any {
 	self.populate("views", views);
 	self.generate(getGenPath() + "create_views.sql");
+	self.reset();
+}
+
+operation Template genCreateViewInsertTriggers(views : Collection) : Any {
+	self.populate("views", views);
+	self.generate(getGenPath() + "create_view_insert_triggers.sql");
+	self.reset();
+}
+
+operation Template genCreateViewUpdateTriggers(views : Collection) : Any {
+	self.populate("views", views);
+	self.generate(getGenPath() + "create_view_update_triggers.sql");
+	self.reset();
+}
+
+operation Template genCreateViewDeleteTriggers(views : Collection) : Any {
+	self.populate("views", views);
+	self.generate(getGenPath() + "create_view_delete_triggers.sql");
+	self.reset();
+}
+
+operation Template genCreateIndexes(views : Collection) : Any {
+	self.populate("indexes", views);
+	self.generate(getGenPath() + "create_indexes.sql");
+	self.reset();
+}
+
+
+operation Template genCreateUniqueConstraints(views : Collection) : Any {
+	self.populate("uniqueConstraints", views);
+	self.generate(getGenPath() + "create_unique_constraints.sql");
 	self.reset();
 }
 
@@ -58,6 +142,19 @@ operation getViews () : Collection {
 operation getForeignKeys () : Collection {
 	return RDBMS!RdbmsForeignKey.all;
 }
+
+operation getJunctionTables () : Collection {
+	return RDBMS!RdbmsJunctionTable.all;
+}
+
+operation getUniqueContraints () : Collection {
+	return RDBMS!RdbmsUniqueConstraint.all;
+}
+
+operation getIndexes () : Collection {
+	return RDBMS!RdbmsIndex.all;
+}
+
 
 operation getGenPath() : String {
 	return "sql/" + RDBMS!RdbmsConfiguration.all.first().dialect.toLowercase() + "/";
