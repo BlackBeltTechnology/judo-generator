@@ -3,31 +3,29 @@
 	prefix="pim")
 package ext;
 
-import "http://hu.blackbelt.judo.generator.meta.pim.extension.classes";
-
 datatype Date : java.lang.Date;
 datatype DateTime : java.lang.DateTime;
 
-@Target("name"="User")
+@Target("name"="judo.framework.User")
 class User {}
 
-@Target("name"="OpmUser")
+@Target("name"="users.OpmUser")
 class OpmUser {}
 
-@Target("name"="DoctorUser")
+@Target("name"="users.DoctorUser")
 class DoctorUser {}
 
-@Target("name"="Task")
+@Target("name"="treatments.Task")
 class Task {
 
 	@Addition("visibility"="public" , "navigable"="false")
-	ref OpenTask#openTask task;
+	ref domain.OpenTask#openTask task;
 	
 	@Addition("visibility"="public", "static"="true")
 	op void taskExpired();
 }
 
-@Target("name"="MedicalRecord", participate="po,rest,dto")
+@Target("name"="treatments.MedicalRecord")
 class MedicalRecord {
 	
 	@Addition("visibility"="protected" , "navigable"="true")
@@ -37,20 +35,20 @@ class MedicalRecord {
 	ref PatientUser#lastMedicalRecords medicalRecordPatient;
 	
 	@Addition("visibility"="public" , "navigable"="false")
-	ref OpenTask#lastMedicalRecord openTask;
+	ref domain.OpenTask#lastMedicalRecord openTask;
 	
 	@Addition("visibility"="public" , "navigable"="false")
-	ref MRTypeTuple[*]#medicalRecordExtension hostTuple;
+	ref domain.MRTypeTuple[*]#medicalRecordExtension hostTuple;
 }
 
-@Target("name"="BasicDataValueSpecification")
+@Target("name"="treatments.BasicDataValueSpecification")
 class BasicDataValueSpecification {
 	
 	@Addition("visibility"="public" , "navigable"="false")
 	ref MedicalRecord#partialValues medicalRecord;
 }
 
-@Target("name"="PatientUser")
+@Target("name"="users.PatientUser")
 class PatientUser {
 
 	@Addition("visibility"="public")
@@ -78,13 +76,13 @@ class PatientUser {
 	op Notification[*] customNotificationList(PatientUser patientUserId, DoctorUser doctorUserId);
 	
 	@Addition("visibility"="public", "static"="true")
-	op MRTypeTuple[1..*] customLastValidMedicalRecords(PatientUser patientUser);
+	op domain.MRTypeTuple[1..*] customLastValidMedicalRecords(PatientUser patientUser);
 	
 	@Addition("visibility"="public", "static"="true")
 	op void deletePassword();
 }
 
-@Target("name"="ProtocolCfg")
+@Target("name"="treatments.ProtocolCfg")
 class ProtocolCfg {
 	
 	@Addition("visibility"="public")
@@ -94,7 +92,7 @@ class ProtocolCfg {
 	ref ProtocolMRTypeBinding[*]#ownerCfg typeBindings;
 }
 
-@Target("name"="ProtocolMRTypeBinding")
+@Target("name"="treatments.protocols.ProtocolMRTypeBinding")
 class ProtocolMRTypeBinding {
 	
 	@Addition("visibility"="public")
@@ -110,7 +108,7 @@ class ProtocolMRTypeBinding {
 	ref ProtocolCfg#typeBindings ownerCfg;
 }
 
-@Target("name"="TaskScheduleAbstract")
+@Target("name"="treatments.TaskScheduleAbstract")
 class TaskScheduleAbstract {
 	
 	@Addition("visibility"="public")
@@ -121,7 +119,7 @@ class TaskScheduleAbstract {
 	
 }
 
-@Target("name"="Notification")
+@Target("name"="treatments.Notification")
 class Notification {
 	
 	@Addition("visibility"="protected")
@@ -152,7 +150,7 @@ class Notification {
 	
 }
 
-@Target("name"="Protocol")
+@Target("name"="treatments.protocols.Protocol")
 class Protocol {
 	
 	@Addition("visibility"="protected")
@@ -163,80 +161,92 @@ class Protocol {
 }
 
 
-@Target("name"="MedicalRecordType")
+@Target("name"="treatments.protocols.MedicalRecordType")
 class MedicalRecordType {
 
 	@Addition("visibility"="public" , "navigable"="false")
-	ref MRTypeTuple[*]#medicalRecordTypeExtension hostTuple;
+	ref domain.MRTypeTuple[*]#medicalRecordTypeExtension hostTuple;
 }
 
-@Addition
-class OpenTask {
+@Addition("participates"="bo,dto,rest")
+package domain {
 
-	@Addition("visibility"="public" , "navigable"="true")
-	ref Task#task openTask;
+	@Addition
+	class OpenTask {
+
+		@Addition("visibility"="public" , "navigable"="true")
+		ref Task#task openTask;
 	
-	@Addition("visibility"="public" , "navigable"="true")
-	ref MedicalRecord#openTask lastMedicalRecord;
+		@Addition("visibility"="public" , "navigable"="true")
+		ref MedicalRecord#openTask lastMedicalRecord;
+	}
+
+	@Addition
+	class MRTypeTuple {
+		
+		@Addition("visibility"="public" , "navigable"="true")
+		ref MedicalRecord#hostTuple medicalRecordExtension;
+		
+		@Addition("visibility"="public" , "navigable"="true")
+		ref MedicalRecordType#hostTuple medicalRecordTypeExtension;
+	}
+
+	@Addition
+	enum EventType {
+		NewTask;
+		MsgToPatient;
+		ClosedTask;
+	}
+
+	@Addition
+	abstract class Android {
+		
+		@Addition("visibility"="public", "static"="true")
+		op User activatePatientUser(String loginName, String password);
+		
+		@Addition("visibility"="public", "static"="true")
+		op MedicalRecord recordSpirofon(
+										Float patientId, Float pif, Float fvc, Float fev, Float fev1, Float fev6, 
+										Float fiv, Float fiv6, Float pef, Float fef25, Float fef50, Float fef75, 
+										Float fef2575, Float fet, Float fif25, Float fif50, Float fif75, Float fif2575, 
+										Float fit, Float fev1Pct, Float pefPct, Float fvcPct, Float fev1PerFvcPct, Float fefPct2575, Float fiv1, 
+										OpmUser recorder, Date referredEventTime, String note, String allFile);
+										
+		@Addition("visibility"="public", "static"="true")
+		op OpenTask[*] openTasks(String patientId);
+		
+		@Addition("visibility"="public", "static"="true")
+		op void forgottenPassword(String registrationCode);
+		
+		@Addition("visibility"="public", "static"="true")
+		op BasicDataValueSpecification[*] targetValues(String scheduledTaskId);
+		
+		@Addition("visibility"="public", "static"="true")
+		op String mqttBrokerUrl();
+	}
 }
 
-@Addition
-class MRTypeTuple {
+@Addition("particiaptes"="ui")
+package ui {
+
+	@MenuRoot
+	class MenuRoot {}
 	
-	@Addition("visibility"="public" , "navigable"="true")
-	ref MedicalRecord#hostTuple medicalRecordExtension;
+	@MenuItem("parent"="MenuRoot")
+	class Menu {}
 	
-	@Addition("visibility"="public" , "navigable"="true")
-	ref MedicalRecordType#hostTuple medicalRecordTypeExtension;
+	@Screen("base"="users.PatientUser", "parent"="MenuExtension")
+	class TreatedPatientUser {}
+	
+	@Screen("base"="treatments.Notification", "parent"="MenuExtension")
+	class MyUncheckedNotifications {}
+	
+	@Screen("base"="treatments.Notification", "parent"="MenuExtension")
+	class MyCheckedNotifications {}
+	
 }
 
-@Addition
-enum EventType {
-	NewTask;
-	MsgToPatient;
-	ClosedTask;
-}
 
-@Target("name"="Android")
-class AndroidExtension {
-	
-	@Addition("visibility"="public", "static"="true")
-	op User activatePatientUser(String loginName, String password);
-	
-	@Addition("visibility"="public", "static"="true")
-	op MedicalRecord recordSpirofon(
-									Float patientId, Float pif, Float fvc, Float fev, Float fev1, Float fev6, Float fiv, Float fiv6, Float pef, 
-									Float fef25, Float fef50, Float fef75, Float fef2575, Float fet, Float fif25, Float fif50, Float fif75, Float fif2575, 
-									Float fit, Float fev1Pct, Float pefPct, Float fvcPct, Float fev1PerFvcPct, Float fefPct2575, Float fiv1, 
-									OpmUser recorder, Date referredEventTime, String note, String allFile);
-									
-	@Addition("visibility"="public", "static"="true")
-	op OpenTask[*] openTasks(String patientId);
-	
-	@Addition("visibility"="public", "static"="true")
-	op void openTasks(String registrationCode);
-	
-	@Addition("visibility"="public", "static"="true")
-	op BasicDataValueSpecification[*] targetValues(String scheduledTaskId);
-	
-	@Addition("visibility"="public", "static"="true")
-	op String mqttBrokerUrl();
-}
-
-@MenuRoot
-class MenuRootExtension {}
-
-@MenuItem("parent"="MenuRoot")
-class MenuExtension {}
-
-@Screen("base"="PatientUser", "parent"="MenuExtension")
-class TreatedPatientUser {}
-
-@Screen("base"="Notification", "parent"="MenuExtension")
-class MyUncheckedNotifications {}
-
-@Screen("base"="Notification", "parent"="MenuExtension")
-class MyCheckedNotifications {}
 
 
 

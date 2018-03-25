@@ -1,0 +1,10 @@
+operation transformEnum(extEnum : pimEXT!EEnum, newEnum : inpPIM!Enumeration) {
+	newEnum.name = extEnum.name;
+			
+	for (literal in extEnum.eLiterals) {
+		var newLiteral = new inpPIM!EnumerationLiteral();
+		newLiteral.name = literal.name;
+		
+		newEnum.ownedLiteral.add(newLiteral);
+	}
+}

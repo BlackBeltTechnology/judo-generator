@@ -8,139 +8,68 @@ var visibilityMap = Map {
 var ecoreUMLTypeMap = Map {
 	"EString" = inpPIM!Type.all.selectOne(type | type.name = "String"),
 	"EBoolean" = inpPIM!Type.all.selectOne(type | type.name = "Boolean"),
-	"EFloat" = inpPIM!Type.all.selectOne(type | type.name = "Float"),
-	"Date" = inpPIM!Type.all.selectOne(type | type.name = "date")
+	"EFloat" = inpPIM!Type.all.selectOne(type | type.name = "Float")
+	//"Date" = inpPIM!Type.all.selectOne(type | type.name = "date")
 	//"DateTime" = inpPIM!Type.all.selectOne(type | type.name = "datetime")
 };
 
 var associationList = new Map<String, inpPIM!Asscoiation>();
 
-
-
 var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Target" and an.eModelElement.isTypeOf(pimEXT!EClass));
 for (annotation : pimEXT!EAnnotation in annotations) {
 
-	var pimClassList = inpPIM!Class.all.select(c | c.name = annotation.details.get("name") or c.qualifiedName = annotation.details.get("name"));
+	var pimClassList = inpPIM!Class.all.select(c | c.name = annotation.details.get("name") or c.fqName() = annotation.details.get("name"));
 	if (pimClassList.size() = 1) {
 		var pimClass = pimClassList.first();
 		var targetClass : pimEXT!EClass = annotation.eModelElement;
 		
-		var attributes : OrderedSet(pimEXT!EAttribute) = targetClass.getEAttributes();	
-		for (attribute : pimEXT!EAttribute in attributes) {
-			transformAttribute(attribute, pimClass);
-		}
-		
-		var references : OrderedSet(pimEXT!EReference) = targetClass.getEReferences();
-		for (reference : pimEXT!EReference in references) {
-			transformReference(reference, pimClass);			
-		}
-		
-		var operations : OrderedSet(pimEXT!EOperation) = targetClass.getEOperations();
-		for (op : pimEXT!EOperation in operations) {
-			transformOperation(op, pimClass);	
-		}
+		transformClass(targetClass, pimClass, associationList);
 	}
 }
 
-annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EClass));
+var extensionPackage : inpPIM!Package = new inpPIM!Package();
+extensionPackage.name = "extension";
+
+var mainModel : inpPIM!Model = inpPIM!Model.all.selectOne(mod | mod.nestingPackage.isUndefined());
+mainModel.packagedElement.add(extensionPackage);
+
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EPackage));
 for (annotation : pimEXT!EAnnotation in annotations) {
+	var currentExtPackage : pimEXT!EPackage = annotation.eModelElement;
 
-
-}
-
-
-operation transformAttribute(attribute : pimEXT!EAttribute, pimClass : inpPIM!Class) {
-	var attrAnnotation = attribute.getEAnnotation("Addition");
-	if (attrAnnotation <> null) {
+	var newPackage = new inpPIM!Package();
+	newPackage.name = currentExtPackage.name;
+	extensionPackage.packagedElement.add(newPackage);
 	
-		var newPimAttr = new inpPIM!Property();
-		newPimAttr.name = attribute.name;
-		newPimAttr.type = inpPIM!Type.all.selectOne(type | type.name = ecoreUMLTypeMap.get(attribute.getEAttributeType().name));
-		newPimAttr.lower = attribute.lowerBound;
-		newPimAttr.upper = attribute.upperBound;
-		
-		newPimAttr.visibility = visibilityMap.get(attrAnnotation.details.get("visibility"));
-		newPimAttr.isDerived = attribute.derived;
-		
-		pimClass.ownedAttribute.add(newPimAttr);
-		"ATTR ADD SUCCEDED".println();
+	for (classifier : pimEXT!EClassifier in currentExtPackage.eClassifiers) {
+	
+		if (classifier.isTypeOf(pimEXT!EClass)) {
+			
+			var pimClass = new inpPIM!Class();
+			pimClass.name = classifier.name;
+			pimClass.isAbstract = classifier.abstract;
+			
+			newPackage.packagedElement.add(pimClass);
+			
+			var classAnnotation = classifier.eAnnotations.first();
+			switch(classAnnotation.source) {
+				case "Addition" : transformClass(classifier, pimClass, associationList);
+				case "MenuRoot" : "";
+				case "MenuItem" : "";
+				case "Screen" : "";
+			}
+						
+		} else if (classifier.isTypeOf(pimEXT!EEnum)) {
+			var newEnum = new inpPIM!Enumeration();
+			transformEnum(classifier, newEnum);
+			
+			newPackage.packagedElement.add(newEnum);
+		}
 	}
 }
 
-operation transformReference(reference : pimEXT!EReference, pimClass : inpPIM!Class) {
-	var refAnnotation = reference.getEAnnotation("Addition");
-	if (refAnnotation <> null) {
-		var newPimRef = new inpPIM!Property();
-		
-		newPimRef.name = reference.name;
-		newPimRef.type = inpPIM!Class.all.selectOne(class | class.name.equals(reference.eReferenceType.name));
-		newPimRef.visibility = visibilityMap.get(refAnnotation.details.get("visibility"));
-		newPimRef.lower = reference.lowerBound;
-		newPimRef.upper = reference.upperBound;				
-				
-		var descAnnotation = reference.getEAnnotation("DerivedExpression");
-		if (descAnnotation <> null) {
-			//newPimRef.valami = descAnnotation.get("expression");
-		}
-				
-		var pimAssoc = associationList.get(reference.eOpposite.id);
-		if (pimAssoc = null) {
-			pimAssoc = new inpPIM!Association();
-			associationList.put(reference.id, pimAssoc);
-			}
-				
-		if (refAnnotation.details.get("navigable").equals("true")) {
-			pimClass.ownedAttribute.add(newPimRef);					
-		} else {				
-			pimAssoc.ownedEnd.add(newPimRef);
-		}
-				
-		pimAssoc.memberEnd.add(newPimRef);
-		
-		var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = pimClass.package.fqName());
-		pimPackage.packagedElement.add(pimAssoc);
-		"REF ADD SUCCEDED".println();
-	}		
-}
 
-operation transformOperation(op : pimEXT!EOperation, pimClass : inpPIM!Class) {
-	var opAnnotation = op.getEAnnotation("Addition");
-	if (opAnnotation <> null) {
-		var newPimOp = new inpPIM!Operation();
-		
-		newPimOp.name = op.name;
-		newPimOp.visibility = visibilityMap.get(opAnnotation.details.get("visibility"));
-		newPimOp.isStatic = opAnnotation.details.get("static").asBoolean();
-		for (parameter in op.eParameters) {
-			var newPimParameter = new inpPIM!Parameter();
-			newPimParameter.name = parameter.name;
-			newPimParameter.lower = parameter.lowerBound;
-			newPimParameter.upper = parameter.upperBound;
-			
-			if (parameter.eType.isTypeOf(pimEXT!EClass)) {
-				parameter.eType.println("CLASS ETYPE: ");
-				newPimParameter.type = inpPIM!Class.all.selectOne(class | class.name.equals(parameter.eType.name));
-				newPimParameter.type.println("CONVERTED ETYPE: ");
-			} else {
-				parameter.eType.println("DATATYPE ETYPE: ");
-				parameter.eType.name.println("DATATYPE ETYPE NAME: ");			
-				newPimParameter.type = inpPIM!Type.all.selectOne(type | type.name = ecoreUMLTypeMap.get(parameter.eType.name));
-				newPimParameter.type.println("CONVERTED NOT ECLASS ETYPE: ");
-			}
-			
-			newPimOp.ownedParameter.add(newPimParameter);
-		}
-		
-		if (op.eType.isDefined()) {
-			var returnParam = new inpPIM!Parameter();
-			returnParam.type = inpPIM!Class.all.selectOne(class | class.name.equals(op.eType.name));
-			returnParam.direction = inpPIM!ParameterDirectionKind#`return`;
-			returnParam.lower = op.lowerBound;
-			returnParam.upper = op.upperBound;
-			
-			newPimOp.ownedParameter.add(returnParam);		
-		}
-				
-		pimClass.ownedOperation.add(newPimOp);	
-	}		
-}
+
+
+
+

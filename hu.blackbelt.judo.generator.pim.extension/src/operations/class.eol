@@ -1,0 +1,29 @@
+operation transformClass(targetClass : pimEXT!EClass, pimClass : inpPIM!Class, associationList : Map<String, inpPIM!Asscoiation>) {
+	var attributes : OrderedSet(pimEXT!EAttribute) = targetClass.getEAttributes();	
+	for (attribute : pimEXT!EAttribute in attributes) {
+		transformAttribute(attribute, pimClass);
+	}
+	
+	var references : OrderedSet(pimEXT!EReference) = targetClass.getEReferences();
+	for (reference : pimEXT!EReference in references) {
+		transformReference(reference, pimClass, associationList);			
+	}
+	
+	var operations : OrderedSet(pimEXT!EOperation) = targetClass.getEOperations();
+	for (op : pimEXT!EOperation in operations) {
+		transformOperation(op, pimClass);	
+	}
+}
+
+@cached
+operation inpPIM!Class fqName() : String {
+	var fqName = self.name;
+	var currentPackage = self.package;
+	
+	while (currentPackage.isDefined()) {
+		fqName = currentPackage.name + "." + fqName;
+		currentPackage = currentPackage.nestingPackage;
+	}
+	
+	return fqName;
+}

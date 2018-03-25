@@ -1,0 +1,43 @@
+operation transformOperation(op : pimEXT!EOperation, pimClass : inpPIM!Class) {
+	var opAnnotation = op.getEAnnotation("Addition");
+	if (opAnnotation <> null) {
+		var newPimOp = new inpPIM!Operation();
+		
+		newPimOp.name = op.name;
+		newPimOp.visibility = visibilityMap.get(opAnnotation.details.get("visibility"));
+		newPimOp.isStatic = opAnnotation.details.get("static").asBoolean();
+		for (parameter in op.eParameters) {
+			var newPimParameter = new inpPIM!Parameter();
+			newPimParameter.name = parameter.name;
+			newPimParameter.lower = parameter.lowerBound;
+			newPimParameter.upper = parameter.upperBound;
+			
+			if (parameter.eType.isTypeOf(pimEXT!EClass)) {
+				parameter.eType.println("CLASS ETYPE: ");
+				newPimParameter.type = inpPIM!Class.all.selectOne(class | class.name.equals(parameter.eType.name));
+				newPimParameter.type.println("CONVERTED ETYPE: ");
+			} else {
+				parameter.name.println("PARAMETER NAME: ");
+				parameter.eType.println("DATATYPE ETYPE: ");
+				parameter.eType.name.println("DATATYPE ETYPE NAME: ");			
+				newPimParameter.type = inpPIM!Type.all.selectOne(type | type.name = ecoreUMLTypeMap.get(parameter.eType.name));
+				newPimParameter.type.println("CONVERTED NOT ECLASS ETYPE: ");
+			}
+			
+			newPimOp.ownedParameter.add(newPimParameter);
+		}
+		
+		if (op.eType.isDefined()) {
+			var returnParam = new inpPIM!Parameter();
+			returnParam.type = inpPIM!Class.all.selectOne(class | class.name = op.eType.name);
+			returnParam.direction = inpPIM!ParameterDirectionKind#`return`;
+			returnParam.lower = op.lowerBound;
+			returnParam.upper = op.upperBound;
+			
+			newPimOp.ownedParameter.add(returnParam);		
+		}
+				
+		pimClass.ownedOperation.add(newPimOp);
+		"OPERATION ADD SUCCEDED".println();
+	}		
+}

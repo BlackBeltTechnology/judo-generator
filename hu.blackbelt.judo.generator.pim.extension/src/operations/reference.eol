@@ -1,0 +1,35 @@
+operation transformReference(reference : pimEXT!EReference, pimClass : inpPIM!Class, associationList : Map<String, inpPIM!Asscoiation>) {
+	var refAnnotation = reference.getEAnnotation("Addition");
+	if (refAnnotation <> null) {
+		var newPimRef = new inpPIM!Property();
+		
+		newPimRef.name = reference.name;
+		newPimRef.type = inpPIM!Class.all.selectOne(class | class.name.equals(reference.eReferenceType.name));
+		newPimRef.visibility = visibilityMap.get(refAnnotation.details.get("visibility"));
+		newPimRef.lower = reference.lowerBound;
+		newPimRef.upper = reference.upperBound;				
+				
+		var descAnnotation = reference.getEAnnotation("DerivedExpression");
+		if (descAnnotation <> null) {
+			//newPimRef.valami = descAnnotation.details.get("expression");
+		}
+				
+		var pimAssoc = associationList.get(reference.eOpposite.id);
+		if (pimAssoc = null) {
+			pimAssoc = new inpPIM!Association();
+			associationList.put(reference.id, pimAssoc);
+		}
+				
+		if (refAnnotation.details.get("navigable").equals("true")) {
+			pimClass.ownedAttribute.add(newPimRef);					
+		} else {				
+			pimAssoc.ownedEnd.add(newPimRef);
+		}
+				
+		pimAssoc.memberEnd.add(newPimRef);
+		
+		var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = pimClass.package.fqName());
+		pimPackage.packagedElement.add(pimAssoc);
+		"REF ADD SUCCEDED".println();
+	}		
+}

@@ -1,0 +1,17 @@
+operation transformAttribute(attribute : pimEXT!EAttribute, pimClass : inpPIM!Class) {
+	var attrAnnotation = attribute.getEAnnotation("Addition");
+	if (attrAnnotation <> null) {
+	
+		var newPimAttr = new inpPIM!Property();
+		newPimAttr.name = attribute.name;
+		newPimAttr.type = inpPIM!Type.all.selectOne(type | type.name = ecoreUMLTypeMap.get(attribute.getEAttributeType().name));
+		newPimAttr.lower = attribute.lowerBound;
+		newPimAttr.upper = attribute.upperBound;
+		
+		newPimAttr.visibility = visibilityMap.get(attrAnnotation.details.get("visibility"));
+		newPimAttr.isDerived = attribute.derived;
+		
+		pimClass.ownedAttribute.add(newPimAttr);
+		"ATTR ADD SUCCEDED".println();
+	}
+}
