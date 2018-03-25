@@ -35,6 +35,11 @@ operation PSM!JRole roleFkSqlName() : String {
 }
 
 @cached
+operation PSM!JRole roleUniqueSqlName() : String {
+    return "UQ_" + uuid3(self.uuid, self.roleSqlName());
+}
+
+@cached
 operation PSM!JRole roleIdSqlName() : String {
     --    return "C_" +  self.ownerClass.package.sqlName() + "_" + self.opposite().ownerClass.sqlName()+ "_ID" + "_" + self.sqlName();
     return "C_" +  self.sqlName() + "_ID";
@@ -44,3 +49,51 @@ operation PSM!JRole roleIdSqlName() : String {
 operation PSM!JRole roleAliasName() : String {
 	return self.ownerClass.package.fqName() +  "." + self.ownerClass.name + "." + self.name;
 }
+
+/*
+@cached
+operation PSM!JRole isReadOnly() : Boolean {
+	var role1 : PSM!JRole = self;
+	var role2 : PSM!JRole = self.opposite();
+	
+	
+	if (not self.ownerRelationship.derived) {
+		if (role1.upper = 1 and role2.upper = -1) {
+			return role2.kind == PSM!JAssociationKind#COMPOSITION;
+		} else if (role1.upper = 1 and role2.upper = 1) {
+			if (role2.kind = PSM!JAssociationKind#COMPOSITION or role2.kind = PSM!JAssociationKind#AGGREGATION or role1.lower = 1) {
+				return role2.kind == PSM!JAssociationKind#COMPOSITION;
+			} else if (role1.kind = PSM!JAssociationKind#ASSOCIATION and role2.kind = PSM!JAssociationKind#ASSOCIATION and role1.lower = 0 and role2.lower = 0 and role1.name < role2.name) {
+				return false;
+			}
+		} else if (self.isJunction()) {
+			return false;
+		}
+	} else {
+	  return false;
+	}	
+}
+
+@cached
+operation PSM!JRole isReadOnly() : Boolean {
+	var role1 : PSM!JRole = self;
+	var role2 : PSM!JRole = self.opposite();
+	
+	
+	if (not self.ownerRelationship.derived) {
+		if (role1.upper = 1 and role2.upper = -1) {
+			return role2.kind == PSM!JAssociationKind#COMPOSITION;
+		} else if (role1.upper = 1 and role2.upper = 1) {
+			if (role2.kind = PSM!JAssociationKind#COMPOSITION or role2.kind = PSM!JAssociationKind#AGGREGATION or role1.lower = 1) {
+				return role2.kind == PSM!JAssociationKind#COMPOSITION;
+			} else if (role1.kind = PSM!JAssociationKind#ASSOCIATION and role2.kind = PSM!JAssociationKind#ASSOCIATION and role1.lower = 0 and role2.lower = 0 and role1.name < role2.name) {
+				return false;
+			}
+		} else if (self.isJunction()) {
+			return false;
+		}
+	} else {
+	  return false;
+	}	
+}
+*/

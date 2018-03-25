@@ -87,6 +87,7 @@ operation PSM!JClass createForeginKey(otherTable : PSM!JClass) : RDBMS!RdbmsFore
 	created.type = idType();
 	created.referenceKey = otherTable.primaryKeyAttribute().equivalent("JAttributeToTableIdField");
 	created.deleteOnCascade = true;
+	created.readOnly = true;
 	return created;
 }
 

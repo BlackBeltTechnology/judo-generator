@@ -1,0 +1,35 @@
+@cached
+operation RDBMS!RdbmsTable isReadonlyField () : Boolean {
+	for (field : RDBMS!RdbmsField in self.fields) {
+	}
+}
+
+/*
+    @property
+    def before_update(self):
+        for f in self.savefields:
+            if f.notupdate:
+                return True
+
+        return not self.general
+
+    @property
+    def after_update(self):
+        for f in self.savefields:
+            if f.watch:
+                return True
+
+        return False
+
+    @property
+    def before_insert(self):
+        return not self.general
+
+    @property
+    def after_insert(self):
+        return self.watch
+
+    @property
+    def after_delete(self):
+        return self.watch
+*/

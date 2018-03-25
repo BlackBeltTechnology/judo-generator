@@ -14,4 +14,11 @@
 -- {% endfor %}
 
 [%for (index in indexes) {%]
+--changeset generator:create_index_[%=index.sqlName%]#[%=version()%] logicalFilePath:createIndex stripComments:true
+CREATE [%if (index.unique){%] UNIQUE [%}%] INDEX [%=index.sqlName%] ON [%=index.table.sqlName%] (
+	[%for (field in index.fields) {%]
+		[%=field.sqlName%] [%if (hasMore) { out.print(","); }%] -- [%=field.name%] [%=field.uuid%]
+	[%}%]
+);[% out.println("\n");%]
 [%}%]
+

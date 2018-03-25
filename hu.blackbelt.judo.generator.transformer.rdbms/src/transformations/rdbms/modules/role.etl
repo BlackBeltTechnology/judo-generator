@@ -17,37 +17,32 @@ rule JRoleToRdbmsTableForeignKey
 		fk.description =  s.name + " (" + s.opposite().ownerClass.name + ")";
 		fk.uuid = s.uuid;
 		fk.mandatory = s.isMandatory();
+
+		var role1 : PSM!JRole = s;
+		var role2 : PSM!JRole = s.opposite();
+	
+		if (not s.ownerRelationship.derived) {
+			if (role1.upper = 1 and role2.upper = -1) {
+				fk.deleteOnCascade = (role2.kind == PSM!JAssociationKind#COMPOSITION or role2.kind == PSM!JAssociationKind#AGGREGATION);
+				fk.readOnly = (role2.kind == PSM!JAssociationKind#COMPOSITION);
+			} else if (role1.upper = 1 and role2.upper = 1) {
+				if (role2.kind = PSM!JAssociationKind#COMPOSITION or role2.kind = PSM!JAssociationKind#AGGREGATION or role1.lower = 1) {
+					fk.deleteOnCascade = (role2.kind == PSM!JAssociationKind#COMPOSITION or role2.kind == PSM!JAssociationKind#AGGREGATION);
+					fk.readOnly = (role2.kind == PSM!JAssociationKind#COMPOSITION);
+				} else if (role1.kind = PSM!JAssociationKind#ASSOCIATION and role2.kind = PSM!JAssociationKind#ASSOCIATION and role1.lower = 0 and role2.lower = 0 and role1.name < role2.name) {
+					fk.deleteOnCascade = false;
+					fk.readOnly = false;
+				}
+			}
+		}			
 	}
 
-/*
-@lazy
-rule JRoleToRdbmsViewIdentifierForeignKey 
+rule JRoleToRdbmsuniqueConstraint 
 	transform s : PSM!JRole
-	to v : RDBMS!RdbmsViewIdentifierField {
-		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction()
-	    v.name = s.opposite().ownerClass.package.fqName() +  s.opposite().ownerClass.name + "." + s.opposite().name;
-	    v.sqlName = s.roleIdSqlName();
-	    // v.view = s.ownerClass.equivalent("JClassToRdbmsView");
-		v.description =  s.opposite().name + " (" + s.opposite().ownerClass.name + ")";
-		v.uuid = uuid3(s.uuid, v.name);
-		v.tableField = s.equivalent("JRoleToRdbmsTableForeignKey");
-		
-		-/-*
-		var aliasName = "Supertype " + supertypeTable.name;
-	    var aliasSqlName = "SUP_" + supertypeTable.sqlName;
-		var supertypeAlias : RDBMS!RdbmsTableAlias;
-	    if (v.tables.exists(e | e.name = aliasName)) {
-	    	supertypeAlias = v.tables.select(e | e.name = aliasName).first();
-	    } else {
-	    	supertypeAlias = new RDBMS!RdbmsTableAlias();
-	    	supertypeAlias.uuid = uuid3(supertypeTable.uuid, v.name);
-	    	supertypeAlias.table = supertypeTable;
-	    	supertypeAlias.name = aliasName;
-	    	supertypeAlias.sqlName = aliasSqlName;
-	    	v.tables.add(supertypeAlias);
-	    }
-		-*-/
-		// Iterate all descandences to be able to inherit IdFields.
-		
+	to uq : RDBMS!RdbmsUniqueConstraint {
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction() and s.opposite().upper == 1
+		uq.name = s.equivalent("JRoleToRdbmsTableForeignKey").name;
+		uq.sqlName = s.roleUniqueSqlName();    
+		uq.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
+		uq.fields.add(s.equivalent("JRoleToRdbmsTableForeignKey"));
 	}
-*/

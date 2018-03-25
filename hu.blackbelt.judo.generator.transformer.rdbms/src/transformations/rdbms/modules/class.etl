@@ -8,6 +8,9 @@ rule JClassToRdbmsTable
 	guard : s.participates(PSM!JLayer#PERSISTENCE)
 	    t.sqlName = s.tableSqlName();
 	    t.name = s.package.fqName() + "." + s.name;
+	    t.originalName = s.name;
+	    t.originalPackage = s.package.fqName();
+
 	    t.description = s.name;
         for (c : PSM!JClass in s.allDescandences()) {
 			t.fields.add(s.createForeginKey(c));
