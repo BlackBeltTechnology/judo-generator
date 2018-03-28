@@ -1,14 +1,8 @@
-
 @cached
-operation RDBMS!RdbmsTable hasReadonlyForeignKey () : Boolean {
-	for (fk : RDBMS!RdbmsField in self.fields.select(t | t.isKinfOf(RDBMS!ForeignKey))) {
-		if (fk.readOnly) {
-			return true;
-		}
+operation RDBMS!RdbmsView isRoot () : Boolean {
+	for (field : RDBMS!RdbmsField in self.fields) {
 	}
-	return false;
 }
-
 
 /*
     @property

@@ -6,9 +6,10 @@ getDdlTemplate("create-foreignkey").genCreateForeignKeys(getForeignKeys());
 getDdlTemplate("create-table-before-insert-trigger").genCreateTableBeforeInsertTrigger(getTables());
 getDdlTemplate("create-table-before-update-trigger").genCreateTableBeforeUpdateTrigger(getTables());
 
-getDdlTemplate("create-table-after-insert-event-trigger").genCreateTableAfterInsertEventTrigger(getTables());
-getDdlTemplate("create-table-after-update-event-trigger").genCreateTableAfterUpdateEventTrigger(getTables());
-getDdlTemplate("create-table-after-delete-event-trigger").genCreateTableAfterDeleteEventTrigger(getTables());
+// Events ignored and not implemented
+// getDdlTemplate("create-table-after-insert-event-trigger").genCreateTableAfterInsertEventTrigger(getTables());
+// getDdlTemplate("create-table-after-update-event-trigger").genCreateTableAfterUpdateEventTrigger(getTables());
+// getDdlTemplate("create-table-after-delete-event-trigger").genCreateTableAfterDeleteEventTrigger(getTables());
 
 getDdlTemplate("set-not-null").genSetNotNull(getTables());
 getDdlTemplate("drop-not-null").genDropNotNull(getTables());
@@ -116,8 +117,8 @@ operation Template genCreateIndexes(views : Collection) : Any {
 }
 
 
-operation Template genCreateUniqueConstraints(views : Collection) : Any {
-	self.populate("uniqueConstraints", views);
+operation Template genCreateUniqueConstraints(constraints : Collection) : Any {
+	self.populate("uniqueConstraints", constraints);
 	self.generate(getGenPath() + "create_unique_constraints.sql");
 	self.reset();
 }

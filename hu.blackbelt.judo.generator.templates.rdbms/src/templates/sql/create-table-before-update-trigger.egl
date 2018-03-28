@@ -5,16 +5,27 @@
   out.setContentType("Java");
 %]
 
--- {%- if table.before_insert %}
--- {{ ddlmacro.CREATE_TRIGGER('BI_' + table.name, table.name, 'BEFORE', 'INSERT') }}
---    {{ ddlmacro.BEGIN }}
---        IF ({{ddlmacro.NEW}}.ID IS NULL) THEN
---            {{ ddlmacro.nextval( ddlmacro.NEW + '.ID' ) }}
---        END IF;
---
---        {{ ddlmacro.RETURN_NEW }}
---    END;
+-- {%- if table.before_update %}
+-- --changeset generator:create_function_BU_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+-- {{ ddlmacro.CREATE_TRIGGER('BU_' + table.name, table.name, 'BEFORE', 'UPDATE') }}
+--     {{ ddlmacro.BEGIN }}
+--         {% for field in table.savefields -%}
+--         {%- if field.notupdate %}
+--         IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NULL AND {{ ddlmacro.OLD }}.{{ field.name }} IS NOT NULL) OR ({{ ddlmacro.NEW }}.{{ field.name }} <> {{ ddlmacro.OLD }}.{{ field.name }}) THEN
+--             {{ ddlmacro.RAISE( 'Field ' + field.name + ' in table "' + table.name + '" is not allowed to update' ) }}
+--         END IF;
+--         {%- endif %}
+--         {%- endfor %}
+-- 
+--         {%- if not table.general %}
+--         {{ ddlmacro.SETVAR(ddlmacro.NEW + '.C_AUT', ddlmacro.TR_TIME) }}
+--         {%- endif %}
+-- 
+--         {{ ddlmacro.RETURN_NEW }}
+--     END;
 -- {{ ddlmacro.END_TRIGGER() }}
+-- {%- endif %}
+
 --
 -- {%- macro CREATE_TRIGGER(name, table, timing, type) -%}
 -- {%- set _ = glob.update({'CURRENT_TRIGGER_NAME':name}) -%}
@@ -24,5 +35,22 @@
 -- {%- endif %}
 
 [%for (table in tables) {%]
---changeset generator:before_insert_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:beforeInsertTableTriggerCreate stripComments:true
+--changeset generator:before_update_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:beforeUpdateTableTriggerCreate stripComments:true
+
+
+--changeset generator:create_function_BU_T_DOM_VEHCL#1.0.0-SNAPSHOT_dce4354fca958f7d054e4724ff7fbbaf failOnError:false dbms:hsqldb logicalFilePath:triggersViewsConstraintCreate stripComments:true splitStatements:false
+CREATE TRIGGER BU_T_DOM_VEHCL BEFORE UPDATE ON T_DOM_VEHCL
+    REFERENCING NEW AS NEW OLD AS OLD
+    FOR EACH ROW
+    BEGIN ATOMIC
+    
+        
+        SET NEW.C_AUT = CURRENT_TIMESTAMP;
+
+        
+    END;
+    
+    
+    
+
 [%}%]

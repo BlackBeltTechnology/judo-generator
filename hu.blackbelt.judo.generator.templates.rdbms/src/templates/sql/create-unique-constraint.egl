@@ -5,5 +5,12 @@
   out.setContentType("Java");
 %]
 
---changeset generator:add_constraint_UQ_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true
-ALTER TABLE {{ table.name }} ADD CONSTRAINT UQ_{{ table.name }} UNIQUE ({{ table.field1.name }}, {{ table.field2.name }});
+[%for (constraint in uniqueConstraints) {%]
+--changeset generator:create_unique_constraint_[%=constraint.sqlName%]#[%=version()%] logicalFilePath:createUniqueContraint stripComments:true
+ALTER TABLE [%=constraint.table.sqlName%] ADD CONSTRAINT [%=constraint.table.sqlName%] UNIQUE (
+	[%for (field in constraint.fields) {%]
+		[%=field.sqlName%] [%if (hasMore) { out.print(","); }%] -- [%=field.name%] [%=field.uuid%]
+	[%}%]
+);	
+
+[%}%]

@@ -27,5 +27,5 @@
 -- {%- endif %}
 
 [%for (table in tables) {%]
---changeset generator:after_insert_event_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:afterInsertEentTableTriggerCreate stripComments:true
+--  --changeset generator:after_insert_event_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:afterInsertEentTableTriggerCreate stripComments:true
 [%}%]

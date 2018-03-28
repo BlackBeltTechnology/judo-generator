@@ -24,6 +24,7 @@
         eType="#//RdbmsIdentifierField"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="indexes" upperBound="-1"
         eType="#//RdbmsIndex" containment="true" eOpposite="#//RdbmsIndex/table"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//RdbmsTable"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsField" abstract="true" eSuperTypes="#//RdbmsElement">
     <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">

@@ -11,6 +11,10 @@ rule JClassToRdbmsTable
 	    t.originalName = s.name;
 	    t.originalPackage = s.package.fqName();
 
+		if (s.supertype.isDefined()) {
+			t.parent = s.supertype.equivalent("JClassToRdbmsTable");
+		}
+
 	    t.description = s.name;
         for (c : PSM!JClass in s.allDescandences()) {
 			t.fields.add(s.createForeginKey(c));

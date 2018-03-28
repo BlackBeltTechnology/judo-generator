@@ -27,6 +27,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/uniqueConstraints"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/primaryKey"/>
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/indexes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTable/parent"/>
     </genClasses>
     <genClasses image="false" ecoreClass="rdbms.ecore#//RdbmsField">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsField/table"/>
