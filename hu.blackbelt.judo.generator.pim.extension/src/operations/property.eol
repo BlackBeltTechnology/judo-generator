@@ -1,0 +1,67 @@
+operation inpPIM!Property addStereotypes(annotation : pimEXT!EAnnotation) {
+	var const;
+	if (annotation.details.get("nosearch").isDefined() and annotation.details.get("nosearch") = "true") {
+		const = new inpPIM!nosearch();
+		const.base_Property = self;
+	}
+	if (annotation.details.get("representation").isDefined() and annotation.details.get("representation") = "true") {
+		const = new inpPIM!representation();
+		const.base_Property = self;
+	}
+	if (annotation.details.get("watch").isDefined() and annotation.details.get("watch") = "true") {
+		const = new inpPIM!watch();
+		const.base_Property = self;
+	}
+	if (annotation.details.get("calculated").isDefined() and annotation.details.get("calculated") = "true") {
+		const = new inpPIM!calculated();
+		const.base_Property = self;
+	}
+	if (annotation.details.get("derived").isDefined() and annotation.details.get("derived") = "true") {
+		const = new inpPIM!derived();
+		const.base_Property = self;
+	}
+}
+
+operation inpPIM!Property addConstraints(property : pimEXT!ENamedElement) {
+
+	var validAnnotations : Sequence(String) = getValidAnnotations();
+	for (annotation in property.eAnnotations) {
+		if (validAnnotations.includes(annotation.source)) {
+		
+			var const = new inpPIM!Constraint();
+			self.class.ownedRule.add(const);
+			const.constrainedElement.add(self);
+		
+			var spec = new inpPIM!LiteralString();
+			spec.value = annotation.details.get("expression");
+		
+			const.specification = spec;
+		
+			var stereotype;
+			
+			switch (annotation.source) {
+				case "Decimals" : stereotype = new inpPIM!decimals();
+				case "DerivedDescription" : stereotype = new inpPIM!derivedDescription();
+				case "DerivedExpression" : stereotype = new inpPIM!derivedExpression();
+				case "Filter" : stereotype = new inpPIM!filter();
+				case "Interval" : stereotype = new inpPIM!interval();
+				case "List" : stereotype = new inpPIM!list();
+				case "Options" : stereotype = new inpPIM!options();
+				case "Order" : stereotype = new inpPIM!order();
+				case "Placeholder" : stereotype = new inpPIM!placeholder();
+				case "Regexp" : stereotype = new inpPIM!regexp();
+				case "Shortname" : stereotype = new inpPIM!shortname();
+				case "Validation" : stereotype = new inpPIM!validation();
+				case "Alias" : stereotype = new inpPIM!`alias`();
+			}
+			
+			stereotype.base_Constraint = const;
+		}
+	}	
+}
+
+@cached
+operation getValidAnnotations() : Sequence(String) {
+	return Sequence {"Decimals","DerivedDescription","DerivedExpression","Filter",
+											"Interval","List","Options","Order","Placeholder","Regexp","Shortname","Validation","Alias"};
+}

@@ -1,0 +1,248 @@
+@namespace(
+	uri="hu.blackbelt.judo.generator.meta.pim.extension",
+	prefix="pim")
+package ext;
+
+@Target("name"="judo.framework.User")
+class User {}
+
+@Target("name"="users.OpmUser")
+class OpmUser {}
+
+@Target("name"="users.DoctorUser")
+class DoctorUser {}
+
+@Target("name"="treatments.Task")
+class Task {
+
+	@Addition("visibility"="public" , "navigable"="false")
+	ref domain.OpenTask#openTask task;
+	
+	@Addition("visibility"="public", "static"="true")
+	op void taskExpired();
+}
+
+@Target("name"="treatments.MedicalRecord")
+class MedicalRecord {
+	
+	@Addition("visibility"="protected" , "navigable"="true")
+	ref BasicDataValueSpecification[*]#medicalRecord partialValues;
+	
+	@Addition("visibility"="protected" , "navigable"="false")
+	ref PatientUser#lastMedicalRecords medicalRecordPatient;
+	
+	@Addition("visibility"="public" , "navigable"="false")
+	ref domain.OpenTask#lastMedicalRecord openTask;
+	
+	@Addition("visibility"="public" , "navigable"="false")
+	ref domain.MRTypeTuple[*]#medicalRecordExtension hostTuple;
+}
+
+@Target("name"="treatments.BasicDataValueSpecification")
+class BasicDataValueSpecification {
+	
+	@Addition("visibility"="public" , "navigable"="false")
+	ref MedicalRecord#partialValues medicalRecord;
+}
+
+@Target("name"="users.PatientUser")
+class PatientUser {
+
+	@Addition("visibility"="public")
+	attr boolean[1] onBoardingCompleted;
+	
+	@Addition("visibility"="protected", "navigable"="true", "derived"="true")
+	ref Notification[*]#notificationPatient notificationListHack;
+	
+	@Addition("visibility"="public", "navigable"="false")
+	ref Notification#patientUserExtension notificationExtension;
+	
+	@Addition("visibility"="protected", "navigable"="true", "derived"="true")
+	ref MedicalRecord[*]#medicalRecordPatient lastMedicalRecords;
+	
+	@Addition("visibility"="public", "static"="false")
+	op void registerNewTreatmentWithCurrentUser(Protocol protocol, Date startDate, Date endDate);
+	
+	@Addition("visibility"="public", "static"="true")
+	op void createTasksFromExpiredPrimerData();
+	
+	@Addition("visibility"="public", "static"="true")
+	op void completeTask();
+	
+	@Addition("visibility"="public", "static"="true", "query"="true")
+	op Notification[*] customNotificationList(PatientUser patientUserId, DoctorUser doctorUserId);
+	
+	@Addition("visibility"="public", "static"="true", "query"="true")
+	op domain.MRTypeTuple[1..*] customLastValidMedicalRecords(PatientUser patientUser);
+	
+	@Addition("visibility"="public", "static"="true")
+	op void deletePassword();
+}
+
+@Target("name"="treatments.ProtocolCfg")
+class ProtocolCfg {
+	
+	@Addition("visibility"="public", "derived"="true")
+	@Decimals("expression"="2")
+	attr String[1] patId = "{self.patient.patientId}";
+	
+	@Addition("visibility"="protected", "navigable"="true", "derived"="true")
+	ref ProtocolMRTypeBinding[*]#ownerCfg typeBindings;
+}
+
+@Target("name"="treatments.protocols.ProtocolMRTypeBinding")
+class ProtocolMRTypeBinding {
+	
+	@Addition("visibility"="public", "derived"="true")
+	attr String typeName = "{self.mrType.name}";
+	
+	@Addition("visibility"="public", "derived"="true")
+	attr String validityFull = "{self.validityDuration} {self.validityDurationCategory.code}";
+	
+	@Addition("visibility"="protected")
+	attr String[1] typeClass;
+	
+	@Addition("visibility"="public", "navigable"="false")
+	ref ProtocolCfg#typeBindings ownerCfg;
+}
+
+@Target("name"="treatments.TaskScheduleAbstract")
+class TaskScheduleAbstract {
+	
+	@Addition("visibility"="public", "derived"="true")
+	attr String[1] repetition = "{self.repetitionRate} {self.repetitionUnit.code}";
+	
+	@Addition("visibility"="public", "static"="true")
+	op void scheduledTaskRequired();
+	
+}
+
+@Target("name"="treatments.Notification")
+class Notification {
+	
+	@Addition("visibility"="protected", "representation"="true", "derived"="true")
+	attr String[1] patientHack = "{self.protocolCfg.patient.userInfo.lastName} {self.protocolCfg.patient.userInfo.firstName}";
+	
+	@Addition("visibility"="protected", "derived"="true")
+	attr String[1] protocolHack = "{self.protocolCfg.protocol.name}";
+	
+	@Addition("visibility"="protected", "derived"="true")
+	attr String[1] patientBirthDate = "{self.protocolCfg.patient.birthDate}";
+	
+	@Addition("visibility"="protected", "derived"="true")
+	attr String[1] patientFullName = "{self.protocolCfg.patient.userInfo.lastName} {self.protocolCfg.patient.userInfo.firstName}";
+	
+	@Addition("visibility"="protected", "derived"="true")
+	attr String[1] patientPatientID = "{self.protocolCfg.patient.patientId}";
+	
+	@Addition("visibility"="protected", "navigable"="true", "derived"="true")
+	@DerivedExpression("expression"="self.protocolCfg.protocol")
+	ref Protocol#notificationExtension protocolExtension;
+	
+	@Addition("visibility"="protected", "navigable"="true", "derived"="true")
+	@DerivedExpression("expression"="self.protocolCfg.patient")
+	ref PatientUser#notificationExtension patientUserExtension;
+	
+	@Addition("visibility"="public", "navigable"="false")
+	ref PatientUser#notificationListHack notificationPatient;
+	
+}
+
+@Target("name"="treatments.protocols.Protocol")
+class Protocol {
+	
+	@Addition("visibility"="protected")
+	attr String mnemonic;
+	
+	@Addition("visibility"="public", "navigable"="false")
+	ref Notification#protocolExtension notificationExtension;
+}
+
+
+@Target("name"="treatments.protocols.MedicalRecordType")
+class MedicalRecordType {
+
+	@Addition("visibility"="public" , "navigable"="false")
+	ref domain.MRTypeTuple[*]#medicalRecordTypeExtension hostTuple;
+}
+
+@Addition("participates"="package,bo,dto,rest")
+package domain {
+
+	@Addition
+	class OpenTask {
+
+		@Addition("visibility"="public" , "navigable"="true")
+		ref Task#task openTask;
+	
+		@Addition("visibility"="public" , "navigable"="true")
+		ref MedicalRecord#openTask lastMedicalRecord;
+	}
+
+	@Addition
+	class MRTypeTuple {
+		
+		@Addition("visibility"="public" , "navigable"="true")
+		ref MedicalRecord#hostTuple medicalRecordExtension;
+		
+		@Addition("visibility"="public" , "navigable"="true")
+		ref MedicalRecordType#hostTuple medicalRecordTypeExtension;
+	}
+
+	@Addition
+	enum EventType {
+		NewTask;
+		MsgToPatient;
+		ClosedTask;
+	}
+
+	@Addition
+	abstract class Android {
+		
+		@Addition("visibility"="public", "static"="true")
+		op User activatePatientUser(String loginName, String password);
+		
+		@Addition("visibility"="public", "static"="true")
+		op MedicalRecord recordSpirofon(
+										String patientId, Float pif, Float fvc, Float fev, Float fev1, Float fev6, 
+										Float fiv, Float fiv6, Float pef, Float fef25, Float fef50, Float fef75, 
+										Float fef2575, Float fet, Float fif25, Float fif50, Float fif75, Float fif2575, 
+										Float fit, Float fev1Pct, Float pefPct, Float fvcPct, Float fev1PerFvcPct, Float fefPct2575, Float fiv1, 
+										OpmUser recorder, Date referredEventTime, String note, String allFile);
+										
+		@Addition("visibility"="public", "static"="true")
+		op OpenTask[*] openTasks(String patientId);
+		
+		@Addition("visibility"="public", "static"="true")
+		op void forgottenPassword(String registrationCode);
+		
+		@Addition("visibility"="public", "static"="true")
+		op BasicDataValueSpecification[*] targetValues(String scheduledTaskId);
+		
+		@Addition("visibility"="public", "static"="true")
+		op String mqttBrokerUrl();
+	}
+}
+
+@Addition("participates"="package,ui")
+package ui {
+
+	@MenuRoot
+	class MenuRoot {}
+	
+	@MenuItem("parent"="ext.ui.MenuRoot")
+	class MenuExt {}
+	
+	@Screen("base"="users.PatientUser", "parent"="ext.ui.MenuExt")
+	class TreatedPatientUser {}
+	
+	@Screen("base"="treatments.Notification", "parent"="ext.ui.MenuExt")
+	class MyUncheckedNotifications {}
+	
+	@Screen("base"="treatments.Notification", "parent"="ext.ui.MenuExt")
+	class MyCheckedNotifications {}
+	
+} 
+
+
+

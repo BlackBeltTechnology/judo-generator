@@ -1,0 +1,55 @@
+operation transformOperation(op : pimEXT!EOperation, pimClass : inpPIM!Class) {
+	var opAnnotation = op.getEAnnotation("Addition");
+	if (opAnnotation <> null) {
+		var newPimOp = new inpPIM!Operation();
+		
+		newPimOp.name = op.name;
+		newPimOp.visibility = visibilityMap.get(opAnnotation.details.get("visibility"));
+		newPimOp.isStatic = opAnnotation.details.get("static").asBoolean();
+		for (parameter in op.eParameters) {
+			var newPimParameter = new inpPIM!Parameter();
+			newPimParameter.name = parameter.name;
+			newPimParameter.lower = parameter.lowerBound;
+			newPimParameter.upper = parameter.upperBound;
+			
+			if (parameter.eType.isTypeOf(pimEXT!EClass)) {
+				newPimParameter.type = inpPIM!Class.all.selectOne(class | class.name = parameter.eType.name);
+			} else {		
+				newPimParameter.type = inpPIM!PrimitiveType.all.selectOne(type | type.name = ecoreUMLTypeMap.get(parameter.eType.name).name);
+			}			
+			newPimOp.ownedParameter.add(newPimParameter);
+		}
+		
+		if (op.eType.isDefined()) {
+			var returnParam = new inpPIM!Parameter();
+			if (op.eType.isTypeOf(pimEXT!EClass)) {
+				returnParam.type = inpPIM!Class.all.selectOne(class | class.name = op.eType.name);
+			} else {		
+				returnParam.type = inpPIM!PrimitiveType.all.selectOne(type | type.name = ecoreUMLTypeMap.get(op.eType.name).name);
+			}
+			returnParam.direction = inpPIM!ParameterDirectionKind#`return`;
+			returnParam.lower = op.lowerBound;
+			returnParam.upper = op.upperBound;
+			
+			newPimOp.ownedParameter.add(returnParam);		
+		}
+				
+		pimClass.ownedOperation.add(newPimOp);
+		
+		newPimOp.addStereotypes(opAnnotation);
+		
+		"OPERATION ADD SUCCEDED".println();
+	}		
+}
+
+operation inpPIM!Operation addStereotypes(annotation : pimEXT!EAnnotation) {
+	var const;
+	if (annotation.details.get("query").isDefined() and annotation.details.get("query") = "true") {
+		const = new inpPIM!query();
+		const.base_Operation = self;
+	}
+	if (annotation.details.get("nonconfirmed").isDefined() and annotation.details.get("nonconfirmed") = "true") {
+		const = new inpPIM!nonconfirmed();
+		const.base_Operation = self;
+	}
+}

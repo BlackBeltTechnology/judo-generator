@@ -30,7 +30,7 @@ rule Class
 	t.representsUser 		= stereotypeApplications.get("user").includes(s);
 	t.businessSingleton 	= stereotypeApplications.get("singleton").includes(s);
 	
-	// set aliases
+/*	// set aliases
 	for (aljas in stereotypeApplications.get("alias").get(s) ) {
 	//	aljas.println("RULE:Class - Alias : ");
 		aljas.println("ALJAS: ");
@@ -39,7 +39,7 @@ rule Class
 			jUIAlias.uuid = uuid3(mdId2Uuid(s.id), aljas);
 			t.aliases.add( jUIAlias );
 		}
-	}
+	}*/
 	
 	// add generalization to User
 	if ( stereotypeApplications.get("user").includes(s) ) {

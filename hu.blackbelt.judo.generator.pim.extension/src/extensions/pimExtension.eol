@@ -1,0 +1,60 @@
+import "../operations/importAll.eol";
+
+var visibilityMap = Map {
+	"public" = inpPIM!VisibilityKind#public,
+	"protected" = inpPIM!VisibilityKind#protected
+};
+
+var ecoreUMLTypeMap = Map {
+	"EString" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "String"),
+	"EBoolean" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "Boolean"),
+	"EFloat" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "float"),
+	"EFloatObject" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "float"),
+	"EDate" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "date")
+	//"DateTime" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "datetime")
+};
+
+var associationList = new Map<String, inpPIM!Asscoiation>();
+
+var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Target" and an.eModelElement.isTypeOf(pimEXT!EClass));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformTargetClass(annotation, associationList);
+}
+
+var extensionPackage = createMainPackage();
+
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EPackage));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformAdditionPackage(annotation, extensionPackage);
+}
+
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EClass));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformAdditionClass(annotation, associationList);
+}
+
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "MenuRoot" and an.eModelElement.isTypeOf(pimEXT!EClass));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformMenuRoot(annotation);
+}
+
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "MenuItem" and an.eModelElement.isTypeOf(pimEXT!EClass));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformMenuItem(annotation);
+}
+
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "Screen" and an.eModelElement.isTypeOf(pimEXT!EClass));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformScreen(annotation);
+}
+
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EEnum));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformEnum(annotation);
+}
+
+
+
+
+
+

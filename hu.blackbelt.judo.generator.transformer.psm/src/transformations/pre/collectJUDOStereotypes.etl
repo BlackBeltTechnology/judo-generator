@@ -100,21 +100,21 @@ operation collectJUDOStereotypeInstances() : Map {
 	
 
 	JUDOStereotypeInstances.put("application",		inpPIM!application	.allInstances()->collect(c | c.base_Package).asSet());
-	JUDOStereotypeInstances.put("attach",			inpPIM!attach		.allInstances()->collect(c | c.base_Dependency).asSet());
-	JUDOStereotypeInstances.put("attr_read",		inpPIM!attr_read	.allInstances()->collect(c | c.base_Dependency).asSet());
-	JUDOStereotypeInstances.put("attr_write",		inpPIM!attr_write	.allInstances()->collect(c | c.base_Dependency).asSet());
-	JUDOStereotypeInstances.put("call",				inpPIM!call			.allInstances()->collect(c | c.base_Dependency).asSet());
-	JUDOStereotypeInstances.put("detach",			inpPIM!detach		.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("attach",			inpPIM!attach		.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("attr_read",		inpPIM!attr_read	.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("attr_write",		inpPIM!attr_write	.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("call",				inpPIM!call			.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("detach",			inpPIM!detach		.allInstances()->collect(c | c.base_Dependency).asSet());
 	JUDOStereotypeInstances.put("derived", 			inpPIM!derived		.allInstances()->collect(c | c.base_Property).asSet());
 	JUDOStereotypeInstances.put("implementation",	inpPIM!implementation.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("menuitem",			inpPIM!menuitem		.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("menuroot",			inpPIM!menuroot		.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("new",				inpPIM!`new`		.allInstances()->collect(c | c.base_ElementImport).asSet());
 	JUDOStereotypeInstances.put("nosearch",			inpPIM!nosearch		.allInstances()->collect(c | c.base_Property).asSet());
-	JUDOStereotypeInstances.put("object_read",		inpPIM!object_read	.allInstances()->collect(c | c.base_Dependency).asSet());
-	JUDOStereotypeInstances.put("object_full",		inpPIM!object_full	.allInstances()->collect(c | c.base_Dependency).asSet());
-	JUDOStereotypeInstances.put("object_create",	inpPIM!object_create.allInstances()->collect(c | c.base_Dependency).asSet());
-	JUDOStereotypeInstances.put("object_update",	inpPIM!object_update.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("object_read",		inpPIM!object_read	.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("object_full",		inpPIM!object_full	.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("object_create",	inpPIM!object_create.allInstances()->collect(c | c.base_Dependency).asSet());
+	//JUDOStereotypeInstances.put("object_update",	inpPIM!object_update.allInstances()->collect(c | c.base_Dependency).asSet());
 	JUDOStereotypeInstances.put("permission",		inpPIM!permission	.allInstances()->collect(c | c.base_Package).asSet());
 	JUDOStereotypeInstances.put("private",			inpPIM!private		.allInstances()->collect(c | c.base_StateMachine).asSet());
 	JUDOStereotypeInstances.put("protected",		inpPIM!protected	.allInstances()->collect(c | c.base_StateMachine).asSet());
@@ -124,7 +124,7 @@ operation collectJUDOStereotypeInstances() : Map {
 	JUDOStereotypeInstances.put("tenant", 			inpPIM!tenant		.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("TenantMembers", 	inpPIM!tenantmember	.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("tenantuser", 		inpPIM!tenantuser	.allInstances()->collect(c | c.base_Class).asSet());
-	JUDOStereotypeInstances.put("to",	 			inpPIM!`to`			.allInstances()->collect(c | c.base_Class).asSet());
+	//JUDOStereotypeInstances.put("to",	 			inpPIM!`to`			.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("ui",				inpPIM!ui			.allInstances()->collect(c | c.base_Package).asSet());
 	JUDOStereotypeInstances.put("user", 			inpPIM!user			.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("singleton", 		inpPIM!singleton	.allInstances()->collect(c | c.base_Class).asSet());
@@ -138,12 +138,12 @@ operation collectJUDOStereotypeInstances() : Map {
 	JUDOStereotypeInstances.put("calculated", inpPIM!calculated.allInstances()->collect(p | p.base_Property).asSet());
 			
 	// Constraints 
-	JUDOStereotypeInstances.put("alias", 			inpPIM!`alias`.allInstances().collectMValuedConstrainedElements());
+	//JUDOStereotypeInstances.put("alias", 			inpPIM!`alias`.allInstances().collectMValuedConstrainedElements());
 	JUDOStereotypeInstances.put("decimals", 		inpPIM!decimals.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("derivedDescription", inpPIM!derivedDescription.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("derivedExpression", inpPIM!derivedExpression.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("filter", 			inpPIM!filter.allInstances().collectConstrainedElements().println("FILTER: "));
-	JUDOStereotypeInstances.put("guard", 			inpPIM!`guard`.allInstances().collectConstrainedElements());
+	//JUDOStereotypeInstances.put("guard", 			inpPIM!`guard`.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("interval", 		inpPIM!interval.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("list", 			inpPIM!list.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("options", 			inpPIM!options.allInstances().collectConstrainedElements());
@@ -151,7 +151,7 @@ operation collectJUDOStereotypeInstances() : Map {
 	JUDOStereotypeInstances.put("placeholder",		inpPIM!placeholder.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("regexp", 			inpPIM!regexp.allInstances().collectConstrainedElements());
 	// <<representation>> can appear on Property also, so here we select only the Constraints: 
-	JUDOStereotypeInstances.put("representation",	inpPIM!representation.allInstances()->select(e | e.base_Constraint.isDefined()).collectConstrainedElements()); 
+	//JUDOStereotypeInstances.put("representation",	inpPIM!representation.allInstances()->select(e | e.base_Constraint.isDefined()).collectConstrainedElements()); 
 	JUDOStereotypeInstances.put("shortname", 		inpPIM!shortname.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("validation", 		inpPIM!validation.allInstances().collectConstrainedElements());
 
@@ -176,11 +176,11 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	dumpSetAt( JUDOStereotypeInstances, "restClasses");
 
 	dumpSetAt( JUDOStereotypeInstances, "application");
-	dumpSetAt( JUDOStereotypeInstances, "attach");
-	dumpSetAt( JUDOStereotypeInstances, "attr_read");
-	dumpSetAt( JUDOStereotypeInstances, "attr_write");
-	dumpSetAt( JUDOStereotypeInstances, "call");
-	dumpSetAt( JUDOStereotypeInstances, "detach");
+	//dumpSetAt( JUDOStereotypeInstances, "attach");
+	//dumpSetAt( JUDOStereotypeInstances, "attr_read");
+	//dumpSetAt( JUDOStereotypeInstances, "attr_write");
+	//dumpSetAt( JUDOStereotypeInstances, "call");
+	//dumpSetAt( JUDOStereotypeInstances, "detach");
 	dumpSetAt( JUDOStereotypeInstances, "derived");
 	dumpSetAt( JUDOStereotypeInstances, "implementation");
 	dumpSetAt( JUDOStereotypeInstances, "menuitem");
@@ -191,10 +191,10 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	dumpSetAt( JUDOStereotypeInstances, "nonconfirmedRedefinableTemplateSignature");
 	dumpSetAt( JUDOStereotypeInstances, "nonconfirmedTemplateSignature");
 	dumpSetAt( JUDOStereotypeInstances, "nosearch");
-	dumpSetAt( JUDOStereotypeInstances, "object_read");
-	dumpSetAt( JUDOStereotypeInstances, "object_create");
-	dumpSetAt( JUDOStereotypeInstances, "object_update");
-	dumpSetAt( JUDOStereotypeInstances, "object_full");
+	//dumpSetAt( JUDOStereotypeInstances, "object_read");
+	//dumpSetAt( JUDOStereotypeInstances, "object_create");
+	//dumpSetAt( JUDOStereotypeInstances, "object_update");
+	//dumpSetAt( JUDOStereotypeInstances, "object_full");
 	dumpSetAt( JUDOStereotypeInstances, "permission");
 	dumpSetAt( JUDOStereotypeInstances, "private");
 	dumpSetAt( JUDOStereotypeInstances, "protected");
@@ -204,7 +204,7 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	dumpSetAt( JUDOStereotypeInstances, "tenant");
 	dumpSetAt( JUDOStereotypeInstances, "TenantMembers");
 	dumpSetAt( JUDOStereotypeInstances, "tenantuser");
-	dumpSetAt( JUDOStereotypeInstances, "to");
+	//dumpSetAt( JUDOStereotypeInstances, "to");
 	dumpSetAt( JUDOStereotypeInstances, "ui");
 	dumpSetAt( JUDOStereotypeInstances, "user");
 	dumpSetAt( JUDOStereotypeInstances, "singleton");
@@ -212,19 +212,19 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	dumpSetAt( JUDOStereotypeInstances, "fixedEnum");
 	dumpSetAt( JUDOStereotypeInstances, "calculated");
 
-	dumpMapAt( JUDOStereotypeInstances, "alias");
+	//dumpMapAt( JUDOStereotypeInstances, "alias");
 	dumpMapAt( JUDOStereotypeInstances, "decimals");
 	dumpMapAt( JUDOStereotypeInstances, "derivedDescription");
 	dumpMapAt( JUDOStereotypeInstances, "derivedExpression");
 	dumpMapAt( JUDOStereotypeInstances, "filter");
-	dumpMapAt( JUDOStereotypeInstances, "guard");
+	//dumpMapAt( JUDOStereotypeInstances, "guard");
 	dumpMapAt( JUDOStereotypeInstances, "interval");
 	dumpMapAt( JUDOStereotypeInstances, "list");
 	dumpMapAt( JUDOStereotypeInstances, "options");
 	dumpMapAt( JUDOStereotypeInstances, "order");
 	dumpMapAt( JUDOStereotypeInstances, "placeholder");
 	dumpMapAt( JUDOStereotypeInstances, "regexp");
-	dumpMapAt( JUDOStereotypeInstances, "representation");
+	//dumpMapAt( JUDOStereotypeInstances, "representation");
 	dumpMapAt( JUDOStereotypeInstances, "shortname");
 	dumpMapAt( JUDOStereotypeInstances, "validation");
 }

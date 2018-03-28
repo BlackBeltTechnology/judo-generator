@@ -1,0 +1,214 @@
+operation transformTargetClass(annotation : pimEXT!EAnnotation, associationList : Map<String, inpPIM!Asscoiation>) {
+	var pimClassList = inpPIM!Class.all.select(c | c.name = annotation.details.get("name") or c.fqName() = annotation.details.get("name"));
+	if (pimClassList.size() = 1) {
+		var pimClass = pimClassList.first();
+		var extClass : pimEXT!EClass = annotation.eModelElement;
+		
+		transformClass(extClass, pimClass, associationList);
+		
+		pimClass.addStereotypes(annotation);
+		pimClass.addConstraints(extClass);
+	}
+}
+
+operation transformAdditionClass(annotation : pimEXT!EAnnotation, associationList : Map<String, inpPIM!Asscoiation>) {
+	var extClass : pimEXT!EClass = annotation.eModelElement;
+	
+	var pimClass = new inpPIM!Class();
+	pimClass.name = extClass.name;
+	pimClass.isAbstract = extClass.abstract;
+	
+	var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = extClass.ePackage.fqName());
+	pimPackage.packagedElement.add(pimClass);
+	
+	transformClass(extClass, pimClass, associationList);
+	
+	pimClass.addStereotypes(annotation);
+	pimClass.addConstraints(extClass);
+}
+
+operation transformMenuRoot(annotation : pimEXT!EAnnotation) {
+	var extMenuRoot = annotation.eModelElement;
+	var pimMenuRoot = new inpPIM!Class();
+	pimMenuRoot.name = extMenuRoot.name;
+	
+	var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = extMenuRoot.ePackage.fqName());
+	pimPackage.packagedElement.add(pimMenuRoot);
+	
+	var menurootConst = new inpPIM!menuroot();
+	menurootConst.base_Class = pimMenuRoot;
+}
+
+operation transformMenuItem(annotation : pimEXT!EAnnotation) {
+	var extMenuItem = annotation.eModelElement;
+	var pimMenuItem = new inpPIM!Class();
+	pimMenuItem.name = extMenuItem.name;
+	
+	var elementImport = new inpPIM!ElementImport();
+	elementImport.importedElement = pimMenuItem;
+	elementImport.visibility = inpPIM!VisibilityKind#private;
+	elementImport.`alias` = "ElementImport";
+	
+	var parent = inpPIM!Class.all.selectOne(class | class.fqName() = annotation.details.get("parent"));
+	parent.elementImport.add(elementImport);
+	
+	var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = extMenuItem.ePackage.fqName());
+	pimPackage.packagedElement.add(pimMenuItem);
+	
+	var menuitemConst = new inpPIM!menuitem();
+	menuitemConst.base_Class = pimMenuItem;
+}
+
+operation transformScreen(annotation : pimEXT!EAnnotation) {
+	var extScreen = annotation.eModelElement;
+	var pimScreen = new inpPIM!InstanceSpecification();
+	pimScreen.name = extScreen.name;
+	
+	pimScreen.classifier.add(inpPIM!Class.all.selectOne(class | class.fqName() = annotation.details.get("base")));
+	
+	var elementImport = new inpPIM!ElementImport();
+	elementImport.importedElement = pimScreen;
+	elementImport.visibility = inpPIM!VisibilityKind#private;
+	elementImport.`alias` = "ElementImport";
+	var parent = inpPIM!Class.all.selectOne(class | class.fqName() = annotation.details.get("parent"));
+	parent.elementImport.add(elementImport);
+	
+	var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = extScreen.ePackage.fqName());
+	pimPackage.packagedElement.add(pimScreen);
+	
+	var screenConst = new inpPIM!screen();
+	screenConst.base_NamedElement = pimScreen;
+}
+
+operation transformClass(targetClass : pimEXT!EClass, pimClass : inpPIM!Class, associationList : Map<String, inpPIM!Asscoiation>) {
+	var attributes : OrderedSet(pimEXT!EAttribute) = targetClass.getEAttributes();	
+	for (attribute : pimEXT!EAttribute in attributes) {
+		var newPimAttr = new inpPIM!Property();
+		pimClass.ownedAttribute.add(newPimAttr);
+		transformAttribute(attribute, newPimAttr);
+		"ATTR ADD SUCCEDED".println();
+	}
+	
+	var references : OrderedSet(pimEXT!EReference) = targetClass.getEReferences();
+	for (reference : pimEXT!EReference in references) {
+		transformReference(reference, pimClass, associationList);			
+	}
+	
+	var operations : OrderedSet(pimEXT!EOperation) = targetClass.getEOperations();
+	for (op : pimEXT!EOperation in operations) {
+		transformOperation(op, pimClass);	
+	}
+}
+
+operation inpPIM!Class addStereotypes(annotation : pimEXT!EAnnotation) {
+	var const;
+	if (annotation.details.get("participates").isDefined()) {
+		var layers : Sequence(String) = annotation.details.get("participates").split(",");
+		self.addLayers(layers);
+	}
+	if (annotation.details.get("implementation").isDefined() and annotation.details.get("implementation") = "true") {
+		const = new inpPIM!implementation();
+		const.base_Class = self;
+	}
+	if (annotation.details.get("tenant").isDefined() and annotation.details.get("tenant") = "true") {
+		const = new inpPIM!tenant();
+		const.base_Class = self;
+	}
+	if (annotation.details.get("tenantmember").isDefined() and annotation.details.get("tenantmember") = "true") {
+		const = new inpPIM!tenantmember();
+		const.base_Class = self;
+	}
+	if (annotation.details.get("tenantuser").isDefined() and annotation.details.get("tenantuser") = "true") {
+		const = new inpPIM!tenantuser();
+		const.base_Class = self;
+	}
+	if (annotation.details.get("user").isDefined() and annotation.details.get("user") = "true") {
+		const = new inpPIM!user();
+		const.base_Class = self;
+	}
+	if (annotation.details.get("singleton").isDefined() and annotation.details.get("singleton") = "true") {
+		const = new inpPIM!singleton();
+		const.base_Class = self;
+	}
+	if (annotation.details.get("watch").isDefined() and annotation.details.get("watch") = "true") {
+		const = new inpPIM!watch();
+		const.base_Class = self;
+	}
+}
+
+operation inpPIM!Class addLayers(layers : Sequence(String)) {
+		var const;
+		if (layers.includes("rest")) {
+			const = new inpPIM!rest();
+			const.base_Class = self;
+		} 
+		if (layers.includes("bo")) {
+			const = new inpPIM!bo();
+			const.base_Class = self;
+		}
+		if (layers.includes("dto")) {
+			const = new inpPIM!dto();
+			const.base_Class = self;
+		}
+		if (layers.includes("document")) {
+			const = new inpPIM!document();
+			const.base_Class = self;
+		}
+}
+
+operation inpPIM!Class addConstraints(property : pimEXT!EClass) {
+
+	var validAnnotations : Sequence(String) = getValidAnnotations();
+	for (annotation in property.eAnnotations) {
+		if (validAnnotations.includes(annotation.source)) {
+		
+			var const = new inpPIM!Constraint();
+			self.package.ownedRule.add(const);
+			const.constrainedElement.add(self);
+		
+			var spec = new inpPIM!LiteralString();
+			spec.value = annotation.details.get("expression");
+		
+			const.specification = spec;
+		
+			var stereotype;
+			
+			switch (annotation.source) {
+				case "Decimals" : stereotype = new inpPIM!decimals();
+				case "DerivedDescription" : stereotype = new inpPIM!derivedDescription();
+				case "DerivedExpression" : stereotype = new inpPIM!derivedExpression();
+				case "Filter" : stereotype = new inpPIM!filter();
+				case "Interval" : stereotype = new inpPIM!interval();
+				case "List" : stereotype = new inpPIM!list();
+				case "Options" : stereotype = new inpPIM!options();
+				case "Order" : stereotype = new inpPIM!order();
+				case "Placeholder" : stereotype = new inpPIM!placeholder();
+				case "Regexp" : stereotype = new inpPIM!regexp();
+				case "Shortname" : stereotype = new inpPIM!shortname();
+				case "Validation" : stereotype = new inpPIM!validation();
+				case "Alias" : stereotype = new inpPIM!`alias`();
+			}
+			
+			stereotype.base_Constraint = const;
+		}
+	}	
+}
+
+@cached
+operation getValidAnnotations() : Sequence(String) {
+	return Sequence {"Decimals","DerivedDescription","DerivedExpression","Filter",
+											"Interval","List","Options","Order","Placeholder","Regexp","Shortname","Validation","Alias"};
+}
+
+@cached
+operation inpPIM!Class fqName() : String {
+	var fqName = self.name;
+	var currentPackage = self.package;
+	
+	while (currentPackage.isDefined() and not currentPackage.isTypeOf(inpPIM!Model)) {
+		fqName = currentPackage.name + "." + fqName;
+		currentPackage = currentPackage.nestingPackage;
+	}
+	
+	return fqName;
+}
