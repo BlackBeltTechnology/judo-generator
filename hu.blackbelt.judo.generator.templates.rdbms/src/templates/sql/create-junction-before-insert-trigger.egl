@@ -7,8 +7,12 @@
 
 
 [%for (table in junctionTables) {%]
+
+[%-- ------------------------------------- --%]
+[%-- ORACLE                                --%]
+[%-- ------------------------------------- --%]
 [%if (dialect() == 'Oracle') {%]
---changeset generator:create_trigger_BI_[%=table.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:createJunctionBeforeInsert stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+--changeset generator:create_trigger_BI_[%=table.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:createJunctionBeforeInsertTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
 -- [%=table.name%] [%=table.uuid%]
 CREATE TRIGGER CREATE_TRIGGER BI_[%=table.sqlName%] BEFORE INSERT ON [%=table.sqlName%]
     FOR EACH ROW
@@ -19,14 +23,16 @@ BEGIN
 END;
 /
 
---changeset generator:recompile_trigger_BI_[%=table.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:createJunctionBeforeInsert stripComments:true
+--changeset generator:recompile_trigger_BI_[%=table.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:createJunctionBeforeInsertTrigger stripComments:true
  alter trigger BI_[%=table.sqlName%] compile;
  select is_trigger_valid('BI_[%=table.sqlName%]') from DUAL;
-[% out.println("\n");%]
 [%}%]
 
+[%-- ------------------------------------- --%]
+[%-- HSQLDB                                --%]
+[%-- ------------------------------------- --%]
 [%if (dialect() == 'Hsqldb') {%]
---changeset generator:create_function_BI_[%=table.sqlName%]#[%=version()%] dbms:hsqldb logicalFilePath:createJunctionBeforeInsert stripComments:true splitStatements:false
+--changeset generator:create_function_BI_[%=table.sqlName%]#[%=version()%] dbms:hsqldb logicalFilePath:createJunctionBeforeInsertTrigger stripComments:true splitStatements:false
 -- [%=table.name%] [%=table.uuid%]
 CREATE TRIGGER BI_[%=table.sqlName%] BEFORE INSERT ON [%=table.sqlName%]
     REFERENCING NEW AS NEW 
@@ -36,11 +42,13 @@ CREATE TRIGGER BI_[%=table.sqlName%] BEFORE INSERT ON [%=table.sqlName%]
             SET NEW.ID = nextval('serial');
         END IF;
     END;
-[% out.println("\n");%]
 [%}%]
 
+[%-- ------------------------------------- --%]
+[%-- POSTGRES                                --%]
+[%-- ------------------------------------- --%]
 [%if (dialect() == 'Postgres') {%]
---changeset generator:create_function_BI_[%=table.sqlName%]#[%=version()%] failOnError:false dbms:postgresql logicalFilePath:createJunctionBeforeInsert stripComments:true
+--changeset generator:create_function_BI_[%=table.sqlName%]#[%=version()%] failOnError:false dbms:postgresql logicalFilePath:createJunctionBeforeInsertTrigger stripComments:true
 -- [%=table.name%] [%=table.uuid%]
 CREATE FUNCTION BI_[%=table.sqlName%]() RETURNS TRIGGER AS $BI_[%=table.sqlName%]$
     BEGIN
@@ -52,13 +60,12 @@ CREATE FUNCTION BI_[%=table.sqlName%]() RETURNS TRIGGER AS $BI_[%=table.sqlName%
     END;
 $BI_[%=table.sqlName%]$ LANGUAGE plpgsql;
 
---changeset generator:create_trigger_BI_[%=table.sqlName%]#[%=version()%] failOnError:false dbms:postgresql logicalFilePath:createJunctionBeforeInsert stripComments:true
+--changeset generator:create_trigger_BI_[%=table.sqlName%]#[%=version()%] failOnError:false dbms:postgresql logicalFilePath:createJunctionBeforeInsertTrigger stripComments:true
 CREATE TRIGGER BI_[%=table.sqlName%]
     BEFORE INSERT ON [%=table.sqlName%]
     FOR EACH ROW
     EXECUTE PROCEDURE BI_[%=table.sqlName%]();
    
-[% out.println("\n");%]
 [%}%]
 [%}%]
 

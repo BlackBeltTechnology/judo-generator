@@ -1,4 +1,9 @@
+@cached
 operation RDBMS!RdbmsField isPrimary () : Boolean {
 	return self.table.primaryKey == self;
 }
 
+@cached
+operation RDBMS!RdbmsField isForeignKey () : Boolean {
+	return self.isKindOf(RDBMS!RdbmsForeignKey);
+}

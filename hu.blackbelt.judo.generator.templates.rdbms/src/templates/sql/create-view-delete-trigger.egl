@@ -15,6 +15,10 @@
 --{{ ddlmacro.END_TRIGGER() }}
 
 [%for (view in views) {%]
+
+[%-- ------------------------------------- --%]
+[%-- ORACLE                                --%]
+[%-- ------------------------------------- --%]
 [%if (dialect() == 'Oracle') {%]
 --changeset generator:create_function_DEL_[%=view.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:deleteOnView stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
 -- [%=view.name%] [%=view.primaryTable.table.uuid%]
@@ -22,17 +26,17 @@ CREATE TRIGGER DEL_[%=view.sqlName%] INSTEAD OF DELETE ON [%=view.sqlName%]
     FOR EACH ROW
     BEGIN
         DELETE FROM [%=view.primaryTable.table.sqlName%] WHERE ID = :OLD.ID;
-
-        
     END;
 /
 
 --changeset generator:recompile_trigger_[%=view.sqlName%]#[%=version()%] stripComments:true
 alter trigger DEL_[%=view.sqlName%] compile;
 select is_trigger_valid('DEL_[%=view.sqlName%]') from DUAL;
-[% out.println("\n");%]
 [%}%]
 
+[%-- ------------------------------------- --%]
+[%-- HSQLDB                                --%]
+[%-- ------------------------------------- --%]
 [%if (dialect() == 'Hsqldb') {%]
 --changeset generator:create_function_DEL_[%=view.sqlName%]#[%=version()%] dbms:hsqldb logicalFilePath:deleteOnView stripComments:true
 -- [%=view.name%] [%=view.primaryTable.table.uuid%]
@@ -42,9 +46,11 @@ CREATE TRIGGER DEL_[%=view.sqlName%] INSTEAD OF DELETE ON [%=view.sqlName%]
     BEGIN ATOMIC
         DELETE FROM [%=view.primaryTable.table.sqlName%] WHERE ID = OLD.ID;        
     END;
-[% out.println("\n");%]
 [%}%]
 
+[%-- ------------------------------------- --%]
+[%-- POSTGRES                              --%]
+[%-- ------------------------------------- --%]
 [%if (dialect() == 'Postgres') {%]
 --changeset generator:create_function_DEL_[%=view.sqlName%]#[%=version()%] dbms:postgresql logicalFilePath:deleteOnView stripComments:true
 -- [%=view.name%] [%=view.primaryTable.table.uuid%]
@@ -62,7 +68,6 @@ CREATE TRIGGER DEL_[%=view.sqlName%]
     FOR EACH ROW
     EXECUTE PROCEDURE DEL_[%=view.sqlName%]();
 
-[% out.println("\n");%]
 [%}%]
 
 [%}%]

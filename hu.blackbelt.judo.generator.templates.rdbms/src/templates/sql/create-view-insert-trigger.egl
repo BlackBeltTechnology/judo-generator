@@ -5,77 +5,354 @@
   out.setContentType("Java");
 %]
 
---changeset generator:create_function_INS_{{ view.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
-{{ ddlmacro.CREATE_TRIGGER('INS_' + view.name, view.name, 'INSTEAD OF', 'INSERT') }}
-    {{ ddlmacro.DECLARE }}
-        {{ ddlmacro.DEFVAR('SERIAL_ID', 'INTEGER') }}
-    {{ ddlmacro.BEGIN }}
-        IF ({{ ddlmacro.NEW }}.ID IS NOT NULL) THEN
-            {{ ddlmacro.RAISE( 'Field ID in view "' + view.name + '" is not allowed to set' ) }}
+-- --changeset generator:create_function_INS_{{ view.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+-- {{ ddlmacro.CREATE_TRIGGER('INS_' + view.name, view.name, 'INSTEAD OF', 'INSERT') }}
+--    {{ ddlmacro.DECLARE }}
+--        {{ ddlmacro.DEFVAR('SERIAL_ID', 'INTEGER') }}
+--    {{ ddlmacro.BEGIN }}
+--        IF ({{ ddlmacro.NEW }}.ID IS NOT NULL) THEN
+--            {{ ddlmacro.RAISE( 'Field ID in view "' + view.name + '" is not allowed to set' ) }}
+--        END IF;
+--
+--        IF ({{ ddlmacro.NEW }}.C_XMIID IS NOT NULL) THEN
+--            {{ ddlmacro.RAISE( 'Field C_XMIID in view "' + view.name + '" is not allowed to set' ) }}
+--        END IF;
+--
+--        {%- for table in view.tables %}
+--        {%- for field in table.savefields %}
+--        {%- if field.forcedunique %}
+--        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL) THEN
+--            {%- if field.othernull %}
+--            UPDATE {{ table.name }} SET {{ field.name }} = NULL WHERE {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }};
+--            {%- else %}
+--            {{ ddlmacro.RAISE( 'Not null constraint violation.' ) }}
+--            {%- endif %}
+--        END IF;
+--        {%- endif %}
+--        {%- endfor %}
+--        {%- endfor %}
+--
+--        {{ ddlmacro.nextval( 'SERIAL_ID' ) }}
+--        {{ ddlmacro.setnewid ( 'SERIAL_ID' ) }}
+--
+--        INSERT INTO {{ view.roottable.name }} (
+--            ID,
+--            C_XMIID
+--            {%- for field in view.roottable.savefields %}
+--            {%- if not field.isxmiid %},
+--            {{ field.name }}
+--            {%- endif %}
+--            {%- endfor %}
+--        ) VALUES (
+--            SERIAL_ID,
+--            '{{ view.node.xmiid }}'
+--            {%- for field in view.roottable.savefields %}
+--            {%- if not field.isxmiid %},
+--            {{ ddlmacro.NEW }}.{{ field.name }}
+--            {%- endif %}
+--            {%- endfor %}
+--        );
+--
+--        {%- for table in view.nonroottables %}
+--        INSERT INTO {{ table.name }} (
+--            ID
+--            {%- for field in table.savefields %},
+--            {{ field.name }}
+--            {%- endfor %}
+--        ) VALUES (
+--            SERIAL_ID
+--            {%- for field in table.savefields %},
+--            {{ ddlmacro.NEW }}.{{ field.name }}
+--            {%- endfor %}
+--        );
+--        {%- endfor %}
+--
+--        {%- if view.nonroottables|length > 0 %}
+--        UPDATE {{ view.roottable.name }} SET
+--            {%- for table in view.nonroottables %}
+--            C_{{ table.name }}_ID = SERIAL_ID{% if not loop.last %},{% endif %}
+--            {%- endfor %}
+--        WHERE ID = SERIAL_ID;
+--        {%- endif %}
+--
+--        {{ ddlmacro.RETURN_NEW }}
+--    END;
+-- {{ ddlmacro.END_TRIGGER() }}
+-- {% endfor %}
+
+
+[%for (view in views) {%]
+
+[%-- ------------------------------------- --%]
+[%-- ORACLE                                --%]
+[%-- ------------------------------------- --%]
+[%if (dialect() == 'Oracle') {%]
+--changeset generator:create_function_DEL_[%=view.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:deleteOnView stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+-- [%=view.name%] [%=view.primaryTable.table.uuid%]
+--changeset generator:create_function_INS_V_DOM_CAR#1.0.0-SNAPSHOT_e26392f387305ccb6faf9fc92ad51e23 failOnError:false dbms:oracle logicalFilePath:triggersViewsConstraintCreate stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+CREATE TRIGGER INS_ [%=view.name%] INSTEAD OF INSERT ON  [%=view.name%]
+    FOR EACH ROW
+    DECLARE
+        SERIAL_ID INTEGER;
+    BEGIN
+        IF (:NEW.ID IS NOT NULL) THEN
+            raise_application_error(-202000, 'Field ID in view "V_DOM_CAR" is not allowed to set');
         END IF;
 
-        IF ({{ ddlmacro.NEW }}.C_XMIID IS NOT NULL) THEN
-            {{ ddlmacro.RAISE( 'Field C_XMIID in view "' + view.name + '" is not allowed to set' ) }}
+        IF (:NEW.C_XMIID IS NOT NULL) THEN
+            raise_application_error(-202000, 'Field C_XMIID in view "V_DOM_CAR" is not allowed to set');
         END IF;
 
-        {%- for table in view.tables %}
-        {%- for field in table.savefields %}
-        {%- if field.forcedunique %}
-        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL) THEN
-            {%- if field.othernull %}
-            UPDATE {{ table.name }} SET {{ field.name }} = NULL WHERE {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }};
-            {%- else %}
-            {{ ddlmacro.RAISE( 'Not null constraint violation.' ) }}
-            {%- endif %}
-        END IF;
-        {%- endif %}
-        {%- endfor %}
-        {%- endfor %}
+        SELECT serial.NEXTVAL INTO SERIAL_ID FROM dual;
+        
+		[%for (tableAlias in view.tables.sortBy(t | t.table.parent.isDefined())) {%]
+			-- [%=tableAlias.table.name%] [%=tableAlias.table.uuid%]
+			INSERT INTO [%=tableAlias.table.sqlName%] (
+			[%for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias)) {%]
+        		[%if (field.tableField.isPrimary()) {%]			
+				[%=field.sqlName%] [%for (inh in tableAlias.table.allInheritedIdentifier()) {%], [%=inh.sqlName%][%}%]
+				[%} else {%]
+				[%=field.sqlName%] [%if (hasMore) { out.print(","); }%] -- [%=field.name%] [%=field.uuid%]
+				[%}%]
 
-        {{ ddlmacro.nextval( 'SERIAL_ID' ) }}
-        {{ ddlmacro.setnewid ( 'SERIAL_ID' ) }}
+			[%}%]
+			) VALUES (
+			[%for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias)) {%]
+        		[%if (field.tableField.isPrimary()) {%]			
+				SERIAL_ID [%for (inh in tableAlias.table.allInheritedIdentifier()) {%], SERIAL_ID[%}%]
+				[%} else if (field.sqlName == "C_XMIID") {%]
+				'[%=tableAlias.table.uuid%]'
+				[%} else {%]
+				:NEW.[%=field.sqlName%]
+				[%}%]
+				[%if (hasMore) { out.print(","); }%]
+			[%}%]
+			)
+		[%}%]
 
-        INSERT INTO {{ view.roottable.name }} (
+        INSERT INTO T_DOM_VEHCL (
             ID,
-            C_XMIID
-            {%- for field in view.roottable.savefields %}
-            {%- if not field.isxmiid %},
-            {{ field.name }}
-            {%- endif %}
-            {%- endfor %}
+            C_XMIID,
+            C_MAXSPD,
+            C_GUID,
+            C_AUU,
+            C_AUT,
+            C_ACU,
+            C_ACT
         ) VALUES (
             SERIAL_ID,
-            '{{ view.node.xmiid }}'
-            {%- for field in view.roottable.savefields %}
-            {%- if not field.isxmiid %},
-            {{ ddlmacro.NEW }}.{{ field.name }}
-            {%- endif %}
-            {%- endfor %}
+            '2648aa0f-16b8-427f-a166-f4fe3968830f',
+            :NEW.C_MAXSPD,
+            :NEW.C_GUID,
+            :NEW.C_AUU,
+            :NEW.C_AUT,
+            :NEW.C_ACU,
+            :NEW.C_ACT
         );
-
-        {%- for table in view.nonroottables %}
-        INSERT INTO {{ table.name }} (
-            ID
-            {%- for field in table.savefields %},
-            {{ field.name }}
-            {%- endfor %}
+        INSERT INTO T_DOM_CAR (
+            ID,
+            C_WORLWD,
+            C_WITDFL,
+            C_VALID,
+            C_TESZT,
+            C_NUMOWS,
+            C_LEHCAT,
+            C_HOPPA,
+            C_COLOR,
+            C_MYSM_ID,
+            C_MACHN1_ID
         ) VALUES (
-            SERIAL_ID
-            {%- for field in table.savefields %},
-            {{ ddlmacro.NEW }}.{{ field.name }}
-            {%- endfor %}
+            SERIAL_ID,
+            :NEW.C_WORLWD,
+            :NEW.C_WITDFL,
+            :NEW.C_VALID,
+            :NEW.C_TESZT,
+            :NEW.C_NUMOWS,
+            :NEW.C_LEHCAT,
+            :NEW.C_HOPPA,
+            :NEW.C_COLOR,
+            :NEW.C_MYSM_ID,
+            :NEW.C_MACHN1_ID
         );
-        {%- endfor %}
-
-        {%- if view.nonroottables|length > 0 %}
-        UPDATE {{ view.roottable.name }} SET
-            {%- for table in view.nonroottables %}
-            C_{{ table.name }}_ID = SERIAL_ID{% if not loop.last %},{% endif %}
-            {%- endfor %}
+        UPDATE T_DOM_VEHCL SET
+            C_T_DOM_CAR_ID = SERIAL_ID
         WHERE ID = SERIAL_ID;
-        {%- endif %}
-
-        {{ ddlmacro.RETURN_NEW }}
+        
     END;
-{{ ddlmacro.END_TRIGGER() }}
-{% endfor %}
+/
+
+--changeset generator:recompile_trigger_INS_ [%=view.name%]#   stripComments:true
+alter trigger INS_V_DOM_CAR compile;
+select is_trigger_valid('INS_V_DOM_CAR') from DUAL;
+
+[%}%]
+
+[%-- ------------------------------------- --%]
+[%-- HSQLDB                                --%]
+[%-- ------------------------------------- --%]
+[%if (dialect() == 'Hsqldb') {%]
+--changeset generator:create_function_DEL_[%=view.sqlName%]#[%=version()%] dbms:hsqldb logicalFilePath:deleteOnView stripComments:true
+-- [%=view.name%] [%=view.primaryTable.table.uuid%]
+
+--changeset generator:create_function_INS_V_DOM_CAR#1.0.0-SNAPSHOT_e26392f387305ccb6faf9fc92ad51e23 failOnError:false dbms:hsqldb logicalFilePath:triggersViewsConstraintCreate stripComments:true splitStatements:false
+CREATE TRIGGER INS_V_DOM_CAR INSTEAD OF INSERT ON V_DOM_CAR
+    REFERENCING NEW AS NEW 
+    FOR EACH ROW
+    BEGIN ATOMIC
+    
+        DECLARE SERIAL_ID INTEGER;
+    
+        IF (NEW.ID IS NOT NULL) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field ID in view "V_DOM_CAR" is not allowed to set';
+        END IF;
+
+        IF (NEW.C_XMIID IS NOT NULL) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field C_XMIID in view "V_DOM_CAR" is not allowed to set';
+        END IF;
+
+        SET SERIAL_ID = nextval('serial');
+        
+
+        INSERT INTO T_DOM_VEHCL (
+            ID,
+            C_XMIID,
+            C_MAXSPD,
+            C_GUID,
+            C_AUU,
+            C_AUT,
+            C_ACU,
+            C_ACT
+        ) VALUES (
+            SERIAL_ID,
+            '2648aa0f-16b8-427f-a166-f4fe3968830f',
+            NEW.C_MAXSPD,
+            NEW.C_GUID,
+            NEW.C_AUU,
+            NEW.C_AUT,
+            NEW.C_ACU,
+            NEW.C_ACT
+        );
+        INSERT INTO T_DOM_CAR (
+            ID,
+            C_WORLWD,
+            C_WITDFL,
+            C_VALID,
+            C_TESZT,
+            C_NUMOWS,
+            C_LEHCAT,
+            C_HOPPA,
+            C_COLOR,
+            C_MYSM_ID,
+            C_MACHN1_ID
+        ) VALUES (
+            SERIAL_ID,
+            NEW.C_WORLWD,
+            NEW.C_WITDFL,
+            NEW.C_VALID,
+            NEW.C_TESZT,
+            NEW.C_NUMOWS,
+            NEW.C_LEHCAT,
+            NEW.C_HOPPA,
+            NEW.C_COLOR,
+            NEW.C_MYSM_ID,
+            NEW.C_MACHN1_ID
+        );
+        UPDATE T_DOM_VEHCL SET
+            C_T_DOM_CAR_ID = SERIAL_ID
+        WHERE ID = SERIAL_ID;
+
+        
+    END;
+
+
+--changeset generator:create_view_V_DOM_AATTS2#1.0.0-SNAPSHOT_e26392f387305ccb6faf9fc92ad51e23 failOnError:false dbms:hsqldb logicalFilePath:triggersViewsConstraintCreate stripComments:true
+CREATE VIEW V_DOM_AATTS2 AS
+SELECT T_DOM_AATTS2.ID AS ID, T_DOM_AATTS2.C_VALT_2 AS C_VALT_2, T_DOM_AATTS2.C_VALT_1 AS C_VALT_1, T_DOM_AATTS.C_ATTDRN AS C_ATTDRN, T_DOM_AATTS.C_AUU AS C_AUU, T_DOM_AATTS.C_ACT AS C_ACT, T_DOM_AATTS.C_ATTRBN AS C_ATTRBN, T_DOM_AATTS.C_ACU AS C_ACU, T_DOM_AATTS.C_VFLOAT AS C_VFLOAT, T_DOM_AATTS.C_ATRPCG AS C_ATRPCG, T_DOM_AATTS.C_ATTRUL AS C_ATTRUL, T_DOM_AATTS.C_GUID AS C_GUID, T_DOM_AATTS.C_ATTIPS AS C_ATTIPS, T_DOM_AATTS.C_AUT AS C_AUT, T_DOM_AATTS.C_ATRCRY AS C_ATRCRY, T_DOM_AATTS.C_ATTRFT AS C_ATTRFT, T_DOM_AATTS.C_ATTSTG AS C_ATTSTG, T_DOM_AATTS.C_ATTDTM AS C_ATTDTM, T_DOM_AATTS.C_ATRITL AS C_ATRITL, T_DOM_AATTS.C_ATTCPS AS C_ATTCPS, T_DOM_AATTS.C_ATTRPN AS C_ATTRPN, T_DOM_AATTS.C_ATTRUD AS C_ATTRUD, T_DOM_AATTS.C_ATTINR AS C_ATTINR, T_DOM_AATTS.C_XMIID AS C_XMIID, T_DOM_AATTS.C_ATTREL AS C_ATTREL, T_DOM_AATTS.C_ATTRDT AS C_ATTRDT, T_DOM_AATTS.C_ATTRTM AS C_ATTRTM, T_DOM_AATTS.C_ATTNTL AS C_ATTNTL 
+FROM T_DOM_AATTS2 JOIN T_DOM_AATTS ON T_DOM_AATTS2.ID = T_DOM_AATTS.ID;
+
+
+[%}%]
+
+
+
+[%-- ------------------------------------- --%]
+[%-- POSTGRES                              --%]
+[%-- ------------------------------------- --%]
+[%if (dialect() == 'Postgres') {%]
+--changeset generator:create_function_INS_V_DOM_CAR#1.0.0-SNAPSHOT_e26392f387305ccb6faf9fc92ad51e23 failOnError:false dbms:postgresql logicalFilePath:triggersViewsConstraintCreate stripComments:true splitStatements:false
+CREATE FUNCTION INS_V_DOM_CAR() RETURNS TRIGGER AS $INS_V_DOM_CAR$
+    DECLARE
+        SERIAL_ID INTEGER;
+    BEGIN
+        IF (NEW.ID IS NOT NULL) THEN
+            RAISE EXCEPTION 'Field ID in view "V_DOM_CAR" is not allowed to set';
+        END IF;
+
+        IF (NEW.C_XMIID IS NOT NULL) THEN
+            RAISE EXCEPTION 'Field C_XMIID in view "V_DOM_CAR" is not allowed to set';
+        END IF;
+
+        SERIAL_ID = nextval('serial');
+        NEW.ID = SERIAL_ID;
+
+        INSERT INTO T_DOM_VEHCL (
+            ID,
+            C_XMIID,
+            C_MAXSPD,
+            C_GUID,
+            C_AUU,
+            C_AUT,
+            C_ACU,
+            C_ACT
+        ) VALUES (
+            SERIAL_ID,
+            '2648aa0f-16b8-427f-a166-f4fe3968830f',
+            NEW.C_MAXSPD,
+            NEW.C_GUID,
+            NEW.C_AUU,
+            NEW.C_AUT,
+            NEW.C_ACU,
+            NEW.C_ACT
+        );
+        INSERT INTO T_DOM_CAR (
+            ID,
+            C_WORLWD,
+            C_WITDFL,
+            C_VALID,
+            C_TESZT,
+            C_NUMOWS,
+            C_LEHCAT,
+            C_HOPPA,
+            C_COLOR,
+            C_MYSM_ID,
+            C_MACHN1_ID
+        ) VALUES (
+            SERIAL_ID,
+            NEW.C_WORLWD,
+            NEW.C_WITDFL,
+            NEW.C_VALID,
+            NEW.C_TESZT,
+            NEW.C_NUMOWS,
+            NEW.C_LEHCAT,
+            NEW.C_HOPPA,
+            NEW.C_COLOR,
+            NEW.C_MYSM_ID,
+            NEW.C_MACHN1_ID
+        );
+        UPDATE T_DOM_VEHCL SET
+            C_T_DOM_CAR_ID = SERIAL_ID
+        WHERE ID = SERIAL_ID;
+
+        RETURN NEW;
+    END;
+$INS_V_DOM_CAR$ LANGUAGE plpgsql;
+
+CREATE TRIGGER INS_V_DOM_CAR
+    INSTEAD OF INSERT ON V_DOM_CAR
+    FOR EACH ROW
+    EXECUTE PROCEDURE INS_V_DOM_CAR();
+
+[%}%]
+
+[%}%]
+

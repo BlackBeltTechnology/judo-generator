@@ -10,6 +10,27 @@ operation RDBMS!RdbmsTable hasReadonlyForeignKey () : Boolean {
 }
 
 
+@cached
+operation RDBMS!RdbmsTable allDescandences() : Collection {
+	var ret : Sequence = new Sequence();
+	for (c : RDBMS!RdbmsTable in RDBMS!RdbmsTable.all.select( c | c.parent = self)) {
+		ret.add(c);
+		ret.addAll(c.allDescandences());
+	}
+	return ret;
+}
+
+@cached
+operation RDBMS!RdbmsTable allInheritedIdentifier() : Collection {
+	var ret : Sequence = new Sequence();
+	if (self.parent.isUndefined()) {
+		for (inh in self.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.inheritenceBased)) {
+			ret.add(inh);
+		}
+	}
+	return ret;
+}
+	
 /*
     @property
     def before_update(self):

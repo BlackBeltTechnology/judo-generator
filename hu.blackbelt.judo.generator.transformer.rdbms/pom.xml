@@ -268,7 +268,7 @@
 
 								<model>
 
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psmFromHutn:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>

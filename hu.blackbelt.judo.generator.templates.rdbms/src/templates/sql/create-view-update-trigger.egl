@@ -5,45 +5,45 @@
   out.setContentType("Java");
 %]
 
---changeset generator:create_function_UPD_{{ view.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
-{{ ddlmacro.CREATE_TRIGGER('UPD_' + view.name, view.name, 'INSTEAD OF', 'UPDATE') }}
-    {{ ddlmacro.BEGIN }}
-        IF ({{ ddlmacro.NEW }}.ID IS NULL OR {{ ddlmacro.NEW }}.ID <> {{ ddlmacro.OLD }}.ID) THEN
-            {{ ddlmacro.RAISE( 'Field ID in view "' + view.name + '" is not allowed to update' ) }}
-        END IF;
-
-        IF ({{ ddlmacro.NEW }}.C_XMIID IS NULL OR {{ ddlmacro.NEW }}.C_XMIID <> {{ ddlmacro.OLD }}.C_XMIID) THEN
-            {{ ddlmacro.RAISE( 'Field C_XMIID in view "' + view.name + '" is not allowed to update' ) }}
-        END IF;
-
-        IF ({{ ddlmacro.NEW }}.C_GUID IS NULL OR {{ ddlmacro.NEW }}.C_GUID <> {{ ddlmacro.OLD }}.C_GUID) THEN
-            {{ ddlmacro.RAISE( 'Field C_GUID in view "' + view.name + '" is not allowed to update' ) }}
-        END IF;
-
-        {%- for table in view.tables %}
-        {%- for field in table.savefields %}
-        {%- if field.forcedunique %}
-        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL) AND ({{ ddlmacro.OLD }}.{{ field.name }} IS NULL OR {{ ddlmacro.NEW }}.{{ field.name }} <> {{ ddlmacro.OLD }}.{{ field.name }}) THEN
-            {%- if field.othernull %}
-            UPDATE {{ table.name }} SET {{ field.name }} = NULL WHERE {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }};
-            {%- else %}
-            {{ ddlmacro.RAISE( 'Not null constraint violation.' ) }}
-            {%- endif %}
-        END IF;
-        {%- endif %}
-        {%- endfor %}
-        {%- endfor %}
-
-        {%- for table in view.tables %}
-        {%- if table.savefields|length > 0 %}
-        UPDATE {{ table.name }} SET
-            {%- for field in table.savefields %}
-            {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }}{% if not loop.last %},{% endif %}
-            {%- endfor %}
-        WHERE ID = {{ ddlmacro.OLD }}.ID;
-        {%- endif %}
-        {%- endfor %}
-
-        {{ ddlmacro.RETURN_NEW }}
-    END;
-{{ ddlmacro.END_TRIGGER() }}
+-- --changeset generator:create_function_UPD_{{ view.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+-- {{ ddlmacro.CREATE_TRIGGER('UPD_' + view.name, view.name, 'INSTEAD OF', 'UPDATE') }}
+--    {{ ddlmacro.BEGIN }}
+--        IF ({{ ddlmacro.NEW }}.ID IS NULL OR {{ ddlmacro.NEW }}.ID <> {{ ddlmacro.OLD }}.ID) THEN
+--            {{ ddlmacro.RAISE( 'Field ID in view "' + view.name + '" is not allowed to update' ) }}
+--        END IF;
+--
+--        IF ({{ ddlmacro.NEW }}.C_XMIID IS NULL OR {{ ddlmacro.NEW }}.C_XMIID <> {{ ddlmacro.OLD }}.C_XMIID) THEN
+--            {{ ddlmacro.RAISE( 'Field C_XMIID in view "' + view.name + '" is not allowed to update' ) }}
+--        END IF;
+--
+--        IF ({{ ddlmacro.NEW }}.C_GUID IS NULL OR {{ ddlmacro.NEW }}.C_GUID <> {{ ddlmacro.OLD }}.C_GUID) THEN
+--            {{ ddlmacro.RAISE( 'Field C_GUID in view "' + view.name + '" is not allowed to update' ) }}
+--        END IF;
+--
+--        {%- for table in view.tables %}
+--        {%- for field in table.savefields %}
+--        {%- if field.forcedunique %}
+--        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL) AND ({{ ddlmacro.OLD }}.{{ field.name }} IS NULL OR {{ ddlmacro.NEW }}.{{ field.name }} <> {{ ddlmacro.OLD }}.{{ field.name }}) THEN
+--            {%- if field.othernull %}
+--            UPDATE {{ table.name }} SET {{ field.name }} = NULL WHERE {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }};
+--            {%- else %}
+--            {{ ddlmacro.RAISE( 'Not null constraint violation.' ) }}
+--            {%- endif %}
+--        END IF;
+--        {%- endif %}
+--        {%- endfor %}
+--        {%- endfor %}
+--
+--        {%- for table in view.tables %}
+--        {%- if table.savefields|length > 0 %}
+--        UPDATE {{ table.name }} SET
+--            {%- for field in table.savefields %}
+--            {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }}{% if not loop.last %},{% endif %}
+--            {%- endfor %}
+--        WHERE ID = {{ ddlmacro.OLD }}.ID;
+--        {%- endif %}
+--        {%- endfor %}
+--
+--        {{ ddlmacro.RETURN_NEW }}
+--    END;
+-- {{ ddlmacro.END_TRIGGER() }}
