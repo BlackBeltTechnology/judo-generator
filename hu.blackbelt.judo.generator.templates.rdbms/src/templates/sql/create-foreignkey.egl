@@ -5,40 +5,24 @@
   out.setContentType("Java");
 %]
 
--- {%- for field in table.savefields %}
--- {%- if field.foreign %}
--- --changeset generator:add_constraint_{{ field.foreignname }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true
--- ALTER TABLE {{ table.name }}
--- ADD CONSTRAINT {{ field.foreignname }}
--- FOREIGN KEY ({{ field.name }})
--- REFERENCES {{ field.referenced }}(ID)
--- {%- if field.cascade_delete %}
--- ON DELETE CASCADE
--- {%- else %}
--- ON DELETE SET NULL
--- {%- endif %}
--- {{ ddlmacro.DEFERRED }};
--- {%- endif %}
--- {%- endfor %}
-
 [* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
 
-[%for (foreignKey in foreignKeys) {%]
+[% for (foreignKey in foreignKeys) { %]
 --changeset generator:create_foreign_key_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:createForeignKey stripComments:true
-ALTER TABLE [%=foreignKey.table.sqlName%] 
-ADD CONSTRAINT [%=foreignKey.foreignKeySqlName%]
-FOREIGN KEY ([%=foreignKey.sqlName%])
-REFERENCES [%=foreignKey.referenceKey.sqlName%] (ID)
-		[% if (foreignKey.deleteOnCascade) {%]
+ALTER TABLE [%= foreignKey.table.sqlName %] 
+ADD CONSTRAINT [%= foreignKey.foreignKeySqlName %]
+FOREIGN KEY ([%= foreignKey.sqlName %])
+REFERENCES [%= foreignKey.referenceKey.sqlName %] (ID)
+		[% if (foreignKey.deleteOnCascade) { %]
 			ON DELETE CASCADE
-		[%} else if (not foreignKey.mandatory)% {%]
+		[% } else if (not foreignKey.mandatory) { %]
 			ON DELETE SET NULL
-		[%} else {%]
-			[%if (dialect() == 'Oracle') {%]
+		[% } else { %]
+			[% if (dialect() == 'Oracle') { %]
 				ON DELETE NO ACTION
-			[%} else {%]
+			[% } else { %]
 				ON DELETE RESTRICT
-			[%}%]
-		[%}%]
-;[% out.println("\n");%]
-[%}%]
+			[% } %]
+		[% } %]
+;[% out.println("\n"); %]
+[% } %]

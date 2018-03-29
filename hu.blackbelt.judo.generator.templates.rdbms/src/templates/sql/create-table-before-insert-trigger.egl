@@ -5,58 +5,58 @@
   out.setContentType("Java");
 %]
 
-[%for (table in tables) {%]
+[% for (table in tables) { %]
 
-[%-- ------------------------------------- --%]
-[%-- ORACLE                                --%]
-[%-- ------------------------------------- --%]
-[%if (dialect() == 'Oracle') {%]
---changeset generator:create_trigger_BI_[%=table.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:createTableBeforeInsertTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
--- [%=table.name%] [%=table.uuid%]
-CREATE TRIGGER BI_[%=table.sqlName%] BEFORE INSERT ON [%=table.sqlName%]
+[* ------------------------------------- *]
+[* ORACLE                                *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Oracle') { %]
+--changeset generator:create_trigger_BI_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createTableBeforeInsertTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+-- [%= table.name %] [%= table.uuid %]
+CREATE TRIGGER BI_[%= table.sqlName %] BEFORE INSERT ON [%= table.sqlName %]
     FOR EACH ROW
     BEGIN
         :NEW.C_ACT := SYSTIMESTAMP;
     END;
 /
 
---changeset generator:recompile_trigger_[%=table.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:createTableBeforeInsertTrigger stripComments:true stripComments:true
-alter trigger BI_[%=table.sqlName%] compile;
-select is_trigger_valid('BI_[%=table.sqlName%]') from DUAL;
-[%}%]
+--changeset generator:recompile_trigger_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createTableBeforeInsertTrigger stripComments:true stripComments:true
+alter trigger BI_[%= table.sqlName %] compile;
+select is_trigger_valid('BI_[%= table.sqlName %]') from DUAL;
+[% } %]
 
-[%-- ------------------------------------- --%]
-[%-- POSTGRESQL                            --%]
-[%-- ------------------------------------- --%]
-[%if (dialect() == 'Postgres') {%]
---changeset generator:create_function_BI_[%=table.sqlName%]#[%=version()%] dbms:postgresql logicalFilePath:createTableBeforeInsertTrigger stripComments:true splitStatements:false
--- [%=table.name%] [%=table.uuid%]
-CREATE FUNCTION BI_[%=table.sqlName%]() RETURNS TRIGGER AS $BI_[%=table.sqlName%]$
+[* ------------------------------------- *]
+[* POSTGRESQL                            *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Postgres') { %]
+--changeset generator:create_function_BI_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createTableBeforeInsertTrigger stripComments:true splitStatements:false
+-- [%= table.name %] [%= table.uuid %]
+CREATE FUNCTION BI_[%= table.sqlName %]() RETURNS TRIGGER AS $BI_[%= table.sqlName %]$
     BEGIN
         NEW.C_ACT := transaction_timestamp();
         RETURN NEW;
     END;
-$BI_[%=table.sqlName%]$ LANGUAGE plpgsql;
+$BI_[%= table.sqlName %]$ LANGUAGE plpgsql;
 
---changeset generator:create_trigger_BI_[%=table.sqlName%]#[%=version()%] dbms:postgresql logicalFilePath:createTableBeforeInsertTrigger stripComments:true splitStatements:false
-CREATE TRIGGER BI_[%=table.sqlName%]
-    BEFORE INSERT ON [%=table.sqlName%]
+--changeset generator:create_trigger_BI_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createTableBeforeInsertTrigger stripComments:true splitStatements:false
+CREATE TRIGGER BI_[%= table.sqlName %]
+    BEFORE INSERT ON [%= table.sqlName %]
     FOR EACH ROW
-    EXECUTE PROCEDURE BI_[%=table.sqlName%]();
-[%}%]
+    EXECUTE PROCEDURE BI_[%= table.sqlName %]();
+[% } %]
    
-[%-- ------------------------------------- --%]
-[%-- HSQLDB                                --%]
-[%-- ------------------------------------- --%]   
+[* ------------------------------------- *]
+[* HSQLDB                                *]
+[* ------------------------------------- *]   
 [%if (dialect() == 'Hsqldb') {%]
---changeset generator:create_trigger_BI_[%=table.sqlName%]#[%=version()%] dbms:hsqldb logicalFilePath:createTableBeforeInsertTrigger stripComments:true splitStatements:false
--- [%=table.name%] [%=table.uuid%]
-CREATE TRIGGER BI_[%=table.sqlName%] BEFORE INSERT ON [%=table.sqlName%]
+--changeset generator:create_trigger_BI_[%= table.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:createTableBeforeInsertTrigger stripComments:true splitStatements:false
+-- [%= table.name %] [%= table.uuid %]
+CREATE TRIGGER BI_[%= table.sqlName %] BEFORE INSERT ON [%= table.sqlName %]
     REFERENCING NEW AS NEW 
     FOR EACH ROW
     BEGIN ATOMIC   
         SET NEW.C_ACT = CURRENT_TIMESTAMP;
     END;
-[%}%]
+[% } %]
 
-[%}%]
+[% } %]

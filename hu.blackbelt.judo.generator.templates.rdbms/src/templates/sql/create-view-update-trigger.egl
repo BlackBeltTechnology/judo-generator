@@ -47,3 +47,118 @@
 --        {{ ddlmacro.RETURN_NEW }}
 --    END;
 -- {{ ddlmacro.END_TRIGGER() }}
+
+
+[% for (view in views) { %]
+
+[% -- ------------------------------------- -- %]
+[% -- ORACLE                                -- %]
+[% -- ------------------------------------- -- %]
+[% if (dialect() == 'Oracle') { %]
+-- [%= view.name %] [%= view.primaryTable.table.uuid %]
+--changeset generator:create_trigger_UPD_[%= view.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createViewUpdateTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
+    FOR EACH ROW
+    BEGIN
+        IF (:NEW.ID IS NULL OR :NEW.ID <> :OLD.ID) THEN
+            raise_application_error(-202000, 'Field "ID" in view "[%= view.sqlName %]" is not allowed to update');
+        END IF;
+
+        IF (:NEW.C_XMIID IS NULL OR :NEW.C_XMIID <> :OLD.C_XMIID) THEN
+            raise_application_error(-202000, 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to update');
+        END IF;
+
+        IF (:NEW.C_GUID IS NULL OR :NEW.C_GUID <> :OLD.C_GUID) THEN
+            raise_application_error(-202000, 'Field "C_GUID" in view "[%= view.sqlName %]" is not allowed to update');
+        END IF;
+        
+        [% for (tableAlias in view.tables.sortBy(t | t.table.parent.isDefined())) { %]
+			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
+			UPDATE [%= tableAlias.table.sqlName %] SET
+			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias and not f.tableField.isPrimary())) { %]
+    			[%= field.tableField.sqlName %] = :NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+			[% } %]
+	        WHERE ID = :OLD.ID;
+		[% } %]
+    END;
+/
+
+--changeset generator:recompile_trigger_UPD_[%= view.name %]#[%= version() %] dbms:oracle logicalFilePath:createViewUpdateTrigger stripComments:true
+alter trigger UPD_V_DOM_CAR compile;
+select is_trigger_valid('UPD_V_DOM_CAR') from DUAL;
+[% } %]
+
+[% -- ------------------------------------- -- %]
+[% -- HSQLDB                                -- %]
+[% -- ------------------------------------- -- %]
+[% if (dialect() == 'Hsqldb') { %]
+--changeset generator:create_trigger_UPD_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:createViewInsertTrigger stripComments:true
+-- [%= view.name %] [%= view.primaryTable.table.uuid %]
+CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
+    REFERENCING NEW AS NEW OLD AS OLD
+    FOR EACH ROW
+    BEGIN ATOMIC
+    
+        IF (NEW.ID IS NULL OR NEW.ID <> OLD.ID) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "ID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        IF (NEW.C_XMIID IS NULL OR NEW.C_XMIID <> OLD.C_XMIID) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        IF (NEW.C_GUID IS NULL OR NEW.C_GUID <> OLD.C_GUID) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "C_GUID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+        
+        [% for (tableAlias in view.tables.sortBy(t | t.table.parent.isDefined())) { %]
+			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
+			UPDATE [%= tableAlias.table.sqlName %] SET
+			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias and not f.tableField.isPrimary())) { %]
+    			[%= field.tableField.sqlName %] = NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+			[% } %]
+	        WHERE ID = :OLD.ID;
+		[% } %]        
+    END;
+[% } %]
+
+[% -- ------------------------------------- -- %]
+[% -- POSTGRES                              -- %]
+[% -- ------------------------------------- -- %]
+[% if (dialect() == 'Postgres') { %]
+--changeset generator:create_function_UPD_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createViewUpdateTrigger stripComments:true
+CREATE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlName %]$
+    BEGIN
+        IF (NEW.ID IS NULL OR NEW.ID <> OLD.ID) THEN
+            RAISE EXCEPTION 'Field "ID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        IF (NEW.C_XMIID IS NULL OR NEW.C_XMIID <> OLD.C_XMIID) THEN
+            RAISE EXCEPTION 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        IF (NEW.C_GUID IS NULL OR NEW.C_GUID <> OLD.C_GUID) THEN
+            RAISE EXCEPTION 'Field "C_GUID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        [% for (tableAlias in view.tables.sortBy(t | t.table.parent.isDefined())) { %]
+			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
+			UPDATE [%= tableAlias.table.sqlName %] SET
+			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias and not f.tableField.isPrimary())) { %]
+    			[%= field.tableField.sqlName %] = NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+			[% } %]
+	        WHERE ID = :OLD.ID;
+		[% } %]        
+
+        RETURN NEW;
+    END;
+$UPD_V_DOM_CAR$ LANGUAGE plpgsql;
+
+--changeset generator:create_trigger_UPD_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createViewUpdateTrigger stripComments:true
+CREATE TRIGGER UPD_[%= view.sqlName %]
+    INSTEAD OF UPDATE ON [%= view.sqlName %]
+    FOR EACH ROW
+    EXECUTE PROCEDURE UPD_[%= view.sqlName %]();
+[% } %]
+
+[% } %]

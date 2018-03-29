@@ -5,6 +5,8 @@
   out.setContentType("Java");
 %]
 
+[* LATER *]
+
 -- {%- if table.after_update %}
 -- --changeset generator:create_function_AU_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
 -- {{ ddlmacro.CREATE_TRIGGER('AU_' + table.name, table.name, 'AFTER', 'UPDATE') }}
@@ -33,6 +35,6 @@
 -- {%- endmacro -%}
 -- {%- endif %}
 
-[%for (table in tables) {%]
--- --changeset generator:after_update_event_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:afterUpdateEventTableTriggerCreate stripComments:true
-[%}%]
+[% for (table in tables) { %]
+-- --changeset generator:after_update_event_trigger_create_[%= table.sqlName %]#[%= version() %] logicalFilePath:afterUpdateEventTableTriggerCreate stripComments:true
+[% } %]

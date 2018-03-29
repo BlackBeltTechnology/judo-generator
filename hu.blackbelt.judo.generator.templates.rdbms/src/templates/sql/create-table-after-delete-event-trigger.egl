@@ -4,7 +4,7 @@
   
   out.setContentType("Java");
 %]
-
+[* LATER *]
 
 {%- if table.after_delete %}
 -- --changeset generator:create_function_AD_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
@@ -28,33 +28,33 @@
 -- {%- endmacro -%}
 -- {%- endif %}
 
-[%for (table in tables) {%]
-[%if (dialect() == 'Oracle') {%]
--- --changeset generator:after_delete_event_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true
-[%}%]
+[% for (table in tables) { %]
+[% if (dialect() == 'Oracle') { %]
+-- --changeset generator:after_delete_event_trigger_create_[%= table.sqlName %]#[%= version() %] logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true
+[% } %]
 
-[%if (dialect() == 'Hsqldb') {%]
-[%}%]
+[% if (dialect() == 'Hsqldb') { %]
+[% } %]
 
-[%if (dialect() == 'Postgres') {%]
--- --changeset generator:create_function_AD_[%=table.sqlName%]#[%=version()%] failOnError:false dbms:postgresql logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true splitStatements:false
--- CREATE FUNCTION AD_[%=table.sqlName%]() RETURNS TRIGGER AS $AD_[%=table.sqlName%]$
+[% if (dialect() == 'Postgres') { %]
+-- --changeset generator:create_function_AD_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true splitStatements:false
+-- CREATE FUNCTION AD_[%= table.sqlName %]() RETURNS TRIGGER AS $AD_[%= table.sqlName %]$
 --     DECLARE
 --         EVENT_GUID INTEGER;
 --     BEGIN
 --         EVENT_GUID = nextval('serial');
 --         INSERT INTO V_FRW_EVENT (C_GUID,      C_ACT,         C_EVENT_TYPE, C_DOMAIN_NAME,                  C_CLASS_NAME,           C_OBJECT_ID)
---         VALUES                  (EVENT_GUID, transaction_timestamp(), 'DELETE',     '[%=table.originalPackage%]', '[%=table.originalName%]',  OLD.ID);
+--         VALUES                  (EVENT_GUID, transaction_timestamp(), 'DELETE',     '[%= table.originalPackage %]', '[%= table.originalName %]',  OLD.ID);
 -- 
 --         RETURN OLD;
 --     END;
--- $AD_[%=table.sqlName%]$ LANGUAGE plpgsql;
+-- $AD_[%= table.sqlName %]$ LANGUAGE plpgsql;
 -- 
--- --changeset generator:create_trigger_AD_[%=table.sqlName%]#[%=version()%] failOnError:false dbms:postgresql logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true splitStatements:false
--- CREATE TRIGGER AD_[%=table.sqlName%]
---     AFTER DELETE ON [%=table.sqlName%]
+-- --changeset generator:create_trigger_AD_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true splitStatements:false
+-- CREATE TRIGGER AD_[%= table.sqlName %]
+--     AFTER DELETE ON [%= table.sqlName %]
 --     FOR EACH ROW
---     EXECUTE PROCEDURE AD_[%=table.sqlName%]();
--- [% out.println("\n");%]
-[%}%]
-[%}%]
+--     EXECUTE PROCEDURE AD_[%= table.sqlName %]();
+-- [% out.println("\n"); %]
+[% } %]
+[% } %]

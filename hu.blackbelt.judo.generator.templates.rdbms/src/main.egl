@@ -2,6 +2,7 @@
 import "operations/_importAll.eol";
 
 getDdlTemplate("create-table").genCreateTables(getTables());
+
 getDdlTemplate("create-foreignkey").genCreateForeignKeys(getForeignKeys());
 getDdlTemplate("create-table-before-insert-trigger").genCreateTableBeforeInsertTrigger(getTables());
 getDdlTemplate("create-table-before-update-trigger").genCreateTableBeforeUpdateTrigger(getTables());
@@ -22,7 +23,6 @@ getDdlTemplate("create-view-update-trigger").genCreateViewUpdateTriggers(getView
 getDdlTemplate("create-view-delete-trigger").genCreateViewDeleteTriggers(getViews());
 
 getDdlTemplate("create-index").genCreateIndexes(getIndexes());
-
 
 operation Template genCreateTables(tables : Collection) : Any {
 	self.populate("tables", tables);

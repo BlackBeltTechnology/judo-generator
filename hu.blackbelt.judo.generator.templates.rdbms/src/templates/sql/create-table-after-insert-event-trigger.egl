@@ -5,6 +5,8 @@
   out.setContentType("Java");
 %]
 
+[* LATER *]
+
 -- {%- if table.after_insert %}
 --changeset generator:create_function_AI_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
 --{{ ddlmacro.CREATE_TRIGGER('AI_' + table.name, table.name, 'AFTER', 'INSERT') }}
@@ -26,6 +28,6 @@
 -- {%- endmacro -%}
 -- {%- endif %}
 
-[%for (table in tables) {%]
---  --changeset generator:after_insert_event_trigger_create_[%=table.sqlName%]#[%=version()%] logicalFilePath:afterInsertEentTableTriggerCreate stripComments:true
-[%}%]
+[% for (table in tables) { %]
+--  --changeset generator:after_insert_event_trigger_create_[%= table.sqlName %]#[%= version() %] logicalFilePath:afterInsertEentTableTriggerCreate stripComments:true
+[% } %]

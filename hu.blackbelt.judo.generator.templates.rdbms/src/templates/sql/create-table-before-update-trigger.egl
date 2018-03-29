@@ -5,80 +5,80 @@
   out.setContentType("Java");
 %]
 
-[%for (table in tables.select(t | not t.isKindOf(RDBMS!RdbmsJunctionTable) and (t.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly).size() > 0 or t.parent.isUndefined()))) {%]
-[%-- ------------------------------------- --%]
-[%-- ORACLE                                --%]
-[%-- ------------------------------------- --%]
-[%if (dialect() == 'Oracle') {%]
---changeset generator:create_trigger_BU_[%=table.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:createTableBeforeUpdateTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
--- [%=table.name%] [%=table.uuid%]
-CREATE TRIGGER BU_[%=table.sqlName%] BEFORE UPDATE ON [%=table.sqlName%]
+[% for (table in tables.select(t | not t.isKindOf(RDBMS!RdbmsJunctionTable) and (t.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly).size() > 0 or t.parent.isUndefined()))) {%]
+[* ------------------------------------- *]
+[* ORACLE                                *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Oracle') { %]
+--changeset generator:create_trigger_BU_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createTableBeforeUpdateTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+-- [%= table.name %] [%= table.uuid %]
+CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
     FOR EACH ROW
     BEGIN       
-        [%for (fk in table.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly)) {%]
-        IF (:NEW.[%=fk.sqlName%] IS NULL AND :OLD.[%=fk.sqlName%] IS NOT NULL) OR (:NEW.[%=fk.sqlName%] <> :OLD.[%=fk.sqlName%]) THEN
-            raise_application_error(-202000, 'Field "[%=fk.sqlName%]" in table "[%=table.sqlName%]" is not allowed to update');
+        [% for (fk in table.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly)) { %]
+        IF (:NEW.[%= fk.sqlName %] IS NULL AND :OLD.[%= fk.sqlName %] IS NOT NULL) OR (:NEW.[%=fk.sqlName %] <> :OLD.[%= fk.sqlName %]) THEN
+            raise_application_error(-202000, 'Field "[%= fk.sqlName %]" in table "[%= table.sqlName %]" is not allowed to update');
         END IF;
-        [%}%]
-        [%if (table.parent.isUndefined()) {%]
+        [% } %]
+        [% if (table.parent.isUndefined()) { %]
         :NEW.C_AUT := SYSTIMESTAMP;
-        [%}%]
+        [% } %]
     END;
 /
 
---changeset generator:recompile_trigger_BU_[%=table.sqlName%]#[%=version()%] dbms:oracle logicalFilePath:createTableBeforeUpdateTrigger stripComments:true
-alter trigger BU_[%=table.sqlName%] compile;
-select is_trigger_valid('BU_[%=table.sqlName%]') from DUAL;
-[%}%]
+--changeset generator:recompile_trigger_BU_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createTableBeforeUpdateTrigger stripComments:true
+alter trigger BU_[%= table.sqlName %] compile;
+select is_trigger_valid('BU_[%= table.sqlName %]') from DUAL;
+[% } %]
 
-[%-- ------------------------------------- --%]
-[%-- POSTGRESQL                            --%]
-[%-- ------------------------------------- --%]
-[%if (dialect() == 'Postgres') {%]
---changeset generator:create_function_BU_[%=table.sqlName%]#[%=version()%] dbms:postgresql logicalFilePath:createTableBeforeUpdateTrigger stripComments:true splitStatements:false
--- [%=table.name%] [%=table.uuid%]
-CREATE FUNCTION BU_[%=table.sqlName%]() RETURNS TRIGGER AS $BU_[%=table.sqlName%]$
+[* ------------------------------------- *]
+[* POSTGRESQL                            *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Postgres') { %]
+--changeset generator:create_function_BU_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createTableBeforeUpdateTrigger stripComments:true splitStatements:false
+-- [%= table.name %] [%= table.uuid %]
+CREATE FUNCTION BU_[%= table.sqlName %]() RETURNS TRIGGER AS $BU_[%= table.sqlName %]$
     BEGIN
-        [%for (fk in table.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly)) {%]
-        -- [%=fk.name%]
-        IF (NEW.[%=fk.sqlName%] IS NULL AND OLD.[%=fk.sqlName%] IS NOT NULL) OR (NEW.[%=fk.sqlName%] <> OLD.[%=fk.sqlName%]) THEN
-            RAISE EXCEPTION 'Field "[%=fk.sqlName%]" in table "[%=table.sqlName%]" is not allowed to update';
+        [% for (fk in table.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly)) { %]
+        -- [%= fk.name %]
+        IF (NEW.[%= fk.sqlName %] IS NULL AND OLD.[%= fk.sqlName %] IS NOT NULL) OR (NEW.[%= fk.sqlName %] <> OLD.[%= fk.sqlName %]) THEN
+            RAISE EXCEPTION 'Field "[%= fk.sqlName %]" in table "[%= table.sqlName %]" is not allowed to update';
         END IF;
-        [%}%]
-        [%if (table.parent.isUndefined()) {%]
+        [% } %]
+        [% if (table.parent.isUndefined()) { %]
         NEW.C_AUT := transaction_timestamp();
-        [%}%]
+        [% } %]
         RETURN NEW;
     END;
-$BU_[%=table.sqlName%]$ LANGUAGE plpgsql;
-
---changeset generator:create_trigger_BU_[%=table.sqlName%]#[%=version()%] dbms:postgresql logicalFilePath:createTableBeforeUpdateTrigger stripComments:true splitStatements:false
--- [%=table.name%] [%=table.uuid%]
-CREATE TRIGGER BU_[%=table.sqlName%]
-    BEFORE UPDATE ON [%=table.sqlName%]
+$BU_[%= table.sqlName %]$ LANGUAGE plpgsql;
+ 
+--changeset generator:create_trigger_BU_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createTableBeforeUpdateTrigger stripComments:true splitStatements:false
+-- [%= table.name %] [%= table.uuid %]
+CREATE TRIGGER BU_[%= table.sqlName %]
+    BEFORE UPDATE ON [%= table.sqlName %]
     FOR EACH ROW
-    EXECUTE PROCEDURE BU_[%=table.sqlName%]();
-[%}%]
+    EXECUTE PROCEDURE BU_[%= table.sqlName %]();
+[% } %]
 
-[%-- ------------------------------------- --%]
-[%-- HSQLDB                                --%]
-[%-- ------------------------------------- --%] 
+[* ------------------------------------- *]
+[* HSQLDB                                *]
+[* ------------------------------------- *] 
 [%if (dialect() == 'Hsqldb') {%]
---changeset generator:create_trigger_BU_[%=table.sqlName%]#[%=version()%] dbms:hsqldb logicalFilePath:createTableBeforeUpdateTrigger  stripComments:true splitStatements:false
--- [%=table.name%] [%=table.uuid%]
-CREATE TRIGGER BU_[%=table.sqlName%] BEFORE UPDATE ON [%=table.sqlName%]
+--changeset generator:create_trigger_BU_[%= table.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:createTableBeforeUpdateTrigger  stripComments:true splitStatements:false
+-- [%= table.name %] [%= table.uuid %]
+CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
     REFERENCING NEW AS NEW OLD AS OLD
     FOR EACH ROW
     BEGIN ATOMIC
-        [%for (fk in table.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly)) {%]
-        IF (NEW.[%=fk.sqlName%] IS NULL AND OLD.[%=fk.sqlName%] IS NOT NULL) OR (NEW.[%=fk.sqlName%] <> OLD.[%=fk.sqlName%]) THEN
-            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "[%=fk.sqlName%]" in table "[%=table.sqlName%]" is not allowed to update';
+        [% for (fk in table.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly)) { %]
+        IF (NEW.[%= fk.sqlName %] IS NULL AND OLD.[%= fk.sqlName %] IS NOT NULL) OR (NEW.[%= fk.sqlName %] <> OLD.[%= fk.sqlName %]) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "[%= fk.sqlName %]" in table "[%= table.sqlName %]" is not allowed to update';
         END IF;
-        [%}%]
-        [%if (table.parent.isUndefined()) {%]
+        [% } %]
+        [% if (table.parent.isUndefined()) { %]
         NEW.C_AUT = CURRENT_TIMESTAMP;
-        [%}%]
+        [% } %]
     END;
-[%}%]
+[% } %]
        
-[%}%]
+[% } %]

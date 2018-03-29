@@ -11,16 +11,16 @@
 -- {{ view.select_ddl }};
 
 
-[%for (view in views) {%]
---changeset generator:create_view_[%=view.sqlName%]#[%=version()%] logicalFilePath:createTable stripComments:true
--- [%=view.name%] [%=view.uuid%]
-CREATE VIEW [%=view.sqlName%]  AS SELECT
-	[%for (field in view.fields.select(f | not f.isHidden())) {%]
-		[%=field.toViewExpression()%] [%if (hasMore) { out.print(","); }%] -- [%=field.name%] [%=field.uuid%]
+[% for (view in views) { %]
+--changeset generator:create_view_[%= view.sqlName %]#[%= version() %] logicalFilePath:createTable stripComments:true
+-- [%= view.name %] [%= view.uuid %]
+CREATE VIEW [%= view.sqlName %]  AS SELECT
+	[% for (field in view.fields.select(f | not f.isHidden())) { %]
+		[%= field.toViewExpression() %] [% if (hasMore) { out.print(","); }%] -- [%= field.name %] [%= field.uuid %]
+	[% } %]
+FROM [%= view.primaryTable.table.sqlName %] AS [%= view.primaryTable.sqlName %]
+	[% for (relation in view.relations) { %]
+		LEFT OUTER JOIN [%= relation.toAlias.table.sqlName %] AS [%= relation.toAlias.sqlName %] ON  [%= relation.fromAlias.sqlName %].[%= relation.fromField.sqlName %] = [%= relation.toAlias.sqlName %].[%= relation.toField.sqlName %]
 	[%}%]
-FROM [%=view.primaryTable.table.sqlName%] AS [%=view.primaryTable.sqlName%]
-	[%for (relation in view.relations) {%]
-		LEFT OUTER JOIN [%=relation.toAlias.table.sqlName%] AS [%=relation.toAlias.sqlName%] ON  [%=relation.fromAlias.sqlName%].[%=relation.fromField.sqlName%] = [%=relation.toAlias.sqlName%].[%=relation.toField.sqlName%]
-	[%}%]
-;[% out.println("\n");%]
-[%}%]
+;[% out.println("\n"); %]
+[% } %]

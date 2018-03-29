@@ -5,12 +5,12 @@
   out.setContentType("Java");
 %]
 
-[%for (constraint in uniqueConstraints) {%]
---changeset generator:create_unique_constraint_[%=constraint.sqlName%]#[%=version()%] logicalFilePath:createUniqueContraint stripComments:true
-ALTER TABLE [%=constraint.table.sqlName%] ADD CONSTRAINT [%=constraint.table.sqlName%] UNIQUE (
-	[%for (field in constraint.fields) {%]
-		[%=field.sqlName%] [%if (hasMore) { out.print(","); }%] -- [%=field.name%] [%=field.uuid%]
-	[%}%]
+[% for (constraint in uniqueConstraints) { %]
+--changeset generator:create_unique_constraint_[%= constraint.sqlName %]#[%= version() %] logicalFilePath:createUniqueContraint stripComments:true
+ALTER TABLE [%= constraint.table.sqlName %] ADD CONSTRAINT [%= constraint.table.sqlName %] UNIQUE (
+	[% for (field in constraint.fields) { %]
+		[%= field.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %]
+	[% } %]
 );	
 
-[%}%]
+[% } %]
