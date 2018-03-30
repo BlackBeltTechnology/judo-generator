@@ -12,7 +12,7 @@
 ALTER TABLE [%= foreignKey.table.sqlName %] 
 ADD CONSTRAINT [%= foreignKey.foreignKeySqlName %]
 FOREIGN KEY ([%= foreignKey.sqlName %])
-REFERENCES [%= foreignKey.referenceKey.sqlName %] (ID)
+REFERENCES [%= foreignKey.referenceKey.table.sqlName %] (ID)
 		[% if (foreignKey.deleteOnCascade) { %]
 			ON DELETE CASCADE
 		[% } else if (not foreignKey.mandatory) { %]
@@ -20,6 +20,8 @@ REFERENCES [%= foreignKey.referenceKey.sqlName %] (ID)
 		[% } else { %]
 			[% if (dialect() == 'Oracle') { %]
 				ON DELETE NO ACTION
+			[% } else if (dialect() == 'Hsqldb') { %]
+				ON DELETE SET NULL
 			[% } else { %]
 				ON DELETE RESTRICT
 			[% } %]

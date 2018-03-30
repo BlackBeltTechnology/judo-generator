@@ -5,7 +5,7 @@
   out.setContentType("Java");
 %]
 
-[% for (table in tables) { %]
+[% for (table in tables.select(t | t.parent.isUndefined() and not t.isKindOf(RDBMS!RdbmsJunctionTable))) { %]
 
 [* ------------------------------------- *]
 [* ORACLE                                *]

@@ -13,7 +13,7 @@
 [% if (dialect() == 'Oracle') { %]
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 --changeset generator:create_trigger_INS_[%= view.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createViewInsertTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
-CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.name %]
+CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
     FOR EACH ROW
     DECLARE
         SERIAL_ID INTEGER;
@@ -28,10 +28,10 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.name %]
 
         SELECT serial.NEXTVAL INTO SERIAL_ID FROM dual;
         
-		[% for (tableAlias in view.tables.sortBy(t | t.table.parent.isDefined())) { %]
+		[% for (tableAlias in view.updateableAliases()) { %]
 			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 			INSERT INTO [%= tableAlias.table.sqlName %] (
-			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias)) { %]
+			[% for (field in view.updatableAliasFields(tableAlias)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			[%= field.tableField.sqlName%] [% if (hasMore) { out.print(","); } %] 
         		[% } else { %] 
@@ -39,7 +39,7 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.name %]
         		[% } %]
 			[% } %]
 			) VALUES (
-			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias)) { %]
+			[% for (field in view.updatableAliasFields(tableAlias)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			SERIAL_ID [% if (hasMore) { out.print(","); } %]
         		[% } else if (field.sqlName == "C_XMIID") { %] 
@@ -50,7 +50,7 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.name %]
 			[% } %]
 			);
 		[% } %]
-		[% for (tableAlias in view.tables.select(t | t.table.parent.isUndefined() and t <> view.primaryTable)) { %]
+		[% for (tableAlias in view.updatableParentAliases()) { %]
 	        UPDATE [%= tableAlias.table.sqlName %] SET
 	        	[% for (inh in tableAlias.table.allInheritedIdentifier()) { %] 
 	        		[%= inh.sqlName %] = SERIAL_ID [% if (hasMore) { out.print(","); } %] 
@@ -71,7 +71,7 @@ select is_trigger_valid('[%= view.name %]') from DUAL;
 [% if (dialect() == 'Hsqldb') { %]
 --changeset generator:create_trigger_INS_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:createViewInsertTrigger stripComments:true
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
-CREATE TRIGGER INS_[%= view.name %] INSTEAD OF INSERT ON [%= view.name %]
+CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
     REFERENCING NEW AS NEW 
     FOR EACH ROW
     BEGIN ATOMIC
@@ -79,19 +79,19 @@ CREATE TRIGGER INS_[%= view.name %] INSTEAD OF INSERT ON [%= view.name %]
         DECLARE SERIAL_ID INTEGER;
     
         IF (NEW.ID IS NOT NULL) THEN
-            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "ID" in view "[%= view.name %]" is not allowed to set';
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "ID" in view "[%= view.sqlName %]" is not allowed to set';
         END IF;
 
         IF (NEW.C_XMIID IS NOT NULL) THEN
-            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "C_XMIID" in view "[%= view.name %]" is not allowed to set';
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to set';
         END IF;
 
         SET SERIAL_ID = nextval('serial');
 
-		[% for (tableAlias in view.tables.sortBy(t | t.table.parent.isDefined())) { %]
+		[% for (tableAlias in view.updateableAliases()) { %]
 			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 			INSERT INTO [%= tableAlias.table.sqlName %] (
-			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias)) { %]
+			[% for (field in view.updatableAliasFields(tableAlias)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			[%= field.tableField.sqlName%] [% if (hasMore) { out.print(","); } %] 
         		[% } else { %] 
@@ -99,7 +99,7 @@ CREATE TRIGGER INS_[%= view.name %] INSTEAD OF INSERT ON [%= view.name %]
         		[% } %]
 			[% } %]
 			) VALUES (
-			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias)) { %]
+			[% for (field in view.updatableAliasFields(tableAlias)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			SERIAL_ID [% if (hasMore) { out.print(","); } %]
         		[% } else if (field.sqlName == "C_XMIID") { %] 
@@ -110,7 +110,7 @@ CREATE TRIGGER INS_[%= view.name %] INSTEAD OF INSERT ON [%= view.name %]
 			[% } %]
 			);
 		[% } %]
-		[% for (tableAlias in view.tables.select(t | t.table.parent.isUndefined())) { %]
+		[% for (tableAlias in view.updatableParentAliases()) { %]
 	        UPDATE [%= tableAlias.table.sqlName %] SET
 	        	[% for (inh in tableAlias.table.allInheritedIdentifier()) { %] 
 	        		[%= inh.sqlName %] = SERIAL_ID [% if (hasMore) { out.print(","); } %] 
@@ -141,10 +141,10 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
         SERIAL_ID = nextval('serial');
         NEW.ID = SERIAL_ID;
 
-		[% for (tableAlias in view.tables.sortBy(t | t.table.parent.isDefined())) { %]
+		[% for (tableAlias in view.updateableAliases()) { %]
 			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 			INSERT INTO [%= tableAlias.table.sqlName %] (
-			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias)) { %]
+			[% for (field in view.updatableAliasFields(tableAlias)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			[%= field.tableField.sqlName%] [% if (hasMore) { out.print(","); } %] 
         		[% } else { %] 
@@ -152,7 +152,7 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
         		[% } %]
 			[% } %]
 			) VALUES (
-			[% for (field in view.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias)) { %]
+			[% for (field in view.updatableAliasFields(tableAlias)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			SERIAL_ID [% if (hasMore) { out.print(","); } %]
         		[% } else if (field.sqlName == "C_XMIID") { %] 
@@ -163,7 +163,7 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
 			[% } %]
 			);
 		[% } %]
-		[% for (tableAlias in view.tables.select(t | t.table.parent.isUndefined())) { %]
+		[% for (tableAlias in view.updatableParentAliases()) { %]
 	        UPDATE [%= tableAlias.table.sqlName %] SET
 	        	[% for (inh in tableAlias.table.allInheritedIdentifier()) { %] 
 	        		[%= inh.sqlName %] = SERIAL_ID [% if (hasMore) { out.print(","); } %] 
@@ -176,10 +176,10 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
 $INS_[%= view.sqlName %]$ LANGUAGE plpgsql;
 
 --changeset generator:create_trigger_INS_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createViewInsertTrigger stripComments:true
-CREATE TRIGGER INS_V_DOM_CAR
-    INSTEAD OF INSERT ON V_DOM_CAR
+CREATE TRIGGER INS_[%= view.sqlName %]
+    INSTEAD OF INSERT ON [%= view.sqlName %]
     FOR EACH ROW
-    EXECUTE PROCEDURE INS_V_DOM_CAR();
+    EXECUTE PROCEDURE INS_[%= view.sqlName %]();
 [% } %]
 
 [% } %]

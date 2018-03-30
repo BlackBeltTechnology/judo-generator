@@ -31,6 +31,18 @@ operation RDBMS!RdbmsTable allInheritedIdentifier() : Collection {
 	return ret;
 }
 	
+	
+@cached
+operation RDBMS!RdbmsTable allSupertypes() : Collection {
+	var ret : Sequence = new Sequence();
+	if (self.parent.isDefined()) {
+		ret.add(self.parent);
+		ret.addAll(self.parent.allSupertypes());
+	}
+	return ret;
+}
+
+
 /*
     @property
     def before_update(self):

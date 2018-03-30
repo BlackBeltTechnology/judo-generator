@@ -1,7 +1,22 @@
 @cached
-operation RDBMS!RdbmsView isRoot () : Boolean {
-	for (field : RDBMS!RdbmsField in self.fields) {
-	}
+operation RDBMS!RdbmsView updatableParentAliases (): Collection {
+	return self.tables.select(t | t.table.parent.isUndefined() and t <> self.primaryTable and t.table.allInheritedIdentifier().size() > 0);
+}
+
+@cached
+operation RDBMS!RdbmsView updatableAliasFields (tableAlias : RDBMS!RdbmsTableAlias) : Collection {
+	return self.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias);
+}
+
+@cached
+operation RDBMS!RdbmsView updatableAliasFieldsWithoutPrimaryKeys (tableAlias : RDBMS!RdbmsTableAlias) : Collection {
+	return self.updatableAliasFields(tableAlias).select(f | not f.tableField.isPrimary());
+}
+
+
+@cached
+operation RDBMS!RdbmsView updateableAliases () : Collection {
+	return self.tables.select(t | (t = self.primaryTable or self.primaryTable.table.allSupertypes().selectOne(t2 | t.table == t2).isDefined()) and self.updatableAliasFields(t).size() > 0).sortBy(t | t.table.parent.isDefined());
 }
 
 /*

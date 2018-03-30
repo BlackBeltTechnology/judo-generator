@@ -76,7 +76,7 @@ CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
         END IF;
         [% } %]
         [% if (table.parent.isUndefined()) { %]
-        NEW.C_AUT = CURRENT_TIMESTAMP;
+        SET NEW.C_AUT = CURRENT_TIMESTAMP;
         [% } %]
     END;
 [% } %]

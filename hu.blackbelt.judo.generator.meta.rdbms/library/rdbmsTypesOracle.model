@@ -13,7 +13,7 @@
   <rdbmsFieldTypes xmi:id="_HnCGcNweEeeNA-CmHjdGOA" name="Percentage" rdbmsTypeName="binary_float" uuid="rdbms-type-percentage-oracle" description="Percentage" size="-1" precision="-1" scale="-1" storageByte="-1"/>
   <rdbmsFieldTypes xmi:id="_UGmlgNweEeeNA-CmHjdGOA" name="Currency" rdbmsTypeName="number" uuid="rdbms-type-currency-oracle" description="Currency" size="-1" precision="19" scale="2" storageByte="-1"/>
   <rdbmsFieldTypes xmi:id="_bWfToNweEeeNA-CmHjdGOA" name="Id" rdbmsTypeName="integer" uuid="rdbms-type-id-oracle" description="Id" size="-1" precision="-1" scale="-1" storageByte="-1"/>
-  <rdbmsFieldTypes xmi:id="_OEHTkC3sEei7E4IheeIQIg" name="File" rdbmsTypeName="varchar" uuid="rdbms-type-file-oracle" description="File" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes xmi:id="_OEHTkC3sEei7E4IheeIQIg" name="File" rdbmsTypeName="varchar" uuid="rdbms-type-file-oracle" description="File" size="255" precision="-1" scale="-1" storageByte="-1"/>
   <configuration xmi:id="_i2MmcNweEeeNA-CmHjdGOA" dialect="Oracle">
     <features xmi:id="_jtk6YNweEeeNA-CmHjdGOA" name="CascadeDeleteOnSuperType"/>
     <features xmi:id="_cTUScOzsEeer_IHzBpC5uA" name="SupportMultipleColumnModificationInOneStatement"/>
