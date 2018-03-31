@@ -1,0 +1,25 @@
+import "../../../operations/_importAll.eol";
+
+rule JLiteralToRdmsViewRecord
+	transform s : PSM!JLiteral
+	to r : RDBMS!RdbmsViewRecord { 
+	    r.view = s.enumeration.classRepresentation.equivalent("JClassToRdbmsView");
+	    
+	    var identifier : RDBMS!RdbmsViewRecordValue = new RDBMS!RdbmsViewRecordValue();
+	    identifier.valueField = r.view.fields.select(f | f.sqlName == 'C_GUID').first;
+	    identifier.value = s.uuid;
+	    
+	    var enumLiteralCode : RDBMS!RdbmsViewRecordValue = new RDBMS!RdbmsViewRecordValue();
+	    enumLiteralCode.valueField = r.view.fields.select(f | f.sqlName == 'C_CODE').first;
+	    enumLiteralCode.value = s.name;
+
+	    var enumLiteralVale : RDBMS!RdbmsViewRecordValue = new RDBMS!RdbmsViewRecordValue();
+	    enumLiteralVale.valueField = r.view.fields.select(f | f.sqlName == 'C_VALUE').first;
+	    enumLiteralVale.value = s.name;
+	    
+	    r.values.add(identifier);
+	    r.values.add(enumLiteralCode);
+	    r.values.add(enumLiteralVale);
+
+	    targetModel.viewRecords.add(r);
+}

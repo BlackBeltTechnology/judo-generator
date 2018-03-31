@@ -120,8 +120,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableOperations" upperBound="-1"
         eType="#//RdbmsTableOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="viewRecords" upperBound="-1"
+        eType="#//RdbmsViewRecord" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsValueField" eSuperTypes="#//RdbmsField">
+    <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
+      <details key="archetype" value="MomentInterval"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="technical" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
   </eClassifiers>
@@ -208,5 +213,15 @@
         upperBound="-1" eType="#//RdbmsField"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewRecord">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="values" upperBound="-1"
+        eType="#//RdbmsViewRecordValue" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="view" lowerBound="1" eType="#//RdbmsView"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewRecordValue">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="identifierField" eType="#//RdbmsViewIdentifierField"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="valueField" eType="#//RdbmsViewValueField"/>
   </eClassifiers>
 </ecore:EPackage>
