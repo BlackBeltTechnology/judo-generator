@@ -4,27 +4,17 @@
   
   out.setContentType("Java");
 %]
+--liquibase formatted sql
 
-
--- {% for field in table.savefields %}
--- {%- if not field.null %}
--- --changeset generator:add_notnull_{{ table.name }}_{{ field.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true
--- {{ ddlmacro.SET_NOT_NULL(table.name, field.name) }}
--- {% endif %}
--- {%- endfor %}
-
--- hsqldb ALTER TABLE {{ table }} ALTER COLUMN {{ field }} SET NOT NULL;
--- postges ALTER TABLE {{ table }} ALTER COLUMN {{ field }} SET NOT NULL, ..;
--- oracke ALTER TABLE {{ table }} MODIFY ({{ field }} NOT NULL, ...);
-[% for (table in tables) { %]
-	[% if (hasFeature('SupportMultipleColumnModificationInOneStatement')) { %]
---changeset generator:set_not_null_[%= table.sqlName %]#[%= version() %] logicalFilePath:createTable stripComments:true
+[% for (table in RDBMS!RdbmsTable.all) { %]
+	[% if (hasFeature('SupportMultipleColumnModificationInOneStatement') and table.fields.exists(f | f.mandatory and not f.isPrimary())) { %]
+--changeset generator:CREATE_NOT_NULL_CONSTRAINT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 ALTER TABLE [%= table.sqlName %] 
 		[% if (dialect() == 'Oracle') { %]
 			MODIFY (
 		[% } %]
 
-		[% for (field in table.fields) { %]
+		[% for (field in table.fields.select(f | f.mandatory and not f.isPrimary())) { %]
 			[% if (dialect() == 'Oracle') { %]
 				[%= field.sqlName %] NOT NULL
 			[% } else { %]
@@ -38,8 +28,8 @@ ALTER TABLE [%= table.sqlName %]
 		[% } %]
 ;[% out.println("\n"); %]
 	[% } else { %]
-		[%for (field in table.fields) { %]
---changeset generator:set_not_null_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:createTable stripComments:true
+		[%for (field in table.fields.select(f | f.mandatory and not f.isPrimary())) { %]
+--changeset generator:CREATE_NOT_NULL_CONSTRAINT_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 ALTER TABLE [%= table.sqlName %] ALTER COLUMN [%= field.sqlName %] SET NOT NULL;
 			[% out.println("\n"); %]
 		[% } %]

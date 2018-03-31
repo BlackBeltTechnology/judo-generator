@@ -1,0 +1,16 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
+
+[% for (foreignKey in RDBMS!RdbmsForeignKey.all) { %]
+--changeset generator:DROP_FOREIGN_KEY_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+ALTER TABLE [%= foreignKey.table.sqlName %] 
+DROP CONSTRAINT [%= foreignKey.foreignKeySqlName %]
+;[% out.println("\n"); %]
+[% } %]

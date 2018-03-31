@@ -4,13 +4,14 @@
   
   out.setContentType("Java");
 %]
+--liquibase formatted sql
 
-[% for (table in tables.select(t | not t.isKindOf(RDBMS!RdbmsJunctionTable) and (t.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly).size() > 0 or t.parent.isUndefined()))) {%]
+[% for (table in RDBMS!RdbmsTable.all.select(t | not t.isKindOf(RDBMS!RdbmsJunctionTable) and (t.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly).size() > 0 or t.parent.isUndefined()))) {%]
 [* ------------------------------------- *]
 [* ORACLE                                *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Oracle') { %]
---changeset generator:create_trigger_BU_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createTableBeforeUpdateTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+--changeset generator:CREATE_TRIGGER_BEFORE_UPDATE_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
 -- [%= table.name %] [%= table.uuid %]
 CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
     FOR EACH ROW
@@ -22,11 +23,12 @@ CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
         [% } %]
         [% if (table.parent.isUndefined()) { %]
         :NEW.C_AUT := SYSTIMESTAMP;
+        :NEW.C_AUU := 'system';
         [% } %]
     END;
 /
 
---changeset generator:recompile_trigger_BU_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createTableBeforeUpdateTrigger stripComments:true
+--changeset generator:RECOMPILE_TRIGGER_BEFORE_UPDATE_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true
 alter trigger BU_[%= table.sqlName %] compile;
 select is_trigger_valid('BU_[%= table.sqlName %]') from DUAL;
 [% } %]
@@ -35,7 +37,7 @@ select is_trigger_valid('BU_[%= table.sqlName %]') from DUAL;
 [* POSTGRESQL                            *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Postgres') { %]
---changeset generator:create_function_BU_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createTableBeforeUpdateTrigger stripComments:true splitStatements:false
+--changeset generator:CREATE_FUNCTION_BEFORE_UPDATE_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= table.name %] [%= table.uuid %]
 CREATE FUNCTION BU_[%= table.sqlName %]() RETURNS TRIGGER AS $BU_[%= table.sqlName %]$
     BEGIN
@@ -47,12 +49,13 @@ CREATE FUNCTION BU_[%= table.sqlName %]() RETURNS TRIGGER AS $BU_[%= table.sqlNa
         [% } %]
         [% if (table.parent.isUndefined()) { %]
         NEW.C_AUT := transaction_timestamp();
+        NEW.C_AUU := 'system';
         [% } %]
         RETURN NEW;
     END;
 $BU_[%= table.sqlName %]$ LANGUAGE plpgsql;
  
---changeset generator:create_trigger_BU_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createTableBeforeUpdateTrigger stripComments:true splitStatements:false
+--changeset generator:CREATE_TRIGGER_BEFORE_UPDATE_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= table.name %] [%= table.uuid %]
 CREATE TRIGGER BU_[%= table.sqlName %]
     BEFORE UPDATE ON [%= table.sqlName %]
@@ -64,7 +67,7 @@ CREATE TRIGGER BU_[%= table.sqlName %]
 [* HSQLDB                                *]
 [* ------------------------------------- *] 
 [%if (dialect() == 'Hsqldb') {%]
---changeset generator:create_trigger_BU_[%= table.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:createTableBeforeUpdateTrigger  stripComments:true splitStatements:false
+--changeset generator:CREATE_TRIGGER_BEFORE_UPDATE_[%= table.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= table.name %] [%= table.uuid %]
 CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
     REFERENCING NEW AS NEW OLD AS OLD
@@ -77,6 +80,7 @@ CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
         [% } %]
         [% if (table.parent.isUndefined()) { %]
         SET NEW.C_AUT = CURRENT_TIMESTAMP;
+        SET NEW.C_AUU = 'system';
         [% } %]
     END;
 [% } %]

@@ -4,23 +4,18 @@
   
   out.setContentType("Java");
 %]
+--liquibase formatted sql
 
--- {% for view in model.views %}
--- --changeset generator:create_view_{{ view.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true
--- CREATE VIEW {{ view.name }} AS
--- {{ view.select_ddl }};
-
-
-[% for (view in views) { %]
---changeset generator:create_view_[%= view.sqlName %]#[%= version() %] logicalFilePath:createTable stripComments:true
+[% for (view in RDBMS!RdbmsView.all) { %]
+--changeset generator:CREATE_VIEW_[%= view.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= view.name %] [%= view.uuid %]
 CREATE VIEW [%= view.sqlName %]  AS SELECT
 	[% for (field in view.fields.select(f | not f.isHidden())) { %]
 		[%= field.toViewExpression() %] [% if (hasMore) { out.print(","); }%] -- [%= field.name %] [%= field.uuid %]
 	[% } %]
-FROM [%= view.primaryTable.table.sqlName %] AS [%= view.primaryTable.sqlName %]
+FROM [%= view.primaryTable.table.sqlName %] [% if (dialect() <> 'Oracle') { out.println("AS"); } %] [%= fieldLiteral() %][%= view.primaryTable.sqlName %][%= fieldLiteral() %]
 	[% for (relation in view.relations) { %]
-		LEFT OUTER JOIN [%= relation.toAlias.table.sqlName %] AS [%= relation.toAlias.sqlName %] ON  [%= relation.fromAlias.sqlName %].[%= relation.fromField.sqlName %] = [%= relation.toAlias.sqlName %].[%= relation.toField.sqlName %]
+		LEFT OUTER JOIN [%= relation.toAlias.table.sqlName %] [% if (dialect() <> 'Oracle') { out.println("AS"); } %] [%= fieldLiteral() %][%= relation.toAlias.sqlName %][%= fieldLiteral() %] ON  [%= fieldLiteral() %][%= relation.fromAlias.sqlName %][%= fieldLiteral() %].[%= fieldLiteral() %][%= relation.fromField.sqlName %][%= fieldLiteral() %] = [%= fieldLiteral() %][%= relation.toAlias.sqlName %][%= fieldLiteral() %].[%= fieldLiteral() %][%= relation.toField.sqlName %][%= fieldLiteral() %]
 	[%}%]
 ;[% out.println("\n"); %]
 [% } %]

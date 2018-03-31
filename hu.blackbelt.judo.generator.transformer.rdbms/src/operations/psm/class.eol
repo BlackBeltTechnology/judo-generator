@@ -88,7 +88,7 @@ operation PSM!JClass createForeginKey(otherTable : PSM!JClass) : RDBMS!RdbmsFore
 	created.referenceKey = otherTable.primaryKeyAttribute().equivalent("JAttributeToTableIdField");
 	created.deleteOnCascade = true;
 	created.readOnly = true;
-	created.foreignKeySqlName = "FK_" + created.uuid.replaceAll("-", "");
+	created.foreignKeySqlName = ("FK_" + created.uuid.replaceAll("-", "")).substring(0,30);
 	return created;
 }
 

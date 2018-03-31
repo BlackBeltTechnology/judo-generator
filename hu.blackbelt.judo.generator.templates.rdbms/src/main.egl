@@ -1,161 +1,69 @@
 [%
 import "operations/_importAll.eol";
 
-getDdlTemplate("create-table").genCreateTables(getTables());
+genScript("database-initialize");
+genScript("create-table-full");
 
-getDdlTemplate("create-foreignkey").genCreateForeignKeys(getForeignKeys());
-getDdlTemplate("create-table-before-insert-trigger").genCreateTableBeforeInsertTrigger(getTables());
-getDdlTemplate("create-table-before-update-trigger").genCreateTableBeforeUpdateTrigger(getTables());
 
+genScript("create-foreignkey");
+genScript("create-not-null-constraint");
+
+genScript("create-unique-constraint");
+genScript("create-index");
+genScript("create-table-before-insert-trigger");
+genScript("create-table-before-update-trigger");
 // Events ignored and not implemented
-// getDdlTemplate("create-table-after-insert-event-trigger").genCreateTableAfterInsertEventTrigger(getTables());
-// getDdlTemplate("create-table-after-update-event-trigger").genCreateTableAfterUpdateEventTrigger(getTables());
-// getDdlTemplate("create-table-after-delete-event-trigger").genCreateTableAfterDeleteEventTrigger(getTables());
+// genScript("create-table-after-insert-event-trigger");
+// genScript("create-table-after-update-event-trigger");
+// genScript("create-table-after-delete-event-trigger");
+genScript("create-junction-before-insert-trigger");
 
-getDdlTemplate("set-not-null").genSetNotNull(getTables());
-getDdlTemplate("drop-not-null").genDropNotNull(getTables());
-getDdlTemplate("create-junction-before-insert-trigger").genCreateJunctionBeforeInsertTrigger(getJunctionTables());
-getDdlTemplate("create-unique-constraint").genCreateUniqueConstraints(getUniqueContraints());
+genScript("create-view");
+genScript("create-view-insert-trigger");
+genScript("create-view-update-trigger");
+genScript("create-view-delete-trigger");
 
-getDdlTemplate("create-view").genCreateViews(getViews());
-getDdlTemplate("create-view-insert-trigger").genCreateViewInsertTriggers(getViews());
-getDdlTemplate("create-view-update-trigger").genCreateViewUpdateTriggers(getViews());
-getDdlTemplate("create-view-delete-trigger").genCreateViewDeleteTriggers(getViews());
+genScript("insert-view-records");
+// ==============================
+// DROP is in reverted order
+// ==============================
 
-getDdlTemplate("create-index").genCreateIndexes(getIndexes());
+genScript("drop-view-insert-trigger");
+genScript("drop-view-update-trigger");
+genScript("drop-view-delete-trigger");
+genScript("drop-view");
 
-operation Template genCreateTables(tables : Collection) : Any {
-	self.populate("tables", tables);
-	self.generate(getGenPath() + "create_tables.sql");
-	self.reset();
-}
+genScript("drop-table-before-insert-trigger");
+genScript("drop-table-before-update-trigger");
+// Events ignored and not implemented
+// genScript("drop-table-after-insert-event-trigger");
+// genScript("drop-table-after-update-event-trigger");
+// genScript("drop-table-after-delete-event-trigger");
+genScript("drop-junction-before-insert-trigger");
+genScript("drop-table-before-insert-trigger");
+genScript("drop-table-before-update-trigger");
+genScript("drop-index");
+genScript("drop-unique-constraint");
+genScript("drop-not-null-constraint");
+genScript("drop-foreignkey");
+// Do not use
+genScript("drop-table-full");
 
-operation Template genSetNotNull(tables : Collection) : Any {
-	self.populate("tables", tables);
-	self.generate(getGenPath() + "set_not_null.sql");
-	self.reset();
-}
 
-operation Template genDropNotNull(tables : Collection) : Any {
-	self.populate("tables", tables);
-	self.generate(getGenPath() + "drop_not_null.sql");
-	self.reset();
-}
-
-operation Template genCreateTableBeforeInsertTrigger(tables : Collection) : Any {
-	self.populate("tables", tables);
-	self.generate(getGenPath() + "create_table_before_insert_triggers.sql");
-	self.reset();
-}
-
-operation Template genCreateTableBeforeUpdateTrigger(tables : Collection) : Any {
-	self.populate("tables", tables);
-	self.generate(getGenPath() + "create_table_before_update_triggers.sql");
-	self.reset();
-}
-
-operation Template genCreateTableAfterDeleteEventTrigger(tables : Collection) : Any {
-	self.populate("tables", tables);
-	self.generate(getGenPath() + "create_table_after_delete_event_triggers.sql");
-	self.reset();
-}
-
-operation Template genCreateTableAfterInsertEventTrigger(tables : Collection) : Any {
-	self.populate("tables", tables);
-	self.generate(getGenPath() + "create_table_after_insert_event_triggers.sql");
-	self.reset();
-}
-
-operation Template genCreateTableAfterUpdateEventTrigger(tables : Collection) : Any {
-	self.populate("tables", tables);
-	self.generate(getGenPath() + "create_table_after_update_event_triggers.sql");
-	self.reset();
-}
-
-operation Template genCreateJunctionBeforeInsertTrigger(junctionTables : Collection) : Any {
-	self.populate("junctionTables", junctionTables);
-	self.generate(getGenPath() + "create_junction_before_insert_triggers.sql");
-	self.reset();
+operation genScript(scriptName : String) : Any {
+    var tmpl : Template = getDdlTemplate(scriptName);
+    tmpl.populate("scriptName", scriptName);
+	tmpl.generate(getGenPath() + scriptName +".sql");
+	tmpl.reset();
 }
 
 
-operation Template genCreateForeignKeys(foreignKeys : Collection) : Any {
-	self.populate("foreignKeys", foreignKeys);
-	self.generate(getGenPath() + "create_foreignkeys.sql");
-	self.reset();
-}
-
-
-operation Template genCreateViews(views : Collection) : Any {
-	self.populate("views", views);
-	self.generate(getGenPath() + "create_views.sql");
-	self.reset();
-}
-
-operation Template genCreateViewInsertTriggers(views : Collection) : Any {
-	self.populate("views", views);
-	self.generate(getGenPath() + "create_view_insert_triggers.sql");
-	self.reset();
-}
-
-operation Template genCreateViewUpdateTriggers(views : Collection) : Any {
-	self.populate("views", views);
-	self.generate(getGenPath() + "create_view_update_triggers.sql");
-	self.reset();
-}
-
-operation Template genCreateViewDeleteTriggers(views : Collection) : Any {
-	self.populate("views", views);
-	self.generate(getGenPath() + "create_view_delete_triggers.sql");
-	self.reset();
-}
-
-operation Template genCreateIndexes(views : Collection) : Any {
-	self.populate("indexes", views);
-	self.generate(getGenPath() + "create_indexes.sql");
-	self.reset();
-}
-
-
-operation Template genCreateUniqueConstraints(constraints : Collection) : Any {
-	self.populate("uniqueConstraints", constraints);
-	self.generate(getGenPath() + "create_unique_constraints.sql");
-	self.reset();
-}
-
-
-operation getDdlTemplate (templateName : String) : Any {
-    var formatter = new Native("hu.blackbelt.judo.generator.formatter.sql.SqlCreateTableFormatter");
+operation getDdlTemplate (templateName : String) : Template {
+    // var formatter = new Native("hu.blackbelt.judo.generator.formatter.sql.SqlCreateTableFormatter");
 	var tf = TemplateFactory.load("templates/sql/" + templateName + ".egl");
 	// tf.setFormatter(formatter);
 	return tf;
 }
-
-
-operation getTables () : Collection {
-	return RDBMS!RdbmsTable.all;
-}
-
-operation getViews () : Collection {
-	return RDBMS!RdbmsView.all;
-}
-
-operation getForeignKeys () : Collection {
-	return RDBMS!RdbmsForeignKey.all;
-}
-
-operation getJunctionTables () : Collection {
-	return RDBMS!RdbmsJunctionTable.all;
-}
-
-operation getUniqueContraints () : Collection {
-	return RDBMS!RdbmsUniqueConstraint.all;
-}
-
-operation getIndexes () : Collection {
-	return RDBMS!RdbmsIndex.all;
-}
-
 
 operation getGenPath() : String {
 	return "sql/" + RDBMS!RdbmsConfiguration.all.first().dialect.toLowercase() + "/";

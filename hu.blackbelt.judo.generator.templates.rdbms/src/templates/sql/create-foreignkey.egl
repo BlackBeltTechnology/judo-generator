@@ -4,11 +4,12 @@
   
   out.setContentType("Java");
 %]
+--liquibase formatted sql
 
 [* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
 
-[% for (foreignKey in foreignKeys) { %]
---changeset generator:create_foreign_key_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:createForeignKey stripComments:true
+[% for (foreignKey in RDBMS!RdbmsForeignKey.all) { %]
+--changeset generator:CREATE_FOREIGN_KEY_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 ALTER TABLE [%= foreignKey.table.sqlName %] 
 ADD CONSTRAINT [%= foreignKey.foreignKeySqlName %]
 FOREIGN KEY ([%= foreignKey.sqlName %])
@@ -17,14 +18,6 @@ REFERENCES [%= foreignKey.referenceKey.table.sqlName %] (ID)
 			ON DELETE CASCADE
 		[% } else if (not foreignKey.mandatory) { %]
 			ON DELETE SET NULL
-		[% } else { %]
-			[% if (dialect() == 'Oracle') { %]
-				ON DELETE NO ACTION
-			[% } else if (dialect() == 'Hsqldb') { %]
-				ON DELETE SET NULL
-			[% } else { %]
-				ON DELETE RESTRICT
-			[% } %]
 		[% } %]
 ;[% out.println("\n"); %]
 [% } %]

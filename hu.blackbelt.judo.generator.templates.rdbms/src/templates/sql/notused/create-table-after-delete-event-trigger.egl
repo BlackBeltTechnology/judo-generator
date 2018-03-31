@@ -30,14 +30,14 @@
 
 [% for (table in tables) { %]
 [% if (dialect() == 'Oracle') { %]
--- --changeset generator:after_delete_event_trigger_create_[%= table.sqlName %]#[%= version() %] logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true
+-- --changeset generator:CREATE_TRIGGER_AFTER_DELETE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 [% } %]
 
 [% if (dialect() == 'Hsqldb') { %]
 [% } %]
 
 [% if (dialect() == 'Postgres') { %]
--- --changeset generator:create_function_AD_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true splitStatements:false
+-- --changeset generator:CREATE_FUNCTION_AFTER_DELETE_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- CREATE FUNCTION AD_[%= table.sqlName %]() RETURNS TRIGGER AS $AD_[%= table.sqlName %]$
 --     DECLARE
 --         EVENT_GUID INTEGER;
@@ -50,7 +50,7 @@
 --     END;
 -- $AD_[%= table.sqlName %]$ LANGUAGE plpgsql;
 -- 
--- --changeset generator:create_trigger_AD_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:afterDeleteEventTableTriggerCreate stripComments:true splitStatements:false
+-- --changeset generator:CREATE_TRIGGER_AFTER_DELETE_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- CREATE TRIGGER AD_[%= table.sqlName %]
 --     AFTER DELETE ON [%= table.sqlName %]
 --     FOR EACH ROW

@@ -1,0 +1,13 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[% for (constraint in RDBMS!RdbmsUniqueConstraint.all) { %]
+--changeset generator:DROP_UNIQUE_CONSTRAINT_[%= constraint.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+ALTER TABLE [%= constraint.table.sqlName %] DROP CONSTRAINT [%= constraint.sqlName %];	
+
+[% } %]

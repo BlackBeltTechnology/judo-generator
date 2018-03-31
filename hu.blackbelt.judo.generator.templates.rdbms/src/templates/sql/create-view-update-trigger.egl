@@ -4,23 +4,25 @@
   
   out.setContentType("Java");
 %]
+--liquibase formatted sql
 
---        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL) AND ({{ ddlmacro.OLD }}.{{ field.name }} IS NULL OR {{ ddlmacro.NEW }}.{{ field.name }} <> {{ ddlmacro.OLD }}.{{ field.name }}) THEN
---            {%- if field.othernull %}
---            UPDATE {{ table.name }} SET {{ field.name }} = NULL WHERE {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }};
---            {%- else %}
---            {{ ddlmacro.RAISE( 'Not null constraint violation.' ) }}
---            {%- endif %}
---        END IF;
-        
-
-[% for (view in views) { %]
-[% -- ------------------------------------- -- %]
-[% -- ORACLE                                -- %]
-[% -- ------------------------------------- -- %]
+[*
+TODO: Implement:
+        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL) AND ({{ ddlmacro.OLD }}.{{ field.name }} IS NULL OR {{ ddlmacro.NEW }}.{{ field.name }} <> {{ ddlmacro.OLD }}.{{ field.name }}) THEN
+            {%- if field.othernull %}
+            UPDATE {{ table.name }} SET {{ field.name }} = NULL WHERE {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }};
+            {%- else %}
+            {{ ddlmacro.RAISE( 'Not null constraint violation.' ) }}
+            {%- endif %}
+        END IF;
+*]      
+[% for (view in RDBMS!RdbmsView.all) { %]
+[* ------------------------------------- *]
+[* ORACLE                                *]
+[* ------------------------------------- *]
 [% if (dialect() == 'Oracle') { %]
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
---changeset generator:create_trigger_UPD_[%= view.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:createViewUpdateTrigger stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
 CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
     FOR EACH ROW
     BEGIN
@@ -49,16 +51,16 @@ CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
     END;
 /
 
---changeset generator:recompile_trigger_UPD_[%= view.name %]#[%= version() %] dbms:oracle logicalFilePath:createViewUpdateTrigger stripComments:true
+--changeset generator:RECOMPILE_TRIGGER_INSTEAD_OF_UPDATE_[%= view.name %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true
 alter trigger UPD_[%= view.sqlName %] compile;
 select is_trigger_valid('UPD_[%= view.sqlName %]') from DUAL;
 [% } %]
 
-[% -- ------------------------------------- -- %]
-[% -- HSQLDB                                -- %]
-[% -- ------------------------------------- -- %]
+[* ------------------------------------- *]
+[* HSQLDB                                *]
+[* ------------------------------------- *]
 [% if (dialect() == 'Hsqldb') { %]
---changeset generator:create_trigger_UPD_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:createViewInsertTrigger stripComments:true
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
     REFERENCING NEW AS NEW OLD AS OLD
@@ -90,11 +92,11 @@ CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
     END;
 [% } %]
 
-[% -- ------------------------------------- -- %]
-[% -- POSTGRES                              -- %]
-[% -- ------------------------------------- -- %]
+[* ------------------------------------- *]
+[* POSTGRES                              *]
+[* ------------------------------------- *]
 [% if (dialect() == 'Postgres') { %]
---changeset generator:create_function_UPD_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createViewUpdateTrigger stripComments:true
+--changeset generator:CREATE_FUNCTION_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
 CREATE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlName %]$
     BEGIN
         IF (NEW.ID IS NULL OR NEW.ID <> OLD.ID) THEN
@@ -122,9 +124,9 @@ CREATE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlNa
 
         RETURN NEW;
     END;
-$UPD_V_DOM_CAR$ LANGUAGE plpgsql;
+$UPD_[%= view.sqlName %]$ LANGUAGE plpgsql;
 
---changeset generator:create_trigger_UPD_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:createViewUpdateTrigger stripComments:true
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
 CREATE TRIGGER UPD_[%= view.sqlName %]
     INSTEAD OF UPDATE ON [%= view.sqlName %]
     FOR EACH ROW

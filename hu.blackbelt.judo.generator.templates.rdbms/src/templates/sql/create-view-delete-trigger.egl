@@ -4,23 +4,15 @@
   
   out.setContentType("Java");
 %]
+--liquibase formatted sql
 
--- --changeset generator:create_function_DEL_{{ view.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
--- {{ ddlmacro.CREATE_TRIGGER('DEL_' + view.name, view.name, 'INSTEAD OF', 'DELETE') }}
---    {{ ddlmacro.BEGIN }}
---        DELETE FROM {{ view.roottable.name }} WHERE ID = {{ ddlmacro.OLD }}.ID;
---
---        {{ ddlmacro.RETURN_OLD }}
---    END;
---{{ ddlmacro.END_TRIGGER() }}
-
-[% for (view in views) { %]
+[% for (view in RDBMS!RdbmsView.all) { %]
 
 [* ------------------------------------- *]
 [* ORACLE                                *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Oracle') { %]
---changeset generator:create_function_DEL_[%= view.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:deleteOnView stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 CREATE TRIGGER DEL_[%= view.sqlName %] INSTEAD OF DELETE ON [%= view.sqlName %]
     FOR EACH ROW
@@ -29,7 +21,7 @@ CREATE TRIGGER DEL_[%= view.sqlName %] INSTEAD OF DELETE ON [%= view.sqlName %]
     END;
 /
 
---changeset generator:recompile_trigger_[%= view.sqlName %]#[%= version() %] stripComments:true
+--changeset generator:RECOMPILE_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] stripComments:true
 alter trigger DEL_[%= view.sqlName %] compile;
 select is_trigger_valid('DEL_[%= view.sqlName %]') from DUAL;
 [% } %]
@@ -38,7 +30,7 @@ select is_trigger_valid('DEL_[%= view.sqlName %]') from DUAL;
 [* HSQLDB                                *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Hsqldb') { %]
---changeset generator:create_function_DEL_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:deleteOnView stripComments:true
+--changeset generator:CREATE_FUNCTION_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 CREATE TRIGGER DEL_[%= view.sqlName %] INSTEAD OF DELETE ON [%= view.sqlName %]
     REFERENCING OLD AS OLD
@@ -52,7 +44,7 @@ CREATE TRIGGER DEL_[%= view.sqlName %] INSTEAD OF DELETE ON [%= view.sqlName %]
 [* POSTGRES                              *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Postgres') { %]
---changeset generator:create_function_DEL_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:deleteOnView stripComments:true
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 CREATE FUNCTION DEL_[%= view.sqlName %]() RETURNS TRIGGER AS $DEL_[%= view.sqlName %]$
     BEGIN
@@ -60,9 +52,9 @@ CREATE FUNCTION DEL_[%= view.sqlName %]() RETURNS TRIGGER AS $DEL_[%= view.sqlNa
 
         RETURN OLD;
     END;
-$DEL_V_FRW_WORKFW$ LANGUAGE plpgsql;
+$DEL_[%= view.sqlName %]$ LANGUAGE plpgsql;
 
---changeset generator:create_trigger_DEL_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:deleteOnView stripComments:true
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_DELETE[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
 CREATE TRIGGER DEL_[%= view.sqlName %]
     INSTEAD OF DELETE ON [%= view.sqlName %]
     FOR EACH ROW

@@ -31,12 +31,17 @@ operation PSM!JRole roleSqlName() : String {
 
 @cached
 operation PSM!JRole roleFkSqlName() : String {
-    return "FK_" + uuid3(self.uuid, self.roleSqlName()).replaceAll("-","");
+    return ("FK_" + uuid3(self.uuid, self.roleSqlName()).replaceAll("-","")).substring(0,30);
 }
 
 @cached
 operation PSM!JRole roleUniqueSqlName() : String {
-    return "UQ_" + uuid3(self.uuid, self.roleSqlName()).replaceAll("-","");
+    return ("UQ_" + uuid3(self.uuid, self.roleSqlName()).replaceAll("-","")).substring(0,30);
+}
+
+@cached
+operation PSM!JRole roleIndexSqlName() : String {
+    return ("IDX_" + uuid3(self.uuid, self.roleSqlName()).replaceAll("-","")).substring(0,30);
 }
 
 @cached

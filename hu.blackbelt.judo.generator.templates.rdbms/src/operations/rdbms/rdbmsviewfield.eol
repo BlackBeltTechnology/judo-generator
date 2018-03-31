@@ -1,6 +1,6 @@
 @cached
 operation RDBMS!RdbmsViewField toViewExpression () : String {
-	return self.fieldExpression() + " AS " +  self.sqlName; 
+	return self.fieldExpression() + " AS " +  fieldLiteral() + self.sqlName + fieldLiteral(); 
 }
 
 @cached

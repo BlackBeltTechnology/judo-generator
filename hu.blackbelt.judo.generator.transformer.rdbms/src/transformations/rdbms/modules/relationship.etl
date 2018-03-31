@@ -21,20 +21,22 @@ rule JRoleToRdbmsJunctionTable
 		t.field2.mandatory = true;
 		
 		i1.name = t.name + " " + primaryRole.name;
-		i1.sqlName = "IDX_" + s.relationSqlName() + "_" + primaryRole.sqlName();
+		i1.sqlName = ("IDX_" + uuid3(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName()).replaceAll("-","")).substring(0,30);
 		i1.fields.add(t.field1);
 		i1.table = t;
 
 		i2.name = t.name + " " + secondaryRole.name;
-		i2.sqlName = "IDX_" + s.relationSqlName() + "_" + secondaryRole.sqlName();
-		i2.fields.add(t.field1);
+		i2.sqlName = ("IDX_" + uuid3(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName()).replaceAll("-","")).substring(0,30);
+		i2.fields.add(t.field2);
 		i2.table = t;
 		
 		t.indexes.add(i1);
 		t.indexes.add(i2);
 
 		uq.name = t.name + " " + primaryRole.name + ", " + secondaryRole.name;
-		uq.sqlName = "UQ_" + s.relationSqlName();
+		// uq.sqlName = "UQ_" + s.relationSqlName();
+		uq.sqlName = ("UQ_" + t.uuid.replaceAll("-","")).substring(0,30);
+		
 		uq.fields.add(t.field1);
 		uq.fields.add(t.field2);
 		uq.table = t;

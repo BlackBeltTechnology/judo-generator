@@ -1,0 +1,13 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[% for (table in RDBMS!RdbmsTable.all.select(t | t.parent.isUndefined() and not t.isKindOf(RDBMS!RdbmsJunctionTable))) { %]
+--changeset generator:DROP_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= table.name %] [%= table.uuid %]
+DROP TRIGGER BI_[%= table.sqlName %];
+[% } %]

@@ -36,5 +36,5 @@
 -- {%- endif %}
 
 [% for (table in tables) { %]
--- --changeset generator:after_update_event_trigger_create_[%= table.sqlName %]#[%= version() %] logicalFilePath:afterUpdateEventTableTriggerCreate stripComments:true
+-- --changeset generator:CREATE_TRIGGER_AFTER_UPDATE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 [% } %]

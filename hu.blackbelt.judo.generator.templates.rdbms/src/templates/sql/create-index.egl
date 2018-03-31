@@ -4,17 +4,10 @@
   
   out.setContentType("Java");
 %]
+--liquibase formatted sql
 
--- {% for field in table.savefields %}
--- {%- if field.index %}
--- --changeset generator:add_index_{{ field.indexname }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true
--- CREATE {% if field.unique -%}UNIQUE {% endif -%} INDEX {{ field.indexname }} ON {{ table.name }} ({{ field.name }});
--- {%- endif %}
--- {% endfor %}
--- {% endfor %}
-
-[% for (index in indexes) { %]
---changeset generator:create_index_[%= index.sqlName %]#[%= version() %] logicalFilePath:createIndex stripComments:true
+[% for (index in RDBMS!RdbmsIndex.all) { %]
+--changeset generator:CREATE_INDEX_[%= index.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 CREATE [% if (index.unique){ %] UNIQUE [% } %] INDEX [%= index.sqlName %] ON [%= index.table.sqlName %] (
 	[% for (field in index.fields) { %]
 		[%= field.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %]

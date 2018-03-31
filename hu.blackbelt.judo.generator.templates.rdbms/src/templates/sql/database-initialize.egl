@@ -1,0 +1,56 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+-- This file is incremental, please do not remove any changeset, only append and alter object if neccessary to modify
+
+--changeset generator:CREATE_VERSION_TABLE logicalFilePath:schemaInitialize
+CREATE TABLE EXECUTED_VERSIONS (
+    DB_VERSION CHAR(64),
+    BUILD_ID CHAR(36),
+    EXECUTED TIMESTAMP
+);
+
+--changeset generator:CREATE_SEQUENCE dbms:hsqldb logicalFilePath:schemaInitialize
+CREATE SEQUENCE serial;
+
+[* ------------------------------------- *]
+[* HSQLDB                                *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Hsqldb') { %]
+--changeset generator:SET_POSTGRES_SYNTAX dbms:hsqldb logicalFilePath:schemaInitialize
+SET DATABASE SQL SYNTAX PGS true;
+
+[% } %]
+
+
+[* ------------------------------------- *]
+[* ORACLE                                *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Oracle') { %]
+--changeset generator:CREATE_FUNCTION_IS_TRIGGER_VALID stripComments:false dbms:oracle logicalFilePath:schemaInitialize endDelimiter:\n/\s*\n|\n/\s*$
+CREATE OR REPLACE FUNCTION is_trigger_valid (objname VARCHAR) RETURN
+   NUMBER IS
+   err_num NUMBER;
+BEGIN
+    SELECT count(1) INTO err_num FROM USER_ERRORS WHERE name = objname;
+    IF err_num > 0 THEN
+      raise_application_error(-20010, 'Trigger compile error: ' || objname);
+    END IF;
+    RETURN 1;
+END is_trigger_valid;
+/
+
+[% } %]
+
+[* ------------------------------------- *]
+[* POSTGRES                              *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Postgres') { %]
+[% } %]
+
+
+

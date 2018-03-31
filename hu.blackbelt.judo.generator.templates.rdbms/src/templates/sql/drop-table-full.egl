@@ -1,0 +1,14 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[% for (table in RDBMS!RdbmsTable.all) { %]
+--changeset generator:DROP_TABLE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= table.name %] [%= table.uuid %]
+DROP TABLE [%= table.sqlName %];
+[% out.println("\n"); %]
+[% } %]
