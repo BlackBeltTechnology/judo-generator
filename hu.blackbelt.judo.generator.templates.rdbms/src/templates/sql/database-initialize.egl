@@ -11,7 +11,9 @@
 CREATE TABLE EXECUTED_VERSIONS (
     DB_VERSION CHAR(64),
     BUILD_ID CHAR(36),
-    EXECUTED TIMESTAMP
+    EXECUTED TIMESTAMP,
+    LAST_ERROR VARCHAR(4000),
+    STATUS VARCHAR(20)
 );
 
 --changeset generator:CREATE_SEQUENCE dbms:hsqldb logicalFilePath:schemaInitialize
