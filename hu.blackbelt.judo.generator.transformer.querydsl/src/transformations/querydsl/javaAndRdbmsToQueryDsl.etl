@@ -8,6 +8,17 @@ import "modules/junctionTable.etl";
 import "modules/junctionTableField.etl";
 
 pre {
-	var targetModel : QUERYDSL!QueryDslModel;
+	var targetModel : QUERYDSL!QueryDslModel = new QUERYDSL!QueryDslModel;
+	var s : RDBMS!RdbmsModel = RDBMS!RdbmsModel.all.first();
+	
+        targetModel.version = RDBMS!RdbmsModel.all.first().version;
+
+        //TODO: there should only be one java model and that should be used
+        var javaModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
+        targetModel.uuid = uuid3(javaModel.uuid, "QueryDslModel");
+        targetModel.originUuid = javaModel.uuid;
+        targetModel.name = javaModel.name;
+        targetModel.topPackageName = javaModel.applicationTop.fqName();
+        targetModel.persistenceName = javaModel.applicationTop.name.firstToUpperCase();
 }
 

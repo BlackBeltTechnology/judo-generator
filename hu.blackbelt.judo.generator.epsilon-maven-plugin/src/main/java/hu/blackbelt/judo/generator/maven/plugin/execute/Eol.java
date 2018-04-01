@@ -6,15 +6,19 @@ import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolExecutableModule;
 
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
 public class Eol {
     @Parameter(name = "source", required = true)
-    File source;
+    String source;
 
     @Parameter(name = "parameters")
     List<EolProgramParameter> parameters;
+    
+    @Parameter(name = "artifact")
+    String artifact;
 
     
     private EolModule module = new EolModule();

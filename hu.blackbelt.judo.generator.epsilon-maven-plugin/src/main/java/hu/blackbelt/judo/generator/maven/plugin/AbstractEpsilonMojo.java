@@ -57,7 +57,7 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
     }
 
 
-    public URI getArtifact(String url) throws MojoExecutionException {
+    protected File getArtifact(String url) throws MojoExecutionException {
         if (url.startsWith("mvn:")) {
             Artifact artifact = new DefaultArtifact(url.toString().substring(4));
             ArtifactRequest req = new ArtifactRequest().setRepositories(this.repositories).setArtifact(artifact);
@@ -74,7 +74,14 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
             if (file == null || !file.exists()) {
                 log.warn("Artifact " + url.toString() + " has no attached file. Its content will not be copied in the target model directory.");
             }
-            return URI.createFileURI(file.getAbsolutePath());
+            return file;
+        }
+        throw new MojoExecutionException("Artifact " + url.toString() + " could not be resolved.");
+    }
+    
+    public URI getArtifactAsEclipseURI(String url) throws MojoExecutionException {
+    	if (url.startsWith("mvn:")) {
+            return URI.createFileURI(getArtifact(url).getAbsolutePath());
         } else if (isValidURL(url)) {
         	return URI.createURI(url);
         } else {
@@ -86,7 +93,7 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
         if (metaModels != null) {
             for (String metaModel : metaModels) {
         		log.info("Registering ecore: " + metaModel);
-        		URI uri = getArtifact(metaModel);
+        		URI uri = getArtifactAsEclipseURI(metaModel);
         		log.info("    Meta model: " + uri);
                 List<EPackage> ePackages = EmfModelUtils.register(resourceSet, uri, true);
                 log.info("    EPackages: " + ePackages.stream().map(e -> e.getNsURI()).collect(Collectors.joining(", ")));
@@ -99,7 +106,7 @@ public abstract class AbstractEpsilonMojo extends AbstractMojo{
         if (models != null) {
             for (Model emf : models) {
                 log.info("Model: " + emf.toString());
-                URI artifactFile = getArtifact(emf.getArtifact());
+                URI artifactFile = getArtifactAsEclipseURI(emf.getArtifact());
                 log.info("    Artifact file: : " + artifactFile.toString());
                 emfModels.put(emf, load(log, resourceSet, modelRepository, emf, artifactFile));
             }

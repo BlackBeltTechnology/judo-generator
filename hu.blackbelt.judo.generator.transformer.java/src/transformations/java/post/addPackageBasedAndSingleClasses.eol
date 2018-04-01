@@ -1,4 +1,4 @@
-operation addPackageBasedClasses () {
+	operation addPackageBasedClasses () {
     addDomainBqlClasses();
     addPackageBasedRestDtoClasses();
 }
@@ -73,7 +73,7 @@ operation createClassWithOrigin(name : String, coordinate : Any, parentPackage :
 }
 
 operation addBoTypeResolverClass () {
-    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
+    var mainModel : JAVA!JvmModel = mainModel();
     var boTypeResolverClass = new JAVA!JvmClass;
     boTypeResolverClass.name = mainModel.applicationTop.name.firstToUpperCase() + "BoTypeResolver";
     boTypeResolverClass.coordinate = JAVA!JvmJudoCoordinate#BO_TYPE_RESOLVER;
@@ -82,7 +82,7 @@ operation addBoTypeResolverClass () {
 }
 
 operation addEnumConverterServiceClass () {
-    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
+    var mainModel : JAVA!JvmModel = mainModel();
     var enumConverterClass = new JAVA!JvmClass;
     enumConverterClass.name = mainModel.applicationTop.name.firstToUpperCase() + "EnumResolver";
     enumConverterClass.coordinate = JAVA!JvmJudoCoordinate#ENUM_CONVERTER_SERVICE;
@@ -91,10 +91,23 @@ operation addEnumConverterServiceClass () {
 }
 
 operation addRestTestBaseClass () {
-    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.first();
+    var mainModel : JAVA!JvmModel = mainModel();
     var newClass = new JAVA!JvmClass;
     newClass.name = "RestTestBase";
     newClass.coordinate = JAVA!JvmJudoCoordinate#REST_TEST_BASE;
     newClass.package = mainModel.applicationTop.package;
     newClass.uuid = uuid3(newClass.package.uuid, newClass.name);
+}
+
+operation mainModel () {
+	JAVA!JvmModel.all.size().println("MODEL SIZE");
+	JAVA!JvmModel.all.name.println("MODEL SIZE");
+	 
+	if (JAVA!JvmModel.all.size() = 1) {
+		"ONE Model only returning that".println();
+		return JAVA!JvmModel.all.first();
+	} else {
+		"Multiple model find not framework".println();
+		return JAVA!JvmModel.all.selectOne(m | not m.framework);
+	}
 }

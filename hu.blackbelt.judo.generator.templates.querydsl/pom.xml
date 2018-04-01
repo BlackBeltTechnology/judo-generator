@@ -12,66 +12,16 @@
 	<artifactId>hu.blackbelt.judo.generator.templates.querydsl</artifactId>
 	<packaging>jar</packaging>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>epsilon-maven-plugin</artifactId>
-				<version>${project.version}</version>
-				<executions>
-					<execution>
-						<id>template-model-querydsl</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<configuration>
-							<metaModels>
-								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.querydsl:ecore:querydsl:${project.version}</metaModel>
-							</metaModels>
+	<properties>
+        <src.dir>src</src.dir>
+    </properties>
 
-							<models>
-								<model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.querydsl:model:querydsl:${project.version}</artifact>
-									<name>QUERYDSL</name>
-									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm/querydsl</param>
-									</metaModelUris>
-								</model>
-							</models>
-							<eolPrograms>
-								<Egl>
-									<source>src/main.egl</source>
-									<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
-								</Egl>
-							</eolPrograms>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>add-resource</id>
-						<goals>
-							<goal>add-resource</goal>
-						</goals>
-						
-						<configuration>
-							<resources>
-								<resource>
-									<directory>src</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-		</plugins>
-	</build>
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
 </project>

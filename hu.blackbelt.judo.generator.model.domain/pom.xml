@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.blackbelt.judo.generator</groupId>
+        <artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+    </parent>
+
+    <artifactId>hu.blackbelt.judo.generator.model.domain</artifactId>
+    <packaging>pom</packaging>
+
+    <build>
+        <plugins>
+			<plugin>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>epsilon-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<metaModels>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
+
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
+								<metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
+							</metaModels>
+							<models>
+								<model>
+									<artifact>file:${basedir}/src/model/Judo_PSM_Library.uml</artifact>
+									<name>inpPIM</name>
+									<metaModelUris>
+										<param>http://www.eclipse.org/uml2/5.0.0/UML</param>
+										<param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
+										<param>http://www.omg.org/spec/UML/20131001/MagicDrawProfile</param>
+										<param>http://www.eclipse.org/uml2/5.0.0/UML</param>
+										<param>http:///schemas/ValidationProfile/_apwLgIDvEeePbrcCa2jZwg/0</param>
+										<param>http:///schemas/DSLCustomization/_ap58gIDvEeePbrcCa2jZwg/0</param>
+										<param>http:///schemas/JudoProfile/_apWi4IDvEeePbrcCa2jZwg/0</param>
+									</metaModelUris>
+									<expand>true</expand>
+								</model>
+								<model>
+									<artifact>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+									<name>psmTypes</name>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
+								</model>
+		
+								<!-- Target -->
+								<model>
+									<artifact>${project.build.directory}/psm.model</artifact>
+									<name>tgtPSM</name>
+									<readOnLoad>false</readOnLoad>
+									<storeOnDisposal>true</storeOnDisposal>
+									<metaModelUris>
+										<param>http://blackbelt.hu/judo/meta/psm</param>
+									</metaModelUris>
+								</model>
+							</models>
+							<eolPrograms>
+								<Etl>
+                                    <artifact>mvn:${groupId}:hu.blackbelt.judo.generator.transformer.psm.domain:jar:${project.version}</artifact>
+									<source>transformations/pimToJUDOPsm.etl</source>
+								</Etl>
+							</eolPrograms>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.directory}/psm.model</file>
+                                    <type>model</type>
+                                    <classifier>psm</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

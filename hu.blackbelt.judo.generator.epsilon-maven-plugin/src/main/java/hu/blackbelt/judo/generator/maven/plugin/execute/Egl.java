@@ -1,6 +1,7 @@
 package hu.blackbelt.judo.generator.maven.plugin.execute;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
@@ -12,6 +13,8 @@ import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
 import org.eclipse.epsilon.eol.IEolExecutableModule;
 
 public class Egl extends Eol {
+
+	public static final String ARTIFACT_ROOT = "ARTIFACT_ROOT";
 
 	private EglTemplateFactoryModuleAdapter module;
 
@@ -32,12 +35,15 @@ public class Egl extends Eol {
 			outputRootDir.mkdirs();
 		}
 
-		System.out.println(source.getParentFile().toURI());
-		
 		if (templateFactory instanceof EglFileGeneratingTemplateFactory && outputRoot != null) {
 			try {
 				((EglFileGeneratingTemplateFactory) templateFactory).setOutputRoot(outputRootDir.getAbsolutePath());
-				((EglFileGeneratingTemplateFactory) templateFactory).setRoot(source.getParentFile().toURI());
+				if (context.get(ARTIFACT_ROOT)!= null) {
+					URI main = (URI)context.get(ARTIFACT_ROOT); 
+					((EglFileGeneratingTemplateFactory) templateFactory).setRoot(main);
+				} else {
+					throw new MojoExecutionException("Artifact must be set!");
+				}
 			} catch (EglRuntimeException e) {
 				throw new MojoExecutionException("Could not create tempalte factory", e);
 			}

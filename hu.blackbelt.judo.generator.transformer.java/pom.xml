@@ -12,136 +12,16 @@
 	<artifactId>hu.blackbelt.judo.generator.transformer.java</artifactId>
 	<packaging>jar</packaging>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>epsilon-maven-plugin</artifactId>
-				<version>${project.version}</version>
-				<executions>
-					<execution>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<configuration>
-							<metaModels>
-								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
-								<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:ecore:psmToJavaTypeMapping:${project.version}</metaModel>
-							</metaModels>
+	<properties>
+        <src.dir>src</src.dir>
+    </properties>
 
-							<models>
-								<model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
-									<name>PSMTYPES</name>
-									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm</param>
-									</metaModelUris>
-									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
-								</model>
-
-								<model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
-									<name>PSM</name>
-									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm</param>
-									</metaModelUris>
-									<expand>true</expand>
-								</model>
-
-								<model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
-									<name>JAVATYPES</name>
-									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm/java</param>
-									</metaModelUris>
-									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
-								</model>
-
-								<model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:typeMapping:${project.version}</artifact>
-									<name>JTM</name>
-									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm/java/mapping</param>
-									</metaModelUris>
-									<expand>true</expand>
-								</model>
-								
-								<model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:frameworkElements:${project.version}</artifact>
-									<name>FWELEMENTS</name>
-									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm/java</param>
-									</metaModelUris>
-									<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/frameworkElements.model</platformAlias>
-									<expand>true</expand>
-								</model>
-
-								<!-- Target -->
-								<model>
-									<artifact>${project.build.directory}/java.model</artifact>
-									<name>JAVA</name>
-									<readOnLoad>false</readOnLoad>
-									<storeOnDisposal>true</storeOnDisposal>
-									<metaModelUris>
-										<param>http://blackbelt.hu/judo/meta/psm/java</param>
-									</metaModelUris>
-								</model>
-							</models>
-							<eolPrograms>
-								<Evl>
-									<source>src/validations/validation.evl</source>
-								</Evl>
-								<Etl>
-									<source>src/transformations/java/psmToJava.etl</source>
-								</Etl>
-							</eolPrograms>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>add-resource</id>
-						<goals>
-							<goal>add-resource</goal>
-						</goals>
-						
-						<configuration>
-							<resources>
-								<resource>
-									<directory>src</directory>
-								</resource>
-							</resources>
-						</configuration>
-						
-					</execution>
-
-					<execution>
-						<id>attach-artifacts</id>
-						<phase>package</phase>
-						<goals>
-							<goal>attach-artifact</goal>
-						</goals>
-						<configuration>
-							<artifacts>
-								<artifact>
-									<file>${project.build.directory}/java.model</file>
-									<type>model</type>
-									<classifier>java</classifier>
-								</artifact>
-							</artifacts>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-		</plugins>
-	</build>
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
 </project>
