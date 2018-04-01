@@ -25,11 +25,11 @@ import hu.blackbelt.judo.business.service.api.*;
 public class [%=class.name%] {
 
     @Reference
-    private EnumServiceLocator enumServiceLockator;
+    private EnumServiceLocator enumServiceLocator;
 
     [% for (class in fixedEnumClasses()) { %]
 	    public EnumService<[%=class.name%], [%=class.fixedEnum.name%]> [%=class.name.firstToLowerCase()%]() {
-            return enumServiceLockator.findEnumService([%=class.fixedEnum.name%].class);
+            return enumServiceLocator.findEnumService([%=class.fixedEnum.name%].class);
         }
     [%}%]
 }
