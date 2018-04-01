@@ -24,4 +24,71 @@
             </resource>
         </resources>
     </build>
+
+
+    <profiles>
+    	<profile>
+    		<id>permission-templates-development</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>epsilon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>templateModel</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.permission:ecore:permission:${project.version}</metaModel>
+									</metaModels>
+									<models>
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.permission:model:permission:${project.version}</artifact>
+											<name>Permission</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/permission</param>
+											</metaModelUris>
+											<expand>true</expand>
+										</model>
+									</models>
+									<eolPrograms>
+										<Egl>
+											<source>src/main.egl</source>
+											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+										</Egl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>add-resource</id>
+								<goals>
+									<goal>add-resource</goal>
+								</goals>
+								
+								<configuration>
+									<resources>
+										<resource>
+											<directory>src</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

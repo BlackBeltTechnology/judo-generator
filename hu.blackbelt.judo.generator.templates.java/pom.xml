@@ -24,4 +24,86 @@
             </resource>
         </resources>
     </build>
+
+    <profiles>
+    	<profile>
+    		<id>java-templates-development</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>epsilon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
+									</metaModels>
+		
+									<models>
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:frameworkElements:${project.version}</artifact>
+											<name>FWELEMENTS</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/java</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/frameworkElements.model</platformAlias>
+										</model>
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
+											<name>JAVATYPES</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/java</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
+										</model>
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.java:model:java:${project.version}</artifact>
+											<name>JAVA</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/java</param>
+											</metaModelUris>
+											<expand>true</expand>
+										</model>
+									</models>
+									<eolPrograms>
+										<Egl>
+											<source>src/main.egl</source>
+											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+										</Egl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>add-resource</id>
+								<goals>
+									<goal>add-resource</goal>
+								</goals>
+								
+								<configuration>
+									<resources>
+										<resource>
+											<directory>src</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>	
+				</plugins>
+			</build>
+    	</profile>
+    </profiles>
 </project>
