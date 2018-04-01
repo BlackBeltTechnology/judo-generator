@@ -9,6 +9,10 @@
         <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
     </parent>
 
+    <properties>
+        <epsilon.maven.plugin.version>1.0.0-3</epsilon.maven.plugin.version>
+        <run-generator.version>1.0.0-4</run-generator.version>
+    </properties>
     <artifactId>hu.blackbelt.judo.generator.model.car</artifactId>
     <packaging>pom</packaging>
 
@@ -16,9 +20,37 @@
         <plugins>
 
             <plugin>
-                <groupId>hu.blackbelt.judo.generator</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-java-cache</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>hu.blackbelt.judo.generator.model.domain</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>model</type>
+                                    <classifier>psm</classifier>
+                                    <overWrite>true</overWrite>
+                                    <destFileName>psm.model</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>hu.blackbelt.judo.generator.runner</groupId>
                 <artifactId>run-judo-genertor-maven-plugin</artifactId>
-                <version>${project.version}</version>
+                <version>${run-generator.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>hu.blackbelt.judo.generator</groupId>
@@ -43,6 +75,12 @@
                 <configuration>
                     <modelFile>file:${basedir}/src/model/JUDO_Car.uml</modelFile>
                     <modelName>Model</modelName>
+                    <domainModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.model.domain:model:psm:${project.version}</domainModel>
+                    <transformDomain>false</transformDomain>
+                    <pimToPsmTransformer>hu.blackbelt.judo.generator.transformer.psm</pimToPsmTransformer>
+                    <generatorGroupId>${project.groupId}</generatorGroupId>
+                    <generatorVersion>${project.version}</generatorVersion>
+                    <epsilonPluginVersion>${epsilon.maven.plugin.version}</epsilonPluginVersion>
                 </configuration>
             </plugin>
 
