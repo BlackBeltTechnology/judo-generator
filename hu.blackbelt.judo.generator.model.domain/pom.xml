@@ -15,9 +15,8 @@
     <build>
         <plugins>
 			<plugin>
-				<groupId>${project.groupId}</groupId>
+				<groupId>hu.blackbelt.judo.generator</groupId>
 				<artifactId>epsilon-maven-plugin</artifactId>
-				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<phase>generate-resources</phase>

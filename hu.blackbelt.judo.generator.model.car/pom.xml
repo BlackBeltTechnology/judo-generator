@@ -9,10 +9,6 @@
         <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
     </parent>
 
-    <properties>
-        <epsilon.maven.plugin.version>1.0.0-3</epsilon.maven.plugin.version>
-        <run-generator.version>1.0.0-4</run-generator.version>
-    </properties>
     <artifactId>hu.blackbelt.judo.generator.model.car</artifactId>
     <packaging>pom</packaging>
 
@@ -50,7 +46,6 @@
             <plugin>
                 <groupId>hu.blackbelt.judo.generator.runner</groupId>
                 <artifactId>run-judo-genertor-maven-plugin</artifactId>
-                <version>${run-generator.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>hu.blackbelt.judo.generator</groupId>
