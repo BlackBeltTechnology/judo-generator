@@ -23,7 +23,33 @@
                 <directory>${src.dir}</directory>
             </resource>
         </resources>
+    	<plugins>   	
+    		<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>src/script-definition.xml</file>
+									<type>xml</type>
+									<classifier>scriptDefinition</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+    	</plugins>
     </build>
+    
     
     <profiles>
     	<profile>
@@ -54,11 +80,20 @@
 											</metaModelUris>
 										</model>
 									</models>
+									<xmlModels>
+										<model>
+											<artifact>${project.basedir}/src/script-definition.xml</artifact>
+											<name>SCRIPT</name>
+											<readOnLoad>true</readOnLoad>
+											<storeOnDisposal>false</storeOnDisposal>
+										</model>
+									</xmlModels>
+
 									<eolPrograms>
-										<Egl>
-											<source>src/main.egl</source>
+										<Egx>
+											<source>src/main.egx</source>
 											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
-										</Egl>
+										</Egx>
 									</eolPrograms>
 								</configuration>
 							</execution>
@@ -83,11 +118,20 @@
 											</metaModelUris>
 										</model>
 									</models>
+									<xmlModels>
+										<model>
+											<artifact>${project.basedir}/src/script-definition.xml</artifact>
+											<name>SCRIPT</name>
+											<readOnLoad>true</readOnLoad>
+											<storeOnDisposal>false</storeOnDisposal>
+										</model>
+									</xmlModels>
+
 									<eolPrograms>
-										<Egl>
-											<source>src/main.egl</source>
+										<Egx>
+											<source>src/main.egx</source>
 											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
-										</Egl>
+										</Egx>
 									</eolPrograms>
 								</configuration>
 							</execution>
@@ -112,11 +156,20 @@
 											</metaModelUris>
 										</model>
 									</models>
+									<xmlModels>
+										<model>
+											<artifact>${project.basedir}/src/script-definition.xml</artifact>
+											<name>SCRIPT</name>
+											<readOnLoad>true</readOnLoad>
+											<storeOnDisposal>false</storeOnDisposal>
+										</model>
+									</xmlModels>
+
 									<eolPrograms>
-										<Egl>
-											<source>src/main.egl</source>
+										<Egx>
+											<source>src/main.egx</source>
 											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
-										</Egl>
+										</Egx>
 									</eolPrograms>
 								</configuration>
 							</execution>

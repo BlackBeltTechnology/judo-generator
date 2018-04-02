@@ -1,7 +1,5 @@
 [%
   import "../../operations/_importAll.eol";
-  import "../../main.egl";
-  
   out.setContentType("Java");
 %]
 --liquibase formatted sql
@@ -10,7 +8,7 @@
 --changeset generator:CREATE_VERSION_TABLE logicalFilePath:schemaInitialize
 CREATE TABLE EXECUTED_VERSIONS (
     DB_VERSION CHAR(64),
-    BUILD_ID CHAR(36),
+    PREV_DB_VERSION CHAR(64),
     EXECUTED TIMESTAMP,
     LAST_ERROR VARCHAR(4000),
     STATUS VARCHAR(20)

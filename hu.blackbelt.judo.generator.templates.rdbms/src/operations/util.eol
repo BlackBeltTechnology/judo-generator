@@ -8,6 +8,18 @@ operation version() : String {
 }
 
 @cached
+operation previousVersion() : String {
+	/*
+	if (previousVersion.isUndefined()) {
+		return "";
+	}
+	return previousVersion;
+*/
+	return "";
+}
+
+
+@cached
 operation dialect() : String {
 	return RDBMS!RdbmsConfiguration.all.first().dialect;
 }
@@ -19,4 +31,25 @@ operation fieldLiteral() : String {
 	} else {
 		return "";
 	}
+}
+
+operation String bindVariable(name : String, value : Any) : String {
+	return self.replaceAll("\\$\\{" + name + "\\}", value);	
+}
+
+operation String bindDefaultVariables() : String {
+	return self.bindVariable("currentVersion", version())
+	.bindVariable("previousVersion", previousVersion())
+	.bindVariable("dialect", dialect());	
+}
+
+
+operation currentTime() : String {
+	if (dialect() == "Oracle") 
+		return "SYSTIMESTAMP";
+	else if (dialect() == "Postgres")
+		return "transaction_timestamp()";
+	else if (dialect() == "Hsqldb")
+		return "CURRENT_TIMESTAMP";
+		
 }

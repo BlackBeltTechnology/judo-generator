@@ -1,7 +1,5 @@
 [%
   import "../../operations/_importAll.eol";
-  import "../../main.egl";
-  
   out.setContentType("Java");
 %]
 --liquibase formatted sql
@@ -10,6 +8,7 @@
 
 [% for (foreignKey in RDBMS!RdbmsForeignKey.all) { %]
 --changeset generator:CREATE_FOREIGN_KEY_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= foreignKey.name %] [%= foreignKey.uuid %]
 ALTER TABLE [%= foreignKey.table.sqlName %] 
 ADD CONSTRAINT [%= foreignKey.foreignKeySqlName %]
 FOREIGN KEY ([%= foreignKey.sqlName %])

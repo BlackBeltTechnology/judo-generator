@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
+<scriptDefinition xmlns="https://rdbms.script.generator.judo.blackbelt.hu"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="./script-definition.xsd">
+
+	<!-- Variables:
+		- currentVersion - The current version which composited from project version and MD5 sum of the model.
+		- previpusVersion - The previous version which is used to make delta model. The incremental version based on that.
+		- dialect - The sql dialects. All variants are executed on all script
+	-->
+	<sql name = "database-initialize" scriptName="templates/sql/database-initialize.egl" out ="sql/${currentVersion}/${dialect}/database-initialize.sql"/>
+	<sql name = "start-version" scriptName="templates/sql/start-version.egl" out ="sql/${currentVersion}/${dialect}/start-version.sql"/>
+	<sql name = "create-table-full" scriptName="templates/sql/create-table-full.egl" out ="sql/${currentVersion}/${dialect}/create-table-full.sql"/>
+	<sql name = "create-foreignkey" scriptName="templates/sql/create-foreignkey.egl" out ="sql/${currentVersion}/${dialect}/create-foreignkey.sql"/>
+	<sql name = "create-not-null-constraint" scriptName="templates/sql/create-not-null-constraint.egl" out ="sql/${currentVersion}/${dialect}/create-not-null-constraint.sql"/>
+	<sql name = "create-unique-constraint" scriptName="templates/sql/create-unique-constraint.egl" out ="sql/${currentVersion}/${dialect}/create-unique-constraint.sql"/>
+	<sql name = "create-index" scriptName="templates/sql/create-index.egl" out ="sql/${currentVersion}/${dialect}/create-index.sql"/>
+	<sql name = "create-table-before-insert-trigger" scriptName="templates/sql/create-table-before-insert-trigger.egl" out ="sql/${currentVersion}/${dialect}/create-table-before-insert-trigger.sql"/>
+	<sql name = "create-table-before-update-trigger" scriptName="templates/sql/create-table-before-update-trigger.egl" out ="sql/${currentVersion}/${dialect}/create-table-before-update-trigger.sql"/>
+	<sql name = "create-junction-before-insert-trigger" scriptName="templates/sql/create-junction-before-insert-trigger.egl" out ="sql/${currentVersion}/${dialect}/create-junction-before-insert-trigger.sql"/>
+	<sql name = "create-view" scriptName="templates/sql/create-view.egl" out ="sql/${currentVersion}/${dialect}/create-view.sql"/>
+	<sql name = "create-view-insert-trigger" scriptName="templates/sql/create-view-insert-trigger.egl" out ="sql/${currentVersion}/${dialect}/create-view-insert-trigger.sql"/>
+	<sql name = "create-view-update-trigger" scriptName="templates/sql/create-view-update-trigger.egl" out ="sql/${currentVersion}/${dialect}/create-view-update-trigger.sql"/>
+	<sql name = "create-view-delete-trigger" scriptName="templates/sql/create-view-delete-trigger.egl" out ="sql/${currentVersion}/${dialect}/create-view-delete-trigger.sql"/>
+	<sql name = "insert-view-records" scriptName="templates/sql/insert-view-records.egl" out ="sql/${currentVersion}/${dialect}/insert-view-records.sql"/>
+	<sql name = "drop-view-insert-trigger" scriptName="templates/sql/drop-view-insert-trigger.egl" out ="sql/${currentVersion}/${dialect}/drop-view-insert-trigger.sql"/>
+	<sql name = "drop-view-update-trigger" scriptName="templates/sql/drop-view-update-trigger.egl" out ="sql/${currentVersion}/${dialect}/drop-view-update-trigger.sql"/>
+	<sql name = "drop-view-delete-trigger" scriptName="templates/sql/drop-view-delete-trigger.egl" out ="sql/${currentVersion}/${dialect}/drop-view-delete-trigger.sql"/>
+	<sql name = "drop-view" scriptName="templates/sql/drop-view.egl" out ="sql/${currentVersion}/${dialect}/drop-view.sql"/>
+	<sql name = "drop-table-before-insert-trigger" scriptName="templates/sql/drop-table-before-insert-trigger.egl" out ="sql/${currentVersion}/${dialect}/drop-table-before-insert-trigger.sql"/>
+	<sql name = "drop-table-before-update-trigger" scriptName="templates/sql/drop-table-before-update-trigger.egl" out ="sql/${currentVersion}/${dialect}/drop-table-before-update-trigger.sql"/>
+	<sql name = "drop-junction-before-insert-trigger" scriptName="templates/sql/drop-junction-before-insert-trigger.egl" out ="sql/${currentVersion}/${dialect}/drop-junction-before-insert-trigger.sql"/>
+	<sql name = "drop-table-before-insert-trigger" scriptName="templates/sql/drop-table-before-insert-trigger.egl" out ="sql/${currentVersion}/${dialect}/drop-table-before-insert-trigger.sql"/>
+	<sql name = "drop-table-before-update-trigger" scriptName="templates/sql/drop-table-before-update-trigger.egl" out ="sql/${currentVersion}/${dialect}/drop-table-before-update-trigger.sql"/>
+	<sql name = "drop-index" scriptName="templates/sql/drop-index.egl" out ="sql/${currentVersion}/${dialect}/drop-index.sql"/>
+	<sql name = "drop-unique-constraint" scriptName="templates/sql/drop-unique-constraint.egl" out ="sql/${currentVersion}/${dialect}/drop-unique-constraint.sql"/>
+	<sql name = "drop-not-null-constraint" scriptName="templates/sql/drop-not-null-constraint.egl" out ="sql/${currentVersion}/${dialect}/drop-not-null-constraint.sql"/>
+	<sql name = "drop-foreignkey" scriptName="templates/sql/drop-foreignkey.egl" out ="sql/${currentVersion}/${dialect}/drop-foreignkey.sql"/>
+	<sql name = "drop-table-full" scriptName="templates/sql/drop-table-full.egl" out ="sql/${currentVersion}/${dialect}/drop-table-full.sql"/>
+	<sql name = "end-version" scriptName="templates/sql/end-version.egl" out ="sql/${currentVersion}/${dialect}/end-version.sql"/>
+
+	<!-- It runs when there is NO DB presented -->
+	<changeset name = "changeset-full"  scriptName="templates/xml/changeset.egl" out="${currentVersion}-${dialect}-schema-full.xml" >
+		<change sql ="sql/${currentVersion}/${dialect}/database-initialize.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/start-version.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-table-full.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-foreignkey.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-not-null-constraint.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-unique-constraint.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-index.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-table-before-insert-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-table-before-update-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-junction-before-insert-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-insert-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-update-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-delete-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/insert-view-records.sql"/>
+		<change sql ="sql/${currentVersion}/setup-permission.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/end-version.sql"/>
+	</changeset>
+
+	<!-- If DB version exists (so it is installed earlier), have to remove all database object which are not table -->
+	<changeset name = "changeset-before-incremental"  scriptName="templates/xml/changeset.egl" out="${currentVersion}-${dialect}-before-incremental.xml" >
+		<change sql ="sql/${currentVersion}/${dialect}/start-version.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-view-insert-trigger.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-view-update-trigger.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-view-delete-trigger.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-view.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-table-before-insert-trigger.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-table-before-update-trigger.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-junction-before-insert-trigger.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-table-before-insert-trigger.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-table-before-update-trigger.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-index.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-unique-constraint.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-not-null-constraint.sql"/>
+		<change sql ="sql/${previousVersion}/${dialect}/drop-foreignkey.sql"/>
+	</changeset>
+
+	<!-- Run all incremental version between last installed version and current version -->
+	<changeset name = "changeset-incremental"  scriptName="templates/xml/changeset.egl" out="${currentVersion}-${dialect}-incremental.xml" >
+		<!-- TODO: Make some model merge -->
+	</changeset>
+
+	<changeset name = "changeset-after-incremental"  scriptName="templates/xml/changeset.egl" out="${currentVersion}-${dialect}-after-incremental.xml" >
+		<change sql ="sql/${currentVersion}/${dialect}/create-foreignkey.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-not-null-constraint.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-unique-constraint.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-index.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-table-before-insert-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-table-before-update-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-junction-before-insert-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-insert-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-update-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-delete-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/insert-view-records.sql"/>
+		<change sql ="sql/${currentVersion}/setup-permission.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/end-version.sql"/>
+	</changeset>
+		
+</scriptDefinition>

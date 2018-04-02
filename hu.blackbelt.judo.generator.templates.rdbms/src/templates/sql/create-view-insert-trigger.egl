@@ -1,7 +1,5 @@
 [%
-  import "../../operations/_importAll.eol";
-  import "../../main.egl";
-  
+  import "../../operations/_importAll.eol"; 
   out.setContentType("Java");
 %]
 --liquibase formatted sql

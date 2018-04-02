@@ -44,10 +44,10 @@
 									<artifactItems>
 										<artifactItem>
 											<groupId>${project.groupId}</groupId>
-											<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
+											<artifactId>hu.blackbelt.judo.generator.model.car</artifactId>
 											<version>${project.version}</version>
 											<type>md5</type>
-											<classifier>psmFromHutn</classifier>
+											<classifier>psm</classifier>
 											<overWrite>false</overWrite>
 											<outputDirectory>${project.build.directory}</outputDirectory>
 											<destFileName>psm.md5</destFileName>

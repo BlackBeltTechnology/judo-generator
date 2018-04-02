@@ -1,0 +1,9 @@
+[%
+  import "../../operations/_importAll.eol";
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+--changeset generator:VERSION_START_#[%= version() %] stripComments:true logicalFilePath:[%= scriptName %] stripComments:true
+INSERT INTO EXECUTED_VERSIONS(DB_VERSION, PREV_DB_VERSION, EXECUTED, STATUS) VALUES ('[%= version() %]', '[%= previousVersion() %]',  [%= currentTime() %], 'IN_PROGRESS');
+

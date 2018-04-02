@@ -1,13 +1,12 @@
 [%
   import "../../operations/_importAll.eol";
-  import "../../main.egl";
-  
   out.setContentType("Java");
 %]
 --liquibase formatted sql
 
 [% for (index in RDBMS!RdbmsIndex.all) { %]
 --changeset generator:CREATE_INDEX_[%= index.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= index.name %] [%= index.uuid %]
 CREATE [% if (index.unique){ %] UNIQUE [% } %] INDEX [%= index.sqlName %] ON [%= index.table.sqlName %] (
 	[% for (field in index.fields) { %]
 		[%= field.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %]

@@ -1,7 +1,5 @@
 [%
   import "../../operations/_importAll.eol";
-  import "../../main.egl";
-  
   out.setContentType("Java");
 %]
 --liquibase formatted sql
@@ -9,6 +7,7 @@
 [% for (table in RDBMS!RdbmsTable.all) { %]
 	[% if (hasFeature('SupportMultipleColumnModificationInOneStatement') and table.fields.exists(f | f.mandatory and not f.isPrimary())) { %]
 --changeset generator:CREATE_NOT_NULL_CONSTRAINT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= table.name %] [%= table.uuid %]
 ALTER TABLE [%= table.sqlName %] 
 		[% if (dialect() == 'Oracle') { %]
 			MODIFY (
@@ -18,7 +17,7 @@ ALTER TABLE [%= table.sqlName %]
 			[% if (dialect() == 'Oracle') { %]
 				[%= field.sqlName %] NOT NULL
 			[% } else { %]
-				ALTER COLUMN [%= field.sqlName %] SET NOT NULL	
+				ALTER COLUMN [%= field.sqlName %] SET NOT NULL	-- [%= field.name %] [%= field.uuid %]
 			[% } %]
 			[% if (hasMore) { out.print(","); } %]
 		[% } %]
@@ -30,6 +29,7 @@ ALTER TABLE [%= table.sqlName %]
 	[% } else { %]
 		[%for (field in table.fields.select(f | f.mandatory and not f.isPrimary())) { %]
 --changeset generator:CREATE_NOT_NULL_CONSTRAINT_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= field.name %] [%= field.uuid %]
 ALTER TABLE [%= table.sqlName %] ALTER COLUMN [%= field.sqlName %] SET NOT NULL;
 			[% out.println("\n"); %]
 		[% } %]
