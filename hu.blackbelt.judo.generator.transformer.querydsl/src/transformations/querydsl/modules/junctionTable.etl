@@ -15,14 +15,14 @@ rule RdbmsJunctionTableToQueryDslJunctionTable
     	t.foreignKey2 = s.field2.equivalent("RdbmsForeignKeyToQueryDslJunctionField");
     	t.foreignKey2.junctionTable = t;
     	
-    	var splitName : Sequence(String) = s.name.split(" ");
+    	var splitName : Sequence(String) = s.name.split(" to ");
     	
     	var currentPart : Sequence(String) = splitName.first().split("\\.").invert();
     	var className : String = currentPart.first();
     	var packageName : String = currentPart.second();	
     	var abbreviatedfirstName = createAbbreviatedName(packageName, className, t.foreignKey1.name);
 
-		currentPart = splitName.third().split("\\.").invert();
+		currentPart = splitName.second().split("\\.").invert();
     	className = currentPart.first();
     	packageName = currentPart.second();
     	var abbreviatedsecondName = createAbbreviatedName(packageName, className, t.foreignKey2.name);

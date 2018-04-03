@@ -107,7 +107,7 @@ WHERE coalesce(C_INTERNAL, NULL, 'N') = 'N';
 TRUNCATE TABLE [%=tmpRoleRoles()%];
 INSERT INTO [%=tmpRoleRoles()%] (CHILD_GUID, PARENT_GUID)
 SELECT rc.c_guid, rp.c_guid
-FROM T_ROLE_ROLE_BC67D7 rr
+FROM T_ROLE_ROLE_9ACE32 rr
 JOIN T_FRW_ROLE rc ON (rr.c_children_id = rc.id)
 JOIN T_FRW_ROLE rp ON (rr.c_parents_id = rp.id)
 WHERE coalesce(rc.C_INTERNAL, NULL, 'N') = 'N' OR coalesce(rp.C_INTERNAL, NULL, 'N') = 'N';
@@ -116,7 +116,7 @@ WHERE coalesce(rc.C_INTERNAL, NULL, 'N') = 'N' OR coalesce(rp.C_INTERNAL, NULL, 
 TRUNCATE TABLE [%=tmpRolePermissions()%];
 INSERT INTO [%=tmpRolePermissions()%] (PERM_GUID, ROLE_GUID)
 SELECT p.c_guid, r.c_guid
-FROM T_ROLE_PERM_446F1D pr
+FROM T_PERM_ROLE_A9FCBD pr
 JOIN T_FRW_PERM p ON (pr.c_perms_id = p.id)
 JOIN T_FRW_ROLE r ON (pr.c_roles_id = r.id)
 WHERE coalesce(r.C_INTERNAL, NULL, 'N') = 'N';
@@ -132,7 +132,7 @@ JOIN T_FRW_ROLE r ON (r.ID = ur.C_ROLES_ID);
 TRUNCATE TABLE [%=tmpTUserTRoles()%];
 INSERT INTO [%=tmpTUserTRoles()%](C_TUSERS_ID, C_GUID)
 SELECT ur.C_TUSERS_ID, r.C_GUID
-FROM T_TUSER_TROLE_69F8D9 ur
+FROM T_TROLE_TUSER_7DA866 ur
 JOIN V_FRW_TROLE r
 ON (r.ID = ur.C_TROLES_ID);
 
@@ -145,16 +145,16 @@ ON (r.ID = ur.C_TROLES_ID);
 
 --changeset generator:purge_permissions#[%=version()%] stripComments:true logicalFilePath:setupPermissions
 -- Purge ROLE_PERMISSIONS
-TRUNCATE TABLE T_ROLE_PERM_446F1D;
+TRUNCATE TABLE T_PERM_ROLE_A9FCBD;
 
 -- Purge ROLE_ROLE
-TRUNCATE TABLE T_ROLE_ROLE_BC67D7;
+TRUNCATE TABLE T_ROLE_ROLE_9ACE32;
 
 -- Purge USER ROLE
 TRUNCATE TABLE T_USER_ROLE_ED3759;
 
 -- Purge TENANT USER ROLE
-TRUNCATE TABLE T_TUSER_TROLE_69F8D9;
+TRUNCATE TABLE T_TROLE_TUSER_7DA866;
 
 -- Purge ROLE
 DELETE FROM V_FRW_ROLE;
@@ -191,7 +191,7 @@ VALUES ('[%=role.name%]', '[%=role.uuid%]', 'Y');
 	 for (permission in role.rolePermissions) {
 	 	if (not 'credential'.isSubstringOf(permission.resource)) {%]
 -- role[[%=role.name%]] <- [[%=permission.resource%]:[%=permission.action%]]
-INSERT INTO T_ROLE_PERM_446F1D (C_PERMS_ID, C_ROLES_ID)
+INSERT INTO T_PERM_ROLE_A9FCBD (C_PERMS_ID, C_ROLES_ID)
 VALUES (
     (SELECT ID FROM V_FRW_PERM WHERE C_GUID='[%=permission.uuid%]'),
     (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=role.uuid%]')
@@ -206,7 +206,7 @@ VALUES (
 	if (role.childrenRoles.size() > 0) {
 		for (child in role.childrenRoles) {%]
 -- role[[%=role.name%]] <- [[%=child.name%]]
-INSERT INTO T_ROLE_ROLE_BC67D7 (C_PARENTS_ID, C_CHILDREN_ID)
+INSERT INTO T_ROLE_ROLE_9ACE32 (C_PARENTS_ID, C_CHILDREN_ID)
 VALUES (
     (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=role.uuid%]'),
     (SELECT ID FROM V_FRW_ROLE WHERE C_GUID='[%=child.uuid%]')
@@ -253,19 +253,19 @@ SELECT ur.C_USERS_ID, r.ID
 FROM [%=tmpUserRoles()%] ur JOIN V_FRW_ROLE r ON (r.C_GUID = ur.C_GUID);
 
 -- Restore saved tenant user roles
-INSERT INTO T_TUSER_TROLE_69F8D9 (C_TUSERS_ID, C_TROLES_ID)
+INSERT INTO T_TROLE_TUSER_7DA866 (C_TUSERS_ID, C_TROLES_ID)
 SELECT ur.C_TUSERS_ID, r.ID
 FROM [%=tmpTUserTRoles()%] ur JOIN V_FRW_TROLE r ON (r.C_GUID = ur.C_GUID);
 
 -- Restore  saved role role
-INSERT INTO T_ROLE_ROLE_BC67D7(C_CHILDREN_ID, C_PARENTS_ID)
+INSERT INTO T_ROLE_ROLE_9ACE32(C_CHILDREN_ID, C_PARENTS_ID)
 SELECT c.ID, p.ID
 FROM [%=tmpRoleRoles()%] t
 JOIN V_FRW_ROLE p ON (p.C_GUID = t.PARENT_GUID)
 JOIN V_FRW_ROLE c ON (c.C_GUID = t.CHILD_GUID);
 
 -- Restore saved role permission
-INSERT INTO T_ROLE_PERM_446F1D(C_PERMS_ID, C_ROLES_ID)
+INSERT INTO T_PERM_ROLE_A9FCBD(C_PERMS_ID, C_ROLES_ID)
 SELECT p.ID, r.ID
 FROM [%=tmpRolePermissions()%] t
 JOIN V_FRW_ROLE r ON (r.C_GUID = t.ROLE_GUID)

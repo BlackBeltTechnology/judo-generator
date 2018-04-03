@@ -1,0 +1,23 @@
+operation transformEnum(annotation : pimEXT!EAnnotation) {
+	var extEnum = annotation.eModelElement;
+	var pimEnum = new inpPIM!Enumeration();
+	pimEnum.name = extEnum.name;
+			
+	for (literal in extEnum.eLiterals) {
+		var newLiteral = new inpPIM!EnumerationLiteral();
+		newLiteral.name = literal.name;
+		
+		pimEnum.ownedLiteral.add(newLiteral);
+	}
+			
+	var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = extEnum.ePackage.fqName());
+	pimPackage.packagedElement.add(pimEnum);
+}
+
+operation inpPIM!Enumeration addStereotypes(annotation : pimEXT!EAnnotation) {
+	var const;
+	if (annotation.details.get("fixed").isDefined() and annotation.details.get("fixed") = "true") {
+		const = new inpPIM!fixed();
+		const.base_Enumeration = self;
+	}
+}

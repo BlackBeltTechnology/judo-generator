@@ -9,8 +9,7 @@ rule UIReferenceComponentType
 		//attributes
 		if (jrole.visibility = PSM!JVisibility#PROTECTED) {
 			uireference.readonly = true;
-		}
-		if (jrole.visibility = PSM!JVisibility#PRIVATE) {
+		} else if (jrole.visibility = PSM!JVisibility#PRIVATE) {
 			uireference.private = true;
 		}
 		if (jrole.ownerRelationship.derived or jrole.calculated or jrole.visibility = PSM!JVisibility#PROTECTED) {
@@ -35,8 +34,7 @@ rule UIBaseComponentType
 		//attributes
 		if (jattribute.visibility = PSM!JVisibility#PROTECTED) {
 			uibasetype.readonly = true;
-		}
-		if (jattribute.visibility = PSM!JVisibility#PRIVATE) {
+		} else if (jattribute.visibility = PSM!JVisibility#PRIVATE) {
 			uibasetype.private = true;
 		}
 		if (jattribute.derived or jattribute.calculated or jattribute.visibility = PSM!JVisibility#PROTECTED) {

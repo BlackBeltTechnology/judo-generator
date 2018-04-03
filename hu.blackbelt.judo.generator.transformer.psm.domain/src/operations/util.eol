@@ -16,7 +16,7 @@ operation mdId2Uuid(id : String) : String {
 operation NamedElement name() : String {
 	var name : String;
 
-	if (self.name.size > 0) {
+	if (self.name.isDefined() and self.name.size > 0) {
 		name = self.name;
 	} else {
 		name = "<<UNNAMED>>";

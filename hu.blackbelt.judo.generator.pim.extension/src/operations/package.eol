@@ -1,0 +1,93 @@
+operation createMainPackage() : inpPIM!Package {
+
+	var extMainPackage = pimEXT!EPackage.all.selectOne(package | package.eSuperPackage.isUndefined());
+	var extensionPackage = new inpPIM!Package();
+	extensionPackage.name = extMainPackage.name;
+
+	var applicationTop : inpPIM!Package = inpPIM!Package.all.selectOne(pack | pack.nestingPackage.isUndefined());
+	applicationTop.packagedElement.add(extensionPackage);
+	
+	var stereotype = new inpPIM!package();
+	stereotype.base_Package = extensionPackage;
+	
+	return extensionPackage;
+}
+
+operation transformAdditionPackage(annotation : pimEXT!EAnnotation, extensionPackage : inpPIM!Package) {
+	var currentExtPackage : pimEXT!EPackage = annotation.eModelElement;
+
+	var newPimPackage = new inpPIM!Package();
+	newPimPackage.name = currentExtPackage.name;
+	extensionPackage.packagedElement.add(newPimPackage);
+	
+	newPimPackage.addStereotypes(annotation);
+}
+
+operation inpPIM!Package addStereotypes(annotation : pimEXT!EAnnotation) {
+	var const;
+	if (annotation.details.get("participates").isDefined()) {
+		var layers : Sequence(String) = annotation.details.get("participates").split(",");
+		self.addLayers(layers);
+	}
+	if (annotation.details.get("package").isDefined() and annotation.details.get("package") = "true") {
+			const = new inpPIM!package();
+			const.base_Package = self;
+	}
+	if (annotation.details.get("application").isDefined() and annotation.details.get("application") = "true") {
+			const = new inpPIM!application();
+			const.base_Package = self;
+	}
+	 
+}
+
+operation inpPIM!Package addLayers(layers : Sequence(String)) {
+		var const;
+		if (layers.includes("rest")) {
+			const = new inpPIM!rest();
+			const.base_Package = self;
+		} 
+		if (layers.includes("bo")) {
+			const = new inpPIM!bo();
+			const.base_Package = self;
+		}
+		if (layers.includes("dto")) {
+			const = new inpPIM!dto();
+			const.base_Package = self;
+		}
+		if (layers.includes("ui")) {
+			const = new inpPIM!ui();
+			const.base_Package = self;
+		}
+		if (layers.includes("document")) {
+			const = new inpPIM!document();
+			const.base_Package = self;
+		}
+		if (layers.includes("permission")) {
+			const = new inpPIM!permission();
+			const.base_Package = self;
+		}
+}
+
+@cached
+operation inpPIM!Package fqName(): String {
+	var fqName = self.name;
+	var current = self;
+	while(current.owner.isTypeOf(inpPIM!Package)) {
+		fqName = current.owner.name + "." + fqName;
+		current = current.owner;
+	}
+	
+	return fqName;
+}
+
+@cached
+operation pimEXT!EPackage fqName(): String {
+	var fqName = self.name;
+	var current = self;
+	while(current.eSuperPackage.isTypeOf(pimEXT!EPackage)) {
+		fqName = current.eSuperPackage.name + "." + fqName;
+		current = current.eSuperPackage;
+	}
+	
+	return fqName;
+}

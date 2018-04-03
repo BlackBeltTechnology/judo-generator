@@ -65,7 +65,7 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
                         [%}%]
                     [%}%]
                     [% if (ref.name = 'statusz') { %]
-                        .[%=ref.name%]([%=class.name%][%=ref.name.firstToUpperCase()%]Client.[%=class.name.firstToLowerCase()%][%=ref.name.firstToUpperCase()%]().queryByCode([%=class.fqName()%][%=ref.name.firstToUpperCase()%]EnumRestDto.[%=class.stateMachines.at(0).transitions.at(0).fromState%]))
+                        .[%=ref.name%]([%=class.name%][%=ref.name.firstToUpperCase()%]Client.[%=class.name.firstToLowerCase()%][%=ref.name.firstToUpperCase()%]().queryByCode([%=class.fqName()%][%=ref.name.firstToUpperCase()%]EnumRestDto.[%=class.origin.stateMachines.at(0).transitions.at(0).fromState%]))
                     [%}%]
             [%}%];
             prepareBuilder(builder);
