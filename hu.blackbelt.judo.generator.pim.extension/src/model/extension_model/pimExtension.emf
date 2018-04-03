@@ -6,13 +6,13 @@ package ext;
 @Target("name"="judo.framework.User")
 class User {}
 
-@Target("name"="users.OpmUser")
+@Target("name"="opmpim.users.OpmUser")
 class OpmUser {}
 
-@Target("name"="users.DoctorUser")
+@Target("name"="opmpim.users.DoctorUser")
 class DoctorUser {}
 
-@Target("name"="treatments.Task")
+@Target("name"="opmpim.treatments.Task")
 class Task {
 
 	@Addition("visibility"="public" , "navigable"="false")
@@ -22,7 +22,7 @@ class Task {
 	op void taskExpired();
 }
 
-@Target("name"="treatments.MedicalRecord")
+@Target("name"="opmpim.treatments.MedicalRecord")
 class MedicalRecord {
 	
 	@Addition("visibility"="protected" , "navigable"="true")
@@ -38,14 +38,14 @@ class MedicalRecord {
 	ref domain.MRTypeTuple[*]#medicalRecordExtension hostTuple;
 }
 
-@Target("name"="treatments.BasicDataValueSpecification")
+@Target("name"="opmpim.treatments.BasicDataValueSpecification")
 class BasicDataValueSpecification {
 	
 	@Addition("visibility"="public" , "navigable"="false")
 	ref MedicalRecord#partialValues medicalRecord;
 }
 
-@Target("name"="users.PatientUser")
+@Target("name"="opmpim.users.PatientUser")
 class PatientUser {
 
 	@Addition("visibility"="public")
@@ -79,18 +79,17 @@ class PatientUser {
 	op void deletePassword();
 }
 
-@Target("name"="treatments.ProtocolCfg")
+@Target("name"="opmpim.treatments.ProtocolCfg")
 class ProtocolCfg {
 	
 	@Addition("visibility"="public", "derived"="true")
-	@Decimals("expression"="2")
 	attr String[1] patId = "{self.patient.patientId}";
 	
 	@Addition("visibility"="protected", "navigable"="true", "derived"="true")
 	ref ProtocolMRTypeBinding[*]#ownerCfg typeBindings;
 }
 
-@Target("name"="treatments.protocols.ProtocolMRTypeBinding")
+@Target("name"="opmpim.treatments.protocols.ProtocolMRTypeBinding")
 class ProtocolMRTypeBinding {
 	
 	@Addition("visibility"="public", "derived"="true")
@@ -106,7 +105,7 @@ class ProtocolMRTypeBinding {
 	ref ProtocolCfg#typeBindings ownerCfg;
 }
 
-@Target("name"="treatments.TaskScheduleAbstract")
+@Target("name"="opmpim.treatments.TaskScheduleAbstract")
 class TaskScheduleAbstract {
 	
 	@Addition("visibility"="public", "derived"="true")
@@ -117,7 +116,7 @@ class TaskScheduleAbstract {
 	
 }
 
-@Target("name"="treatments.Notification")
+@Target("name"="opmpim.treatments.Notification")
 class Notification {
 	
 	@Addition("visibility"="protected", "representation"="true", "derived"="true")
@@ -148,7 +147,7 @@ class Notification {
 	
 }
 
-@Target("name"="treatments.protocols.Protocol")
+@Target("name"="opmpim.treatments.protocols.Protocol")
 class Protocol {
 	
 	@Addition("visibility"="protected")
@@ -159,14 +158,14 @@ class Protocol {
 }
 
 
-@Target("name"="treatments.protocols.MedicalRecordType")
+@Target("name"="opmpim.treatments.protocols.MedicalRecordType")
 class MedicalRecordType {
 
 	@Addition("visibility"="public" , "navigable"="false")
 	ref domain.MRTypeTuple[*]#medicalRecordTypeExtension hostTuple;
 }
 
-@Addition("participates"="package,bo,dto,rest")
+@Addition("package"="true","participates"="bo,dto,rest")
 package domain {
 
 	@Addition
@@ -224,7 +223,7 @@ package domain {
 	}
 }
 
-@Addition("participates"="package,ui")
+@Addition("package"="true","participates"="ui")
 package ui {
 
 	@MenuRoot
@@ -233,13 +232,13 @@ package ui {
 	@MenuItem("parent"="ext.ui.MenuRoot")
 	class MenuExt {}
 	
-	@Screen("base"="users.PatientUser", "parent"="ext.ui.MenuExt")
+	@Screen("base"="opmpim.users.PatientUser", "parent"="ext.ui.MenuExt")
 	class TreatedPatientUser {}
 	
-	@Screen("base"="treatments.Notification", "parent"="ext.ui.MenuExt")
+	@Screen("base"="opmpim.treatments.Notification", "parent"="ext.ui.MenuExt")
 	class MyUncheckedNotifications {}
 	
-	@Screen("base"="treatments.Notification", "parent"="ext.ui.MenuExt")
+	@Screen("base"="opmpim.treatments.Notification", "parent"="ext.ui.MenuExt")
 	class MyCheckedNotifications {}
 	
 } 

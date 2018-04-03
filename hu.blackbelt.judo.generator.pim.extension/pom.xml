@@ -15,25 +15,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.coderplus.maven.plugins</groupId>
-                <artifactId>copy-rename-maven-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <id>copy-file</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <sourceFile>src/typesExtension/typesForExentsion_tmpl.ecore</sourceFile>
-                            <destinationFile>${project.build.directory}/typesForExentsion.ecore</destinationFile>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.7</version>
                 <executions>
@@ -59,82 +40,6 @@
                 </executions>
             </plugin>
             
-
-            <!--plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>epsilon-maven-plugin</artifactId>
-                <version>${project.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-types-for-extension</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <metaModels>
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
-
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
-                                <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:PIMProfile:${project.version}</metaModel>
-                            </metaModels>
-                            <models>
-                                <model>
-                                    <artifact>file:${basedir}/src/model/opm_pim_-_Modelio_import.uml</artifact>
-                                    <name>inpPIM</name>
-                                    <metaModelUris>
-                                        <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
-                                        <param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
-                                        <param>http://www.omg.org/spec/UML/20131001/MagicDrawProfile</param>
-                                        <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
-                                        <param>http:///schemas/ValidationProfile/_apwLgIDvEeePbrcCa2jZwg/0</param>
-                                        <param>http:///schemas/DSLCustomization/_ap58gIDvEeePbrcCa2jZwg/0</param>
-                                        <param>http://www.blackbelt.hu/metamodel/pim/v1.0</param>
-                                    </metaModelUris>
-                                    <readOnLoad>true</readOnLoad>
-                                    <storeOnDisposal>false</storeOnDisposal>
-                                    <expand>true</expand>
-                                </model>
-                                <model>
-                                    <artifact>file:${basedir}/src/model/Judo_PSM_Library.uml</artifact>
-                                    <name>domainPIM</name>
-                                    <metaModelUris>
-                                        <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
-                                        <param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
-                                        <param>http://www.omg.org/spec/UML/20131001/MagicDrawProfile</param>
-                                        <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
-                                        <param>http:///schemas/ValidationProfile/_apwLgIDvEeePbrcCa2jZwg/0</param>
-                                        <param>http:///schemas/DSLCustomization/_ap58gIDvEeePbrcCa2jZwg/0</param>
-                                        <param>http://www.blackbelt.hu/metamodel/pim/v1.0</param>
-                                    </metaModelUris>
-                                    <readOnLoad>true</readOnLoad>
-                                    <storeOnDisposal>false</storeOnDisposal>
-                                    <expand>true</expand>
-                                </model>
-                                <model>
-                                    <artifact>${project.build.directory}/typesForExentsion.ecore</artifact>
-                                    <name>typesEXT</name>
-                                    <readOnLoad>true</readOnLoad>
-                                    <storeOnDisposal>true</storeOnDisposal>
-                                    <metaModelUris>
-                                        <param>http://www.eclipse.org/emf/2002/Ecore</param>
-                                    </metaModelUris>
-                                </model>
-                            </models>
-                            <eolPrograms>
-                                <Etl>
-                                    <source>src/extensions/pimToTypesExtension.etl</source>
-                                </Etl>
-                            </eolPrograms>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin-->
-
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>epsilon-maven-plugin</artifactId>
@@ -184,16 +89,6 @@
                                         <param>http://www.eclipse.org/emf/2002/Ecore</param>
                                     </metaModelUris>
                                 </model>
-                                <model>
-                                    <!--artifact>${project.build.directory}/typesForExentsion.ecore</artifact-->
-                                    <artifact>file:${basedir}/src/model/typesForExentsion.ecore</artifact>
-                                    <name>typesEXT</name>
-                                    <readOnLoad>true</readOnLoad>
-                                    <storeOnDisposal>false</storeOnDisposal>
-                                    <metaModelUris>
-                                        <param>http://www.eclipse.org/emf/2002/Ecore</param>
-                                    </metaModelUris>
-                                </model>
                             </models>
                             <eolPrograms>
                                 <Eol>
@@ -225,29 +120,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-artifacts</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/typesForExentsion.ecore</file>
-                                    <type>ecore</type>
-                                    <classifier>ext</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+           
 
         </plugins>
     </build>

@@ -13,10 +13,10 @@
     <packaging>pom</packaging>
     
     <properties>
-    	<!--  <src.model>opm_pim_just_imported</src.model> -->
-    	<src.model>JUDO_Car</src.model>
-    	<target.model>car</target.model>
-    	<model>Model</model>
+    	<src.model>opm_pim_-_Modelio_import</src.model>
+    	<!--  src.model>JUDO_Car</src.model-->
+    	<target.model>opmPsm</target.model>
+    	<model>opm pim</model>
     </properties>
     
     <dependencies>

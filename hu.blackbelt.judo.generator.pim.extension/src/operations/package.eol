@@ -4,8 +4,11 @@ operation createMainPackage() : inpPIM!Package {
 	var extensionPackage = new inpPIM!Package();
 	extensionPackage.name = extMainPackage.name;
 
-	var mainModel : inpPIM!Model = inpPIM!Model.all.selectOne(mod | mod.nestingPackage.isUndefined());
-	mainModel.packagedElement.add(extensionPackage);
+	var applicationTop : inpPIM!Package = inpPIM!Package.all.selectOne(pack | pack.nestingPackage.isUndefined());
+	applicationTop.packagedElement.add(extensionPackage);
+	
+	var stereotype = new inpPIM!package();
+	stereotype.base_Package = extensionPackage;
 	
 	return extensionPackage;
 }

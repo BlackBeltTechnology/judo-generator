@@ -52,7 +52,6 @@ operation inpPIM!Property addConstraints(property : pimEXT!ENamedElement) {
 				case "Regexp" : stereotype = new inpPIM!regexp();
 				case "Shortname" : stereotype = new inpPIM!shortname();
 				case "Validation" : stereotype = new inpPIM!validation();
-				case "Alias" : stereotype = new inpPIM!`alias`();
 			}
 			
 			stereotype.base_Constraint = const;
@@ -63,5 +62,5 @@ operation inpPIM!Property addConstraints(property : pimEXT!ENamedElement) {
 @cached
 operation getValidAnnotations() : Sequence(String) {
 	return Sequence {"Decimals","DerivedDescription","DerivedExpression","Filter",
-											"Interval","List","Options","Order","Placeholder","Regexp","Shortname","Validation","Alias"};
+											"Interval","List","Options","Order","Placeholder","Regexp","Shortname","Validation"};
 }

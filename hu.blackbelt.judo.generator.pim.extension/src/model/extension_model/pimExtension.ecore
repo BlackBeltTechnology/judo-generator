@@ -9,17 +9,17 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OpmUser">
     <eAnnotations source="Target">
-      <details key="name" value="users.OpmUser"/>
+      <details key="name" value="opmpim.users.OpmUser"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DoctorUser">
     <eAnnotations source="Target">
-      <details key="name" value="users.DoctorUser"/>
+      <details key="name" value="opmpim.users.DoctorUser"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Task">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.Task"/>
+      <details key="name" value="opmpim.treatments.Task"/>
     </eAnnotations>
     <eOperations name="taskExpired">
       <eAnnotations source="Addition">
@@ -37,7 +37,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MedicalRecord">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.MedicalRecord"/>
+      <details key="name" value="opmpim.treatments.MedicalRecord"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="partialValues" upperBound="-1"
         eType="#//BasicDataValueSpecification" eOpposite="#//BasicDataValueSpecification/medicalRecord">
@@ -70,7 +70,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BasicDataValueSpecification">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.BasicDataValueSpecification"/>
+      <details key="name" value="opmpim.treatments.BasicDataValueSpecification"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecord" eType="#//MedicalRecord"
         eOpposite="#//MedicalRecord/partialValues">
@@ -82,7 +82,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatientUser">
     <eAnnotations source="Target">
-      <details key="name" value="users.PatientUser"/>
+      <details key="name" value="opmpim.users.PatientUser"/>
     </eAnnotations>
     <eOperations name="registerNewTreatmentWithCurrentUser">
       <eAnnotations source="Addition">
@@ -161,7 +161,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProtocolCfg">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.ProtocolCfg"/>
+      <details key="name" value="opmpim.treatments.ProtocolCfg"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="patId" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="{self.patient.patientId}">
@@ -184,7 +184,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProtocolMRTypeBinding">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.protocols.ProtocolMRTypeBinding"/>
+      <details key="name" value="opmpim.treatments.protocols.ProtocolMRTypeBinding"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="{self.mrType.name}">
@@ -216,7 +216,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TaskScheduleAbstract">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.TaskScheduleAbstract"/>
+      <details key="name" value="opmpim.treatments.TaskScheduleAbstract"/>
     </eAnnotations>
     <eOperations name="scheduledTaskRequired">
       <eAnnotations source="Addition">
@@ -234,7 +234,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Notification">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.Notification"/>
+      <details key="name" value="opmpim.treatments.Notification"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientHack" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.userInfo.lastName} {self.protocolCfg.patient.userInfo.firstName}">
@@ -304,7 +304,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Protocol">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.protocols.Protocol"/>
+      <details key="name" value="opmpim.treatments.protocols.Protocol"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mnemonic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="Addition">
@@ -321,7 +321,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MedicalRecordType">
     <eAnnotations source="Target">
-      <details key="name" value="treatments.protocols.MedicalRecordType"/>
+      <details key="name" value="opmpim.treatments.protocols.MedicalRecordType"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="hostTuple" upperBound="-1"
         eType="#//domain/MRTypeTuple" eOpposite="#//domain/MRTypeTuple/medicalRecordTypeExtension">
@@ -333,7 +333,8 @@
   </eClassifiers>
   <eSubpackages name="domain">
     <eAnnotations source="Addition">
-      <details key="participates" value="package,bo,dto,rest"/>
+      <details key="package" value="true"/>
+      <details key="participates" value="bo,dto,rest"/>
     </eAnnotations>
     <eClassifiers xsi:type="ecore:EClass" name="OpenTask">
       <eAnnotations source="Addition"/>
@@ -451,7 +452,8 @@
   </eSubpackages>
   <eSubpackages name="ui">
     <eAnnotations source="Addition">
-      <details key="participates" value="package,ui"/>
+      <details key="package" value="true"/>
+      <details key="participates" value="ui"/>
     </eAnnotations>
     <eClassifiers xsi:type="ecore:EClass" name="MenuRoot">
       <eAnnotations source="MenuRoot"/>
@@ -463,19 +465,19 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TreatedPatientUser">
       <eAnnotations source="Screen">
-        <details key="base" value="users.PatientUser"/>
+        <details key="base" value="opmpim.users.PatientUser"/>
         <details key="parent" value="ext.ui.MenuExt"/>
       </eAnnotations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MyUncheckedNotifications">
       <eAnnotations source="Screen">
-        <details key="base" value="treatments.Notification"/>
+        <details key="base" value="opmpim.treatments.Notification"/>
         <details key="parent" value="ext.ui.MenuExt"/>
       </eAnnotations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MyCheckedNotifications">
       <eAnnotations source="Screen">
-        <details key="base" value="treatments.Notification"/>
+        <details key="base" value="opmpim.treatments.Notification"/>
         <details key="parent" value="ext.ui.MenuExt"/>
       </eAnnotations>
     </eClassifiers>

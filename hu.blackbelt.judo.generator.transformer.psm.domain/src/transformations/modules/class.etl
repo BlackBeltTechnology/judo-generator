@@ -121,9 +121,9 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	for (imp in sourceClass.elementImport) {
 	    var menuClass = imp.importedElement;
 	    
-	    if (menuClass.isTypeOf(inpPIM!InstanceSpecification) and not stereotypeApplications.get("alias").get(menuClass).includes(menuClass)) {
+	   /* if (menuClass.isTypeOf(inpPIM!InstanceSpecification) and not stereotypeApplications.get("alias").get(menuClass).includes(menuClass)) {
 	        continue;
-	    }
+	    }*/
 	
 	    if (menuClass.stereotype("menuitem")) {
 	        var mi = new tgtPSM!JUIMenuItem;
@@ -141,8 +141,8 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	
 			var sourceClass;
 	        if (menuClass.isTypeOf(inpPIM!InstanceSpecification)) {
-	        	sourceClass = menuClass.base_class;
-	            mi.represent = menuClass.base_class.equivalent("Class");
+	        	sourceClass = menuClass.classifier.first();
+	            mi.represent = menuClass.classifier.first().equivalent("Class");
 	        }
 	
 	        if (menuClass.isTypeOf(Class)) {
@@ -165,9 +165,9 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	        }
 	        
 	        
-	        if (menuClass.isTypeOf(inpPIM!InstanceSpecification)) {
+	        /*if (menuClass.isTypeOf(inpPIM!InstanceSpecification)) {
 	            mi.`alias` = mi.represent.aliases.select(a | a.uuid = uuid3(mdId2Uuid(menuClass.id), menuClass.name) );
-	        }
+	        }*/
 	
 	        parentMenuItem.children.add(mi);
 	    }

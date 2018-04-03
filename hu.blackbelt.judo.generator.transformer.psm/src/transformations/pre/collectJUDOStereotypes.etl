@@ -120,7 +120,7 @@ operation collectJUDOStereotypeInstances() : Map {
 	JUDOStereotypeInstances.put("protected",		inpPIM!protected	.allInstances()->collect(c | c.base_StateMachine).asSet());
 	JUDOStereotypeInstances.put("query",			inpPIM!query		.allInstances()->collect(c | c.base_Operation).asSet());
 	JUDOStereotypeInstances.put("representationProperty",	inpPIM!representation.allInstances()->collect(c | c.base_Property).asSet());
-	JUDOStereotypeInstances.put("screen",			inpPIM!screen		.allInstances()->collect(c | c.base_Element).asSet());
+	JUDOStereotypeInstances.put("screen",			inpPIM!screen		.allInstances()->collect(c | c.base_NamedElement).asSet());
 	JUDOStereotypeInstances.put("tenant", 			inpPIM!tenant		.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("TenantMembers", 	inpPIM!tenantmember	.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("tenantuser", 		inpPIM!tenantuser	.allInstances()->collect(c | c.base_Class).asSet());
