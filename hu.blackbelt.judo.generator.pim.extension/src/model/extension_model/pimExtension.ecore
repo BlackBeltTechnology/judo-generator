@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ext" nsURI="hu.blackbelt.judo.generator.meta.pim.extension"
+    nsPrefix="pim">
+  <eClassifiers xsi:type="ecore:EClass" name="User">
+    <eAnnotations source="Target">
+      <details key="name" value="judo.framework.User"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OpmUser">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.users.OpmUser"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DoctorUser">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.users.DoctorUser"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Task">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.Task"/>
+    </eAnnotations>
+    <eOperations name="taskExpired">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="static" value="true"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="task" eType="#//domain/OpenTask"
+        eOpposite="#//domain/OpenTask/openTask">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MedicalRecord">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.MedicalRecord"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="partialValues" upperBound="-1"
+        eType="#//BasicDataValueSpecification" eOpposite="#//BasicDataValueSpecification/medicalRecord">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="navigable" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecordPatient" eType="#//PatientUser"
+        eOpposite="#//PatientUser/lastMedicalRecords">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="openTask" eType="#//domain/OpenTask"
+        eOpposite="#//domain/OpenTask/lastMedicalRecord">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="hostTuple" upperBound="-1"
+        eType="#//domain/MRTypeTuple" eOpposite="#//domain/MRTypeTuple/medicalRecordExtension">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BasicDataValueSpecification">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.BasicDataValueSpecification"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecord" eType="#//MedicalRecord"
+        eOpposite="#//MedicalRecord/partialValues">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatientUser">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.users.PatientUser"/>
+    </eAnnotations>
+    <eOperations name="registerNewTreatmentWithCurrentUser">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="static" value="false"/>
+      </eAnnotations>
+      <eParameters name="protocol" eType="#//Protocol"/>
+      <eParameters name="startDate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+      <eParameters name="endDate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    </eOperations>
+    <eOperations name="createTasksFromExpiredPrimerData">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="static" value="true"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="completeTask">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="static" value="true"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="customNotificationList" upperBound="-1" eType="#//Notification">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="static" value="true"/>
+        <details key="query" value="true"/>
+      </eAnnotations>
+      <eParameters name="patientUserId" eType="#//PatientUser"/>
+      <eParameters name="doctorUserId" eType="#//DoctorUser"/>
+    </eOperations>
+    <eOperations name="customLastValidMedicalRecords" lowerBound="1" upperBound="-1"
+        eType="#//domain/MRTypeTuple">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="static" value="true"/>
+        <details key="query" value="true"/>
+      </eAnnotations>
+      <eParameters name="patientUser" eType="#//PatientUser"/>
+    </eOperations>
+    <eOperations name="deletePassword">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="static" value="true"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="onBoardingCompleted" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="notificationListHack" upperBound="-1"
+        eType="#//Notification" eOpposite="#//Notification/notificationPatient">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="navigable" value="true"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="notificationExtension"
+        eType="#//Notification" eOpposite="#//Notification/patientUserExtension">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lastMedicalRecords" upperBound="-1"
+        eType="#//MedicalRecord" eOpposite="#//MedicalRecord/medicalRecordPatient">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="navigable" value="true"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProtocolCfg">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.ProtocolCfg"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patId" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="{self.patient.patientId}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+      <eAnnotations source="Decimals">
+        <details key="expression" value="2"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeBindings" upperBound="-1"
+        eType="#//ProtocolMRTypeBinding" eOpposite="#//ProtocolMRTypeBinding/ownerCfg">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="navigable" value="true"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProtocolMRTypeBinding">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.protocols.ProtocolMRTypeBinding"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="{self.mrType.name}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="validityFull" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="{self.validityDuration} {self.validityDurationCategory.code}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeClass" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerCfg" eType="#//ProtocolCfg"
+        eOpposite="#//ProtocolCfg/typeBindings">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskScheduleAbstract">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.TaskScheduleAbstract"/>
+    </eAnnotations>
+    <eOperations name="scheduledTaskRequired">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="static" value="true"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repetition" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.repetitionRate} {self.repetitionUnit.code}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Notification">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.Notification"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientHack" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.userInfo.lastName} {self.protocolCfg.patient.userInfo.firstName}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="representation" value="true"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="protocolHack" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.protocol.name}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientBirthDate" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.birthDate}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientFullName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.userInfo.lastName} {self.protocolCfg.patient.userInfo.firstName}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientPatientID" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.patientId}">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="protocolExtension" eType="#//Protocol"
+        eOpposite="#//Protocol/notificationExtension">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="navigable" value="true"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+      <eAnnotations source="DerivedExpression">
+        <details key="expression" value="self.protocolCfg.protocol"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="patientUserExtension" eType="#//PatientUser"
+        eOpposite="#//PatientUser/notificationExtension">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+        <details key="navigable" value="true"/>
+        <details key="derived" value="true"/>
+      </eAnnotations>
+      <eAnnotations source="DerivedExpression">
+        <details key="expression" value="self.protocolCfg.patient"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="notificationPatient" eType="#//PatientUser"
+        eOpposite="#//PatientUser/notificationListHack">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Protocol">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.protocols.Protocol"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mnemonic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="protected"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="notificationExtension"
+        eType="#//Notification" eOpposite="#//Notification/protocolExtension">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MedicalRecordType">
+    <eAnnotations source="Target">
+      <details key="name" value="opmpim.treatments.protocols.MedicalRecordType"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="hostTuple" upperBound="-1"
+        eType="#//domain/MRTypeTuple" eOpposite="#//domain/MRTypeTuple/medicalRecordTypeExtension">
+      <eAnnotations source="Addition">
+        <details key="visibility" value="public"/>
+        <details key="navigable" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eSubpackages name="domain">
+    <eAnnotations source="Addition">
+      <details key="package" value="true"/>
+      <details key="participates" value="bo,dto,rest"/>
+    </eAnnotations>
+    <eClassifiers xsi:type="ecore:EClass" name="OpenTask">
+      <eAnnotations source="Addition"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="openTask" eType="#//Task"
+          eOpposite="#//Task/task">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="navigable" value="true"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="lastMedicalRecord" eType="#//MedicalRecord"
+          eOpposite="#//MedicalRecord/openTask">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="navigable" value="true"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MRTypeTuple">
+      <eAnnotations source="Addition"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecordExtension"
+          eType="#//MedicalRecord" eOpposite="#//MedicalRecord/hostTuple">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="navigable" value="true"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecordTypeExtension"
+          eType="#//MedicalRecordType" eOpposite="#//MedicalRecordType/hostTuple">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="navigable" value="true"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="EventType">
+      <eAnnotations source="Addition"/>
+      <eLiterals name="NewTask"/>
+      <eLiterals name="MsgToPatient" value="1"/>
+      <eLiterals name="ClosedTask" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Android" abstract="true">
+      <eAnnotations source="Addition"/>
+      <eOperations name="activatePatientUser" eType="#//User">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="static" value="true"/>
+        </eAnnotations>
+        <eParameters name="loginName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eParameters name="password" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="recordSpirofon" eType="#//MedicalRecord">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="static" value="true"/>
+        </eAnnotations>
+        <eParameters name="patientId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eParameters name="pif" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fvc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fev" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fev1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fev6" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fiv" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fiv6" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="pef" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fef25" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fef50" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fef75" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fef2575" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fif25" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fif50" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fif75" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fif2575" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fev1Pct" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="pefPct" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fvcPct" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fev1PerFvcPct" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fefPct2575" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="fiv1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+        <eParameters name="recorder" eType="#//OpmUser"/>
+        <eParameters name="referredEventTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+        <eParameters name="note" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eParameters name="allFile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="openTasks" upperBound="-1" eType="#//domain/OpenTask">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="static" value="true"/>
+        </eAnnotations>
+        <eParameters name="patientId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="forgottenPassword">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="static" value="true"/>
+        </eAnnotations>
+        <eParameters name="registrationCode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="targetValues" upperBound="-1" eType="#//BasicDataValueSpecification">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="static" value="true"/>
+        </eAnnotations>
+        <eParameters name="scheduledTaskId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="mqttBrokerUrl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+        <eAnnotations source="Addition">
+          <details key="visibility" value="public"/>
+          <details key="static" value="true"/>
+        </eAnnotations>
+      </eOperations>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="ui">
+    <eAnnotations source="Addition">
+      <details key="package" value="true"/>
+      <details key="participates" value="ui"/>
+    </eAnnotations>
+    <eClassifiers xsi:type="ecore:EClass" name="MenuRoot">
+      <eAnnotations source="MenuRoot"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MenuExt">
+      <eAnnotations source="MenuItem">
+        <details key="parent" value="ext.ui.MenuRoot"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="TreatedPatientUser">
+      <eAnnotations source="Screen">
+        <details key="base" value="opmpim.users.PatientUser"/>
+        <details key="parent" value="ext.ui.MenuExt"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MyUncheckedNotifications">
+      <eAnnotations source="Screen">
+        <details key="base" value="opmpim.treatments.Notification"/>
+        <details key="parent" value="ext.ui.MenuExt"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MyCheckedNotifications">
+      <eAnnotations source="Screen">
+        <details key="base" value="opmpim.treatments.Notification"/>
+        <details key="parent" value="ext.ui.MenuExt"/>
+      </eAnnotations>
+    </eClassifiers>
+  </eSubpackages>
+</ecore:EPackage>

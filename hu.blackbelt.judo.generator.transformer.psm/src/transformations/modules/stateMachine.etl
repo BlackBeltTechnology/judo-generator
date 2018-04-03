@@ -88,7 +88,7 @@ rule Transition
 	s.Source.println("STATE :: Source ==> ");
 	s.Target.println("TARGET :: Source ==> ");
 	
-	// create JGuard if Transition ownes a <<guard>> stereotyped Constraint
+/*	// create JGuard if Transition ownes a <<guard>> stereotyped Constraint
 	if ( stereotypeApplications.get("guard").containsKey(s) ) {
 		var g : tgtPSM!JGuard = new tgtPSM!JGuard;
 		
@@ -108,7 +108,7 @@ rule Transition
 			t.text = "";
 			t.expression = "";
 		}
-	}
+	}*/
 	
 	if ( s.trigger.event.`operation`.isDefined() and s.trigger.event.`operation`.size() > 0) {
 	
