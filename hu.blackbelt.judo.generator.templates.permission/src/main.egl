@@ -3,7 +3,7 @@
 	permissionProp.generate("permissions.properties");
 	
 	var permissionJava : Template = TemplateFactory.load("templates/permissions_java_tmpl.egl");
-	permissionJava.generate("StaticPermissionRegistry.java");
+	permissionJava.generate("hu/blackbelt/judo/" + Permission!PermissionModel.all.first().modelName +"/StaticPermissionRegistry.java");
 	
 	var permissionSql : Template = TemplateFactory.load("templates/sql/setup_permission.egl");
 	permissionSql.generate("sql/" + Permission!PermissionModel.all.first().version + "/setup-permission.sql");

@@ -37,6 +37,10 @@ public class [%=class.name%] {
 [%
 @cached
 operation fixedEnumClasses () {
-    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO_INTERFACE and c.representsEnum);
+	if (transformDomain.asBoolean()) {
+		return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO_INTERFACE and c.fixedEnum.isDefined());
+	} else {
+	    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and c.fixedEnum.isDefined());
+	}
 }
 %]

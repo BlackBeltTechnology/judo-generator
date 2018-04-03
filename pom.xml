@@ -29,8 +29,16 @@
         <module>hu.blackbelt.judo.generator.templates.ui</module>
         <module>hu.blackbelt.judo.generator.templates.permission</module>
         <module>hu.blackbelt.judo.generator.templates.querydsl</module>
-        <module>hu.blackbelt.judo.generator.model.domain</module>
-        <module>hu.blackbelt.judo.generator.model.car</module>
     </modules>
+    
+    <profiles>
+            <profile>
+            <id>testModels</id>
+                <modules>
+                    <module>hu.blackbelt.judo.generator.model.domain</module>
+                    <module>hu.blackbelt.judo.generator.model.car</module>
+                </modules>
+            </profile>
+         </profiles>
 
 </project>
