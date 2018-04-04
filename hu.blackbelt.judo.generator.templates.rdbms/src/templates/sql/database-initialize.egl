@@ -14,7 +14,7 @@ CREATE TABLE EXECUTED_VERSIONS (
     STATUS VARCHAR(20)
 );
 
---changeset generator:CREATE_SEQUENCE dbms:hsqldb logicalFilePath:schemaInitialize
+--changeset generator:CREATE_SEQUENCE logicalFilePath:schemaInitialize
 CREATE SEQUENCE serial;
 
 [* ------------------------------------- *]
