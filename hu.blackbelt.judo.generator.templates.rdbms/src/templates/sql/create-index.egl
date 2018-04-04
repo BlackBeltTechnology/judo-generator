@@ -5,7 +5,7 @@
 --liquibase formatted sql
 
 [% for (index in RDBMS!RdbmsIndex.all) { %]
---changeset generator:CREATE_INDEX_[%= index.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_INDEX_[%= index.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
 -- [%= index.name %] [%= index.uuid %]
 CREATE [% if (index.unique){ %] UNIQUE [% } %] INDEX [%= index.sqlName %] ON [%= index.table.sqlName %] (
 	[% for (field in index.fields) { %]

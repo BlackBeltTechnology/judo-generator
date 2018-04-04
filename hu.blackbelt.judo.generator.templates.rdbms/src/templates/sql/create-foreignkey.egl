@@ -7,7 +7,7 @@
 [* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
 
 [% for (foreignKey in RDBMS!RdbmsForeignKey.all) { %]
---changeset generator:CREATE_FOREIGN_KEY_[%= foreignKey.table.sqlName %]_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_FOREIGN_KEY_[%= foreignKey.table.sqlName %]_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
 -- [%= foreignKey.name %] [%= foreignKey.uuid %]
 ALTER TABLE [%= foreignKey.table.sqlName %] 
 ADD CONSTRAINT [%= foreignKey.foreignKeySqlName %]

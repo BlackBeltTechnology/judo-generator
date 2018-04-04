@@ -24,6 +24,7 @@ rule SqlGeneration
   parameters {
     var params : new Map;
     params.put("scriptName", sql.a_name);
+    params.put("failOnError",  true);
     (dialect() + " " + sql.a_name).println("Processing: ");
     return params;
   }
