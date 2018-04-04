@@ -14,7 +14,7 @@ rule VersionGeneration
   
   template : "templates/previousVersion.egl"
   
-  target : version() + ".previous"
+  target : "schema/" + version() + ".previous"
 }
 
 -- Processing SQL files. The SQL scripts generated there
