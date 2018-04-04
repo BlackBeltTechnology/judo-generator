@@ -1,7 +1,5 @@
 [% import "util.eol"; %]
-
 [% var admin = Permission!Admin.all.first(); %]
-
 --liquibase formatted sql
 
 -------------------------------------------------------------------------------------------------
@@ -270,3 +268,4 @@ SELECT p.ID, r.ID
 FROM [%=tmpRolePermissions()%] t
 JOIN V_FRW_ROLE r ON (r.C_GUID = t.ROLE_GUID)
 JOIN V_FRW_PERM p ON (p.C_GUID = t.PERM_GUID);
+
