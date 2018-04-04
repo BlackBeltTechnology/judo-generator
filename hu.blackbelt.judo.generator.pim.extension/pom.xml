@@ -11,6 +11,42 @@
 
     <artifactId>hu.blackbelt.judo.generator.pim.extension</artifactId>
     <packaging>jar</packaging>
+    
+    <properties>
+        <src.dir>src</src.dir>
+    </properties>
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+        <plugins>
+           <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>add-resource</id>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <profiles>
         <profile>
@@ -150,29 +186,4 @@
         </profile>
     </profiles>
     
-    <build>
-        <plugins>
-           <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>add-resource</id>
-                        <goals>
-                            <goal>add-resource</goal>
-                        </goals>
-                        
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>src</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
