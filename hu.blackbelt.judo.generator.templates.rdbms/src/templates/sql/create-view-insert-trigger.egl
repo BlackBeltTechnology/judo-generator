@@ -68,7 +68,7 @@ select is_trigger_valid('[%= view.sqlName %]') from DUAL;
 [* HSQLDB                                *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Hsqldb') { %]
---changeset generator:CREATE_TRIGGER_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
     REFERENCING NEW AS NEW 
@@ -123,7 +123,7 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
 [* POSTGRES                              *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Postgres') { %]
---changeset generator:CREATE_FUNCTION_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_FUNCTION_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlName %]$
     DECLARE

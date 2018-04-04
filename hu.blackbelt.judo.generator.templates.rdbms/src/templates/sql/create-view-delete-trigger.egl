@@ -28,7 +28,7 @@ select is_trigger_valid('DEL_[%= view.sqlName %]') from DUAL;
 [* HSQLDB                                *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Hsqldb') { %]
---changeset generator:CREATE_FUNCTION_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_FUNCTION_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 CREATE TRIGGER DEL_[%= view.sqlName %] INSTEAD OF DELETE ON [%= view.sqlName %]
     REFERENCING OLD AS OLD
@@ -42,7 +42,7 @@ CREATE TRIGGER DEL_[%= view.sqlName %] INSTEAD OF DELETE ON [%= view.sqlName %]
 [* POSTGRES                              *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Postgres') { %]
---changeset generator:CREATE_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 CREATE FUNCTION DEL_[%= view.sqlName %]() RETURNS TRIGGER AS $DEL_[%= view.sqlName %]$
     BEGIN
@@ -52,7 +52,7 @@ CREATE FUNCTION DEL_[%= view.sqlName %]() RETURNS TRIGGER AS $DEL_[%= view.sqlNa
     END;
 $DEL_[%= view.sqlName %]$ LANGUAGE plpgsql;
 
---changeset generator:CREATE_TRIGGER_INSTEAD_OF_DELETE[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_DELETE[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:truesplitStatements:false
 CREATE TRIGGER DEL_[%= view.sqlName %]
     INSTEAD OF DELETE ON [%= view.sqlName %]
     FOR EACH ROW
