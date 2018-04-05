@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:JudoProfile="http://www.blackbelt.hu/metamodel/pim/v1.0" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.blackbelt.hu/metamodel/pim/v1.0 JudoProfile.profile.uml#_th8rnePTEeeIl-FkIpaVXw http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_th6Ox-PTEeeIl-FkIpaVXw">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:JudoProfile="http://www.blackbelt.hu/metamodel/pim/v1.0" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.blackbelt.hu/metamodel/pim/v1.0 JudoProfile.profile.uml#_9ooeTzirEei9HfZB0iGd-A http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_9ojmpDirEei9HfZB0iGd-A">
   <uml:Model xmi:id="_18_5_1_ede0357_1506092890310_854129_5135" name="Model" visibility="public" URI="" viewpoint="">
     <packageImport xmi:id="_0primitiveTypesModel">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -79,7 +79,7 @@
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cyIHkmruEeeJzdLAONIxYA" name="" visibility="public"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cyIHkWruEeeJzdLAONIxYA" name="" visibility="public" value="*"/>
           </ownedAttribute>
-          <ownedAttribute xmi:id="_cyIHk2ruEeeJzdLAONIxYA" name="loginName" visibility="public" isUnique="false">
+          <ownedAttribute xmi:id="_cyIHk2ruEeeJzdLAONIxYA" name="loginName" visibility="public" isUnique="false" isDerived="true">
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
             <defaultValue xmi:type="uml:LiteralString" xmi:id="_cyIHlGruEeeJzdLAONIxYA" name="" visibility="public" value="{self.userInfo.loginName}"/>
           </ownedAttribute>
@@ -90,12 +90,12 @@
           <ownedAttribute xmi:id="_cyIHl2ruEeeJzdLAONIxYA" name="active" visibility="public" isUnique="false">
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
           </ownedAttribute>
-          <ownedAttribute xmi:id="_cyIHmGruEeeJzdLAONIxYA" name="firstName" visibility="public" isUnique="false">
+          <ownedAttribute xmi:id="_cyIHmGruEeeJzdLAONIxYA" name="firstName" visibility="public" isUnique="false" isDerived="true">
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cyIHmWruEeeJzdLAONIxYA" name="" visibility="public"/>
             <defaultValue xmi:type="uml:LiteralString" xmi:id="_cyIHmmruEeeJzdLAONIxYA" name="" visibility="public" value="{self.userInfo.firstName}"/>
           </ownedAttribute>
-          <ownedAttribute xmi:id="_cyIHm2ruEeeJzdLAONIxYA" name="lastName" visibility="public" isUnique="false">
+          <ownedAttribute xmi:id="_cyIHm2ruEeeJzdLAONIxYA" name="lastName" visibility="public" isUnique="false" isDerived="true">
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cyIHnGruEeeJzdLAONIxYA" name="" visibility="public"/>
             <defaultValue xmi:type="uml:LiteralString" xmi:id="_cyIHnWruEeeJzdLAONIxYA" name="" visibility="public" value="{self.userInfo.lastName}"/>
@@ -1371,9 +1371,6 @@
         </packagedElement>
       </packagedElement>
     </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="magicdraw_uml_standard_profile_v_0001" name="UML Standard Profile" visibility="public" URI="">
-      <ownedComment xmi:id="_be00301_1078843546940_242228_131" annotatedElement="magicdraw_uml_standard_profile_v_0001" body="UML Standard Profile contains a UML metamodel (metaclasses without properties and associations), Standard UML stereotypes defined in the annex C of UML specification, validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally."/>
-    </packagedElement>
     <packagedElement xmi:type="uml:Model" xmi:id="_18_5_1_ede0357_1506096995632_365324_5796" name="PIM Types" visibility="public" URI="" viewpoint="">
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHcGruEeeJzdLAONIxYA" name="cjszam" visibility="public">
         <ownedRule xmi:id="_cyG5KmruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHcGruEeeJzdLAONIxYA">
@@ -1382,6 +1379,9 @@
         <ownedRule xmi:id="_cyG5LGruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHcGruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5LWruEeeJzdLAONIxYA" name="" visibility="public" value="01-01-012345"/>
         </ownedRule>
+        <generalization xmi:id="_18_5_3_22f3058b_1515593632364_130957_5291">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHb2ruEeeJzdLAONIxYA" name="adoszam" visibility="public">
         <ownedRule xmi:id="_cyG5JmruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHb2ruEeeJzdLAONIxYA">
@@ -1390,6 +1390,9 @@
         <ownedRule xmi:id="_cyG5KGruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHb2ruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5KWruEeeJzdLAONIxYA" name="" visibility="public" value="12345678-1-02"/>
         </ownedRule>
+        <generalization xmi:id="_18_5_3_22f3058b_1515593609990_175969_5283">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHaWruEeeJzdLAONIxYA" name="ipaddress" visibility="public">
         <ownedRule xmi:id="_cyG5HmruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHaWruEeeJzdLAONIxYA">
@@ -1398,6 +1401,9 @@
         <ownedRule xmi:id="_cyG5IGruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHaWruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5IWruEeeJzdLAONIxYA" name="" visibility="public" value="127.0.0.1"/>
         </ownedRule>
+        <generalization xmi:id="_18_5_3_22f3058b_1515593644776_242555_5310">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHa2ruEeeJzdLAONIxYA" name="currency" visibility="public">
         <ownedRule xmi:id="_cyG5ImruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHa2ruEeeJzdLAONIxYA">
@@ -1406,12 +1412,15 @@
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHZGruEeeJzdLAONIxYA" name="time" visibility="public"/>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHYmruEeeJzdLAONIxYA" name="email" visibility="public">
-        <ownedRule xmi:id="_cyG5EGruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHYmruEeeJzdLAONIxYA">
+        <ownedRule xmi:id="_cyG5EGruEeeJzdLAONIxYA" name="format" visibility="public" constrainedElement="_cyIHYmruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5EWruEeeJzdLAONIxYA" name="" visibility="public" value="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"/>
         </ownedRule>
-        <ownedRule xmi:id="_cyG5EmruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHYmruEeeJzdLAONIxYA">
+        <ownedRule xmi:id="_cyG5EmruEeeJzdLAONIxYA" name="sample" visibility="public" constrainedElement="_cyIHYmruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5E2ruEeeJzdLAONIxYA" name="" visibility="public" value="name@company.com"/>
         </ownedRule>
+        <generalization xmi:id="_18_5_3_22f3058b_1515593480021_466073_5140">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHcWruEeeJzdLAONIxYA" name="memo" visibility="public"/>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHZ2ruEeeJzdLAONIxYA" name="phone" visibility="public">
@@ -1421,11 +1430,17 @@
         <ownedRule xmi:id="_cyG5GGruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHZ2ruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5GWruEeeJzdLAONIxYA" name="" visibility="public" value="+36-1-3007777"/>
         </ownedRule>
+        <generalization xmi:id="_18_5_3_22f3058b_1515593636332_442731_5297">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHZWruEeeJzdLAONIxYA" name="duration" visibility="public">
         <ownedRule xmi:id="_cyG5FGruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHZWruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5FWruEeeJzdLAONIxYA" name="" visibility="public" value="[0,,]"/>
         </ownedRule>
+        <generalization xmi:id="_18_5_3_22f3058b_1515593652224_160462_5316">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        </generalization>
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHZmruEeeJzdLAONIxYA" name="percentage" visibility="public"/>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHbWruEeeJzdLAONIxYA" name="text" visibility="public"/>
@@ -1433,6 +1448,9 @@
         <ownedRule xmi:id="_cyG5JGruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHbGruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5JWruEeeJzdLAONIxYA" name="" visibility="public" value="[0,,]"/>
         </ownedRule>
+        <generalization xmi:id="_18_5_3_22f3058b_1515593668606_831729_5346">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        </generalization>
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHY2ruEeeJzdLAONIxYA" name="datetime" visibility="public"/>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_cyIHbmruEeeJzdLAONIxYA" name="file" visibility="public"/>
@@ -1444,146 +1462,152 @@
         <ownedRule xmi:id="_cyG5HGruEeeJzdLAONIxYA" name="" visibility="public" constrainedElement="_cyIHaGruEeeJzdLAONIxYA">
           <specification xmi:type="uml:LiteralString" xmi:id="_cyG5HWruEeeJzdLAONIxYA" name="" visibility="public" value="http://www.blackbelt.hu"/>
         </ownedRule>
+        <generalization xmi:id="_18_5_3_22f3058b_1515593640574_467502_5304">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
       </packagedElement>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_KEzdFsw4Eee4YbvpwMXMhQ" name="float" visibility="public"/>
       <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_KEzdFcw4Eee4YbvpwMXMhQ" name="date" visibility="public"/>
     </packagedElement>
-    <profileApplication xmi:id="_11_5_be00301_1153310565718_226811_161profileApplicationModel">
-      <eAnnotations xmi:id="_tiAVUOPTEeeIl-FkIpaVXw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_th4ah-PTEeeIl-FkIpaVXw"/>
-      </eAnnotations>
-      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_11_5_be00301_1153310565718_226811_161"/>
-    </profileApplication>
-    <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationModel">
-      <eAnnotations xmi:id="_tiIRIePTEeeIl-FkIpaVXw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_th6Ox-PTEeeIl-FkIpaVXw"/>
-      </eAnnotations>
-      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
-    </profileApplication>
-    <profileApplication xmi:id="_17_0_4beta_8ca0285_1361349406965_180847_3086profileApplicationModel">
-      <eAnnotations xmi:id="_tiOXwePTEeeIl-FkIpaVXw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Dependency_Matrix_Profile.profile.uml#_th9TG-PTEeeIl-FkIpaVXw"/>
-      </eAnnotations>
-      <appliedProfile href="UML_Standard_Profile.Dependency_Matrix_Profile.profile.uml#_17_0_4beta_8ca0285_1361349406965_180847_3086"/>
-    </profileApplication>
-    <profileApplication xmi:id="_11_5_f720368_1159529670215_231387_1profileApplicationModel">
-      <eAnnotations xmi:id="_tiTQQePTEeeIl-FkIpaVXw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_th2lN-PTEeeIl-FkIpaVXw"/>
-      </eAnnotations>
-      <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#_11_5_f720368_1159529670215_231387_1"/>
-    </profileApplication>
-    <profileApplication xmi:id="_czZSMGruEeeJzdLAONIxYAprofileApplicationModel">
-      <eAnnotations xmi:id="_tiZ98OPTEeeIl-FkIpaVXw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="JudoProfile.profile.uml#_th8rnePTEeeIl-FkIpaVXw"/>
-      </eAnnotations>
-      <appliedProfile href="JudoProfile.profile.uml#_czZSMGruEeeJzdLAONIxYA"/>
-    </profileApplication>
-    <profileApplication xmi:id="_18_5_1_ede0357_1506094392783_652113_5402profileApplicationModel">
-      <eAnnotations xmi:id="_tie2cOPTEeeIl-FkIpaVXw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="PIM_Validation_Profile.profile.uml#_th4Z7OPTEeeIl-FkIpaVXw"/>
-      </eAnnotations>
-      <appliedProfile href="PIM_Validation_Profile.profile.uml#_18_5_1_ede0357_1506094392783_652113_5402"/>
-    </profileApplication>
+    <packagedElement xmi:type="uml:Package" xmi:id="magicdraw_uml_standard_profile_v_0001" name="UML Standard Profile" visibility="public" URI="">
+      <ownedComment xmi:id="_be00301_1078843546940_242228_131" annotatedElement="magicdraw_uml_standard_profile_v_0001" body="UML Standard Profile contains a UML metamodel (metaclasses without properties and associations), Standard UML stereotypes defined in the annex C of UML specification, validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally."/>
+    </packagedElement>
     <profileApplication xmi:id="_16_6_8f90291_1254846042821_86742_517profileApplicationModel">
-      <eAnnotations xmi:id="_tilkIePTEeeIl-FkIpaVXw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_th0IEuPTEeeIl-FkIpaVXw"/>
+      <eAnnotations xmi:id="_9osvgDirEei9HfZB0iGd-A" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_9of7MjirEei9HfZB0iGd-A"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_16_6_8f90291_1254846042821_86742_517"/>
     </profileApplication>
+    <profileApplication xmi:id="_18_5_1_ede0357_1506094392783_652113_5402profileApplicationModel">
+      <eAnnotations xmi:id="_9o0EQTirEei9HfZB0iGd-A" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="PIM_Validation_Profile.profile.uml#_9ojmFDirEei9HfZB0iGd-A"/>
+      </eAnnotations>
+      <appliedProfile href="PIM_Validation_Profile.profile.uml#_18_5_1_ede0357_1506094392783_652113_5402"/>
+    </profileApplication>
+    <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationModel">
+      <eAnnotations xmi:id="_9o48wTirEei9HfZB0iGd-A" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_9ojmpDirEei9HfZB0iGd-A"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_f720368_1159529670215_231387_1profileApplicationModel">
+      <eAnnotations xmi:id="_9pA4kTirEei9HfZB0iGd-A" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_9omo_zirEei9HfZB0iGd-A"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#_11_5_f720368_1159529670215_231387_1"/>
+    </profileApplication>
+    <profileApplication xmi:id="_17_0_4beta_8ca0285_1361349406965_180847_3086profileApplicationModel">
+      <eAnnotations xmi:id="_9pFxEDirEei9HfZB0iGd-A" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Dependency_Matrix_Profile.profile.uml#_9on3jzirEei9HfZB0iGd-A"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.Dependency_Matrix_Profile.profile.uml#_17_0_4beta_8ca0285_1361349406965_180847_3086"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_be00301_1153310565718_226811_161profileApplicationModel">
+      <eAnnotations xmi:id="_9pKpkDirEei9HfZB0iGd-A" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_9ohJeTirEei9HfZB0iGd-A"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_11_5_be00301_1153310565718_226811_161"/>
+    </profileApplication>
+    <profileApplication xmi:id="_czZSMGruEeeJzdLAONIxYAprofileApplicationModel">
+      <eAnnotations xmi:id="_9pPiETirEei9HfZB0iGd-A" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="JudoProfile.profile.uml#_9ooeTzirEei9HfZB0iGd-A"/>
+      </eAnnotations>
+      <appliedProfile href="JudoProfile.profile.uml#_czZSMGruEeeJzdLAONIxYA"/>
+    </profileApplication>
   </uml:Model>
-  <MagicDrawProfile:auxiliaryResource xmi:id="_tj_5YOPTEeeIl-FkIpaVXw" base_Element="magicdraw_uml_standard_profile_v_0001" base_Package="magicdraw_uml_standard_profile_v_0001"/>
-  <JudoProfile:bo xmi:id="_tlGsoOPTEeeIl-FkIpaVXw" base_Package="_cyIHd2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:dto xmi:id="_tlGsoePTEeeIl-FkIpaVXw" base_Package="_cyIHd2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:rest xmi:id="_tlGsouPTEeeIl-FkIpaVXw" base_Package="_cyIHd2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:package xmi:id="_tlGso-PTEeeIl-FkIpaVXw" base_Package="_cyIHd2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:package xmi:id="_tlGspOPTEeeIl-FkIpaVXw" base_Package="_cyIHdmruEeeJzdLAONIxYA"/>
-  <JudoProfile:tenantmember xmi:id="_tlGspePTEeeIl-FkIpaVXw" base_Class="_cyII3GruEeeJzdLAONIxYA"/>
-  <JudoProfile:tenantmember xmi:id="_tlGspuPTEeeIl-FkIpaVXw" base_Class="_cyIH7mruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTsOPTEeeIl-FkIpaVXw" base_Property="_cyIvL2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTsePTEeeIl-FkIpaVXw" base_Property="_cyIvA2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTsuPTEeeIl-FkIpaVXw" base_Property="_cyIvJWruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTs-PTEeeIl-FkIpaVXw" base_Property="_cyIuumruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTtOPTEeeIl-FkIpaVXw" base_Property="_cyIIUGruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTtePTEeeIl-FkIpaVXw" base_Property="_cyIunmruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTtuPTEeeIl-FkIpaVXw" base_Property="_cyIuDGruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTt-PTEeeIl-FkIpaVXw" base_Property="_cyIIZ2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTuOPTEeeIl-FkIpaVXw" base_Property="_cyIISmruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTuePTEeeIl-FkIpaVXw" base_Property="_cyIIv2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTuuPTEeeIl-FkIpaVXw" base_Property="_cyIIhWruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlHTu-PTEeeIl-FkIpaVXw" base_Property="_cyIIpmruEeeJzdLAONIxYA"/>
-  <JudoProfile:representation xmi:id="_tlH6wOPTEeeIl-FkIpaVXw" base_Property="_cyIH8mruEeeJzdLAONIxYA"/>
-  <JudoProfile:regexp xmi:id="_tlH6wePTEeeIl-FkIpaVXw" base_Constraint="_cyG5GmruEeeJzdLAONIxYA"/>
-  <JudoProfile:regexp xmi:id="_tlH6wuPTEeeIl-FkIpaVXw" base_Constraint="_cyG5FmruEeeJzdLAONIxYA"/>
-  <JudoProfile:regexp xmi:id="_tlH6w-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5EGruEeeJzdLAONIxYA"/>
-  <JudoProfile:regexp xmi:id="_tlH6xOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5HmruEeeJzdLAONIxYA"/>
-  <JudoProfile:regexp xmi:id="_tlH6xePTEeeIl-FkIpaVXw" base_Constraint="_cyG5JmruEeeJzdLAONIxYA"/>
-  <JudoProfile:regexp xmi:id="_tlH6xuPTEeeIl-FkIpaVXw" base_Constraint="_cyG5KmruEeeJzdLAONIxYA"/>
-  <JudoProfile:decimals xmi:id="_tlH6x-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5ImruEeeJzdLAONIxYA"/>
-  <JudoProfile:interval xmi:id="_tlH6yOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5JGruEeeJzdLAONIxYA"/>
-  <JudoProfile:interval xmi:id="_tlH6yePTEeeIl-FkIpaVXw" base_Constraint="_cyG5FGruEeeJzdLAONIxYA"/>
-  <JudoProfile:placeholder xmi:id="_tlIh0OPTEeeIl-FkIpaVXw" base_Constraint="_cyG5HGruEeeJzdLAONIxYA"/>
-  <JudoProfile:placeholder xmi:id="_tlIh0ePTEeeIl-FkIpaVXw" base_Constraint="_cyG5GGruEeeJzdLAONIxYA"/>
-  <JudoProfile:placeholder xmi:id="_tlIh0uPTEeeIl-FkIpaVXw" base_Constraint="_cyG5EmruEeeJzdLAONIxYA"/>
-  <JudoProfile:placeholder xmi:id="_tlIh0-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5IGruEeeJzdLAONIxYA"/>
-  <JudoProfile:placeholder xmi:id="_tlIh1OPTEeeIl-FkIpaVXw" base_Constraint="_cyG5KGruEeeJzdLAONIxYA"/>
-  <JudoProfile:placeholder xmi:id="_tlIh1ePTEeeIl-FkIpaVXw" base_Constraint="_cyG5LGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI4OPTEeeIl-FkIpaVXw" base_Constraint="_cyG5fmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI4ePTEeeIl-FkIpaVXw" base_Constraint="_cyG5gmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI4uPTEeeIl-FkIpaVXw" base_Constraint="_cyG5hGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI4-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5iGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI5OPTEeeIl-FkIpaVXw" base_Constraint="_cyG5YGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI5ePTEeeIl-FkIpaVXw" base_Constraint="_cyG5hmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI5uPTEeeIl-FkIpaVXw" base_Constraint="_cyG5gGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI5-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5dGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI6OPTEeeIl-FkIpaVXw" base_Constraint="_cyG5dmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI6ePTEeeIl-FkIpaVXw" base_Constraint="_cyG5eGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJI6uPTEeeIl-FkIpaVXw" base_Constraint="_cyG5fGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv8OPTEeeIl-FkIpaVXw" base_Constraint="_cyG5emruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv8ePTEeeIl-FkIpaVXw" base_Constraint="_cyG5cGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv8uPTEeeIl-FkIpaVXw" base_Constraint="_cyG5cmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv8-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5bGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv9OPTEeeIl-FkIpaVXw" base_Constraint="_cyG5ZmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv9ePTEeeIl-FkIpaVXw" base_Constraint="_cyG5ZGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv9uPTEeeIl-FkIpaVXw" base_Constraint="_cyG5bmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv9-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5aGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv-OPTEeeIl-FkIpaVXw" base_Constraint="_cyG5amruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv-ePTEeeIl-FkIpaVXw" base_Constraint="_cyG5WmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlJv-uPTEeeIl-FkIpaVXw" base_Constraint="_cyG5YmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXAOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5XGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXAePTEeeIl-FkIpaVXw" base_Constraint="_cyG5XmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXAuPTEeeIl-FkIpaVXw" base_Constraint="_cyG5WGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXA-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5VGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXBOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5VmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXBePTEeeIl-FkIpaVXw" base_Constraint="_cyG5MmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXBuPTEeeIl-FkIpaVXw" base_Constraint="_cyG5MGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXB-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5TmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXCOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5SGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXCePTEeeIl-FkIpaVXw" base_Constraint="_cyG5SmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlKXCuPTEeeIl-FkIpaVXw" base_Constraint="_cyG5UmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-EOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5TGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-EePTEeeIl-FkIpaVXw" base_Constraint="_cyG5PGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-EuPTEeeIl-FkIpaVXw" base_Constraint="_cyG5UGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-E-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5RGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-FOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5RmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-FePTEeeIl-FkIpaVXw" base_Constraint="_cyG5OGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-FuPTEeeIl-FkIpaVXw" base_Constraint="_cyG5NmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-F-PTEeeIl-FkIpaVXw" base_Constraint="_cyG5QGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-GOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5NGruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-GePTEeeIl-FkIpaVXw" base_Constraint="_cyG5QmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlK-GuPTEeeIl-FkIpaVXw" base_Constraint="_cyG5PmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlLlIOPTEeeIl-FkIpaVXw" base_Constraint="_cyG5OmruEeeJzdLAONIxYA"/>
-  <JudoProfile:shortname xmi:id="_tlLlIePTEeeIl-FkIpaVXw" base_Constraint="_cyG5LmruEeeJzdLAONIxYA"/>
-  <JudoProfile:nonconfirmed xmi:id="_tlLlIuPTEeeIl-FkIpaVXw" base_Operation="_cyIuxGruEeeJzdLAONIxYA"/>
-  <JudoProfile:nonconfirmed xmi:id="_tlLlI-PTEeeIl-FkIpaVXw" base_Operation="_cyIu02ruEeeJzdLAONIxYA"/>
-  <JudoProfile:nonconfirmed xmi:id="_tlLlJOPTEeeIl-FkIpaVXw" base_Operation="_cyIu1GruEeeJzdLAONIxYA"/>
-  <JudoProfile:nonconfirmed xmi:id="_tlLlJePTEeeIl-FkIpaVXw" base_Operation="_cyIu0mruEeeJzdLAONIxYA"/>
-  <JudoProfile:watch xmi:id="_tlLlJuPTEeeIl-FkIpaVXw" base_Property="_cyIHnmruEeeJzdLAONIxYA"/>
-  <JudoProfile:watch xmi:id="_tlLlJ-PTEeeIl-FkIpaVXw" base_Property="_cyIHl2ruEeeJzdLAONIxYA"/>
-  <JudoProfile:fixed xmi:id="_tlMMMOPTEeeIl-FkIpaVXw" base_Enumeration="_cyIvCGruEeeJzdLAONIxYA"/>
-  <JudoProfile:fixed xmi:id="_tlMMMePTEeeIl-FkIpaVXw" base_Enumeration="_cyIvBWruEeeJzdLAONIxYA"/>
-  <JudoProfile:query xmi:id="_tlMMMuPTEeeIl-FkIpaVXw" base_Operation="_cyIu2mruEeeJzdLAONIxYA"/>
-  <JudoProfile:query xmi:id="_tlMMM-PTEeeIl-FkIpaVXw" base_Operation="_cyIu7WruEeeJzdLAONIxYA"/>
-  <JudoProfile:query xmi:id="_tlMMNOPTEeeIl-FkIpaVXw" base_Operation="_cyIu32ruEeeJzdLAONIxYA"/>
-  <JudoProfile:query xmi:id="_tlMMNePTEeeIl-FkIpaVXw" base_Operation="_cyIu1WruEeeJzdLAONIxYA"/>
-  <JudoProfile:application xmi:id="_tlMMNuPTEeeIl-FkIpaVXw" base_Package="_cyIHdmruEeeJzdLAONIxYA"/>
+  <MagicDrawProfile:auxiliaryResource xmi:id="_9pgAwDirEei9HfZB0iGd-A" base_Element="magicdraw_uml_standard_profile_v_0001" base_Package="magicdraw_uml_standard_profile_v_0001"/>
+  <JudoProfile:bo xmi:id="_9rtAMDirEei9HfZB0iGd-A" base_Package="_cyIHd2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:dto xmi:id="_9rtnQDirEei9HfZB0iGd-A" base_Package="_cyIHd2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:rest xmi:id="_9rtnQTirEei9HfZB0iGd-A" base_Package="_cyIHd2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:package xmi:id="_9rtnQjirEei9HfZB0iGd-A" base_Package="_cyIHdmruEeeJzdLAONIxYA"/>
+  <JudoProfile:package xmi:id="_9rtnQzirEei9HfZB0iGd-A" base_Package="_cyIHd2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:tenantmember xmi:id="_9ruOUDirEei9HfZB0iGd-A" base_Class="_cyII3GruEeeJzdLAONIxYA"/>
+  <JudoProfile:tenantmember xmi:id="_9ruOUTirEei9HfZB0iGd-A" base_Class="_cyIH7mruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ruOUjirEei9HfZB0iGd-A" base_Property="_cyIvL2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ruOUzirEei9HfZB0iGd-A" base_Property="_cyIvJWruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ruOVDirEei9HfZB0iGd-A" base_Property="_cyIvA2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ruOVTirEei9HfZB0iGd-A" base_Property="_cyIuumruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ruOVjirEei9HfZB0iGd-A" base_Property="_cyIunmruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ru1YDirEei9HfZB0iGd-A" base_Property="_cyIuDGruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ru1YTirEei9HfZB0iGd-A" base_Property="_cyIIv2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ru1YjirEei9HfZB0iGd-A" base_Property="_cyIIpmruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ru1YzirEei9HfZB0iGd-A" base_Property="_cyIIhWruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ru1ZDirEei9HfZB0iGd-A" base_Property="_cyIIZ2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ru1ZTirEei9HfZB0iGd-A" base_Property="_cyIIUGruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ru1ZjirEei9HfZB0iGd-A" base_Property="_cyIISmruEeeJzdLAONIxYA"/>
+  <JudoProfile:representation xmi:id="_9ru1ZzirEei9HfZB0iGd-A" base_Property="_cyIH8mruEeeJzdLAONIxYA"/>
+  <JudoProfile:regexp xmi:id="_9rvccDirEei9HfZB0iGd-A" base_Constraint="_cyG5GmruEeeJzdLAONIxYA"/>
+  <JudoProfile:regexp xmi:id="_9rvccTirEei9HfZB0iGd-A" base_Constraint="_cyG5FmruEeeJzdLAONIxYA"/>
+  <JudoProfile:regexp xmi:id="_9rvccjirEei9HfZB0iGd-A" base_Constraint="_cyG5EGruEeeJzdLAONIxYA"/>
+  <JudoProfile:regexp xmi:id="_9rvcczirEei9HfZB0iGd-A" base_Constraint="_cyG5HmruEeeJzdLAONIxYA"/>
+  <JudoProfile:regexp xmi:id="_9rvcdDirEei9HfZB0iGd-A" base_Constraint="_cyG5JmruEeeJzdLAONIxYA"/>
+  <JudoProfile:regexp xmi:id="_9rvcdTirEei9HfZB0iGd-A" base_Constraint="_cyG5KmruEeeJzdLAONIxYA"/>
+  <JudoProfile:decimals xmi:id="_9rvcdjirEei9HfZB0iGd-A" base_Constraint="_cyG5ImruEeeJzdLAONIxYA"/>
+  <JudoProfile:interval xmi:id="_9rvcdzirEei9HfZB0iGd-A" base_Constraint="_cyG5JGruEeeJzdLAONIxYA"/>
+  <JudoProfile:interval xmi:id="_9rwDgDirEei9HfZB0iGd-A" base_Constraint="_cyG5FGruEeeJzdLAONIxYA"/>
+  <JudoProfile:placeholder xmi:id="_9rwDgTirEei9HfZB0iGd-A" base_Constraint="_cyG5HGruEeeJzdLAONIxYA"/>
+  <JudoProfile:placeholder xmi:id="_9rwDgjirEei9HfZB0iGd-A" base_Constraint="_cyG5GGruEeeJzdLAONIxYA"/>
+  <JudoProfile:placeholder xmi:id="_9rwDgzirEei9HfZB0iGd-A" base_Constraint="_cyG5EmruEeeJzdLAONIxYA"/>
+  <JudoProfile:placeholder xmi:id="_9rwqkDirEei9HfZB0iGd-A" base_Constraint="_cyG5IGruEeeJzdLAONIxYA"/>
+  <JudoProfile:placeholder xmi:id="_9rwqkTirEei9HfZB0iGd-A" base_Constraint="_cyG5KGruEeeJzdLAONIxYA"/>
+  <JudoProfile:placeholder xmi:id="_9rwqkjirEei9HfZB0iGd-A" base_Constraint="_cyG5LGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rwqkzirEei9HfZB0iGd-A" base_Constraint="_cyG5YmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rwqlDirEei9HfZB0iGd-A" base_Constraint="_cyG5TGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rwqlTirEei9HfZB0iGd-A" base_Constraint="_cyG5gmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rxRoDirEei9HfZB0iGd-A" base_Constraint="_cyG5fmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rxRoTirEei9HfZB0iGd-A" base_Constraint="_cyG5hGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rxRojirEei9HfZB0iGd-A" base_Constraint="_cyG5iGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rxRozirEei9HfZB0iGd-A" base_Constraint="_cyG5gGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rxRpDirEei9HfZB0iGd-A" base_Constraint="_cyG5hmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rxRpTirEei9HfZB0iGd-A" base_Constraint="_cyG5dGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rxRpjirEei9HfZB0iGd-A" base_Constraint="_cyG5eGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rxRpzirEei9HfZB0iGd-A" base_Constraint="_cyG5dmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4sDirEei9HfZB0iGd-A" base_Constraint="_cyG5fGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4sTirEei9HfZB0iGd-A" base_Constraint="_cyG5emruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4sjirEei9HfZB0iGd-A" base_Constraint="_cyG5cmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4szirEei9HfZB0iGd-A" base_Constraint="_cyG5cGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4tDirEei9HfZB0iGd-A" base_Constraint="_cyG5bGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4tTirEei9HfZB0iGd-A" base_Constraint="_cyG5ZmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4tjirEei9HfZB0iGd-A" base_Constraint="_cyG5ZGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4tzirEei9HfZB0iGd-A" base_Constraint="_cyG5bmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rx4uDirEei9HfZB0iGd-A" base_Constraint="_cyG5amruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9ryfwDirEei9HfZB0iGd-A" base_Constraint="_cyG5aGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9ryfwTirEei9HfZB0iGd-A" base_Constraint="_cyG5WmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9ryfwjirEei9HfZB0iGd-A" base_Constraint="_cyG5XGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9ryfwzirEei9HfZB0iGd-A" base_Constraint="_cyG5XmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9ryfxDirEei9HfZB0iGd-A" base_Constraint="_cyG5YGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9ryfxTirEei9HfZB0iGd-A" base_Constraint="_cyG5WGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9ryfxjirEei9HfZB0iGd-A" base_Constraint="_cyG5VGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9ryfxzirEei9HfZB0iGd-A" base_Constraint="_cyG5VmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzG0DirEei9HfZB0iGd-A" base_Constraint="_cyG5TmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzG0TirEei9HfZB0iGd-A" base_Constraint="_cyG5UmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzG0jirEei9HfZB0iGd-A" base_Constraint="_cyG5UGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzG0zirEei9HfZB0iGd-A" base_Constraint="_cyG5SmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzG1DirEei9HfZB0iGd-A" base_Constraint="_cyG5NGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzG1TirEei9HfZB0iGd-A" base_Constraint="_cyG5SGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzG1jirEei9HfZB0iGd-A" base_Constraint="_cyG5RGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzt4DirEei9HfZB0iGd-A" base_Constraint="_cyG5RmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzt4TirEei9HfZB0iGd-A" base_Constraint="_cyG5NmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzt4jirEei9HfZB0iGd-A" base_Constraint="_cyG5OGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzt4zirEei9HfZB0iGd-A" base_Constraint="_cyG5QGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzt5DirEei9HfZB0iGd-A" base_Constraint="_cyG5QmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzt5TirEei9HfZB0iGd-A" base_Constraint="_cyG5PmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzt5jirEei9HfZB0iGd-A" base_Constraint="_cyG5OmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9rzt5zirEei9HfZB0iGd-A" base_Constraint="_cyG5MmruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9r0U8DirEei9HfZB0iGd-A" base_Constraint="_cyG5PGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9r0U8TirEei9HfZB0iGd-A" base_Constraint="_cyG5MGruEeeJzdLAONIxYA"/>
+  <JudoProfile:shortname xmi:id="_9r0U8jirEei9HfZB0iGd-A" base_Constraint="_cyG5LmruEeeJzdLAONIxYA"/>
+  <JudoProfile:nonconfirmed xmi:id="_9r0U8zirEei9HfZB0iGd-A" base_Operation="_cyIu1GruEeeJzdLAONIxYA"/>
+  <JudoProfile:nonconfirmed xmi:id="_9r0U9DirEei9HfZB0iGd-A" base_Operation="_cyIu02ruEeeJzdLAONIxYA"/>
+  <JudoProfile:nonconfirmed xmi:id="_9r0U9TirEei9HfZB0iGd-A" base_Operation="_cyIu0mruEeeJzdLAONIxYA"/>
+  <JudoProfile:nonconfirmed xmi:id="_9r08ADirEei9HfZB0iGd-A" base_Operation="_cyIuxGruEeeJzdLAONIxYA"/>
+  <JudoProfile:watch xmi:id="_9r08ATirEei9HfZB0iGd-A" base_Property="_cyIHl2ruEeeJzdLAONIxYA"/>
+  <JudoProfile:watch xmi:id="_9r08AjirEei9HfZB0iGd-A" base_Property="_cyIHnmruEeeJzdLAONIxYA"/>
+  <JudoProfile:fixed xmi:id="_9r08AzirEei9HfZB0iGd-A" base_Enumeration="_cyIvCGruEeeJzdLAONIxYA"/>
+  <JudoProfile:fixed xmi:id="_9r08BDirEei9HfZB0iGd-A" base_Enumeration="_cyIvBWruEeeJzdLAONIxYA"/>
+  <JudoProfile:query xmi:id="_9r08BTirEei9HfZB0iGd-A" base_Operation="_cyIu1WruEeeJzdLAONIxYA"/>
+  <JudoProfile:query xmi:id="_9r1jEDirEei9HfZB0iGd-A" base_Operation="_cyIu7WruEeeJzdLAONIxYA"/>
+  <JudoProfile:query xmi:id="_9r1jETirEei9HfZB0iGd-A" base_Operation="_cyIu32ruEeeJzdLAONIxYA"/>
+  <JudoProfile:query xmi:id="_9r1jEjirEei9HfZB0iGd-A" base_Operation="_cyIu2mruEeeJzdLAONIxYA"/>
+  <JudoProfile:application xmi:id="_9r1jEzirEei9HfZB0iGd-A" base_Package="_cyIHdmruEeeJzdLAONIxYA"/>
 </xmi:XMI>
