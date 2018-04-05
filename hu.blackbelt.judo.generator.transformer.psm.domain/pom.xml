@@ -90,6 +90,12 @@
                                     <eolPrograms>
                                         <Etl>
                                             <source>src/transformations/pimToJUDOPsm.etl</source>
+                                            <parameters>
+                                                <parameter>
+                                                    <name>transformDomain</name>
+                                                    <value>true</value>
+                                                </parameter>
+                                            </parameters>
                                         </Etl>
                                     </eolPrograms>
                                 </configuration>

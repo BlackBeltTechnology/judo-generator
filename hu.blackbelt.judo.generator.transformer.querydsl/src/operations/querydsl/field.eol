@@ -7,7 +7,7 @@ operation transformAttributeField(s : RDBMS!RdbmsViewAliasField) : QUERYDSL!Quer
 @cached
 operation transformExpressionAttributeField(s : RDBMS!RdbmsViewField) : QUERYDSL!QueryDslAttribute {
 	var jvmAttrName : String = s.name.split("\\.").last();
-	var jvmAttr = JAVA!JvmAttribute.all.selectOne(attr | attr.ownerClass.fqBaseName() = s.view.name and attr.name = jvmAttrName);
+	var jvmAttr = JAVA!JvmClass.all.selectOne(c | c.fqBaseName() = s.view.name).allAttributes().selectOne(a | a.name = jvmAttrName);
 	return transformJvmAttribute(jvmAttr, s);
 }
 

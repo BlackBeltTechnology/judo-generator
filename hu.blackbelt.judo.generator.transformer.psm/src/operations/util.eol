@@ -43,3 +43,10 @@ operation Any fullyQualifiedPath() : String {
 		}	
 	}
 }
+
+operation escapeJavaLiteral(toEscape : String) : String {
+	if (toEscape.isDefined()) {
+		toEscape.println("TO ESCAPE: ");
+		return toEscape.replaceAll("\\\"", "\\\\\"").replaceAll("\n", " ").println("ESCAPED: ");
+	}
+}
