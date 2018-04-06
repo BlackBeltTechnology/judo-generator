@@ -106,7 +106,7 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
         public final com.querydsl.sql.ForeignKey<[%=invKey.getOppositeOwnerClass().packageFqName()%].[%=invKey.getOppositeOwnerClass().name%]> [%=invKey.name%] = createInvForeignKey(id, "[%=invKey.getOppositeForeignKey().sqlName%]");
         [%}%]
         [% for (nmKey in class.view.getNmKeys()) {%]
-        public final com.querydsl.sql.ForeignKey<[%=nmKey.junctionTable.packageName%].[%=nmKey.junctionTable.name%]> junction_[%=nmKey.name%] = createInvForeignKey(id, "[%=nmKey.otherForeignKey().sqlName%]");
+        public final com.querydsl.sql.ForeignKey<[%=nmKey.junctionTable.packageName%].[%=nmKey.junctionTable.name%]> junction_[%=nmKey.otherForeignKey().name%] = createInvForeignKey(id, "[%=nmKey.otherForeignKey().sqlName%]");
         [%}%] 
     }
 
