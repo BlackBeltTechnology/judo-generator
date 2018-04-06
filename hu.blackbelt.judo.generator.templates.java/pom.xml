@@ -74,6 +74,12 @@
 										<Egl>
 											<source>src/main.egl</source>
 											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+                                            <parameters>
+                                                <parameter>
+                                                    <name>transformDomain</name>
+                                                    <value>false</value>
+                                                </parameter>
+                                            </parameters>
 										</Egl>
 									</eolPrograms>
 								</configuration>

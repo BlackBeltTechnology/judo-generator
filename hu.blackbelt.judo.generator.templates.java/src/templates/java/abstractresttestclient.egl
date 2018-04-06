@@ -64,8 +64,8 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
                             .[%=ref.name%]([%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]().builder().build())
                         [%}%]
                     [%}%]
-                    [% if (ref.name = 'statusz') { %]
-                        .[%=ref.name%]([%=class.name%][%=ref.name.firstToUpperCase()%]Client.[%=class.name.firstToLowerCase()%][%=ref.name.firstToUpperCase()%]().queryByCode([%=class.fqName()%][%=ref.name.firstToUpperCase()%]EnumRestDto.[%=class.origin.stateMachines.at(0).transitions.at(0).fromState%]))
+                    [% if (ref.stateMachineReference().isDefined()) { %]
+                        .[%=ref.name%]([%=class.name%][%=ref.name.firstToUpperCase()%]Client.[%=class.name.firstToLowerCase()%][%=ref.name.firstToUpperCase()%]().queryByCode([%=class.fqName()%][%=ref.name.firstToUpperCase()%]EnumRestDto.[%=ref.stateMachineReference().states.selectOne(s | s.initialState).getEnumLiteral().name.toUpperCase() %]))
                     [%}%]
             [%}%];
             prepareBuilder(builder);
@@ -385,6 +385,13 @@ operation JAVA!JvmType restDtoOrPrimitive () : JAVA!JvmType {
         return self;
     } else {
         return self.restDto();
+    }
+}
+
+@cached
+operation JAVA!JvmReference stateMachineReference () : JAVA!JvmStateMachine {
+    if (self.type.bare().isEnum()) {
+    	return JAVA!JvmStateMachine.all.selectOne(sm | sm.correspondingEnum = self.type.bare().origin.fixedEnum).println("STATEMACHINE: ");
     }
 }
 
