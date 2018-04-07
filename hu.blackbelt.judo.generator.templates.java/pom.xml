@@ -79,6 +79,10 @@
                                                     <name>transformDomain</name>
                                                     <value>false</value>
                                                 </parameter>
+                                                <parameter>
+                                                	<name>queryDslPeristencePid</name>
+                                                	<value>hu.blackbelt.judo.querydsl.persistence</value>
+                                                </parameter>
                                             </parameters>
 										</Egl>
 									</eolPrograms>
