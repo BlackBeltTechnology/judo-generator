@@ -16,14 +16,9 @@ var ecoreUMLTypeMap = Map {
 
 var associationList = new Map<String, inpPIM!Asscoiation>();
 
-var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Target" and an.eModelElement.isTypeOf(pimEXT!EClass));
-for (annotation : pimEXT!EAnnotation in annotations) {
-	transformTargetClass(annotation, associationList);
-}
-
 var extensionPackage = createMainPackage();
 
-annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EPackage));
+var annotations : Sequence(pimEXT!EAnnotation) = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EPackage));
 for (annotation : pimEXT!EAnnotation in annotations) {
 	transformAdditionPackage(annotation, extensionPackage);
 }
@@ -53,6 +48,10 @@ for (annotation : pimEXT!EAnnotation in annotations) {
 	transformEnum(annotation);
 }
 
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "Target" and an.eModelElement.isTypeOf(pimEXT!EClass));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformTargetClass(annotation, associationList);
+}
 
 
 
