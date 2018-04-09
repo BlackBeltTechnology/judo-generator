@@ -1,0 +1,10 @@
+@cached
+operation PSM!JPackage fqName () : String {
+	if (self.parent.isDefined()) {
+		return self.parent.fqName() + "." + self.name;
+	} else if (self.ownerModel.isDefined()) {
+		return self.ownerModel.name + "." + self.name;
+	} else {
+		return self.name;
+	}
+}

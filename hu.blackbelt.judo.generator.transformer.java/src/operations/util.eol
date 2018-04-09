@@ -23,19 +23,15 @@ operation urlType () : JAVA!JvmType {
     return  JAVATYPES!JvmType.all.select( t | t.name = "URL").first();
 }
 
-operation randomUUID() : String {
-	return UUIDUtils.randomUUID();
-}
-
-operation uuid3 (namespace : String, name : String) : String {
-	return UUIDUtils.uuid3(namespace, name);
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
 }
 
 operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
 	var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
 	if (ret.isUndefined()) {
 		ret = new JAVA!JvmList;
-		ret.uuid = randomUUID();
+		ret.uuid = generateUuid(componentType.uuid, "List", ".");
 		ret.name = "List";	
 		ret.package = JAVA!JvmModel.all.first().findOrCreateJavaUtilPackage();
 		ret.componentType = componentType;

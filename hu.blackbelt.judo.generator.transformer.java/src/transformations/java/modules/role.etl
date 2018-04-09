@@ -145,8 +145,8 @@ rule RestTestWrapperSRole
 }
 
 operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : Any {	
-	self.uuid = uuid3(source.uuid, rulPrefix + "Role");
 	self.ownerClass = source.ownerClass.equivalent(rulPrefix + "Class");
+	self.uuid = generateUuid(self.ownerClass.uuid, source.name, ".");
 	
 	self.opposite = source.opposite().equivalent(rulPrefix + "Role");
 	self.navigable = source.navigable;

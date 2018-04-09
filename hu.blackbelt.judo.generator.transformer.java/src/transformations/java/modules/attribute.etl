@@ -137,8 +137,8 @@ rule RestTestWrapperM
 }
 
 operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule : String) : Any {
-	self.uuid = uuid3(source.uuid, correspondingRule);
 	self.ownerClass = source.ownerClass.equivalent(correspondingRule);
+	self.uuid = generateUuid(self.ownerClass.uuid, source.name, ".");
 	self.unique = source.unique;
 	self.mandatory = source.mandatory;
 	self.technical = source.technical;

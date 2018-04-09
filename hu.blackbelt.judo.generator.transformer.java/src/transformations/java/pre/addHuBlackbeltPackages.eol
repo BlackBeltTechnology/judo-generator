@@ -1,0 +1,27 @@
+operation addHuBlackbeltPackages () {
+	var topModels = PSM!JModel.all;
+	for (topModel in topModels) {
+		var origPackages = topModel.packages.asSet();
+		var topPackage = topModel.createHuBlackbeltPackages();
+		for (p in origPackages) { 
+			p.parent = topPackage;
+		}
+	}
+}
+
+operation PSM!JModel createHuBlackbeltPackages() : PSM!JPackage {
+	var hu = new PSM!JPackage();
+	hu.name = "hu";
+	hu.uuid = generateUuid(self.uuid, hu.name, ".");
+	hu.ownerModel = self;
+	hu.framework = self.framework;
+
+	var blackbelt = new PSM!JPackage();
+	blackbelt.name = "blackbelt";
+	blackbelt.uuid = generateUuid(hu.uuid, blackbelt.name, ".");
+	blackbelt.ownerModel = self;
+	blackbelt.parent = hu;
+	blackbelt.framework = self.framework;
+	
+	return blackbelt;
+}

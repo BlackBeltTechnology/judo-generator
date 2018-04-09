@@ -9,7 +9,7 @@ operation JAVA!JvmModel findOrCreatePackageRecursively (packageName : String) : 
 	if (topPackage.isUndefined()) {
 		topPackage = new JAVA!JvmPackage;
 		topPackage.name = topPackageName;
-		topPackage.uuid = uuid3(self.uuid, topPackage.name);
+		topPackage.uuid = generateUuid(self.uuid, topPackage.name, ".");
 		topPackage.ownerModel = self;
 	}
 	packsToCreate.remove(topPackageName);

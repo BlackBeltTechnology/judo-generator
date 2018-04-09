@@ -62,11 +62,11 @@ rule BoInterface
 		t.fillInterface(s, JAVA!JvmJudoCoordinate#BO_INTERFACE);
 		
 		for (attr in s.attributes()) {
-			t.createMethodFromAttribute(uuid3(t.uuid, uuid3(s.uuid, attr.uuid)), attr, JAVA!JvmMethodKind#BO_INTERFACE);
+			t.createMethodFromAttribute(generateUuid(s.uuid, generateUuid(t.uuid, attr.uuid, "."), "-"), attr, JAVA!JvmMethodKind#BO_INTERFACE);
 		}
 		for (role in s.roles()) {
 			if (role.opposite().ownerClass.framework) {
-				t.createMethodFromRole(uuid3(t.uuid, uuid3(s.uuid, role.uuid)), role, JAVA!JvmMethodKind#BO_INTERFACE);
+				t.createMethodFromRole(generateUuid(s.uuid, generateUuid(t.uuid, role.uuid, "."), "-"), role, JAVA!JvmMethodKind#BO_INTERFACE);
 			}
 		}
 }
@@ -101,11 +101,11 @@ rule BoBuilderInterface
 		t.fillInterface(s, JAVA!JvmJudoCoordinate#BO_BUILDER_INTERFACE);
 		
 		for (attr in s.allAttributes()) {
-			t.createMethodFromAttribute(uuid3(t.uuid, uuid3(s.uuid, attr.uuid)), attr, JAVA!JvmMethodKind#BO_BUILDER);
+			t.createMethodFromAttribute(generateUuid(s.uuid, generateUuid(t.uuid, attr.uuid, "."), "-"), attr, JAVA!JvmMethodKind#BO_BUILDER);
 		}
 		for (role in s.allRoles()) {
 			if (role.navigable and role.opposite().ownerClass.framework) {
-				t.createMethodFromRole(uuid3(t.uuid, uuid3(s.uuid, role.uuid)), role, JAVA!JvmMethodKind#BO_BUILDER);
+				t.createMethodFromRole(generateUuid(s.uuid, generateUuid(t.uuid, role.uuid, "."), "-"), role, JAVA!JvmMethodKind#BO_BUILDER);
 			}
 		}
 }
@@ -411,7 +411,7 @@ operation JAVA!JvmCoordinated fillCoordinated (source : PSM!JClass, coordinate :
 	var suffix = COORDINATES.get(coordinate).get(NAME_SUFFIX);
 	var prefix = COORDINATES.get(coordinate).get(NAME_PREFIX);
 	self.name = prefix + source.name + suffix;
-	self.uuid = uuid3(source.uuid , coordinate.name + suffix);
+	self.uuid = generateUuid(source.uuid , coordinate.name, "_");
 }
 
 operation JAVA!JvmInterface fillInterface(source : PSM!JClass, coordinate : Any) : Any {

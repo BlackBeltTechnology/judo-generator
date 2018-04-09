@@ -13,7 +13,7 @@ operation JAVA!JvmPackage findOrCreateChildRecursively (packageNames : Sequence)
 		if (candidate.isUndefined()) {
 			candidate = new JAVA!JvmPackage;
 			candidate.name = packName;
-			candidate.uuid = uuid3(currentPackage.uuid, packName);
+			candidate.uuid = generateUuid(currentPackage.uuid, packName, ".");
 			candidate.package = currentPackage;
 			candidate.framework = self.framework;
 		}

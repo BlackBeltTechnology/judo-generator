@@ -11,12 +11,12 @@ operation JAVA!JvmInterface createMethodFromAttribute(methodUuid : String, attr 
 	method.kind = kind;
 	
 	var parameter = new JAVA!JvmMethodParameter();
-	parameter.uuid = uuid3(method.uuid, attr.uuid);
+	parameter.uuid = generateUuid(method.uuid, attr.name, ".");
 	parameter.name = attr.name;
 	if (attr.upper > 1 or attr.upper = -1) {
 		var list = new JAVA!JvmList();
 		list.name = parameter.name + "_list";
-		list.uuid = uuid3(method.uuid, uuid3(parameter.uuid, "list"));
+		list.uuid = generateUuid(method.uuid, generateUuid(parameter.name, "list", "."), ".");
 		list.package = self.package;
 		parameter.type = list;
 		parameter.type.componentType = attr.type.findJavaPrimitive();
@@ -36,12 +36,12 @@ operation JAVA!JvmInterface createMethodFromRole(methodUuid : String, role : PSM
 	method.kind = kind;
 			
 	var parameter = new JAVA!JvmMethodParameter();
-	parameter.uuid = uuid3(method.uuid, role.uuid);
+	parameter.uuid = generateUuid(method.uuid, role.name, ".");
 	parameter.name = role.name;
 	if (role.upper > 1 or role.upper = -1) {
 		var list = new JAVA!JvmList();
 		list.name = parameter.name + "_list";
-		list.uuid = uuid3(method.uuid, uuid3(parameter.uuid, "list"));
+		list.uuid = generateUuid(method.uuid, generateUuid(parameter.name, "list", "."), ".");
 		list.package = self.package;
 		parameter.type = list;
 		parameter.type.componentType = role.opposite().ownerClass.equivalent("OriginClass");
