@@ -64,7 +64,7 @@ operation tgtPSM!JAttribute placeholder(txt) : tgtPSM!JAttribute {
 }
 
 operation tgtPSM!JAttribute uuid(namespace : String) : tgtPSM!JAttribute {
-	self.uuid = uuid3(namespace, self.name);
+	self.uuid = namespace + "." + self.name;
 	return self;
 }
 

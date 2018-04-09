@@ -18,7 +18,7 @@ rule StateMachine
 	ownerPackage.println("OWNERPACKAGE ==> ");
 	
 	stateMachineEnum.name = ownerClass.name.concat( s.name.firstToUpperCase() );
-	stateMachineEnum.uuid = uuid3(t.uuid, "StateEnum");
+	stateMachineEnum.uuid = generateUuid(ownerPackage.uuid, stateMachineEnum.name + "Enum", ".");
 	
 	ownerPackage.enumerations.add(stateMachineEnum);
 	 
@@ -43,6 +43,7 @@ rule State
 	
 	guard: s.owner.owner.equivalent("StateMachine").isDefined()
 
+	t.uuid = generateUuid(s.owner.owner.equivalent("StateMachine").uuid, t.name, ".");
 	// TODO : check if works with owningPackage
 	s.owner.owner.equivalent("StateMachine").states.add(t);
 	
@@ -56,7 +57,7 @@ rule State
 	var stateEnumLiteral : tgtPSM!JLiteral = new tgtPSM!JLiteral;
 	
 	stateEnumLiteral.name = s.name;
-	stateEnumLiteral.uuid = uuid3(t.uuid, s.name + "StateLiteral");
+	stateEnumLiteral.uuid = generateUuid(s.owner.owner.equivalent("StateMachine").correspondingEnum.uuid, s.name, ".");
 	s.owner.owner.equivalent("StateMachine").correspondingEnum.literals.add( stateEnumLiteral );
 	
 	s.owner.owner.equivalent("StateMachine").println("SM ==> ");
@@ -76,6 +77,7 @@ rule Transition
 	guard: 	s.owner.owner.equivalent("StateMachine").isDefined() and
 			s.Source.isTypeOf(State) and s.Target.isTypeOf(State) 
 	
+	t.uuid = generateUuid(s.owner.owner.equivalent("StateMachine").uuid, t.name, ".");
 	s.owner.owner.equivalent("StateMachine").transitions.add(t);
 	t.toState ::= s.Target;
 	t.fromState ::= s.Source;
@@ -135,7 +137,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	var enumClass : tgtPSM!JClass = new tgtPSM!JClass;
 	enumClass.name = corrEnum.name;
 	enumClass.fixedEnum = corrEnum; 
-	enumClass.uuid = uuid3(self.uuid, "Cls");
+	enumClass.uuid = generateUuid(tgtPkg.uuid, enumClass.name, ".");
 	enumClass.representsEnum = true;
 	
 	createRelationWithRoles( tgtPkg, self.name.firstToUpperCase() + "Inverse", self.name,
@@ -154,7 +156,7 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	// Def Class for EnumLiterals - Values
 	var enumValueClass : tgtPSM!JClass = new tgtPSM!JClass;
 	enumValueClass.name = enumClass.name + "Value"; 
-	enumValueClass.uuid = uuid3(self.uuid, "ValCls");
+	enumValueClass.uuid = generateUuid(tgtPkg.uuid, enumValueClass.name, ".");
 	enumValueClass.representsEnumValue = true;
 	
 	enumValueClass.attributes.add(createDefaultAttribute("value").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")));

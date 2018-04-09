@@ -5,7 +5,7 @@ import "element.etl";
 rule Class
 	transform s : Class
 	to        t : tgtPSM!JClass
-	extends NamedElement, PackageableElement {
+	extends PackageableElement {
 	
 	guard: s.owner.equivalent("Package").isDefined() and not stereotypeApplications.get("ui").includes(s.owner)
 	
@@ -127,7 +127,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	
 	    if (menuClass.stereotype("menuitem")) {
 	        var mi = new tgtPSM!JUIMenuItem;
-	        mi.uuid = uuid3(uuid3(parentMenuItem.uuid, menuClass.id), imp.id);
+	        mi.uuid = generateUuid(generateUuid(parentMenuItem.uuid, menuClass.name, "."), imp.name, ".");
 	        mi.name = menuClass.name;
 	        mi.type = tgtPSM!JMenuItemType#NONE;
 	        parentMenuItem.children.add(mi);
@@ -136,7 +136,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	
 	    if (menuClass.isTypeOf(inpPIM!InstanceSpecification) or (menuClass.isTypeOf(Class) and (menuClass.stereotype("dtoClasses") or menuClass.owner.stereotype("dtoPackages")))) {
 	        var mi = new tgtPSM!JUIMenuItem;
-	        mi.uuid = uuid3(uuid3(parentMenuItem.uuid, menuClass.id), imp.id);
+	        mi.uuid = generateUuid(generateUuid(parentMenuItem.uuid, menuClass.name, "."), imp.name, ".");
 	        mi.name = menuClass.name;
 	
 			var sourceClass;

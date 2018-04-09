@@ -18,6 +18,7 @@ rule Parameter
 		t.input = true;
 	} else {
 		t.input = false;
+		t.uuid = generateUuid(t.uuid, "return", "");
 	}
 	
 	t.ordered = s.ordered;

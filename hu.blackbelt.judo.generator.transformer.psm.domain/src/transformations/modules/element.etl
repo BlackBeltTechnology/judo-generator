@@ -6,8 +6,6 @@ rule Element
 	to		  t : tgtPSM!JElement {
 	
 	s.id.println("SOURCE ID: ");
-	t.uuid = mdId2Uuid(s.id);
-	t.uuid.println("TARGET UUID: ");
 	
 	if ( stereotypeApplications.get("screen").includes(s)) {
 		 t.participates.add( tgtPSM!JLayer#SCREEN);
@@ -23,6 +21,7 @@ rule NamedElement
 	extends Element{
 	
 	t.name = s.name;
+	t.uuid = s.getUuid();
 	
 	if ( stereotypeApplications.get("shortname").containsKey(s) ) {
 		t.shortName = stereotypeApplications.get("shortname").get(s);
@@ -57,12 +56,13 @@ rule NamedElement
 @abstract
 rule PackageableElement
 	transform s : PackageableElement
-	to        t : JElement {
+	to        t : JElement 
+	extends NamedElement {
 	
 	guard: s.owner.isTypeOf( Package )
 	
 	t.package ::= s.owner;
-
+	
 	"".println("RULE::PackageableElement");
 } 
 
