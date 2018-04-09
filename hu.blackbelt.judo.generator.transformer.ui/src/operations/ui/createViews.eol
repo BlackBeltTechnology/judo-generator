@@ -26,7 +26,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 			var viewField = new UI!UIViewField();
 			viewField.componentType = attribute.equivalent("UIBaseComponentType");
 			viewField.name = attribute.name;
-			viewField.uuid = uuid3(attribute.uuid, name);
+			viewField.uuid = generateUuid(generateUuid(viewField.componentType.uuid, "viewField", "_"), "classView", "_");
 			viewField.searchable = not attribute.uiNoSearch;
 			viewField.position = viewFieldPosition;
 			viewFieldPosition++;
@@ -46,12 +46,12 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 													
 			var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 			viewFieldSet.name = attribute.name;
-			viewFieldSet.uuid = classView.uuid + "_viewfieldset_" + attribute.name;
+			viewFieldSet.uuid = generateUuid(generateUuid(classView.uuid, "viewfieldset", "_"), attribute.name, "_");
 			viewFieldSet.position = position;
 			
 			var viewField : UI!UIViewField = new UI!UIViewField();
 			viewField.name = attribute.name;
-			viewField.uuid = uuid3(uuid3(attribute.uuid, name), viewFieldSet.uuid);
+			viewField.uuid = generateUuid(generateUuid(attribute.uuid, "viewField", "_"), "classView", "_");
 			
 			viewField.componentType = attribute;
 			viewField.searchable = attribute.~search;
@@ -84,7 +84,7 @@ operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, cla
 				(attribute.isTypeOf(UI!UIBaseComponentType) and not attribute.private)) {
 				
 				var viewField = new UI!UIViewField();
-				viewField.uuid = uuid3(attribute.uuid, ownerClass.name);
+				viewField.uuid = generateUuid(generateUuid(attribute.uuid, "viewField", "_"), "listView", "_");
 				viewField.name = attribute.name;
 				viewField.searchable = attribute.~search;
 				viewField.componentType = attribute;
@@ -111,18 +111,18 @@ operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, cla
 operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
 	var paramView : UI!UIParamView = new UI!UIParamView();
 	paramView.name = uiaction.name;
-	paramView.uuid = uuid3(uiaction.uuid, uiaction.name);
+	paramView.uuid = generateUuid(uiaction.uuid, "paramView", "_");
 	
 	var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 	viewFieldSet.name = uiaction.name;
-	viewFieldSet.uuid = paramView.uuid + '_viewfieldset_' + uiaction.name;
+	viewFieldSet.uuid = generateUuid(generateUuid(paramView.uuid, "viewFieldSet", "_"), uiaction.name, "_");
 	
 	var position = 1;
 	
 	for (parameter in uiaction.parameters) {
 		var viewField : UI!UIViewField = new UI!UIViewField();
 		viewField.name = parameter.name;
-		viewField.uuid = uuid3(parameter.uuid, uiaction.name);
+		viewField.uuid = generateUuid(generateUuid(uiaction.uuid, parameter.name, "."), "viewField", "_");
 		viewField.componentType = parameter;
 		viewField.position = position;
 		viewFieldSet.viewFields.add(viewField);
@@ -137,16 +137,16 @@ operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
 operation createResultView(uiaction : UI!UIAction) : UI!UIResultView {
 	var resultView : UI!UIResultView = new UI!UIResultView();
 	resultView.name = uiaction.name;
-	resultView.uuid = uuid3(uuid3(uiaction.uuid, uiaction.name), 'result');
+	resultView.uuid = generateUuid(uiaction.uuid, "resultView", "_");
 	resultView.pageSize = 1000;
 	
 	var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 	viewFieldSet.name = uiaction.name;
-	viewFieldSet.uuid = resultView.uuid + '_viewfieldset_' + uiaction.name;
+	viewFieldSet.uuid = generateUuid(generateUuid(resultView.uuid, "viewFieldSet", "_"), uiaction.name, "_");
 	
 	var viewField : UI!UIViewField = new UI!UIViewField();
 	viewField.name = uiaction.result.name;
-	viewField.uuid = uuid3(resultView.uuid, uiaction.result.uuid);
+	viewField.uuid = generateUuid(generateUuid(resultView.uuid, uiaction.result.name, "."), "viewField", "_");
 	viewField.componentType = uiaction.result;
 	viewField.position = 1;
 	viewFieldSet.viewFields.add(viewField);

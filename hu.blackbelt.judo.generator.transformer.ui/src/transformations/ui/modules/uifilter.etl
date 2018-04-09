@@ -7,7 +7,7 @@ rule UIFilter
 			uiFilter.name = "filter";
 		}
 		
-		uiFilter.uuid = uuid3(jUIFilter.uuid, "UIFilter");
+		uiFilter.uuid = generateUuid(jUIFilter.uuid, "UIFilter", "_");
 		uiFilter.operator = jUIFilter.operator.toString();
 		uiFilter.value = jUIFilter.value;
 	}

@@ -41,7 +41,7 @@ rule UIClass
 			if (op.visibility = PSM!JVisibility#PUBLIC) {
 				var action : UI!UIAction = createActions(op, inherited, uiclass.uuid);
 				action.inherited = inherited;
-				action.uuid = uuid3(uiclass.uuid, op.uuid);
+				action.uuid = generateUuid(uiclass.uuid, op.name, ".");
 				uiclass.actions.add(action);
 			}	
 		}

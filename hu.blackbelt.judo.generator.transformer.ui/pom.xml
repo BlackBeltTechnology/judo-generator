@@ -28,7 +28,7 @@
     
     <profiles>
     	<profile>
-    		<id>rdbms-transformer-development</id>
+    		<id>ui-transformer-development</id>
 			  <build>
 			    <plugins>
 			      <plugin>
@@ -70,7 +70,7 @@
 			                    
 			                    
 			                   <model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.car.model:model:psm:${project.version}</artifact>
+									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>

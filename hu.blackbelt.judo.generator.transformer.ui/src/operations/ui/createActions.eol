@@ -14,7 +14,7 @@ operation createActions(joperation : PSM!JOperation, inherited : Boolean, classU
 			if (not param.input) {
 				if (inherited) {
 					uiaction.result = emfTool.getECoreUtil().copy(param.equivalent("UIParameterComponentType"));
-					uiaction.result.uuid = uuid3(classUuid, uuid3(joperation.uuid, param.uuid));
+					uiaction.result.uuid = generateUuid(generateUuid(classUuid, joperation.name, "."), param.name, ".");
 				} else {
 					uiaction.result = param.equivalent("UIParameterComponentType");
 				}
@@ -33,7 +33,7 @@ operation createActions(joperation : PSM!JOperation, inherited : Boolean, classU
 				if (inherited) {
 					uiparam = emfTool.getECoreUtil().copy(param.equivalent("UIParameterComponentType"));
 					uiaction.parameters.add(uiparam);
-					uiparam.uuid = uuid3(classUuid, uuid3(joperation.uuid, param.uuid));
+					uiparam.uuid = generateUuid(generateUuid(classUuid, joperation.name, "."), param.name, ".");
 				} else {
 					uiparam = param.equivalent("UIParameterComponentType");
 					uiaction.parameters.add(uiparam);
