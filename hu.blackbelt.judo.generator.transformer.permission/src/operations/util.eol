@@ -1,8 +1,3 @@
-operation randomUUID() : String {
-	return UUIDUtils.randomUUID();
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
 }
-
-operation uuid3 (namespace : String, name : String) : String {
-	return UUIDUtils.uuid3(namespace, name);
-}
-

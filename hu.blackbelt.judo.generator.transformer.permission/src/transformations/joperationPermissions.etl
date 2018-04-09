@@ -7,5 +7,6 @@ rule JOperationToPermissions
 		callPerm.resourceUuid = joperation.ownerClass.uuid + "." + joperation.uuid;
 		callPerm.action = "call";
 		callPerm.type = "operation";
-		callPerm.uuid = uuid3(uuid3(callPerm.hostClassUuid, callPerm.resourceUuid), callPerm.action);
+		callPerm.uuid = generateUuid(generateUuid(callPerm.hostClassUuid, joperation.name, "."), "callPermission", "_");
+		
 	}

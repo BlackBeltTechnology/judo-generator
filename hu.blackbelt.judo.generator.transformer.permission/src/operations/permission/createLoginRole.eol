@@ -3,7 +3,7 @@ operation Permission!PermissionModel createLoginRole() {
 	
 	var loginRole = new Permission!Role();
 	loginRole.name = "login";
-	loginRole.uuid = uuid3("7ac4c368-1fae-4250-a963-316b0e2d965f", "login");
+	loginRole.uuid = generateUuid("Login", "Role", "_");
 	loginRole.rolePermissions = Permission!Permission.all.select(perm | perm.action.equals(loginPermMap.get(perm.resource)));
 	
 	self.roles.add(loginRole);
