@@ -1,16 +1,56 @@
-
-operation randomUUID() : String {
-	return UUIDUtils.randomUUID();
+operation inpPIM!Element getUuid() : String {
+	if (self.owner.isDefined()) {
+		return (self.owner.getUuid() + "." + self.name).replace(" ","_");
+	} else {
+		return self.name.replace(" ","_");
+	}
 }
 
-operation uuid3 (namespace : String, name : String) : String {
-	return UUIDUtils.uuid3(namespace, name);
+operation inpPIM!Property getUuid() : String {
+	if (self.owner.isTypeOf(inpPIM!Association)) {
+		return (self.otherEnd.type.getUuid() + "." + self.name).replace(" ","_");
+	} else {
+		return (self.owner.getUuid() + "." + self.name).replace(" ","_");
+	}
 }
 
-operation mdId2Uuid(id : String) : String {
-	var magicUUID = "c83deee1-d76b-4922-83d5-8b920a21fff4";
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
+}
 
-	return uuid3( magicUUID, id);
+@cached
+operation inpPIM!Association getBothRoles() : Sequence(inpPIM!Property) {
+	var c1 : inpPIM!Property =  self.memberEnd.first();
+    var c2 : inpPIM!Property =  self.memberEnd.second();
+    var primary = c1;
+    var secondary = c2;
+    if (c1.name > c2.name) {
+    	primary = c2;
+    	secondary = c1;
+    }
+    if (primary.isUndefined()) {
+    	throw "No primary role found: " + self.name;
+    }
+    if (secondary.isUndefined()) {
+    	throw "No secondary role found: " + self.name;
+    }
+    
+    var roles = new Sequence(inpPIM!Property);
+    roles.add(primary);
+    roles.add(secondary);
+    
+    return roles;
+}
+
+
+@cached
+operation inpPIM!Association primaryRole() : inpPIM!Property {
+    return self.getBothRoles().first();
+}
+
+@cached
+operation inpPIM!Association secondaryRole() : inpPIM!Property {
+	return self.getBothRoles().second();
 }
 
 @cached

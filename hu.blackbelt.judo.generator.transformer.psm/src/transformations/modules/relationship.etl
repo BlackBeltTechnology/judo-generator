@@ -16,6 +16,8 @@ rule Relationship
 	var name : String = s.memberEnd.at(1).name.concat("-").concat(s.memberEnd.at(0).name);
 	t.name = name; // rewrite the default name set by rule "NamedElement"
 	
+	t.uuid = generateUuid(s.primaryRole().getUuid(), s.secondaryRole().getUuid(), "-");
+	
 	s.memberEnd.println("FEATURE ==>  ");
 	s.memberEnd.size.println("ENDS IN ASSOCIATION: ");
 	for (me in s.memberEnd) {

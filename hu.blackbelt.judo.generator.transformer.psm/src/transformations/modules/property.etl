@@ -182,7 +182,7 @@ rule ClassPropertyRoleEnum
 			and s.type.isTypeOf(Enumeration)
 			and s.type.equivalent("Enum2CorrespondingValueClass").isDefined()
 	
-	r1.uuid = uuid3(s.owner.equivalent("Class").uuid, s.name);
+	r1.uuid = generateUuid(s.owner.equivalent("Class").uuid, s.name, ".");
 	r1.ownerClass = s.owner.equivalent("Class");
 	r1.navigable = true;
 	r1.lower = s.lower;
@@ -197,10 +197,10 @@ rule ClassPropertyRoleEnum
 	r2.name = s.owner.name.firstToLowerCase() + s.name.firstToUpperCase() + "Inverse";
 	r2.lower = 0;
 	r2.upper = -1;
-	r2.uuid = uuid3(s.type.equivalent("Enum2CorrespondingValueClass").uuid, r2.name);
+	r2.uuid = generateUuid(s.type.equivalent("Enum2CorrespondingValueClass").uuid, r2.name, ".");
 	r2.ownerClass = s.type.equivalent("Enum2CorrespondingValueClass");
 	r2.visibility = r1.visibility;
-	rs.uuid = uuid3(s.owner.equivalent("Class").uuid, s.type.equivalent("Enum2CorrespondingValueClass").uuid);
+	rs.uuid = generateUuid(r1.uuid, r2.uuid, "-");
 	rs.name = r1.name + " - " + r2.name;
 	rs.visibility = r1.visibility;
 	rs.roles.add(r1);

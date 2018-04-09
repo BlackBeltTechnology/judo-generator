@@ -5,7 +5,7 @@ import "element.etl";
 rule Class
 	transform s : Class
 	to        t : tgtPSM!JClass
-	extends NamedElement, PackageableElement {
+	extends PackageableElement {
 	
 	guard: s.owner.equivalent("Package").isDefined() and not stereotypeApplications.get("ui").includes(s.owner)
 	
@@ -127,7 +127,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	
 	    if (menuClass.stereotype("menuitem")) {
 	        var mi = new tgtPSM!JUIMenuItem;
-	        mi.uuid = uuid3(uuid3(parentMenuItem.uuid, menuClass.id), imp.id);
+	        mi.uuid = generateUuid(generateUuid(parentMenuItem.uuid, menuClass.name, "."), imp.name, ".");
 	        mi.name = menuClass.name;
 	        mi.type = tgtPSM!JMenuItemType#NONE;
 	        parentMenuItem.children.add(mi);
@@ -136,7 +136,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	
 	    if (menuClass.isTypeOf(inpPIM!InstanceSpecification) or (menuClass.isTypeOf(Class) and (menuClass.stereotype("dtoClasses") or menuClass.owner.stereotype("dtoPackages")))) {
 	        var mi = new tgtPSM!JUIMenuItem;
-	        mi.uuid = uuid3(uuid3(parentMenuItem.uuid, menuClass.id), imp.id);
+	        mi.uuid = generateUuid(generateUuid(parentMenuItem.uuid, menuClass.name, "."), imp.name, ".");
 	        mi.name = menuClass.name;
 	
 			var sourceClass;
@@ -178,7 +178,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	    	classes.name.println("COLLECT CLASSES: ");
 	        for (childMenuClass in classes) {
 	            var mi = new tgtPSM!JUIMenuItem;
-	            mi.uuid = uuid3(uuid3(parentMenuItem.uuid, childMenuClass.id), imp.id);
+	            mi.uuid = generateUuid(generateUuid(parentMenuItem.uuid, childMenuClass.name, "."), imp.name, ".");
 	            mi.name = childMenuClass.name;
 	
 	            mi.represent = childMenuClass.equivalent("Class");
@@ -217,7 +217,7 @@ operation transformFilter(sourceClass : inpPIM!Class, class : tgtPSM!JClass, txt
         	var mr = m.toMatchResult();
         	var jattribute = sourceClass.findAttribute(mr.`group`(1)).equivalent();
 	        var ret = new tgtPSM!JUIFilter("JFilter" + jattribute.name);
-	        ret.uuid = uuid3(class.uuid, jattribute.uuid);
+	        ret.uuid = generateUuid(generateUuid(class.uuid, jattribute.name, "."), "Filter", "_");
 	        ret.operator = mapOperator(mr.`group`(2));
 	        ret.value = mr.`group`(3);
 	        ret.attribute = jattribute;

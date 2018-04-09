@@ -97,7 +97,7 @@ operation Map setAttrOrderAssocs() {
 	        }
 	
 	        var attrGroup = new tgtPSM!JUIAttributeGroup(groupName);
-	        attrGroup.uuid = uuid3(targetClass.uuid, groupName);
+	        attrGroup.uuid = generateUuid(targetClass.uuid, groupName, ".");
 	        attrGroup.position = position;
 	        targetClass.attributeOrder.add(attrGroup);
 	

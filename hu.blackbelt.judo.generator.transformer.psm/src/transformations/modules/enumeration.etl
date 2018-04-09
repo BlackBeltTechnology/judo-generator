@@ -5,12 +5,12 @@ import "element.etl";
 rule Enumeration
 	transform s : Enumeration
 	to        t : tgtPSM!JEnumeration
-	extends NamedElement, PackageableElement {
+	extends PackageableElement {
 	
 	guard: 	s.owner.equivalent("Package").isDefined() and
 			stereotypeApplications.get("fixedEnum").includes(s)
 
-	t.uuid = uuid3(t.uuid, "Enum");
+	t.uuid = generateUuid(t.uuid, "Enum", "");
 	t.name = t.name + "Enum";
 	s.owner.equivalent("Package").enumerations.add( t);
 	
@@ -54,7 +54,7 @@ rule Enum2CorrespondingValueClass
 		s.equivalent("Enumeration").classRepresentation = t;
 	}
 	
-	enumValueClass.uuid = uuid3(mdId2Uuid(s.id), "enumValueClass");
+	enumValueClass.uuid = generateUuid(t.uuid, "Value", "");
 	
 	tgtPkg.classes.add(enumValueClass);
 	
@@ -74,19 +74,14 @@ rule Enum2CorrespondingValueClass
 	
  	enumValueClass.attributes.add( createDefaultAttribute("langcode").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")).derived().value("{self.language.code}"));
  	
- 	// create a new relation : enumEnumValueRelation
+ 	
  	var enumClassRoleName = s.name.firstToLowerCase();
  	var enumValueClassRoleName = enumValueClass.name.firstToLowerCase();
  	var relationName = enumClassRoleName.concat( "-" ).concat( enumValueClassRoleName );
- 	
- 	enumEnumValueRelation.name = relationName;
- 	enumEnumValueRelation.uuid = uuid3(t.uuid, "enumValueRelation");
- 	enumEnumValueRelation.framework = isFrameworkElmt;
- 	tgtPkg.relationships.add( enumEnumValueRelation );
- 	
+ 		
  	// enumClassRole
  	enumClassRole.name = enumClassRoleName;
- 	enumClassRole.uuid = uuid3(t.uuid, "enumClassRole");
+ 	enumClassRole.uuid = generateUuid(enumValueClass.uuid, enumClassRoleName, ".");
  	enumClassRole.framework = isFrameworkElmt;
  	enumClassRole.navigable = true;
  	enumEnumValueRelation.roles.add( enumClassRole );
@@ -96,7 +91,7 @@ rule Enum2CorrespondingValueClass
  	
  	// enumValueClassRole
  	enumValueClassRole.name = enumValueClassRoleName;
- 	enumValueClassRole.uuid = uuid3(t.uuid, "enumValueClassRole");
+ 	enumValueClassRole.uuid = generateUuid(t.uuid, enumValueClassRoleName, ".");
  	enumValueClassRole.framework = isFrameworkElmt;
  	enumValueClassRole.navigable = true;
  	enumValueClassRole.lower = 0;
@@ -106,20 +101,21 @@ rule Enum2CorrespondingValueClass
 	enumValueClassRole.ownerClass = t;
 	enumValueClassRole.ownerClass.roles.add( enumValueClassRole );
 	
+	// create a new relation : enumEnumValueRelation
+	enumEnumValueRelation.name = relationName;
+ 	enumEnumValueRelation.uuid = generateUuid(enumValueClassRole.uuid, enumClassRole.uuid, "-");
+ 	enumEnumValueRelation.framework = isFrameworkElmt;
+ 	tgtPkg.relationships.add( enumEnumValueRelation );
+	
 	var langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and c.framework).first(); // TODO: make it fully specified via Qualified name
 
 	// reassignment - adding "Values" to the end of the yet defined name
 	enumValueClassRoleName = enumValueClassRoleName.concat("Values"); 
 	var enumValueClassLangClassRelationshipName = enumValueClassRoleName.concat("-").concat( langClass.name.firstToLowerCase());
 	
-	enumValueClassLangClassRelationship.name = enumValueClassLangClassRelationshipName;
-	enumValueClassLangClassRelationship.uuid = uuid3(t.uuid, "enumValueClassLangRelationship");
- 	enumValueClassLangClassRelationship.framework = isFrameworkElmt;
-	tgtPkg.relationships.add( enumValueClassLangClassRelationship );
-	
  	// enumValueClassRole
  	enumValueClassRole2nd.name = enumValueClassRoleName;
- 	enumValueClassRole2nd.uuid = uuid3(t.uuid, "enumValueClassRole2nd");
+ 	enumValueClassRole2nd.uuid = generateUuid(langClass.uuid, enumValueClassRoleName, "."); 
  	enumValueClassLangClassRelationship.roles.add( enumValueClassRole2nd );
 
 	enumValueClassRole2nd.navigable = true;
@@ -131,13 +127,18 @@ rule Enum2CorrespondingValueClass
 	
 	// languageClassRole						 	
  	langClassRole.name =  langClass.name.firstToLowerCase();
- 	langClassRole.uuid = uuid3(t.uuid, "langClassRole");
+ 	langClassRole.uuid = generateUuid(enumValueClass.uuid, langClassRole.name, ".");
  	langClassRole.framework = isFrameworkElmt;
  	enumValueClassLangClassRelationship.roles.add( langClassRole );
  	
  	langClassRole.navigable = true;
  	langClassRole.ownerClass = enumValueClass;
- 	langClassRole.ownerClass.roles.add( langClassRole ); 
+ 	langClassRole.ownerClass.roles.add( langClassRole );
+ 	
+ 	enumValueClassLangClassRelationship.name = enumValueClassLangClassRelationshipName;
+	enumValueClassLangClassRelationship.uuid = generateUuid(enumValueClassRole2nd.uuid, langClassRole.uuid, "-"); 
+ 	enumValueClassLangClassRelationship.framework = isFrameworkElmt;
+	tgtPkg.relationships.add( enumValueClassLangClassRelationship );
  }
 
 @primary
