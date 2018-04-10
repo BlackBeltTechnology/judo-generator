@@ -134,8 +134,8 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
         addRelationInfo("[%=invKey.javaReference.name%]", "[%=invKey.javaReference.opposite.name%]", [%=invKey.getOppositeOwnerClass().packageFqName()%].[%=invKey.getOppositeOwnerClass().name%].class, null, [%=invKey.getOppositeOwnerClass().poClassFqName()%].class, fk.[%=invKey.name%],
             [% if(invKey.javaReference.upper = 1) { out.print(false);} else {out.print(true);}%], true, [% if(invKey.javaReference.lower = 1) { out.print(true);} else {out.print(false);}%], "[%=invKey.javaReference.options%]");
         [%}%]
-        [% for (nmKey in class.view.getNmKeys()) {%]
-        addRelationInfo("[%=nmKey.name%]", "[%=nmKey.otherForeignKey().name%]", [%=nmKey.otherForeignKey().javaClass.packageFqName()%].[%=nmKey.otherForeignKey().javaClass.name%].class, [%=nmKey.junctionTable.packageName%].[%=nmKey.junctionTable.name%].class, [%=nmKey.otherForeignKey().javaClass.poClassFqName()%].class, fk.junction_[%=nmKey.otherForeignKey().name%], true, true, false, "");
+        [% for (nmKey in class.view.getAllNmKeys()) {%]
+        addRelationInfo("[%=nmKey.otherForeignKey().name%]", "[%=nmKey.name%]", [%=nmKey.otherForeignKey().javaClass.packageFqName()%].[%=nmKey.otherForeignKey().javaClass.name%].class, [%=nmKey.junctionTable.packageName%].[%=nmKey.junctionTable.name%].class, [%=nmKey.otherForeignKey().javaClass.poClassFqName()%].class, fk.junction_[%=nmKey.otherForeignKey().name%], true, true, false, "");
         [%}%]
     }
 
