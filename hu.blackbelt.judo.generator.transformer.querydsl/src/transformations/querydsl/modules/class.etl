@@ -19,14 +19,9 @@ rule JvmClassToQueryDslClass
         var uuidList : Sequence(String) = t.references.collect(reference | reference.originUuid);
         for (jvmRef in s.members.select(ref | ref.isTypeOf(JAVA!JvmReference))) {
         	if (uuidList.excludes(jvmRef.uuid)) {
-        		var junctionReference = new QUERYDSL!QueryDslReference();
-        		junctionReference.name = jvmRef.name;
-        		junctionReference.originUuid = jvmRef.uuid;		
-        		junctionReference.typeFqName = jvmRef.type.po().fqName();
-        		junctionReference.lower = jvmRef.lower;
-        		junctionReference.upper = jvmRef.upper;
-        		junctionReference.options = jvmRef.optionScript;
-        		
+        		var junctionReference = jvmRef.equivalent("JvmReferenceToQueryDslReference");
+        		junctionReference.uuid = uuid3(jvmRef.uuid, "QReference");
+        		junctionReference.opposite = jvmRef.opposite.equivalent("JvmReferenceToQueryDslReference");
         		t.references.add(junctionReference);
         	}
         }
