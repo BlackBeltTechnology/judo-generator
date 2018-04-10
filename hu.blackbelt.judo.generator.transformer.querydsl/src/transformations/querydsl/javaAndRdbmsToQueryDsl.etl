@@ -21,4 +21,3 @@ pre {
         targetModel.topPackageName = javaModel.applicationTop.fqName();
         targetModel.persistenceName = javaModel.applicationTop.name.firstToUpperCase();
 }
-

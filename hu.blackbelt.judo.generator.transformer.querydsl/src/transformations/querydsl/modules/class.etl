@@ -15,4 +15,20 @@ rule JvmClassToQueryDslClass
         t.supertype = s.supertype.equivalent("JvmClassToQueryDslClass");
         t.view = RDBMS!RdbmsView.all.selectOne(rt | rt.originUuid = t.originUuid).equivalent("RdbmsViewToQueryDslView");
         targetModel.queryDslClasses.add(t);
+        
+        var uuidList : Sequence(String) = t.references.collect(reference | reference.originUuid);
+        for (jvmRef in s.members.select(ref | ref.isTypeOf(JAVA!JvmReference))) {
+        	if (uuidList.excludes(jvmRef.uuid)) {
+        		var junctionReference = new QUERYDSL!QueryDslReference();
+        		junctionReference.name = jvmRef.name;
+        		junctionReference.originUuid = jvmRef.uuid;		
+        		junctionReference.typeFqName = jvmRef.type.po().fqName();
+        		junctionReference.lower = jvmRef.lower;
+        		junctionReference.upper = jvmRef.upper;
+        		junctionReference.options = jvmRef.optionScript;
+        		
+        		t.references.add(junctionReference);
+        	}
+        }
+        
     }
