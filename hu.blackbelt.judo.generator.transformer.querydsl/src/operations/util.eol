@@ -10,6 +10,10 @@ operation uuid3 (namespace : String, name : String) : String {
 	return UUIDUtils.uuid3(namespace, name);
 }
 
+operation RDBMS!EObject clone() : RDBMS!EObject {
+	return EMFTool.ecoreUtil.copy(self);
+}
+
 operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
     var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
     if (ret.isUndefined()) {

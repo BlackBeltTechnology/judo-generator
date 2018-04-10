@@ -20,10 +20,20 @@ rule JvmClassToQueryDslClass
         for (jvmRef in s.members.select(ref | ref.isTypeOf(JAVA!JvmReference))) {
         	if (uuidList.excludes(jvmRef.uuid)) {
         		var junctionReference = jvmRef.equivalent("JvmReferenceToQueryDslReference");
-        		junctionReference.uuid = uuid3(jvmRef.uuid, "QReference");
+        		junctionReference.uuid = uuid3(t.uuid, jvmRef.name);
         		junctionReference.opposite = jvmRef.opposite.equivalent("JvmReferenceToQueryDslReference");
+        		junctionReference.representsJunction = true;
         		t.references.add(junctionReference);
         	}
         }
         
+        if (t.supertype.isDefined()) {
+        	var junctionReferences : OrderedSet(QUERYDSL!QueryDslReference) = t.supertype.references.select(ref | ref.representsJunction);
+        	for (junctionReference in junctionReferences) {
+        		var inheritedJunctionRef = junctionReference.clone();
+        		t.references.add(inheritedJunctionRef);
+        		inheritedJunctionRef.uuid = uuid3(t.uuid, junctionReference.name);
+        		inheritedJunctionRef.opposite = junctionReference.opposite;
+        	}
+        }        
     }

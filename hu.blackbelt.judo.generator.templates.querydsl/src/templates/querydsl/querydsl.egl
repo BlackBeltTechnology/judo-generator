@@ -157,15 +157,15 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
                     }
             })
         [%}%]
-        [% for (ref in class.references()) { %]
+        [% for (ref in class.references()) { %]       	
             .put("[%=ref.name.firstToLowerCase()%]", new Getter<[%=class.poClassName()%], [%=ref.typeFqName%]>() {
                     @Nullable
                     @Override
                     public [%=ref.typeFqName%] get(@Nullable [%=class.poClassName()%] input) {
                         return input.get[%=ref.name.firstToUpperCase()%]();
-                    }
+                    }    
+            [%}%]
             })
-        [%}%]
         .build();
 
     private static final Map<String, Setter<[%=class.poClassName()%], Object>> setters = ImmutableMap.<String, Setter<[%=class.poClassName()%], Object>>builder()
@@ -189,8 +189,8 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
             .put("[%=ref.name%]", new Setter<[%=class.poClassName()%], Object>() {
                 @Nullable
                 @Override
-                public void set(@Nullable [%=class.poClassName()%] instance, @Nullable Object value) {
-                    instance.set[%=ref.name.firstToUpperCase()%](([%=ref.typeFqName%]) value);
+                public void set(@Nullable [%=class.poClassName()%] instance, @Nullable Object value) {             
+                	instance.set[%=ref.name.firstToUpperCase()%](([%=ref.typeFqName%]) value);
                 }
             })
         [%}%]
