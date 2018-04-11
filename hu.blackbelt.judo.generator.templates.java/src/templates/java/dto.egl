@@ -27,7 +27,11 @@ public class [%= class.name %] [% if (class.hasSuper()) { %] extends [%=class.su
 
 	private Metadata $judo$meta;
 	
-	[% for (attr in class.attributes()) { %]
+	[% for (attr in class.attributes().select(a | a.representsId)) { %]
+		private [%=attr.type.fqName() %] [%=attr.name %];
+	[%}%]
+	
+	[% for (attr in class.attributes().select(a | not a.representsId)) { %]
 		@PermissionSubjectAttribute(id = "[%=class.origin.uuid %].[%=class.originAttributeByName(attr.name).uuid %]", resource = "[%=class.origin.package %].[%=class.origin.name %].[%=attr.name %]")
 		private [%=attr.type.fqName() %] [%=attr.name %];
 	[%}%]

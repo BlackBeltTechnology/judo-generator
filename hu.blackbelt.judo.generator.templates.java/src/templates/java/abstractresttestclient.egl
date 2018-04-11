@@ -65,7 +65,7 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
                         [%}%]
                     [%}%]
                     [% if (ref.stateMachineReference().isDefined()) { %]
-                        .[%=ref.name%]([%=class.name%][%=ref.name.firstToUpperCase()%]Client.[%=class.name.firstToLowerCase()%][%=ref.name.firstToUpperCase()%]().queryByCode([%=class.fqName()%][%=ref.name.firstToUpperCase()%]EnumRestDto.[%=ref.stateMachineReference().states.selectOne(s | s.initialState).getEnumLiteral().name.toUpperCase() %]))
+                        .[%=ref.name%]([%=ref.type.abstractRestTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().queryByCode([%=ref.type.restDtoEnum().fqName()%].[%=ref.stateMachineReference().states.selectOne(s | s.initialState).getEnumLiteral().name %]))
                     [%}%]
             [%}%];
             prepareBuilder(builder);
