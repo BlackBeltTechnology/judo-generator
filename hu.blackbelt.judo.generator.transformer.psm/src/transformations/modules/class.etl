@@ -127,7 +127,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	
 	    if (menuClass.stereotype("menuitem")) {
 	        var mi = new tgtPSM!JUIMenuItem;
-	        mi.uuid = generateUuid(generateUuid(parentMenuItem.uuid, menuClass.name, "."), imp.name, ".");
+	        mi.uuid = generateUuid(parentMenuItem.uuid, menuClass.name, ".");
 	        mi.name = menuClass.name;
 	        mi.type = tgtPSM!JMenuItemType#NONE;
 	        parentMenuItem.children.add(mi);
@@ -136,7 +136,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	
 	    if (menuClass.isTypeOf(inpPIM!InstanceSpecification) or (menuClass.isTypeOf(Class) and (menuClass.stereotype("dtoClasses") or menuClass.owner.stereotype("dtoPackages")))) {
 	        var mi = new tgtPSM!JUIMenuItem;
-	        mi.uuid = generateUuid(generateUuid(parentMenuItem.uuid, menuClass.name, "."), imp.name, ".");
+	        mi.uuid = generateUuid(parentMenuItem.uuid, menuClass.name, ".");
 	        mi.name = menuClass.name;
 	
 			var sourceClass;
@@ -178,7 +178,7 @@ operation transformMenuItem(parentMenuItem : tgtPSM!JUIMenuItem, sourceClass : i
 	    	classes.name.println("COLLECT CLASSES: ");
 	        for (childMenuClass in classes) {
 	            var mi = new tgtPSM!JUIMenuItem;
-	            mi.uuid = generateUuid(generateUuid(parentMenuItem.uuid, childMenuClass.name, "."), imp.name, ".");
+	            mi.uuid = generateUuid(parentMenuItem.uuid, childMenuClass.name, ".");
 	            mi.name = childMenuClass.name;
 	
 	            mi.represent = childMenuClass.equivalent("Class");

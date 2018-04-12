@@ -55,6 +55,22 @@ post {
 	}
 	
 	"POST processing FINISHED.".println();
+	
+	
+	var all = tgtPSM!JElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println();
+		}
+	}
+	
+	tgtPSM!JElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	
 }
 
 // 'self' is map of classes to "listing Specifications"
@@ -97,7 +113,7 @@ operation Map setAttrOrderAssocs() {
 	        }
 	
 	        var attrGroup = new tgtPSM!JUIAttributeGroup(groupName);
-	        attrGroup.uuid = generateUuid(targetClass.uuid, groupName, ".");
+	        attrGroup.uuid = generateUuid(generateUuid(targetClass.uuid, groupName, "."), "AttributeOrder", "_");
 	        attrGroup.position = position;
 	        targetClass.attributeOrder.add(attrGroup);
 	

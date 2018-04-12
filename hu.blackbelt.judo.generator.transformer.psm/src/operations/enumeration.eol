@@ -12,7 +12,7 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	}
  	// clientRole
  	var clientRole : tgtPSM!JRole = new tgtPSM!JRole; 
- 	clientRole.uuid = generateUuid(relation.uuid, clientRoleName, ".");
+ 	clientRole.uuid = generateUuid(clientRoleOwner.uuid, supplierRoleOwner.name.firstToLowerCase() + clientRoleName, ".");
  	clientRole.name = supplierRoleOwner.name.firstToLowerCase() + clientRoleName;
  	clientRole.lower = 0;
  	clientRole.upper = -1;
@@ -23,7 +23,7 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	
  	// supplierRole
  	var supplierRole : tgtPSM!JRole = new tgtPSM!JRole; 
- 	supplierRole.uuid = generateUuid(relation.uuid, supplierRoleName, ".");
+ 	supplierRole.uuid = generateUuid(supplierRoleOwner.uuid, supplierRoleName, ".");
  	supplierRole.name = supplierRoleName.firstToLowerCase();
  	supplierRole.navigable = true;
  	relation.roles.add( supplierRole );

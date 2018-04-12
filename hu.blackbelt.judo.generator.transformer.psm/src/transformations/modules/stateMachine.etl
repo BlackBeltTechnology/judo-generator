@@ -21,7 +21,8 @@ rule StateMachine
 	stateMachineEnum.uuid = generateUuid(ownerPackage.uuid, stateMachineEnum.name + "Enum", ".");
 	
 	ownerPackage.enumerations.add(stateMachineEnum);
-	 
+	
+	t.uuid = generateUuid(t.uuid, "StateMachine", "_");
 	t.correspondingEnum = stateMachineEnum; 
 	
 	t.createEnumImplInfrastucture();
@@ -77,11 +78,11 @@ rule Transition
 	guard: 	s.owner.owner.equivalent("StateMachine").isDefined() and
 			s.Source.isTypeOf(State) and s.Target.isTypeOf(State) 
 	
-	t.uuid = generateUuid(s.owner.owner.equivalent("StateMachine").uuid, t.name, ".");
-	s.owner.owner.equivalent("StateMachine").transitions.add(t);
 	t.toState ::= s.Target;
 	t.fromState ::= s.Source;
-	
+	t.uuid = generateUuid(generateUuid(s.owner.owner.equivalent("StateMachine").uuid, t.name, "."), t.fromState.name + t.toState.name, "_");
+	s.owner.owner.equivalent("StateMachine").transitions.add(t);
+		
 	s.Target.equivalent("State").incomingTransitions.add(t);
 	s.Source.equivalent("State").outgoingTransitions.add(t);
 	
