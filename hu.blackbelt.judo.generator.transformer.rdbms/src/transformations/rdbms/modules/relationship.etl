@@ -21,12 +21,30 @@ rule JRoleToRdbmsJunctionTable
 		t.field2.mandatory = true;
 		
 		i1.name = t.name + " " + primaryRole.name;
-		i1.sqlName = ("IDX_" + uuid3(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName()).replaceAll("-","")).substring(0,30);
+		i1.uuid = generateUuid(t.uuid, "indexOne", "_");
+		
+		/*var tempSqlName : String = ("IDX_" + generateUuid(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName(), ".").replaceAll("-",""));
+		if (tempSqlName.length > 30) {
+			i1.sqlName = tempSqlName.substring(0,30);
+		} else {
+			i1.sqlName = tempSqlName;
+		}*/
+		i1.sqlName = ("IDX_" + md5(generateUuid(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName(), ".").replaceAll("-","")));
+		
 		i1.fields.add(t.field1);
 		i1.table = t;
 
 		i2.name = t.name + " " + secondaryRole.name;
-		i2.sqlName = ("IDX_" + uuid3(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName()).replaceAll("-","")).substring(0,30);
+		i2.uuid = generateUuid(t.uuid, "indexTwo", "_");
+		
+		/*tempSqlName = ("IDX_" + generateUuid(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName(), ".").replaceAll("-",""));
+		if (tempSqlName.length > 30) {
+			i2.sqlName = tempSqlName.substring(0,30);
+		} else {
+			i2.sqlName = tempSqlName;
+		}*/
+		i2.sqlName = ("IDX_" + md5(generateUuid(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName(), ".").replaceAll("-","")));
+		
 		i2.fields.add(t.field2);
 		i2.table = t;
 		
@@ -34,8 +52,9 @@ rule JRoleToRdbmsJunctionTable
 		t.indexes.add(i2);
 
 		uq.name = t.name + " " + primaryRole.name + ", " + secondaryRole.name;
+		uq.uuid = generateUuid(t.uuid, "uniqueConstraint", "_");
 		// uq.sqlName = "UQ_" + s.relationSqlName();
-		uq.sqlName = ("UQ_" + t.uuid.replaceAll("-","")).substring(0,30);
+		uq.sqlName = ("UQ_" + md5(t.uuid.replaceAll("-","")));
 		
 		uq.fields.add(t.field1);
 		uq.fields.add(t.field2);
@@ -47,7 +66,7 @@ rule JRoleToRdbmsJunctionTable
 		p.sqlName = "ID";
 		p.mandatory = true;
 		p.type = idType();
-		p.uuid =  uuid3(primaryRole.uuid, secondaryRole.uuid);
+		p.uuid =  generateUuid(t.uuid, "indentifierField", "_");
 		
 		t.fields.add(f1);
 		t.fields.add(f2);

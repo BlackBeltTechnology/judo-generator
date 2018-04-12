@@ -8,7 +8,7 @@ rule JAttributeToRdbmsField
 	extends JElementToRdbmsElement { 
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE)
 	    if (not s.uuid.isDefined() or s.uuid.isEmpty()) {
-	        t.uuid  = uuid3(s.ownerClass.uuid, s.name);
+	        t.uuid  = generateUuid(s.ownerClass.uuid, s.name, ".");
 	    } else {
 	        t.uuid = s.uuid;
 	    }
@@ -61,7 +61,7 @@ rule JAttributeToViewIdFieldWithoutView
 		v.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + ".id";
 		v.sqlName = "ID";
 		v.tableField = s.equivalent("JAttributeToTableIdField");
-		v.uuid = uuid3(v.tableField.uuid, "view");
+		v.uuid = generateUuid(v.tableField.uuid, "ViewField", "_");
 		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
 		v.description = s.ownerClass.name + "." + s.name;
 }
@@ -84,7 +84,7 @@ rule JAttributeToViewValueFieldWithoutView
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and not s.isPrimaryKey()
 		v.tableField = s.equivalent("JAttributeToTableValueField");
 		v.sqlName  = v.tableField.sqlName;
-		v.uuid = uuid3(v.tableField.uuid, "view");
+		v.uuid = generateUuid(v.tableField.uuid, "ViewField", "_");
 		v.description = s.ownerClass.name + "." + s.name;
 }
 
@@ -97,6 +97,7 @@ rule JAttributeToViewValueField
 		v.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
 		v.view = s.ownerClass.equivalent("JClassToRdbmsView");
 		v.`alias` = v.view.primaryTable;
+		v.uuid = generateUuid(v.tableField.uuid, "ViewField", "_");
 }
 
 @lazy
@@ -118,13 +119,19 @@ rule JAttributeToUniqueKey
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.unique == true and not s.isPrimaryKey() and not s.derived
 	    
 	    if (not s.uuid.isDefined() or s.uuid.isEmpty()) {
-	        u.uuid  = uuid3(s.ownerClass.uuid, s.name);
+	        u.uuid  = generateUuid(generateUuid(s.ownerClass.uuid, s.name, "."), "uniqueConstraint", "_");
 	    } else {
-	        u.uuid = s.uuid;
+	        u.uuid = generateUuid(s.uuid, "uniqueConstraint", "_");
 	    }
 		u.table = s.ownerClass.equivalent("JClassToRdbmsTable");
-		// u.sqlName = 'UQ_' + u.table.sqlName + "_" + s.fieldSqlName(); 
-		u.sqlName = ("UQ_" + u.uuid.replaceAll("-","")).substring(0,30);
+		// u.sqlName = 'UQ_' + u.table.sqlName + "_" + s.fieldSqlName();
+		/*if (("UQ_" + u.uuid.replaceAll("-","")).length > 30) {
+			u.sqlName = ("UQ_" + u.uuid.replaceAll("-","")).substring(0,30);
+		} else {
+			u.sqlName = ("UQ_" + u.uuid.replaceAll("-",""));
+		}*/
+		u.sqlName = ("UQ_" + md5(u.uuid.replaceAll("-","")));
+		
 		u.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
 		u.description = s.ownerClass.name + "." + s.name;
 		u.fields.add(s.equivalent("JAttributeToTableValueField"));

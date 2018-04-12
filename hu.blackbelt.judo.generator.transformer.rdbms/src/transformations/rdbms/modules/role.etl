@@ -56,6 +56,7 @@ rule JRoleToRdbmsuniqueConstraint
 		idx.sqlName = s.roleIndexSqlName();    
 		idx.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
 		idx.fields.add(s.equivalent("JRoleToRdbmsTableForeignKey"));
+		idx.uuid = generateUuid(s.uuid, "Index", "_");
 	
 	}
 	

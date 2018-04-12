@@ -7,7 +7,7 @@ operation RDBMS!RdbmsView createBaseAlias(class : PSM!JClass) : RDBMS!RdbmsTable
     baseAlias.name = baseAlias.table.name;
     baseAlias.description = "Base " + baseAlias.table.name;
     baseAlias.sqlName = "BASE_" + baseAlias.table.sqlName;
-	baseAlias.uuid = uuid3(class.uuid, self.name);
+	baseAlias.uuid = generateUuid(self.uuid, "TableAlias", "_");
 
     self.tables.add(baseAlias);
     self.primaryTable = baseAlias;
@@ -37,7 +37,7 @@ operation RDBMS!RdbmsView createRoleReferenceField(role : PSM!JRole) : RDBMS!Rdb
 	vi.name = role.roleAliasName(); 
 	vi.sqlName = role.roleIdSqlName();
 	vi.description =  role.opposite().name + " (" + role.opposite().ownerClass.name + ")";
-	vi.uuid = uuid3(role.uuid, self.name);
+	vi.uuid = generateUuid(role.uuid, "ViewField", "_");
 	return vi;
 }
 
@@ -57,7 +57,7 @@ operation RDBMS!RdbmsView addForeignRelationField(role : PSM!JRole) {
 	vi.name = role.roleAliasName(); 
 	vi.sqlName = 'INV_' + role.roleIdSqlName();
 	vi.description =  role.opposite().name + " (" + role.opposite().ownerClass.name + ")";
-	vi.uuid = uuid3(role.uuid, self.name);
+	vi.uuid = generateUuid(role.uuid, self.name, ".");
 	vi.description += " Foreign Relation";
 	vi.tableField = role.opposite().equivalent("JRoleToRdbmsTableForeignKey");
 	vi.referenceIdentifier = self.primaryIdentifierField;
@@ -71,7 +71,7 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 
 	self.fields.add(vf);
 	
-	vf.uuid = uuid3(attribute.uuid, self.name);
+	vf.uuid = generateUuid(attribute.uuid, self.name, ".");
    	vf.view = self;  		 
    		    		 
    	// (attribute.ownerClass.name + "." + attribute.name).println("EXPRESSION FOUND: ");
@@ -185,7 +185,7 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 									foreignValueField.view = self;
 									foreignValueField.name = valueFieldName;								
 									foreignValueField.`alias` = currentAlias;
-									foreignValueField.uuid = uuid3(attr.uuid, currentParsedRelationExpression.getRelationName() + " " + attr.name);
+									foreignValueField.uuid = generateUuid(attr.ownerClass.uuid, currentParsedRelationExpression.getRelationName() + "_" + self.name, ".");
 									foreignValueField.sqlName = currentAlias.sqlName + "_" + attr.ownerClass.classSqlName() + "_" + attr.sqlName();
 									foreignValueField.tableField = attr.equivalent("JAttributeToTableValueField");
 									foreignValueField.description = currentRelationName + "." + attr.name;
@@ -197,7 +197,7 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 							currentRelationExpression.name = currentRelationExpression.field.name;																	
 							currentRelationExpression.shortName = currentRelationExpression.field.shortName;																	
 							currentRelationExpression.fullName = currentRelationExpression.field.fullName;																	
-							currentRelationExpression.uuid = uuid3(currentRelationExpression.field.uuid, currentRelationName);
+							currentRelationExpression.uuid = generateUuid(currentRelationExpression.field.uuid, currentRelationName, ".");
 							currentRelationExpression.description = currentRelationName + "." + attr.name;
 
 						}
@@ -244,7 +244,7 @@ operation RDBMS!RdbmsView findOrAddAlias(role : PSM!JRole, relationName : String
 		currentAlias = new RDBMS!RdbmsTableAlias();
 		self.tables.add(currentAlias);
 		currentAlias.table = role.opposite().ownerClass.equivalent("JClassToRdbmsTable");
-		currentAlias.uuid = uuid3(self.uuid, relationName);
+		currentAlias.uuid = generateUuid(self.uuid, relationName + "TableAlias", ".");
 		currentAlias.sqlName = 'REL_' + abbreviate(relationName.replaceAll("\\.", ""), 12).toUpperCase();
 		currentAlias.name = aliasName;
 	}
@@ -290,7 +290,7 @@ operation RDBMS!RdbmsView addSupertypeViewField(original : RDBMS!RdbmsViewField)
 
 	var created : RDBMS!RdbmsViewField = original.clone();
 	self.fields.add(created);
-	created.uuid = uuid3(original.uuid, self.name);
+	created.uuid = generateUuid(original.uuid, self.name, ".");
 	created.inherited = true;
 	created.view = self;
 
@@ -330,7 +330,7 @@ operation RDBMS!RdbmsView addSupertypeAliases(baseView : RDBMS!RdbmsView) : RDBM
 
 		var created : RDBMS!RdbmsTableAlias = f.clone();
 		self.tables.add(created);
-		created.uuid = uuid3(f.uuid, self.name);
+		created.uuid = generateUuid(f.uuid, self.name, ".");
 		created.description = "Super " + f.table.name;
 		created.sqlName = "SUP_" + f.table.sqlName;
 

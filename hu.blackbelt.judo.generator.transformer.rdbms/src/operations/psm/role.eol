@@ -31,17 +31,35 @@ operation PSM!JRole roleSqlName() : String {
 
 @cached
 operation PSM!JRole roleFkSqlName() : String {
-    return ("FK_" + uuid3(self.uuid, self.roleSqlName()).replaceAll("-","")).substring(0,30);
+	/*var temp = generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","");
+	if (temp.length() > 30) {
+		return ("FK_" + temp.substring(0,30));
+	} else {
+		return  temp);
+	}*/
+	return ("FK_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","")));
 }
 
 @cached
 operation PSM!JRole roleUniqueSqlName() : String {
-    return ("UQ_" + uuid3(self.uuid, self.roleSqlName()).replaceAll("-","")).substring(0,30);
+	/*var temp = generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","");
+	if (temp.length() > 30) {
+		return ("UQ_" + temp.substring(0,30));
+	} else {
+		return ("UQ_" + temp);
+	}*/
+	return ("UQ_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","")));
 }
 
 @cached
 operation PSM!JRole roleIndexSqlName() : String {
-    return ("IDX_" + uuid3(self.uuid, self.roleSqlName()).replaceAll("-","")).substring(0,30);
+	/*var temp = generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","");
+	if (temp.length() > 30) {
+		return ("IDX_" + temp.substring(0,30));
+	} else {
+		return ("IDX_" + temp);
+	}*/
+	return ("IDX_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","")));
 }
 
 @cached
