@@ -40,6 +40,7 @@ post {
 			je.participates.add(tgtPSM!JLayer#ALL);
 		}
 		je.framework = true;
+		je.uuid = generateUuid("FW", je.uuid, "_");
 	}
 	
 	var idType = tgtPSM!JPrimitive.all.select(p | p.useForIdType).first();
@@ -54,6 +55,21 @@ post {
 	}
 	
 	"POST processing FINISHED.".println();
+	
+	
+	var all = tgtPSM!JElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println();
+		}
+	}
+	
+	tgtPSM!JElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
 }
 
 // 'self' is map of classes to "listing Specifications"
