@@ -34,7 +34,7 @@ rule OriginClass
 	to t : JAVA!JvmClass 
 	extends JClass {
 		t.coordinate = JAVA!JvmJudoCoordinate#ORIGIN;
-		t.supertype = s.supertype.equivalent("OriginClass");
+		t.supertype = s.supertype.equivalent("OriginClass");		
 }
 
 @abstract
@@ -80,7 +80,7 @@ rule BoClass
 		t.fillClass(s, JAVA!JvmJudoCoordinate#BO);
 		if (s.framework) {
 			t.implements.add(s.equivalent("BoInterface"));
-		}
+		}	
 }
 
 rule PoClass 
@@ -336,6 +336,9 @@ rule DtoAccessorClass
     to t : JAVA!JvmClass
     extends WithOrigin {
     guard : s.participates(PSM!JLayer#OPERATION)
+    
+    	//s.uuid.println("DTOACCESS: ");
+    
         t.supertype = s.supertype.equivalent("DtoAccessorClass");
         t.fillClass(s, JAVA!JvmJudoCoordinate#DTO_ACCESSOR);
 }

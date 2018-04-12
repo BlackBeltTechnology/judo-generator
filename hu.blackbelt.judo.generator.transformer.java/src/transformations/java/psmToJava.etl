@@ -82,6 +82,24 @@ post {
 	addAndModifyMethods();
 	addSingleClasses();
 	modifyReferenceTypeToInterfaceForFrameworkEntities();
+	
+	for (attr in JAVA!JvmAttribute.all) {
+		attr.uuid = generateUuid(attr.ownerClass.uuid, attr.name, ".");
+	}
+	
+	var all = JAVA!JvmElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println("DUPLICATE: ");
+		}
+	}
+	
+	JAVA!JvmElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
 }
 
 operation hacklongtoPOId () : Any {

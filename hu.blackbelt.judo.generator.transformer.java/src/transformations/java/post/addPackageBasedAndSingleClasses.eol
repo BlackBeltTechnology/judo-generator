@@ -50,7 +50,9 @@ operation addPackageBasedRestDtoClasses () {
 		}
 		
         //dummyOriginClass is only used as the common origin of package based classes so its package is not used
-        dummyOriginClass.package = new JAVA!JvmPackage;
+        var dummyPackage = new JAVA!JvmPackage;
+        dummyPackage.uuid = generateUuid("DummyPackageForOriginClass", package.name.firstToUpperCase(), "");
+        dummyOriginClass.package = dummyPackage;
     }
     
     

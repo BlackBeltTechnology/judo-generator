@@ -123,7 +123,7 @@ operation JAVA!JvmInterface createRestDtoOperationMethods () {
 
         var traverseExportMethod = createMethodFor(self, ref, responseType(), "", JAVA!JvmMethodKind#TRAVERSE_EXPORT);
         traverseExportMethod.name = "traverse" + ref.name.firstToUpperCase() + "Export";
-        traverseExportMethod.uuid = generateUuid(ref.uuid, traverseExportMethod.name, ".");
+        traverseExportMethod.uuid = generateUuid(self.uuid, traverseExportMethod.name, ".");
         traverseExportMethod.addIdParam();
         traverseExportMethod.addCustomParam(self.filterRestDto(), "filter");
 
@@ -151,7 +151,7 @@ operation JAVA!JvmInterface createRestDtoOperationMethods () {
 operation createMethodFor (ownerClass : JAVA!JvmInterface, ref : JAVA!JvmReference, returnType : JAVA!JvmType, mNamePrefix : String, kind : Any) : JAVA!JvmMethod {
     var newMethod = new JAVA!JvmMethod;
     newMethod.name = mNamePrefix + ref.name.firstToUpperCase();
-    newMethod.uuid = generateUuid(ref.uuid, newMethod.name, ".");
+    newMethod.uuid = generateUuid(ownerClass.uuid, newMethod.name, ".");
     newMethod.originReference = ref;
     newMethod.ownerClass = ownerClass;
     newMethod.type = returnType;
