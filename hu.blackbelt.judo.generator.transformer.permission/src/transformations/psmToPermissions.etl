@@ -105,4 +105,21 @@ post {
 			"".println();
 		}
 	}
+	
+	
+	
+	
+	var all = Permission!Identifiable.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println("DUPLICATE: ");
+		}
+	}
+	
+	Permission!Identifiable.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
 }
