@@ -73,6 +73,11 @@ operation tgtPSM!JAttribute type(type : tgtPSM!JType) : tgtPSM!JAttribute {
 	return self;
 }
 
+operation tgtPSM!JAttribute representsId() : tgtPSM!JAttribute {
+	self.representsId = true;
+	return self;
+}
+
 operation tgtPSM!JAttribute private() : tgtPSM!JAttribute {
 	self.visibility = tgtPSM!JVisibility#PRIVATE;
 	return self;

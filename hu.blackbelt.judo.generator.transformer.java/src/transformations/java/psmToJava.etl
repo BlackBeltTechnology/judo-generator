@@ -9,9 +9,7 @@ import "modules/attribute.etl";
 import "modules/parameter.etl";
 import "modules/stateMachine.etl";
 
-import "pre/addParticipateToAllElement.eol";
 import "pre/modifyVoidBusinessMethodsToReturnDeclaringClass.eol";
-import "pre/addIdToEntities.eol";
 
 import "post/addGuardMethodsAndEnum.eol";
 import "post/addPackageBasedAndSingleClasses.eol";
@@ -68,7 +66,6 @@ pre {
 			JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "M", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M}
 		};
 
-	addParticipateToAllElement();
 	modifyVoidBusinessMethodsToReturnDeclaringClass();
 	
 }

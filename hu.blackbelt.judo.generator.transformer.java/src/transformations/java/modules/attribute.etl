@@ -144,6 +144,7 @@ operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule
 	self.technical = source.technical;
 	self.regexp = source.regexp;
     self.placeholder = source.placeholder;
+    self.representsId = source.representsId;
     if (self.placeholder.isUndefined()) {
         self.placeholder = "";
     }

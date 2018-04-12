@@ -128,11 +128,11 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
         [% } %]
         [% for (foreignKey in class.view.getForeignKeys()) {%]
         addRelationInfo("[%=foreignKey.javaReference.name%]", "[%=foreignKey.javaReference.opposite.name%]", [%=foreignKey.getOppositeOwnerClass().packageFqName()%].[%=foreignKey.getOppositeOwnerClass().name%].class, null, [%=foreignKey.getOppositeOwnerClass().poClassFqName()%].class, fk.[%=foreignKey.name%],
-            [% if(foreignKey.javaReference.upper > 1 or foreignKey.javaReference.upper = -1) { out.print(false);} else {out.print(true);}%], false, [% if(foreignKey.javaReference.lower = 1) { out.print(true);} else {out.print(false);}%], "[%=foreignKey.javaReference.options%]");
+            [% if(foreignKey.javaReference.upper > 1 or foreignKey.javaReference.upper = -1) { out.print(true);} else {out.print(false);}%], false, [% if(foreignKey.javaReference.lower = 1) { out.print(true);} else {out.print(false);}%], "[%=foreignKey.javaReference.options%]");
         [% } %]
         [% for (invKey in class.view.getInvKeys()) {%]
         addRelationInfo("[%=invKey.javaReference.name%]", "[%=invKey.javaReference.opposite.name%]", [%=invKey.getOppositeOwnerClass().packageFqName()%].[%=invKey.getOppositeOwnerClass().name%].class, null, [%=invKey.getOppositeOwnerClass().poClassFqName()%].class, fk.[%=invKey.name%],
-            [% if(invKey.javaReference.upper > 1 or invKey.javaReference.upper = -1) { out.print(false);} else {out.print(true);}%], true, [% if(invKey.javaReference.lower = 1) { out.print(true);} else {out.print(false);}%], "[%=invKey.javaReference.options%]");
+            [% if(invKey.javaReference.upper > 1 or invKey.javaReference.upper = -1) { out.print(true);} else {out.print(false);}%], true, [% if(invKey.javaReference.lower = 1) { out.print(true);} else {out.print(false);}%], "[%=invKey.javaReference.options%]");
         [%}%]
         [% for (nmKey in class.view.getAllNmKeys()) {%]
         addRelationInfo("[%=nmKey.otherForeignKey().name%]", "[%=nmKey.name%]", [%=nmKey.otherForeignKey().javaClass.packageFqName()%].[%=nmKey.otherForeignKey().javaClass.name%].class, [%=nmKey.junctionTable.packageName%].[%=nmKey.junctionTable.name%].class, [%=nmKey.otherForeignKey().javaClass.poClassFqName()%].class, fk.junction_[%=nmKey.otherForeignKey().name%], true, true, false, "");
@@ -164,8 +164,8 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
                     public [%=ref.typeFqName%] get(@Nullable [%=class.poClassName()%] input) {
                         return input.get[%=ref.name.firstToUpperCase()%]();
                     }    
-            [%}%]
             })
+            [%}%]
         .build();
 
     private static final Map<String, Setter<[%=class.poClassName()%], Object>> setters = ImmutableMap.<String, Setter<[%=class.poClassName()%], Object>>builder()

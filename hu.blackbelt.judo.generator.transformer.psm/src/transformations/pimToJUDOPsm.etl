@@ -50,21 +50,11 @@ post {
 		jc.attributes.add(createDefaultAttribute("auditUpdateTime").uuid(jc.uuid).technical().type(getPSMPrimitiveType("datetime")).private());
 		jc.attributes.add(createDefaultAttribute("guid").uuid(jc.uuid).technical().unique().type(getPSMPrimitiveType("String")).private());
 		jc.attributes.add(createDefaultAttribute("xmiid").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
-		jc.attributes.add(createDefaultAttribute("id").uuid(jc.uuid).technical().type(getPSMPrimitiveType("Id")).private());
+		jc.name.println("ADDING ID TO: ");
+		jc.attributes.add(createDefaultAttribute("id").uuid(jc.uuid).representsId().technical().type(getPSMPrimitiveType("Id")).private());
 	}
 	
 	"POST processing FINISHED.".println();
-}
-
-operation addIdToEntities () : Any {
-	var entities = tgtPSM!JClass.all.select(c | c.participates(PSM!JLayer#PERSISTENCE) and not c.hasSuperType() );
-	for (e in entities) { 
-		var id = new PSM!JAttribute;
-		id.ownerClass = e;
-		id.type = PSM!JPrimitive.all.select(p | p.useForIdType).first();
-		id.name = "id";
-		id.uuid = uuid3(e.uuid, id.name);
-	}
 }
 
 // 'self' is map of classes to "listing Specifications"

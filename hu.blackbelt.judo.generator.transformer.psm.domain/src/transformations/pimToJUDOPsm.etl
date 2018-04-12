@@ -50,7 +50,7 @@ post {
 		jc.attributes.add(createDefaultAttribute("auditUpdateTime").uuid(jc.uuid).technical().type(getPSMPrimitiveType("datetime")).private());
 		jc.attributes.add(createDefaultAttribute("guid").uuid(jc.uuid).technical().unique().type(getPSMPrimitiveType("String")).private());
 		jc.attributes.add(createDefaultAttribute("xmiid").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
-		jc.attributes.add(createDefaultAttribute("id").uuid(jc.uuid).technical().type(getPSMPrimitiveType("Id")).private());
+		jc.attributes.add(createDefaultAttribute("id").representsId().uuid(jc.uuid).technical().type(getPSMPrimitiveType("Id")).private());
 	}
 	
 	"POST processing FINISHED.".println();

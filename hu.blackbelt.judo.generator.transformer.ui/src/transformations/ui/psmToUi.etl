@@ -6,14 +6,6 @@ import "modules/uimodule.etl";
 import "modules/uifilter.etl";
 import "modules/uimenuitem.etl";
 
-import "pre/addParticipateToAllElement.eol";
-import "pre/addIdToEntities.eol";
-
-pre {
-	addParticipateToAllElement();
-	//addIdToEntities();	
-}
-
 
 
 post {

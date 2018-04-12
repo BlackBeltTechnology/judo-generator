@@ -8,7 +8,6 @@ import "modules/role.etl";
 import "modules/relationship.etl";
 import "modules/literal.etl";
 
-import "pre/addParticipateToAllElement.eol";
 import "pre/addIdToEntities.eol";
 
 
@@ -16,7 +15,6 @@ pre {
 	var targetModel : RDBMS!RdbmsModel;
 	var targetConfiguration : RDBMS!RdbmsConfiguration;
 
-	addParticipateToAllElement();
 	addIdToEntities();	
 }	
 
