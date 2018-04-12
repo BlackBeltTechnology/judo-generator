@@ -10,7 +10,7 @@ rule RdbmsModelToQueryDslModel
 
         //TODO: there should only be one java model and that should be used
         var javaModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
-        t.uuid = uuid3(javaModel.uuid, "QueryDslModel");
+        t.uuid = generateUuid(javaModel.uuid, "", "");
         t.originUuid = javaModel.uuid;
         t.name = javaModel.name;
         t.topPackageName = javaModel.applicationTop.fqName();

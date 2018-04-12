@@ -2,7 +2,7 @@
 rule QueryDslJunctionFieldGeneric
 	transform s : RDBMS!RdbmsField
 	to t : QUERYDSL!QueryDslSqlElement {
-		t.uuid = uuid3(s.uuid, "QueryDslJunctionField");
+		t.uuid = generateUuid(s.uuid, "", "");
 		t.originUuid = s.uuid;
 		t.name = s.name.split("\\.").last();             
 	}

@@ -3,7 +3,7 @@ import "../../../operations/_importAll.eol";
 rule RdbmsViewToQueryDslView
     transform s : RDBMS!RdbmsView
     to t : QUERYDSL!QueryDslView {
-    	t.uuid = uuid3(s.uuid, "QueryDslView");
+    	t.uuid = generateUuid(s.uuid, "", "");
         t.name = s.name;
         t.sqlName = s.sqlName;
         t.originUuid = s.originUuid;      

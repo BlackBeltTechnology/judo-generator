@@ -2,12 +2,13 @@ operation voidType () : JAVA!JvmType {
     return JAVATYPES!JvmType.all.select( t | t.name = "Void").first();
 }
 
-operation randomUUID() : String {
-	return UUIDUtils.randomUUID();
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
 }
 
-operation uuid3 (namespace : String, name : String) : String {
-	return UUIDUtils.uuid3(namespace, name);
+@cached
+operation JAVA!JvmElement baseUUID() : String {
+	return self.uuid.split("\\.").excluding("hu").excluding("blackbelt").concat(".");
 }
 
 operation RDBMS!EObject clone() : RDBMS!EObject {

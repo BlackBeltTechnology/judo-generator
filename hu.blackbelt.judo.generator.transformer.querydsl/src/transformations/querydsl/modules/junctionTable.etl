@@ -6,7 +6,7 @@ rule RdbmsJunctionTableToQueryDslJunctionTable
     		
     	t.originUuid = s.uuid;
         t.sqlName = s.sqlName;
-        t.uuid = uuid3(s.uuid, "QueryDslJunctionTable");
+        t.uuid = generateUuid(s.uuid, "", "");
         t.packageName = targetModel.topPackageName + ".querydsl";
     	
     	t.primaryKey = s.primaryKey.equivalent("RdbmsIdentifierFieldToQueryDslJunctionField");

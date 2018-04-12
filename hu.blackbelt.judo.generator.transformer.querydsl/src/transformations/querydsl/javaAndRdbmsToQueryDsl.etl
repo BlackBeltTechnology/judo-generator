@@ -15,9 +15,26 @@ pre {
 
         //TODO: there should only be one java model and that should be used
         var javaModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
-        targetModel.uuid = uuid3(javaModel.uuid, "QueryDslModel");
+        targetModel.uuid = generateUuid(javaModel.uuid, "", "");
         targetModel.originUuid = javaModel.uuid;
         targetModel.name = javaModel.name;
         targetModel.topPackageName = javaModel.applicationTop.fqName();
         targetModel.persistenceName = javaModel.applicationTop.name.firstToUpperCase();
+}
+post {
+
+	var all = QUERYDSL!QueryDslElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println("DUPLICATE: ");
+		}
+	}
+	
+	QUERYDSL!QueryDslElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+
 }
