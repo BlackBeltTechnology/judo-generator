@@ -2,13 +2,13 @@ rule UIMenuItem
 	transform jUIMenuItem: PSM!JUIMenuItem
 	to uiMenuItem : UI!UIMenuItem {
 	guard : jUIMenuItem.parent.isDefined()
-		uiMenuItem.uuid = jUIMenuItem.uuid;
+		uiMenuItem.uuid = generateUuid(jUIMenuItem.uuid, "", "");
 		uiMenuItem.name = jUIMenuItem.name;
 		var menuView;
 		
 		if (jUIMenuItem.type = PSM!JMenuItemType#LIST) {
 			menuView = new UI!UIListView();
-			menuView.uuid = jUIMenuItem.represent.uuid + "_lview_" + "default";
+			menuView.uuid = generateUuid(generateUuid(jUIMenuItem.uuid, "_lview_default", ""), "menuView", "_");
 			menuView.name = jUIMenuItem.name;
 			
 			for (filter in jUIMenuItem.uifilters) {
@@ -19,9 +19,9 @@ rule UIMenuItem
 			menuView.name = jUIMenuItem.name;
 			
 			if (jUIMenuItem.`alias`.isDefined()) {
-				menuView.uuid = jUIMenuItem.represent.uuid + "_oview_" + jUIMenuItem.`alias`.name;
+				menuView.uuid = generateUuid(generateUuid(jUIMenuItem.uuid, "_oview_" + jUIMenuItem.`alias`.name, ""), "menuView", "_");
 			} else {
-				menuView.uuid = jUIMenuItem.represent.uuid + "_oview_" + "default";				
+				menuView.uuid = generateUuid(generateUuid(jUIMenuItem.uuid, "_oview_default", ""), "menuView", "_");			
 			}
 		}
 		

@@ -67,6 +67,23 @@ post {
 		filter.equivalent("UIFilter").attribute = filter.attribute.equivalent("UIBaseComponentType").uuid;
 	}
 	
+	
+	
+	
+	var all = UI!Identifiable.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println();
+		}
+	}
+	
+	
+	UI!Identifiable.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
 }
 
 

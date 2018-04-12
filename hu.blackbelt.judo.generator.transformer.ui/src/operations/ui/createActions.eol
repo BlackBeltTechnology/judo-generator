@@ -2,7 +2,7 @@ operation createActions(joperation : PSM!JOperation, inherited : Boolean, classU
 		var uiaction : UI!UIAction = new UI!UIAction();
 		var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");	
 		//inherited from Identifiable
-		uiaction.uuid = joperation.uuid;
+		uiaction.uuid = generateUuid(classUuid, joperation.name, ".");
 		uiaction.name = joperation.name;
 		//Attributes
 		uiaction.classBased = joperation.classBased;

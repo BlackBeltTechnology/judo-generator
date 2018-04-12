@@ -18,7 +18,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 		
 		var viewFieldSet = new UI!UIViewFieldSet();
 		viewFieldSet.name = vfsName;
-		viewFieldSet.uuid = classView.uuid + "_viewfieldset_" + vfsName;
+		viewFieldSet.uuid = generateUuid(generateUuid(classView.uuid, "viewfieldset", "_"), vfsName + "_Group", "_");		
 		viewFieldSet.position = position;
 		
 		var viewFieldPosition = 1;
@@ -26,7 +26,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 			var viewField = new UI!UIViewField();
 			viewField.componentType = attribute.equivalent("UIBaseComponentType");
 			viewField.name = attribute.name;
-			viewField.uuid = generateUuid(generateUuid(viewField.componentType.uuid, "viewField", "_"), "classView", "_");
+			viewField.uuid = generateUuid(generateUuid(classView.uuid + "." + viewField.componentType.name, "viewField", "_"), "classView", "_");
 			viewField.searchable = not attribute.uiNoSearch;
 			viewField.position = viewFieldPosition;
 			viewFieldPosition++;
