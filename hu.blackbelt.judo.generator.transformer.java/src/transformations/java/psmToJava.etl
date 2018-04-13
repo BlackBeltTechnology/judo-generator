@@ -10,9 +10,8 @@ import "modules/parameter.etl";
 import "modules/stateMachine.etl";
 
 import "pre/modifyVoidBusinessMethodsToReturnDeclaringClass.eol";
-import "pre/addHuBlackbeltPackages.eol";
-import "pre/updateUuids.eol";
 
+import "post/addHuBlackbeltPackages.eol";
 import "post/addGuardMethodsAndEnum.eol";
 import "post/addPackageBasedAndSingleClasses.eol";
 import "post/addAndModifyMethods.eol";
@@ -68,8 +67,6 @@ pre {
 		};
 
 	modifyVoidBusinessMethodsToReturnDeclaringClass();
-	updateUuids();
-	addHuBlackbeltPackages();
 }
 
 post {
@@ -80,9 +77,11 @@ post {
 	addGuardMethodsAndEnum();
 	addPackageBasedClasses();
 	addAndModifyMethods();
+	addHuBlackbeltPackages();
 	addSingleClasses();
 	modifyReferenceTypeToInterfaceForFrameworkEntities();
 	
+	//HACK - repairs broken uuids
 	for (attr in JAVA!JvmAttribute.all) {
 		attr.uuid = generateUuid(attr.ownerClass.uuid, attr.name, ".");
 	}

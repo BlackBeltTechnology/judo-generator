@@ -5,7 +5,7 @@ operation JAttributeToPermissions(jattribute : PSM!JAttribute, package : PSM!JPa
 	readPerm.hostClassName = package.name + "." + class.name;
 	readPerm.resource = readPerm.hostClassName + "." + jattribute.name;
 	readPerm.hostClassUuid = class.uuid;
-	readPerm.resourceUuid = readPerm.hostClassUuid + "." + jattribute.uuid;
+	readPerm.resourceUuid = readPerm.hostClassUuid + "@" + jattribute.uuid;
 	readPerm.action = "read";
 	readPerm.type = "attribute";
 	readPerm.uuid = generateUuid(generateUuid(readPerm.hostClassUuid, jattribute.name, "."), "readPermission", "_");
@@ -14,7 +14,7 @@ operation JAttributeToPermissions(jattribute : PSM!JAttribute, package : PSM!JPa
 	writePerm.hostClassName = package.name + "." + class.name;
 	writePerm.resource = writePerm.hostClassName + "." + jattribute.name;
 	writePerm.hostClassUuid = class.uuid;
-	writePerm.resourceUuid = writePerm.hostClassUuid + "." + jattribute.uuid;
+	writePerm.resourceUuid = writePerm.hostClassUuid + "@" + jattribute.uuid;
 	writePerm.action = "write";
 	writePerm.type = "attribute";
 	writePerm.uuid = generateUuid(generateUuid(writePerm.hostClassUuid, jattribute.name, "."), "writePermission", "_");
