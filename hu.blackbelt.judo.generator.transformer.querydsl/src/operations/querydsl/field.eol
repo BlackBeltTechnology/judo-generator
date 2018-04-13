@@ -50,6 +50,8 @@ operation transformJvmReference(jvmReference : JAVA!JvmReference, s : RDBMS!Rdbm
     	javaReference = new QUERYDSL!QueryDslReference();
     	javaReference.name = jvmReference.name;
         javaReference.originUuid = jvmReference.uuid;
+        javaReference.lower = jvmReference.lower;
+        javaReference.upper = jvmReference.upper;
         javaReference.typeFqName = jvmReference.type.po().fqName();
 
     } else {

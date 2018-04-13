@@ -64,7 +64,7 @@ public class [%=className%] [%if (class.hasSuper()) {%] extends [%=class.superty
 	{
 	
 	[%for (attr in class.attributes()) {%]
-		[%if (attr.mandatory) {%]
+		[%if (attr.mandatory and not attr.derived) {%]
 			@javax.validation.constraints.NotNull
 		[%} %]
 		[%if (attr.unique) { %]

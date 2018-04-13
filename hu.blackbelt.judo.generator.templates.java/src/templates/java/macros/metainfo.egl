@@ -24,7 +24,7 @@
                         xmiid = "[%=attr.originUUID()%]",
                         name = "[%=attr.name%]",
                         type = [%=attr.type.fqName()%].class,
-                        mandatory = [%=attr.mandatory%],
+                        mandatory = [%=attr.mandatory and not attr.derived %],
                         unique = [%=attr.unique%],
                         calculated = [%=attr.calculationScript.isDefined()%],
                         derived = [%=attr.derived%],
