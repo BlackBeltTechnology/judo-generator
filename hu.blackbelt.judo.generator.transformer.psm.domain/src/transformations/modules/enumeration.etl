@@ -30,6 +30,8 @@ rule Enum2CorrespondingValueClass
 
 	guard: 	s.owner.equivalent("Package").isDefined()
 	
+	t.uuid = generateUuid(t.uuid, "EnumClass", "");
+	
 	var tgtPkg : tgtPSM!JPackage = s.owner.equivalent("Package");
 	var isFrameworkElmt = tgtPkg.framework;
 	
