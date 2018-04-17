@@ -9,7 +9,7 @@ operation addDomainBqlClasses () : Any {
 		domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
 		domainBqlClass.name = package.name.firstToUpperCase();
 		domainBqlClass.package = package;
-		domainBqlClass.uuid = generateUuid(package.uuid, domainBqlClass.name, ".");
+		domainBqlClass.uuid = generateUuid(generateUuid(package.uuid, domainBqlClass.name, "."), "DOMAINBQL", "_");
 		domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
 		package.domainBqlClass = domainBqlClass;
 	}
@@ -21,7 +21,7 @@ operation addDomainBqlClasses () : Any {
 		var pack = package.findOrCreateChildRecursively("api");
 		domainBqlClass.package = pack;
 		
-		domainBqlClass.uuid = generateUuid(package.uuid, domainBqlClass.name, ".");
+		domainBqlClass.uuid = generateUuid(generateUuid(package.uuid, domainBqlClass.name, "."), "DOMAINBQL", "_");
 		domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
 		package.domainBqlClass = domainBqlClass;
 	}

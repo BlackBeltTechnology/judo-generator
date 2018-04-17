@@ -1,6 +1,7 @@
 [%
   import "../../operations/_importAll.eol";
   import "../../main.egl";
+  import "../../operations/java/resttestwrapper_common.eol";
   out.setContentType("Java");
 
   var builderMethodsMacro = getJavaMacro("resttestwrapper_buildermethods");
@@ -87,7 +88,7 @@ public class [%=class.name%] implements RestTestWrapper {
             }
 
             public [%=class.name%] [%=ref.name%]([%=ref.tWrapperName()%]... pars) {
-                builder.[%=ref.name%]([% if (ref.type.bare().restDto().fixedEnum.isDefined()) { %][%=ref.type.bare().restClientAccessor()%].queryByCode(pars)[% } else { %][%=ref.mWrapperName()%].convert(pars)[%}%].toArray(new [%=ref.type.bare().restDto().fqName()%][]{}));
+                builder.[%=ref.name%]([% if (ref.type.bare().restDto().fixedEnum.isDefined()) { %][%=ref.type.bare().clientAccessor()%].queryByCode(pars)[% } else { %][%=ref.mWrapperName()%].convert(pars)[%}%].toArray(new [%=ref.type.bare().restDto().fqName()%][]{}));
                 return this;
             }
 
