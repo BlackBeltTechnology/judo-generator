@@ -24,7 +24,7 @@ rule OriginInterface
 	to t : JAVA!JvmInterface 
 	extends JClassInterface {
 		t.coordinate = JAVA!JvmJudoCoordinate#ORIGIN;
-		t.uuid = uuid3(s.uuid, "Interface");
+		t.uuid = generateUuid(s.uuid, "", "");
 }
 */
 

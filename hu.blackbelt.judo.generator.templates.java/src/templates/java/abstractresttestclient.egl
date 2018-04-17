@@ -391,7 +391,7 @@ operation JAVA!JvmType restDtoOrPrimitive () : JAVA!JvmType {
 @cached
 operation JAVA!JvmReference stateMachineReference () : JAVA!JvmStateMachine {
     if (self.type.bare().isEnum()) {
-    	return JAVA!JvmStateMachine.all.selectOne(sm | sm.correspondingEnum = self.type.bare().origin.fixedEnum).println("STATEMACHINE: ");
+    	return JAVA!JvmStateMachine.all.selectOne(sm | sm.correspondingEnum = self.type.bare().origin.fixedEnum);
     }
 }
 

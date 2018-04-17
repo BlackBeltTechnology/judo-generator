@@ -26,20 +26,6 @@ operation JAVA!JvmType isURL() : Boolean {
     return self.uuid = urlType().uuid;
 }
 
-operation randomUUID () : String {
-	return Native("java.util.UUID").randomUUID().toString();
-}
-
-@cached
-operation getUuidNativeStub () : Any {
-	return Native("java.util.UUID");
-}
-
-@cached
-operation getLongNativeStub () : Any {
-	return Native("java.lang.Long");
-}
-
 operation Boolean ternary(ifTrue : Any, ifFalse : Any) : Any {
     if (self) {
         return ifTrue;
@@ -48,36 +34,17 @@ operation Boolean ternary(ifTrue : Any, ifFalse : Any) : Any {
     }
 }
 
-//hack balaton style :-) this method should have been in an epsilon Tool, but I did not managed to make it work
-operation uuid3 (namespace : String, name : String) : String {
-	var nameSpace_OID_uuid = getUuidNativeStub().fromString(namespace);
-
-	var msb = nameSpace_OID_uuid.getMostSignificantBits();
-	var lsb = nameSpace_OID_uuid.getLeastSignificantBits();
-
-	var outputStreamString = new Native("java.io.ByteArrayOutputStream");
-	var i = 0;
-	while (i < 8) {
-		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(msb, 8 * (7 - i))).intValue());
-		i++;
-	}
-	while (i < 16) {
-		outputStreamString.write(getLongNativeStub().valueOf(getLongNativeStub().rotateRight(lsb, 8 * (7 - i))).intValue());
-		i++;
-	}
-	
-	outputStreamString.write(name.getBytes());
-
-	return getUuidNativeStub().nameUUIDFromBytes(outputStreamString.toByteArray()).toString();
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
 }
 
 operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
 	var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
 	if (ret.isUndefined()) {
 		ret = new JAVA!JvmList;
-		ret.uuid = randomUUID();
+		ret.uuid = generateUuid(componentType.uuid, "list", "_");
 		ret.name = "List";	
-		ret.package = JAVA!JvmModel.all.first().findOrCreateJavaUtilPackage();
+		ret.package = JAVA!JvmModel.all.first().findJavaUtilPackage();
 		ret.componentType = componentType;
 	}
 	return ret;

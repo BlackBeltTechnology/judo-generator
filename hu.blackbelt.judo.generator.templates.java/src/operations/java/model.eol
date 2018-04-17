@@ -1,17 +1,11 @@
-operation JAVA!JvmModel findOrCreateJavaUtilPackage () : JAVA!JvmPackage {
-	return self.findOrCreatePackageRecursively("java.util");
+operation JAVA!JvmModel findJavaUtilPackage () : JAVA!JvmPackage {
+	return self.findPackageRecursively("java.util");
 }
 
-operation JAVA!JvmModel findOrCreatePackageRecursively (packageName : String) : JAVA!JvmPackage {
-	var packsToCreate = packageName.split("\\.");
-	var topPackageName = packsToCreate.first();
+operation JAVA!JvmModel findPackageRecursively (packageName : String) : JAVA!JvmPackage {
+	var packsToFind = packageName.split("\\.");
+	var topPackageName = packsToFind.first();
 	var topPackage = self.packages.select(p | p.name = topPackageName).first();
-	if (topPackage.isUndefined()) {
-		topPackage = new JAVA!JvmPackage;
-		topPackage.name = topPackageName;
-		topPackage.uuid = uuid3(self.uuid, topPackage.name);
-		topPackage.ownerModel = self;
-	}
-	packsToCreate.remove(topPackageName);
-	return topPackage.findOrCreateChildRecursively(packsToCreate);
+	packsToFind.remove(topPackageName);
+	return topPackage.findChildRecursively(packsToFind);
 }

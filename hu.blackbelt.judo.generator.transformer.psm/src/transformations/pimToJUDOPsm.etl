@@ -54,23 +54,12 @@ post {
 		jc.attributes.add(createDefaultAttribute("id").uuid(jc.uuid).representsId().technical().type(getPSMPrimitiveType("Id")).private());
 	}
 	
+	//Use it to check if all Uuids are unique
+	//Impacts performance
+	
+	checkAllUuidsForDuplicateOrMissing();
+	
 	"POST processing FINISHED.".println();
-	
-	
-	var all = tgtPSM!JElement.all.collect(e | e.uuid);
-	var set = all.asSet();
-
-	set.size.println("SET: ");
-	all.size.println("ALL: ");
-
-	for (uuid in set) {
-		if (all.count(uuid) > 1) {
-			uuid.println();
-		}
-	}
-	
-	tgtPSM!JElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
-	
 }
 
 // 'self' is map of classes to "listing Specifications"

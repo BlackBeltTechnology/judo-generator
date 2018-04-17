@@ -88,27 +88,3 @@ operation JAVA!JvmMethod parameterSequenceReplacedForCall (toBeReplaced : String
 	}
 	return ret.concat(", ");
 }
-
-operation JAVA!JvmMethod addIdParam() : Any {
-	var idParam = new JAVA!JvmMethodParameter;
-	idParam.type = idType();
-	idParam.name = "id";
-	idParam.uuid = uuid3(self.uuid, idParam.name);
-	self.parameters.add(0, idParam);
-}
-
-operation JAVA!JvmMethod addPaginationParam() : Any {
-	var param = new JAVA!JvmMethodParameter;
-	param.type = paginationClass(COORDINATES.get(self.ownerClass.coordinate).get(COORDINATE_GROUP));
-	param.name = "pagination";
-	param.uuid = uuid3(self.uuid, param.name);
-	self.parameters.add(param);
-}
-
-operation JAVA!JvmMethod addIdsParam() : Any {
-	var idsParam = new JAVA!JvmMethodParameter;
-	idsParam.type = createJvmList(idType());
-	idsParam.name = "ids";
-	idsParam.uuid = uuid3(self.uuid, idsParam.name);
-	self.parameters.add(0, idsParam);
-}

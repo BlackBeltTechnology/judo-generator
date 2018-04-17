@@ -96,30 +96,9 @@ post {
 	permissionModel.createLoginRole();
 	permissionModel.mustChangePasswordRole();
 	
+	//Use it to check if all Uuids are unique
+	//Impacts performance
 	
-	for (key : String in mapUUID.keySet()) {
-		var value = mapUUID.get(key);
-		if (value.size() > 1) {
-			"".println();
-			"DUPLICATE: KEY:".print(key + " " + value);
-			"".println();
-		}
-	}
+	checkAllUuidsForDuplicateOrMissing();
 	
-	
-	
-	
-	var all = Permission!Identifiable.all.collect(e | e.uuid);
-	var set = all.asSet();
-
-	set.size.println("SET: ");
-	all.size.println("ALL: ");
-
-	for (uuid in set) {
-		if (all.count(uuid) > 1) {
-			uuid.println("DUPLICATE: ");
-		}
-	}
-	
-	Permission!Identifiable.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
 }

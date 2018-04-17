@@ -23,18 +23,9 @@ pre {
 }
 post {
 
-	var all = QUERYDSL!QueryDslElement.all.collect(e | e.uuid);
-	var set = all.asSet();
-
-	set.size.println("SET: ");
-	all.size.println("ALL: ");
-
-	for (uuid in set) {
-		if (all.count(uuid) > 1) {
-			uuid.println("DUPLICATE: ");
-		}
-	}
+	//Use it to check if all Uuids are unique
+	//Impacts performance
 	
-	QUERYDSL!QueryDslElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	checkAllUuidsForDuplicateOrMissing();
 
 }

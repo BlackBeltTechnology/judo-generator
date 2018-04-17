@@ -86,19 +86,10 @@ post {
 		attr.uuid = generateUuid(attr.ownerClass.uuid, attr.name, ".");
 	}
 	
-	var all = JAVA!JvmElement.all.collect(e | e.uuid);
-	var set = all.asSet();
-
-	set.size.println("SET: ");
-	all.size.println("ALL: ");
-
-	for (uuid in set) {
-		if (all.count(uuid) > 1) {
-			uuid.println("DUPLICATE: ");
-		}
-	}
+	//Use it to check if all Uuids are unique
+	//Impacts performance
 	
-	JAVA!JvmElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	checkAllUuidsForDuplicateOrMissing();
 }
 
 operation hacklongtoPOId () : Any {

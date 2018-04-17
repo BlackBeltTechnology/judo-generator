@@ -150,7 +150,7 @@ public class [%=class.name%] extends AbstractCrudRestOperation<[%=class.restDto(
                 @javax.annotation.Nullable
                 @Override
                 @lombok.SneakyThrows(AuthorizationException.class)
-                public [%=createJvmList(ref.type.bare().restDto()).fqName()%] apply(FilterDto input) {
+                public List<[%=ref.type.bare().restDto().fqName()%]> apply(FilterDto input) {
                     [%=ref.type.dto().fqName()%] output = (([%=class.dtoOperation().fqName()%]) getCrudOperation()).traverse[%=ref.name.firstToUpperCase()%](id, input, PaginationDto.builder().build());
 
                     [% if (ref.type.isCollection()) { %]
@@ -178,7 +178,7 @@ public class [%=class.name%] extends AbstractCrudRestOperation<[%=class.restDto(
                 PaginationDto paginationDto = converterService.convert(paginationRestDto, PaginationDto.class);
 
                 Long count = [%=class.dtoOperation().name.firstToLowerCase()%].countAvailable[%=ref.name.firstToUpperCase()%](id, filterDto);
-                [%=createJvmList(ref.type.bare().restDto()).fqName()%] result = null;
+                List<[%=ref.type.bare().restDto().fqName()%]> result = null;
                 if (count == 0) {
                     // TODO: Change API - it is kept because of compatibility
                     // result = com.google.common.collect.ImmutableList.of();
@@ -189,7 +189,7 @@ public class [%=class.name%] extends AbstractCrudRestOperation<[%=class.restDto(
                     .entity(com.google.common.collect.ImmutableList.of())
                     .build();
                 } else {
-                    [%=createJvmList(ref.type.bare().dto()).fqName()%] output = (([%=class.dtoOperation().fqName()%]) getCrudOperation()).available[%=ref.name.firstToUpperCase()%](id, filterDto, paginationDto);
+                    List<[%=ref.type.bare().dto().fqName()%]> output = (([%=class.dtoOperation().fqName()%]) getCrudOperation()).available[%=ref.name.firstToUpperCase()%](id, filterDto, paginationDto);
                     result = converterService.convertAll(output, [%=ref.type.bare().restDto().fqName()%].class);
                 }
                 return Response

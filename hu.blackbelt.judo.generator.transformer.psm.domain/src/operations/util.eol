@@ -92,3 +92,19 @@ operation escapeJavaLiteral(toEscape : String) : String {
 		return toEscape.replaceAll("\\\"", "\\\\\"").replaceAll("\n", " ").println("ESCAPED: ");
 	}
 }
+
+operation checkAllUuidsForDuplicateOrMissing() {
+	var all = tgtPSM!JElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println();
+		}
+	}
+	
+	tgtPSM!JElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+}

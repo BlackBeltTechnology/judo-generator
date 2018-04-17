@@ -31,10 +31,26 @@ operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
 	var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
 	if (ret.isUndefined()) {
 		ret = new JAVA!JvmList;
-		ret.uuid = generateUuid(componentType.uuid, "List", ".");
+		ret.uuid = generateUuid(componentType.uuid, "list", "_");
 		ret.name = "List";	
 		ret.package = JAVA!JvmModel.all.first().findOrCreateJavaUtilPackage();
 		ret.componentType = componentType;
 	}
 	return ret;
+}
+
+operation checkAllUuidsForDuplicateOrMissing() {
+	var all = JAVA!JvmElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println("DUPLICATE: ");
+		}
+	}
+	
+	JAVA!JvmElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
 }

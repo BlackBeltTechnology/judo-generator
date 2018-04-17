@@ -49,7 +49,7 @@ public class RestTestBase extends hu.blackbelt.judo.example.common.rest.test.Abs
             return [%=class.restTestWrapperM().fqName()%].[%=class.restTestWrapperM().name.firstToLowerCase()%](internals);
         }
 
-        public [%=class.restTestWrapperM().fqName()%] [%=class.restTestWrapperM().name.firstToLowerCase()%]([%=createJvmList(class.restTestWrapperT()).fqName()%] internals) {
+        public [%=class.restTestWrapperM().fqName()%] [%=class.restTestWrapperM().name.firstToLowerCase()%](List<[%=class.restTestWrapperT().fqName()%]> internals) {
             return [%=class.restTestWrapperM().fqName()%].[%=class.restTestWrapperM().name.firstToLowerCase()%](internals);
         }
 
