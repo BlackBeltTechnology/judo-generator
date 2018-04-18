@@ -11,8 +11,8 @@ public final class [%=class.name%] {
     private  [%=class.name%]() {
     }
     [%for (c in class.origin.package.classes().excluding(class)) {%] 
-		public static [%=c.bqlDomain().fqName()%] [%=c.name.firstToLowerCase%]() {
-	        return new [%=c.bqlDomain().fqName()%]();
+		public static [%=c.bql().fqName()%] [%=c.name.firstToLowerCase%]() {
+	        return new [%=c.bql().fqName()%]();
 	    }
 	[%}%]
 }
