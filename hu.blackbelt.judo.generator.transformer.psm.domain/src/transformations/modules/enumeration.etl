@@ -63,6 +63,9 @@ rule Enum2CorrespondingValueClass
 	enumValueClass.initClassDefaults();
 	
 	enumValueClass.name = t.name.concat("Value");
+	if (t.shortName.isDefined()) {
+		enumValueClass.shortName = t.shortName.concat("V");
+	}
 	enumValueClass.framework = isFrameworkElmt;
 	enumValueClass.representsEnumValue = true;
 	
