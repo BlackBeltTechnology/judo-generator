@@ -106,6 +106,10 @@ rule Enum2CorrespondingValueClass
 	enumValueClassRole.ownerClass = t;
 	enumValueClassRole.ownerClass.roles.add( enumValueClassRole );
 	
+	enumEnumValueRelation.name = relationName;
+ 	enumEnumValueRelation.uuid = generateUuid(enumValueClassRole.uuid, enumClassRole.uuid, "-");
+ 	enumEnumValueRelation.framework = isFrameworkElmt;
+ 	tgtPkg.relationships.add( enumEnumValueRelation );
 	var langClass;// TODO: make it fully specified via Qualified name
 	if (transformDomain.asBoolean()) {
 		langClass = inpPIM!Class.allInstances()->select(c | c.name = "Language" and c.package.name = "framework").first().equivalent("Class");

@@ -134,7 +134,7 @@ public class [%=class.name%] implements RestTestWrapper {
 @cached
 operation JAVA!JvmReference tWrapperName () {
     if (self.type.bare().restDto().fixedEnum.isDefined()) {
-        return self.type.restDtoEnum().fqName();
+        return self.type.bare().restDtoEnum().fqName();
     } else {
         return self.type.bare().restTestWrapperT().fqName();
     }

@@ -57,7 +57,7 @@
 										</model>
 		
 										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.model.car:model:psm:${project.version}</artifact>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
 											<name>PSM</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -110,6 +110,12 @@
 										</Evl>
 										<Etl>
 											<source>src/transformations/java/psmToJava.etl</source>
+                                            <parameters>
+                                                <parameter>
+                                                    <name>transformDomain</name>
+                                                    <value>false</value>
+                                                </parameter>
+                                            </parameters>
 										</Etl>
 									</eolPrograms>
 								</configuration>

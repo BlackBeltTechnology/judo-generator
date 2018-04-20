@@ -44,6 +44,22 @@ public abstract class [%=class.name%] extends [%=class.isEnum().ternary("Abstrac
          public [%=class.restDto().fqName()%] queryByCode([%=class.bare().restDtoEnum().fqName()%] value){
              return super.queryByCode(value);
          }
+         
+         public List<[%=class.restDto().fqName()%]> queryByCode([%=class.bare().restDtoEnum().fqName()%]... values){
+         	List<[%=class.restDto().fqName()%]> ret = new java.util.ArrayList();
+         	for ([%=class.bare().restDtoEnum().fqName()%] e : values) {
+         		ret.add(queryByCode(e));
+         	}
+             return ret;
+         }
+         
+         public List<[%=class.restDto().fqName()%]> queryByCode(List<[%=class.bare().restDtoEnum().fqName()%]> values){
+         	List<[%=class.restDto().fqName()%]> ret = new java.util.ArrayList();
+         	for ([%=class.bare().restDtoEnum().fqName()%] e : values) {
+         		ret.add(queryByCode(e));
+         	}
+             return ret;
+         }
     [% } else { %]
         public [%=class.restDtoBuilder().fqName()%] builder() {
             [%=class.restDtoBuilder().fqName()%] builder = new [%=class.restDtoBuilder().fqName()%]()
