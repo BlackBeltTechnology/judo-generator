@@ -6,6 +6,39 @@ operation inpPIM!Element getUuid() : String {
 	}
 }
 
+operation inpPIM!Property computeLower() : Integer {
+	if (self.lowerValue.isDefined()) {
+		return self.lowerValue.value;
+	} else {
+		return self.lower;
+	}
+}
+
+operation inpPIM!Property computeUpper() : Integer {
+	self.name.println("PROP NAME: ");
+	if (self.upperValue.isDefined()) {
+		return self.upperValue.value.println("PROP VALUE: ");
+	} else {
+		return self.upper;
+	}
+}
+
+operation inpPIM!Parameter computeLower() : Integer {
+	if (self.lowerValue.isDefined()) {
+		return self.lowerValue.value;
+	} else {
+		return self.lower;
+	}
+}
+
+operation inpPIM!Parameter computeUpper() : Integer {
+	if (self.upperValue.isDefined()) {
+		return self.upperValue.value;
+	} else {
+		return self.upper;
+	}
+}
+
 operation inpPIM!Property getUuid() : String {
 	if (self.owner.isTypeOf(inpPIM!Association)) {
 		return (self.otherEnd.type.getUuid() + "." + self.name).replace(" ","_");

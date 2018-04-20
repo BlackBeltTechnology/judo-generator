@@ -173,7 +173,13 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 									 enumClass, enumValueClass);
 
 	// TODO: refactor to a cached operation 
-	var langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and c.framework).first();
+	var langClass;
+	
+	if (transformDomain.asBoolean()) {
+		langClass = inpPIM!Class.allInstances()->select(c | c.name = "Language" and c.package.name = "framework").first().equivalent("Class");
+	} else {
+		langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and c.framework).first();
+	}
 	langClass.println("RULE::STATEMACHINE - LANGCLASS : ");
 
 // add relation : enumValueClass - Language - First part of Relation name should coume first!

@@ -13,13 +13,8 @@ import "modules/stateMachine.etl";
 import "pre/collectJUDOStereotypes.etl";
 
 pre {
-//	modelName.println("MODEL: ");
 	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
 	var tgtModel;
-//	inpPIM!Model.allInstances().println("Lofasz geci: ");
-//	var tgtModel = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).equivalent();
-//	tgtModel.name.println("Found: ");
-//	inpPIM!rest.allInstances().size().println();
 	var stereotypeApplications : Map = collectJUDOStereotypeInstances();
 	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
 	
@@ -41,9 +36,15 @@ post {
 		if (je.participates.size = 0) {
 			je.participates.add(tgtPSM!JLayer#ALL);
 		}
+		if (transformDomain.asBoolean()) {
+			je.framework = true;
+			je.uuid = generateUuid("FW", je.uuid, "_");
+		}
 	}
 	
-	for (jc in tgtPSM!JClass.all.select(c | c.supertype.isUndefined() and c.participates(tgtPSM!JLayer#PERSISTENCE) and not c.framework)) {
+	
+	var allClasses = tgtPSM!JClass.all.select(c | c.supertype.isUndefined() and c.participates(tgtPSM!JLayer#PERSISTENCE) and c.framework = transformDomain.asBoolean());
+	for (jc in allClasses) {
 		jc.attributes.add(createDefaultAttribute("auditCreateUser").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());
 		jc.attributes.add(createDefaultAttribute("auditCreateTime").uuid(jc.uuid).technical().type(getPSMPrimitiveType("datetime")).private());
 		jc.attributes.add(createDefaultAttribute("auditUpdateUser").uuid(jc.uuid).technical().type(getPSMPrimitiveType("String")).private());

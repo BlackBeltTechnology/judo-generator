@@ -23,9 +23,9 @@ rule Parameter
 	
 	t.ordered = s.ordered;
 	t.unique = s.unique;
-	t.upper = s.upper;
-	t.lower = s.lower;
 	
+	t.upper = s.computeUpper();	
+	t.lower = s.computeLower();
 	//s.type.println("TYPE ::==> ");
 	//s.type.equivalent().println("TYPE-EQUIV ::==> ");
 	

@@ -106,14 +106,13 @@ rule Enum2CorrespondingValueClass
 	enumValueClassRole.ownerClass = t;
 	enumValueClassRole.ownerClass.roles.add( enumValueClassRole );
 	
-	// create a new relation : enumEnumValueRelation
-	enumEnumValueRelation.name = relationName;
- 	enumEnumValueRelation.uuid = generateUuid(enumValueClassRole.uuid, enumClassRole.uuid, "-");
- 	enumEnumValueRelation.framework = isFrameworkElmt;
- 	tgtPkg.relationships.add( enumEnumValueRelation );
+	var langClass;// TODO: make it fully specified via Qualified name
+	if (transformDomain.asBoolean()) {
+		langClass = inpPIM!Class.allInstances()->select(c | c.name = "Language" and c.package.name = "framework").first().equivalent("Class");
+	} else {
+		langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and c.framework).first(); // TODO	
+	}
 	
-	var langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and c.framework).first(); // TODO: make it fully specified via Qualified name
-
 	// reassignment - adding "Values" to the end of the yet defined name
 	enumValueClassRoleName = enumValueClassRoleName.concat("Values"); 
 	var enumValueClassLangClassRelationshipName = enumValueClassRoleName.concat("-").concat( langClass.name.firstToLowerCase());

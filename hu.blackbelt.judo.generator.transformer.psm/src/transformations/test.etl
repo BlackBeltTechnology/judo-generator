@@ -1,0 +1,10 @@
+
+pre {
+	"itt".println();
+	//inpPIM!Property.all.selectOne(x | x.name = "rutemezesRovancsok").eInvoke(55, new Sequence).println();
+	inpPIM!Property.all.selectOne(x | x.name = "rutemezesRovancsok").lowerValue.println("LV: ");	
+	inpPIM!Property.all.selectOne(x | x.name = "rutemezesRovancsok").lowerValue.value.println("LVV: ");	
+	inpPIM!Property.all.selectOne(x | x.name = "rutemezesRovancsok").upperValue.println("UV: ");	
+	inpPIM!Property.all.selectOne(x | x.name = "rutemezesRovancsok").lower.println("LOWER: ");	
+	inpPIM!Property.all.selectOne(x | x.name = "rutemezesRovancsok").upper.println("UPPER: ");	
+}

@@ -89,8 +89,13 @@
                                     </models>
                                     <eolPrograms>
                                         <Etl>
-                                            <source>src/transformations/pimToJUDOPsm.etl</source>
+                                            <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:jar:${project.version}</artifact>
+                                            <source>transformations/pimToJUDOPsm.etl</source>
                                             <parameters>
+                                                <parameter>
+                                                    <name>modelName</name>
+                                                    <value>Model</value>
+                                                </parameter>
                                                 <parameter>
                                                     <name>transformDomain</name>
                                                     <value>true</value>

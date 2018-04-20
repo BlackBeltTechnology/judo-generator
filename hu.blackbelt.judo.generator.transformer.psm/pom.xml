@@ -14,10 +14,22 @@
 
 	<properties>
         <src.dir>src</src.dir>
-        <src.model>car</src.model>
-        <!--  src.model>JUDO_Car</src.model-->
+        
+        <!-- src.model>car</src.model>
         <target.model>car</target.model>
         <model>Model</model>
+        <transformDomain>false</transformDomain-->
+        
+        <src.model>anakin</src.model>
+        <target.model>anakin</target.model>
+        <model>Anakin</model>
+        <transformDomain>false</transformDomain>
+        
+        <!-- src.model>opm_pim_-_Modelio_import</src.model>
+        <target.model>opm</target.model>
+        <model>opm pim</model>
+        <transformDomain>false</transformDomain-->
+        
     </properties>
 
     <build>
@@ -127,7 +139,7 @@
                                                 </parameter>
                                                 <parameter>
                                                     <name>transformDomain</name>
-                                                    <value>false</value>
+                                                    <value>${transformDomain}</value>
                                                 </parameter>
                                             </parameters>
                                         </Etl>
@@ -165,24 +177,6 @@
                         <execution>
                           <phase>compile</phase>
                           <id>replace-target-model</id>
-                          <goals>
-                            <goal>replace</goal>
-                          </goals>
-                          <configuration>
-                           <ignoreMissingFile>false</ignoreMissingFile>
-                           <file>${project.build.directory}/${target.model}.model</file>
-                            <replacements>
-                              <replacement>
-                                <token>\.\.\/\.\.\/(.*)\.model</token>
-                                <value>platform:/resource/$1.model</value>
-                              </replacement>
-                            </replacements>
-                          </configuration>
-                        </execution>
-        
-                        <execution>
-                          <phase>compile</phase>
-                          <id>replace-target-hutnmodel</id>
                           <goals>
                             <goal>replace</goal>
                           </goals>

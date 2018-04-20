@@ -28,7 +28,7 @@ rule ClassProperty
 		t.value = escapeJavaLiteral(s.`default`);
 	}
 	
-	t.mandatory = s.lower = 1 and s.upper = 1;
+	t.mandatory = s.lowerValue.isDefined() and s.lowerValue.value > 0;
 	
 	if ( stereotypeApplications.get("decimals").containsKey(s) ) {
 		t.decimals = stereotypeApplications.get("decimals").get(s).asInteger();
@@ -128,8 +128,8 @@ rule ClassPropertyRole
 	t.navigable = s.navigable;
 	t.ordered = s.ordered;
 	t.unique = s.unique;
-	t.lower = s.lower;
-	t.upper = s.upper;
+	t.upper = s.computeUpper();	
+	t.lower = s.computeLower();
 	s.owner.name.println("RULE:: OWNERNAME: ");
 	t.ownerClass ::= s.owner;
 	
@@ -185,8 +185,8 @@ rule ClassPropertyRoleEnum
 	r1.uuid = generateUuid(s.owner.equivalent("Class").uuid, s.name, ".");
 	r1.ownerClass = s.owner.equivalent("Class");
 	r1.navigable = true;
-	r1.lower = s.lower;
-	r1.upper = s.upper;
+	r1.upper = s.computeUpper();	
+	r1.lower = s.computeLower();
 	
 	if (s.defaultValue.isKindOf(Expression)) {
 		r1.value = escapeJavaLiteral(s.defaultValue.symbol);
@@ -229,8 +229,8 @@ rule RelationProperty
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.ordered = s.ordered;
 	t.unique = s.unique;
-	t.lower = s.lower;
-	t.upper = s.upper;
+	t.upper = s.computeUpper();	
+	t.lower = s.computeLower();
 	t.navigable = s.navigable;
 	t.ownerClass ::= s.type;
 	
