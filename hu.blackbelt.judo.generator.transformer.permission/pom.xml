@@ -50,7 +50,7 @@
 											<groupId>hu.blackbelt.judo.generator</groupId>
 											<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
 											<version>${project.version}</version>
-											<type>model</type>
+											<type>md5</type>
 											<classifier>psm</classifier>
 											<overWrite>false</overWrite>
 											<outputDirectory>${project.build.directory}</outputDirectory>

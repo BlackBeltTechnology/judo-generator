@@ -23,7 +23,7 @@ operation createRelationWithRoles(pkg : tgtPSM!JPackage,  clientRoleName : Strin
  	
  	// supplierRole
  	var supplierRole : tgtPSM!JRole = new tgtPSM!JRole; 
- 	supplierRole.uuid = generateUuid(supplierRoleOwner.uuid, supplierRoleName, ".");
+ 	supplierRole.uuid = generateUuid(supplierRoleOwner.uuid, supplierRoleName.firstToLowerCase(), ".");
  	supplierRole.name = supplierRoleName.firstToLowerCase();
  	supplierRole.navigable = true;
  	relation.roles.add( supplierRole );
