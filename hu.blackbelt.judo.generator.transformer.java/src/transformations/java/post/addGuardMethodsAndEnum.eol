@@ -2,7 +2,7 @@ operation addGuardMethodsAndEnum () : Any {
 	for (state in JAVA!JvmState.all.select(s | s.outgoingTransitions.size() > 1)) {
 		var groupedByMethod = state.getOutgoingTransitionsGroupedByExecutingMethod();
 		for (key in groupedByMethod.keySet()) {
-			var val = groupedByMethod.get(key);
+			var val = JAVA!JvmMethod.all.selectOne(m | m.uuid = groupedByMethod.get(key));
 			if (val.size() > 1) {
 				var oClass = state.ownerStateMachine.ownerClass;
 				var enum = new JAVA!JvmEnum;
