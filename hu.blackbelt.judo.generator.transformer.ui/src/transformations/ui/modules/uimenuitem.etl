@@ -7,16 +7,13 @@ rule UIMenuItem
 		var menuView;
 		
 		if (jUIMenuItem.type = PSM!JMenuItemType#LIST) {
-			menuView = new UI!UIListView();
-			menuView.uuid = generateUuid(generateUuid(jUIMenuItem.uuid, "_lview_default", ""), "menuView", "_");
-			menuView.name = jUIMenuItem.name;
+			menuView = jUIMenuItem.represent.equivalent("UIClass").selector;
 			
 			for (filter in jUIMenuItem.uifilters) {
 				uiMenuItem.filters.add(filter.equivalent("UIFilter"));
 			}
 		} else if (jUIMenuItem.type = PSM!JMenuItemType#OBJECT) {
-			menuView = new UI!UIClassView();
-			menuView.name = jUIMenuItem.name;
+			menuView = jUIMenuItem.represent.equivalent("UIClass").selector.detailView;
 			
 			if (jUIMenuItem.`alias`.isDefined()) {
 				menuView.uuid = generateUuid(generateUuid(jUIMenuItem.uuid, "_oview_" + jUIMenuItem.`alias`.name, ""), "menuView", "_");

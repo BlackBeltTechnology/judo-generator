@@ -84,8 +84,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIMenuItem" eSuperTypes="#//Identifiable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="menuView" eType="#//UIView"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="menuView" eType="#//UIView"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="filters" upperBound="-1"
         eType="#//UIFilter" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="menuItems" upperBound="-1"
