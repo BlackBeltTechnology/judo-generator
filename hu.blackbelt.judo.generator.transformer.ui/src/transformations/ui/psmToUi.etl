@@ -22,10 +22,7 @@ post {
 					var classMenuItem = new UI!UIMenuItem();
 					classMenuItem.uuid = class.uuid + "_menuitem";
 					classMenuItem.name = class.name;
-					var menuView = new UI!UIListView();
-					menuView.uuid = class.uuid + "_lview_default";
-					menuView.name = class.name;
-					classMenuItem.menuView = menuView;
+					classMenuItem.menuView = class.equivalent("UIClass").selector;
 					
 					menuItem.menuItems.add(classMenuItem); 
 				}

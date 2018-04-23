@@ -1,6 +1,6 @@
 operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name: String, uuid: String, isDefault: Boolean) : UI!UIClassView {
 	var classView : UI!UIClassView = new UI!UIClassView();
-	classView.uuid = uuid;
+	classView.uuid = uuid.replace("\\.", "_");
 	classView.name = name;
 	classView.isDefault = isDefault;
 	
@@ -67,7 +67,7 @@ operation createClassView(ownerClass: UI!UIClass, originClass: PSM!JClass, name:
 
 operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, classView: UI!UIClassView, isDefault: Boolean) : UI!UIListView {
 	var listView = new UI!UIListView();
-	listView.uuid = uuid;
+	listView.uuid = uuid.replace("\\.", "_");
 	listView.name = name;
 	listView.isDefault = isDefault;
 	listView.pageSize = 20;
@@ -111,7 +111,7 @@ operation createListView(ownerClass: UI!UIClass, name: String, uuid: String, cla
 operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
 	var paramView : UI!UIParamView = new UI!UIParamView();
 	paramView.name = uiaction.name;
-	paramView.uuid = generateUuid(uiaction.uuid, "paramView", "_");
+	paramView.uuid = generateUuid(uiaction.uuid.replace("\\.", "_"), "paramView", "_");
 	
 	var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
 	viewFieldSet.name = uiaction.name;
@@ -137,7 +137,7 @@ operation createParamView(uiaction : UI!UIAction) : UI!UIParamView {
 operation createResultView(uiaction : UI!UIAction) : UI!UIResultView {
 	var resultView : UI!UIResultView = new UI!UIResultView();
 	resultView.name = uiaction.name;
-	resultView.uuid = generateUuid(uiaction.uuid, "resultView", "_");
+	resultView.uuid = generateUuid(uiaction.uuid.replace("\\.", "_"), "resultView", "_");
 	resultView.pageSize = 1000;
 	
 	var viewFieldSet : UI!UIViewFieldSet = new UI!UIViewFieldSet();
