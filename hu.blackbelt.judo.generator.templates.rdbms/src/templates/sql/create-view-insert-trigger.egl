@@ -50,11 +50,7 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
 			);
 		[% } %]
 		[% for (tableAlias in view.updatableParentAliases()) { %]
-	        UPDATE [%= tableAlias.table.sqlName %] SET
-	        	[% for (inh in tableAlias.table.allInheritedIdentifier()) { %] 
-	        		[%= inh.sqlName %] = SERIAL_ID [% if (hasMore) { out.print(","); } %] 
-	        	[% } %]
-        	WHERE ID = SERIAL_ID;
+	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
     	[% } %]        	
     END;
 /
@@ -110,11 +106,7 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
 			);
 		[% } %]
 		[% for (tableAlias in view.updatableParentAliases()) { %]
-	        UPDATE [%= tableAlias.table.sqlName %] SET
-	        	[% for (inh in tableAlias.table.allInheritedIdentifier()) { %] 
-	        		[%= inh.sqlName %] = SERIAL_ID [% if (hasMore) { out.print(","); } %] 
-	        	[% } %]
-        	WHERE ID = SERIAL_ID;
+	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
     	[% } %]        	
     END;
 [% } %]
@@ -163,11 +155,7 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
 			);
 		[% } %]
 		[% for (tableAlias in view.updatableParentAliases()) { %]
-	        UPDATE [%= tableAlias.table.sqlName %] SET
-	        	[% for (inh in tableAlias.table.allInheritedIdentifier()) { %] 
-	        		[%= inh.sqlName %] = SERIAL_ID [% if (hasMore) { out.print(","); } %] 
-	        	[% } %]
-        	WHERE ID = SERIAL_ID;
+	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
     	[% } %]        	
 
         RETURN NEW;
