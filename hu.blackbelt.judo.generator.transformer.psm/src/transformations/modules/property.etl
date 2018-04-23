@@ -29,6 +29,9 @@ rule ClassProperty
 	}
 	
 	t.mandatory = s.lowerValue.isDefined() and s.lowerValue.value > 0;
+	t.lower = s.computeLower();
+	t.upper = s.computeUpper();
+	
 	
 	if ( stereotypeApplications.get("decimals").containsKey(s) ) {
 		t.decimals = stereotypeApplications.get("decimals").get(s).asInteger();
