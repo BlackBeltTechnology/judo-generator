@@ -21,7 +21,7 @@
         fields = {
         [%for (attr in class.allAttributes()) {%]
                 @Field(
-                        xmiid = "[%=attr.originUUID()%]",
+                        xmiid = "[%=class.origin.uuid%].[%=attr.name%]",
                         name = "[%=attr.name%]",
                         type = [%=attr.type.fqName()%].class,
                         mandatory = [%=attr.mandatory and not attr.derived %],
@@ -44,7 +44,7 @@
                 @Relation(
                         thisEnd = @RelationEnd(
                                 field = "[%=ref.name%]",
-                                xmiid = "[%=ref.opposite.originUUID()%]",
+                                xmiid = "[%=class.origin.uuid%].[%=ref.name%]",
                                 collection = [%=ref.type.isCollection()%],
                                 type = [%if (ref.framework) {%][%=ref.type.bare().boInterface().fqName()%][%}else{%][%=ref.type.bare().bo().fqName()%][%}%].class,
                                 kind = [%=kind.get(ref.kind)%],
@@ -60,7 +60,7 @@
                         ),
                         otherEnd = @RelationEnd(
                                 field = "[%=ref.opposite.name%]",
-                                xmiid = "[%=ref.originUUID()%]",
+                                xmiid = "[%=ref.opposite.ownerClass.origin.uuid%].[%=ref.opposite.name%]",
                                 collection = [%=ref.opposite.type.isCollection()%],
                                 type = [%if (ref.framework) {%][%=ref.opposite.type.bare().boInterface().fqName()%][%}else{%][%=ref.opposite.type.bare().bo().fqName()%][%}%].class,
                                 kind = [%=kind.get(ref.opposite.kind)%],
@@ -83,7 +83,7 @@
                 @Relation(
                         thisEnd = @RelationEnd(
                                 field = "[%=ref.name%]",
-                                xmiid = "[%=ref.opposite.originUUID()%]",
+                                xmiid = "[%=class.origin.uuid%].[%=ref.name%]",
                                 collection = [%=ref.type.isCollection()%],
                                 type = [%if (ref.framework) {%][%=ref.type.bare().boInterface().fqName()%][%}else{%][%=ref.type.bare().bo().fqName()%][%}%].class,
                                 kind = [%=kind.get(ref.kind)%],
@@ -99,7 +99,7 @@
                         ),
                         otherEnd = @RelationEnd(
                                 field = "[%=ref.opposite.name%]",
-                                xmiid = "[%=ref.originUUID()%]",
+                                xmiid = "[%=ref.opposite.ownerClass.origin.uuid%].[%=ref.opposite.name%]",
                                 collection = [%=ref.opposite.type.isCollection()%],
                                 type = [%if (ref.framework) {%][%=ref.opposite.type.bare().boInterface().fqName()%][%}else{%][%=ref.opposite.type.bare().bo().fqName()%][%}%].class,
                                 kind = [%=kind.get(ref.opposite.kind)%],
