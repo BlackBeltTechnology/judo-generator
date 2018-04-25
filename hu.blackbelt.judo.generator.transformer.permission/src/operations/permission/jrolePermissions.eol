@@ -6,7 +6,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		readPerm.resource = readPerm.hostClassName + "." + jrole.name;
 		readPerm.otherType = jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name;
 		readPerm.hostClassUuid = class.uuid;
-		readPerm.resourceUuid = readPerm.hostClassUuid + "@" + class.uuid + "." + jrole.name;
+		readPerm.resourceUuid = readPerm.hostClassUuid + "@" + jrole.uuid;
 		readPerm.action = "read";
 		readPerm.type = "relation";
 		readPerm.uuid = generateUuid(generateUuid(readPerm.hostClassUuid, jrole.name, "."), "readPermission", "_");
@@ -16,7 +16,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		writePerm.resource = writePerm.hostClassName + "." + jrole.name;
 		writePerm.otherType = jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name;
 		writePerm.hostClassUuid = class.uuid;
-		writePerm.resourceUuid = writePerm.hostClassUuid + "@" + class.uuid + "." + jrole.name;
+		writePerm.resourceUuid = writePerm.hostClassUuid + "@" + jrole.uuid;
 		writePerm.action = "write";
 		writePerm.type = "relation";
 		writePerm.uuid = generateUuid(generateUuid(writePerm.hostClassUuid, jrole.name, "."), "writePermission", "_");
@@ -26,7 +26,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		attachPerm.resource = attachPerm.hostClassName + "." + jrole.name;
 		attachPerm.otherType = jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name;
 		attachPerm.hostClassUuid = class.uuid;
-		attachPerm.resourceUuid = attachPerm.hostClassUuid + "@" + class.uuid + "." + jrole.name;
+		attachPerm.resourceUuid = attachPerm.hostClassUuid + "@" + jrole.uuid;
 		attachPerm.action = "attach";
 		attachPerm.type = "relation";
 		attachPerm.uuid = generateUuid(generateUuid(attachPerm.hostClassUuid, jrole.name, "."), "attachPermission", "_");
@@ -36,7 +36,7 @@ operation JRoleToPermissions(jrole : PSM!JRole, package : PSM!JPackage, class : 
 		detachPerm.resource = detachPerm.hostClassName + "." + jrole.name;
 		detachPerm.otherType = jrole.opposite().ownerClass.package.name + "." + jrole.opposite().ownerClass.name;
 		detachPerm.hostClassUuid = class.uuid;
-		detachPerm.resourceUuid = detachPerm.hostClassUuid + "@" + class.uuid + "." + jrole.name;
+		detachPerm.resourceUuid = detachPerm.hostClassUuid + "@" + jrole.uuid;
 		detachPerm.action = "detach";
 		detachPerm.type = "relation";
 		detachPerm.uuid = generateUuid(generateUuid(detachPerm.hostClassUuid, jrole.name, "."), "detachPermission", "_");
