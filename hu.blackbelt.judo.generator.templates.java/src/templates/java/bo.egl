@@ -93,8 +93,8 @@ public class [%=className%] [%if (class.hasSuper()) {%] extends [%=class.superty
 		[%if (ref.defaultValueExpression.isDefined()) {%]
 			@hu.blackbelt.judo.business.bo.api.AttributeDefaultValue(expression = "[%=ref.defaultValueExpression%]")
 		[% } %]
-		@AssociationEnd(type = [%=ref.type.bare().fqName()%].class, kind = [%=kind.get(ref.kind)%], minimum = [%=multiplicity.get(ref.lower)%], maximum = [%=multiplicity.get(ref.upper)%], xmiId = "[%=ref.opposite.originUUID()%]")
-   		@AssociationOtherEnd(field = "[%=ref.opposite.name%]", kind = [%=kind.get(ref.opposite.kind)%], minimum = [%=multiplicity.get(ref.opposite.lower)%], maximum = [%=multiplicity.get(ref.opposite.upper)%], navigable = [%=ref.opposite.navigable%], xmiId = "[%=ref.originUUID()%]")
+		@AssociationEnd(type = [%=ref.type.bare().fqName()%].class, kind = [%=kind.get(ref.kind)%], minimum = [%=multiplicity.get(ref.lower)%], maximum = [%=multiplicity.get(ref.upper)%], xmiId = "[%=ref.originUUID()%]")
+   		@AssociationOtherEnd(field = "[%=ref.opposite.name%]", kind = [%=kind.get(ref.opposite.kind)%], minimum = [%=multiplicity.get(ref.opposite.lower)%], maximum = [%=multiplicity.get(ref.opposite.upper)%], navigable = [%=ref.opposite.navigable%], xmiId = "[%=ref.opposite.originUUID()%]")
 		private [%=ref.type.fqName()%] [%=ref.name%];
 	[%}%]
 	
