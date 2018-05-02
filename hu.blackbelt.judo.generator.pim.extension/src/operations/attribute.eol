@@ -6,6 +6,7 @@ operation transformAttribute(attribute : pimEXT!EAttribute, newPimAttr : inpPIM!
 		newPimAttr.type = inpPIM!PrimitiveType.all.selectOne(type | type.name = ecoreUMLTypeMap.get(attribute.getEAttributeType().name).name);
 		newPimAttr.lower = attribute.lowerBound;
 		newPimAttr.upper = attribute.upperBound;
+		newPimAttr.isUnique = attribute.unique;
 		
 		newPimAttr.visibility = visibilityMap.get(attrAnnotation.details.get("visibility"));
 		
