@@ -252,10 +252,15 @@ operation OpaqueExpression getSpecification() : String {
 }
 
 operation Sequence collectConstrainedElements() : Map {
-	return seqOfMapsToMap( self->collect(sttype | sttype.base_Constraint
-														.constrainedElement->aggregate(ce | ce, sttype.base_Constraint
+	var withConstrainedElem = self->collect(sttype | sttype.base_Constraint.constrainedElement->aggregate(ce | ce, sttype.base_Constraint
 																								  	  .specification
-																								   	  .getSpecification())));
+																								   	  .getSpecification()));
+	var withoutConstrainedElem = self.select(e | e.base_Constraint.constrainedElement.isUndefined() or e.base_Constraint.constrainedElement.size = 0)
+									 .collect(sttype | sttype.base_Constraint.owner->aggregate(ce | ce, sttype.base_Constraint
+																								  	  .specification
+																								   	  .getSpecification()));
+	withConstrainedElem.addAll(withoutConstrainedElem);
+	return seqOfMapsToMap(withConstrainedElem);
 }
 
 // get a Sequence of Stereotypes - constraining even multiple elements, w. only one Specification
