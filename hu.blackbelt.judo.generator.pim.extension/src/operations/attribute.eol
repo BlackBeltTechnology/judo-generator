@@ -7,6 +7,7 @@ operation transformAttribute(attribute : pimEXT!EAttribute, newPimAttr : inpPIM!
 		newPimAttr.lower = attribute.lowerBound;
 		newPimAttr.upper = attribute.upperBound;
 		newPimAttr.isUnique = attribute.unique;
+		newPimAttr.`default` = attribute.defaultValueLiteral;
 		
 		newPimAttr.visibility = visibilityMap.get(attrAnnotation.details.get("visibility"));
 		
