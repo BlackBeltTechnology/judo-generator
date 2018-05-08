@@ -140,6 +140,9 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	enumClass.fixedEnum = corrEnum; 
 	enumClass.uuid = generateUuid(tgtPkg.uuid, enumClass.name, ".");
 	enumClass.representsEnum = true;
+	if (self.shortName.isDefined()) {
+		enumClass.shortName = self.shortName.concat("E");
+	}
 	
 	createRelationWithRoles( tgtPkg, self.name.firstToUpperCase() + "Inverse", self.name,
 									 enumClass, self.ownerClass);
@@ -159,6 +162,9 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 	enumValueClass.name = enumClass.name + "Value"; 
 	enumValueClass.uuid = generateUuid(tgtPkg.uuid, enumValueClass.name, ".");
 	enumValueClass.representsEnumValue = true;
+	if (self.shortName.isDefined()) {
+		enumValueClass.shortName = self.shortName.concat("V");
+	}
 	
 	enumValueClass.attributes.add(createDefaultAttribute("value").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")));
 		// ownerships
