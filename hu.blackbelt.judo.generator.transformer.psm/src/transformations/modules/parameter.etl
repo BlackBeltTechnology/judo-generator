@@ -22,7 +22,7 @@ rule Parameter
 	}
 	
 	t.ordered = s.ordered;
-	t.unique = s.isID;
+ 	//t.unique = s.isID;
 	
 	t.upper = s.computeUpper();	
 	t.lower = s.computeLower();
