@@ -17,7 +17,7 @@ rule ClassProperty
 	
 	s.owner.equivalent("Class").attributes.add(t);
 	t.ordered = s.ordered;
-	t.unique = s.unique;
+	t.unique = s.isID;
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.uiNoSearch = stereotypeApplications.get("nosearch").includes(s);
 	t.derived = s.isDerived or stereotypeApplications.get("derived").includes(s);
@@ -130,7 +130,7 @@ rule ClassPropertyRole
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.navigable = s.navigable;
 	t.ordered = s.ordered;
-	t.unique = s.unique;
+	t.unique = s.isID;
 	t.upper = s.computeUpper();	
 	t.lower = s.computeLower();
 	s.owner.name.println("RULE:: OWNERNAME: ");
@@ -231,7 +231,7 @@ rule RelationProperty
 	t.name = s.name;
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.ordered = s.ordered;
-	t.unique = s.unique;
+	t.unique = s.isID;
 	t.upper = s.computeUpper();	
 	t.lower = s.computeLower();
 	t.navigable = s.navigable;
