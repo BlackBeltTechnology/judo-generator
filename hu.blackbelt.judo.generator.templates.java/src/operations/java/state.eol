@@ -14,6 +14,10 @@ operation JAVA!JvmState getOutgoingTransitionsGroupedByExecutingMethod () : Map 
 	return ret;
 }
 
+operation JAVA!JvmState getEnumLiteral () : JAVA!JvmLiteral {
+	return self.ownerStateMachine.correspondingEnum.literals.selectOne(l | l.name.toUpperCase() = self.name.toUpperCase());
+}
+
 operation JAVA!JvmState getDecideMethodFor (method : JAVA!JvmMethod) : JAVA!JvmMethod {
 	var transitions = self.getOutgoingTransitionsGroupedByExecutingMethod().get(method);
 	if (transitions.isDefined() and transitions.notEmpty()) {

@@ -19,6 +19,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference permission.ecore#//PermissionModel/roles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference permission.ecore#//PermissionModel/admin"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//PermissionModel/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//PermissionModel/modelName"/>
     </genClasses>
     <genClasses ecoreClass="permission.ecore#//RelPermission">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute permission.ecore#//RelPermission/otherType"/>

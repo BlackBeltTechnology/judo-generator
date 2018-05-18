@@ -8,6 +8,24 @@ import "modules/junctionTable.etl";
 import "modules/junctionTableField.etl";
 
 pre {
-	var targetModel : QUERYDSL!QueryDslModel;
-}
+	var targetModel : QUERYDSL!QueryDslModel = new QUERYDSL!QueryDslModel;
+	var s : RDBMS!RdbmsModel = RDBMS!RdbmsModel.all.first();
+	
+        targetModel.version = RDBMS!RdbmsModel.all.first().version;
 
+        //TODO: there should only be one java model and that should be used
+        var javaModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
+        targetModel.uuid = generateUuid(javaModel.uuid, "", "");
+        targetModel.originUuid = javaModel.uuid;
+        targetModel.name = javaModel.name;
+        targetModel.topPackageName = javaModel.applicationTop.fqName();
+        targetModel.persistenceName = javaModel.applicationTop.name.firstToUpperCase();
+}
+post {
+
+	//Use it to check if all Uuids are unique
+	//Impacts performance
+	
+	checkAllUuidsForDuplicateOrMissing();
+
+}

@@ -16,6 +16,7 @@ post {
 	var permissionModel = new Permission!PermissionModel();
 	permissionModel.uuid = PSM!JModel.all.first().uuid;
 	permissionModel.version = psmVersion;
+	permissionModel.modelName = PSM!JModel.all.selectOne(m | not m.framework).applicationTop.name.toLowerCase();
 
 	for (jclass in PSM!JClass.all) {
 		if (jclass.package.participates(PSM!JLayer#OPERATION)) {
@@ -95,13 +96,9 @@ post {
 	permissionModel.createLoginRole();
 	permissionModel.mustChangePasswordRole();
 	
+	//Use it to check if all Uuids are unique
+	//Impacts performance
 	
-	for (key : String in mapUUID.keySet()) {
-		var value = mapUUID.get(key);
-		if (value.size() > 1) {
-			"".println();
-			"DUPLICATE: KEY:".print(key + " " + value);
-			"".println();
-		}
-	}
+	checkAllUuidsForDuplicateOrMissing();
+	
 }

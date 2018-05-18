@@ -138,8 +138,8 @@ rule RestTestWrapperSParameter
 }
 
 operation JAVA!JvmMethodParameter fillFrom (source : PSM!JParameter, ownerOperationRuleName : String, typeRuleName : String) : Any {
-	self.uuid = uuid3(source.uuid, ownerOperationRuleName);
 	self.ownerMethod = source.ownerOperation.equivalent(ownerOperationRuleName);
+	self.uuid = generateUuid(self.ownerMethod.uuid, self.name, ".");
 	if (source.type.isDefined()) {
 		var isCollection = source.upper == -1;
 		if (source.ownerOperation.kind == PSM!JOperationKind#QUERY and not Set{JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT, JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S}.contains(self.ownerMethod.ownerClass.coordinate)) {

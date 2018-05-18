@@ -207,7 +207,7 @@ operation JAVA!JvmMethod parameterExtractedNameSequence () : String {
 }
 
 operation bqlCall (class : JAVA!JvmClass, ref : JAVA!JvmElement) : String {
-    return class.origin.package.domainBqlClass.fqName() + "." + class.origin.name.firstToLowerCase() + "()." + ref.name + "()";
+    return class.origin.package.domainBqlClass.selectOne(c | c.framework = transformDomain.asBoolean()).fqName() + "." + class.origin.name.firstToLowerCase() + "()." + ref.name + "()";
 }
 
 operation JAVA!JvmType boFqName() : String {

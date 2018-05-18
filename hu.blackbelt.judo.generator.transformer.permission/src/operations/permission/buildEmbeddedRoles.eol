@@ -9,14 +9,7 @@ operation Permission!PermissionModel buildEmbeddedRoles(hostClassName : String, 
 	
 	if (enums.size > 0) {
 		var readRole = Permission!Role.all.select(role | role.name = hostClassName + "_read").first();
-		var readEnumRoles = Permission!Role.all.select(role | enums.includes(role.name.replace("_read", "")));
-		
-		readRole.name.println("ReadRole: ");
-		for (role in readEnumRoles) {
-			role.name.println("EnumRoles:");
-		}
-		
-		
+		var readEnumRoles = Permission!Role.all.select(role | enums.includes(role.name.replace("_read", "")));		
 		readRole.childrenRoles.addAll(readEnumRoles);
 	}
 }

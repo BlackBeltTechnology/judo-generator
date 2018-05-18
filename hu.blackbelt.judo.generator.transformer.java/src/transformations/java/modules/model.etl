@@ -6,5 +6,6 @@ rule JModel
 	to t : JAVA!JvmModel
 	extends JElement {
 		t.packages ::= s.packages;
+		s.applicationTop.name.println("APP TOP: ");
 		t.applicationTop ::= s.applicationTop;
 }

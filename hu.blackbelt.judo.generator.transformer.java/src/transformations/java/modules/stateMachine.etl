@@ -24,6 +24,10 @@ rule JTransition
 	extends JElement {
 		t.fromState ::= s.fromState;
 		t.toState ::= s.toState;
+		
+		var postFix : String = t.fromState.uuid.split("\\.").last() + t.toState.uuid.split("\\.").last();
+		t.uuid = generateUuid(s.uuid, postFix, "_");
+		
 		t.ownerStateMachine ::= s.stateMachine;	
 		t.executingMethod ::= s.executingOperation;
 }

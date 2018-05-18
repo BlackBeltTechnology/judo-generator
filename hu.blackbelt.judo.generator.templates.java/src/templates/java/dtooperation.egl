@@ -18,7 +18,7 @@ import hu.blackbelt.judo.business.dto.api.PaginationDto;
 public interface [%=class.name%] extends CrudOperation<[%=class.dto().fqName()%]> {
     [% for (method in class.dtoMethods()) { %]
         [% if (method.isCustomBulk() or method.isQuery() or method.isCustom()) { %]
-            @hu.blackbelt.judo.common.security.api.permission.PermissionSubjectOperation(id = "[%=class.origin.uuid%].[%=method.origin.uuid%]", resource = "[%=class.origin.package.name%].[%=class.origin.name%].[%=method.name%]")
+            @hu.blackbelt.judo.common.security.api.permission.PermissionSubjectOperation(id = "[%=class.origin.uuid%]@[%=method.origin.uuid%]", resource = "[%=class.origin.package.name%].[%=class.origin.name%].[%=method.name%]")
         [%}%]
         [%=method.type.fqName()%] [%=method.name%]([%=method.parametersSignature()%]) [% if (not method.isQueryCount()) { %]throws AuthorizationException[%}%];
 

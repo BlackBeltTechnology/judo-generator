@@ -16,7 +16,6 @@ rule OriginOperation
 	to t : JAVA!JvmMethod
 	extends JOperation {
 		t.fillFrom(s, "OriginClass", "OriginClass");
-		t.uuid = s.uuid;
 }
 
 rule BoOperation 
@@ -132,8 +131,8 @@ rule RestTestWrapperSOperation
 }
 
 operation JAVA!JvmMethod fillFrom (source : PSM!JOperation, ownerClassRuleName : String, returnTypeRuleName : String) : Any {
-	self.uuid = uuid3(source.uuid, ownerClassRuleName);
 	self.ownerClass = source.ownerClass.equivalent(ownerClassRuleName);
+	self.uuid = generateUuid(self.ownerClass.uuid, source.name, ".");
 	self.origin ::= source;
 	self.kind = source.kind.toJava();
 	self.classBased = source.classBased;

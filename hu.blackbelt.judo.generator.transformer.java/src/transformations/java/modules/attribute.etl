@@ -137,13 +137,26 @@ rule RestTestWrapperM
 }
 
 operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule : String) : Any {
-	self.uuid = uuid3(source.uuid, correspondingRule);
-	self.ownerClass = source.ownerClass.equivalent(correspondingRule);
+	
 	self.unique = source.unique;
+	self.ownerClass = source.ownerClass.equivalent(correspondingRule);
+	
+	
+	self.uuid = generateUuid(self.ownerClass.uuid, source.name, ".");
+	
+	/*if ("value".isSubstringOf(self.uuid)) {
+		source.ownerClass.equivalents().coordinate.println("EQUIVS: ");
+		correspondingRule.println("RUEL: ");
+		self.ownerClass.coordinate.println("COORDINATE: ");
+		source.ownerClass.uuid.println("ORIG CLASS: ");
+		self.uuid.println("VALUE: ");
+	}*/
+	
 	self.mandatory = source.mandatory;
 	self.technical = source.technical;
 	self.regexp = source.regexp;
     self.placeholder = source.placeholder;
+    self.representsId = source.representsId;
     if (self.placeholder.isUndefined()) {
         self.placeholder = "";
     }

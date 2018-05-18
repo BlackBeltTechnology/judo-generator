@@ -1,4 +1,4 @@
-operation addPackageBasedClasses () {
+	operation addPackageBasedClasses () {
     addDomainBqlClasses();
     addPackageBasedRestDtoClasses();
 }
@@ -9,21 +9,34 @@ operation addDomainBqlClasses () : Any {
 		domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
 		domainBqlClass.name = package.name.firstToUpperCase();
 		domainBqlClass.package = package;
-		domainBqlClass.uuid = uuid3(package.uuid, domainBqlClass.name);
+		domainBqlClass.uuid = generateUuid(generateUuid(package.uuid, domainBqlClass.name, "."), "DOMAINBQL", "_");
 		domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
 		package.domainBqlClass = domainBqlClass;
 	}
-	for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and c.framework).origin.package.asSet()) {
-		var domainBqlClass = new JAVA!JvmClass;
-		domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
-		domainBqlClass.name = package.name.firstToUpperCase();
-		//JAVA!JvmPackage.all.selectOne(pack | pack.name = "api" and pack.parent.uuid = package.uuid);
-		var pack = package.findOrCreateChildRecursively("api");
-		domainBqlClass.package = pack;
-		
-		domainBqlClass.uuid = uuid3(package.uuid, domainBqlClass.name);
-		domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
-		package.domainBqlClass = domainBqlClass;
+	if (transformDomain.asBoolean()) {
+		for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and c.framework).origin.package.asSet()) {
+			var domainBqlClass = new JAVA!JvmClass;
+			domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
+			domainBqlClass.name = package.name.firstToUpperCase();
+			//JAVA!JvmPackage.all.selectOne(pack | pack.name = "api" and pack.parent.uuid = package.uuid);
+			var pack = package.findOrCreateChildRecursively("api");
+			domainBqlClass.package = pack;
+			domainBqlClass.framework = true;
+			
+			domainBqlClass.uuid = generateUuid(generateUuid(package.uuid, domainBqlClass.name, "."), "DOMAINBQL", "_");
+			domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
+			package.domainBqlClass = domainBqlClass;
+		}
+	} else {
+		for (package in JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and c.framework).origin.package.asSet()) {
+			var domainBqlClass = new JAVA!JvmClass;
+			domainBqlClass.coordinate = JAVA!JvmJudoCoordinate#DOMAIN_BQL;
+			domainBqlClass.name = package.name.firstToUpperCase();
+			domainBqlClass.package = package;
+			domainBqlClass.uuid = generateUuid(generateUuid(package.uuid, domainBqlClass.name, "."), "DOMAINBQL", "_");
+			domainBqlClass.origin = package.contents.select(c : JAVA!JvmClass | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).first();
+			package.domainBqlClass = domainBqlClass;
+		}
 	}
 }
 
@@ -33,7 +46,7 @@ operation addPackageBasedRestDtoClasses () {
         dummyOriginClass.name = "DummyOriginClassForPackage" + package.name;
         dummyOriginClass.coordinate = JAVA!JvmJudoCoordinate#ORIGIN;
         dummyOriginClass.package = package;
-        dummyOriginClass.uuid = uuid3(package.uuid, dummyOriginClass.name);
+        dummyOriginClass.uuid = generateUuid(package.uuid, dummyOriginClass.name, ".");
 
         createClassWithOrigin("Namespace", JAVA!JvmJudoCoordinate#REST_NAMESPACE, package, "rest", dummyOriginClass);
         createClassWithOrigin("NamespaceOperation", JAVA!JvmJudoCoordinate#REST_NAMESPACE_OPERATION, package, "rest.namespace", dummyOriginClass);
@@ -50,7 +63,9 @@ operation addPackageBasedRestDtoClasses () {
 		}
 		
         //dummyOriginClass is only used as the common origin of package based classes so its package is not used
-        dummyOriginClass.package = new JAVA!JvmPackage;
+        var dummyPackage = new JAVA!JvmPackage;
+        dummyPackage.uuid = generateUuid("DummyPackageForOriginClass", package.name.firstToUpperCase(), "");
+        dummyOriginClass.package = dummyPackage;
     }
     
     
@@ -67,34 +82,47 @@ operation createClassWithOrigin(name : String, coordinate : Any, parentPackage :
     newClass.name = name;
     newClass.coordinate = coordinate;
     newClass.package = parentPackage.findOrCreateChildRecursively(packageName);
-    newClass.uuid = uuid3(newClass.package.uuid, newClass.name);
+    newClass.uuid = generateUuid(newClass.package.uuid, newClass.name, ".");
     newClass.origin = origin;
     return newClass;
 }
 
 operation addBoTypeResolverClass () {
-    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
+    var mainModel : JAVA!JvmModel = mainModel();
     var boTypeResolverClass = new JAVA!JvmClass;
     boTypeResolverClass.name = mainModel.applicationTop.name.firstToUpperCase() + "BoTypeResolver";
     boTypeResolverClass.coordinate = JAVA!JvmJudoCoordinate#BO_TYPE_RESOLVER;
     boTypeResolverClass.package = mainModel.applicationTop;
-    boTypeResolverClass.uuid = uuid3(boTypeResolverClass.package.uuid, boTypeResolverClass.name);
+    boTypeResolverClass.uuid = generateUuid(boTypeResolverClass.package.uuid, boTypeResolverClass.name, ".");
 }
 
 operation addEnumConverterServiceClass () {
-    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
+    var mainModel : JAVA!JvmModel = mainModel();
     var enumConverterClass = new JAVA!JvmClass;
     enumConverterClass.name = mainModel.applicationTop.name.firstToUpperCase() + "EnumResolver";
     enumConverterClass.coordinate = JAVA!JvmJudoCoordinate#ENUM_CONVERTER_SERVICE;
     enumConverterClass.package = mainModel.applicationTop.findOrCreateChildRecursively("service");
-    enumConverterClass.uuid = uuid3(enumConverterClass.package.uuid, enumConverterClass.name);
+    enumConverterClass.uuid = generateUuid(enumConverterClass.package.uuid, enumConverterClass.name, ".");
 }
 
 operation addRestTestBaseClass () {
-    var mainModel : JAVA!JvmModel = JAVA!JvmModel.all.first();
+    var mainModel : JAVA!JvmModel = mainModel();
     var newClass = new JAVA!JvmClass;
     newClass.name = "RestTestBase";
     newClass.coordinate = JAVA!JvmJudoCoordinate#REST_TEST_BASE;
     newClass.package = mainModel.applicationTop.package;
-    newClass.uuid = uuid3(newClass.package.uuid, newClass.name);
+    newClass.uuid = generateUuid(newClass.package.uuid, newClass.name, ".");
+}
+
+operation mainModel () {
+	JAVA!JvmModel.all.size().println("MODEL SIZE");
+	JAVA!JvmModel.all.name.println("MODEL SIZE");
+	 
+	if (JAVA!JvmModel.all.size() = 1) {
+		"ONE Model only returning that".println();
+		return JAVA!JvmModel.all.first();
+	} else {
+		"Multiple model find not framework".println();
+		return JAVA!JvmModel.all.selectOne(m | not m.framework);
+	}
 }

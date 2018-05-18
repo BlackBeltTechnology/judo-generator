@@ -2,7 +2,7 @@ operation modifyVoidBusinessMethodsToReturnDeclaringClass () : Any {
 	var ops = PSM!JOperation.all.select(o | not o.parameters.exists(p | not p.input));
 	for (op in ops) { 
 		var outParam = new PSM!JParameter;
-		outParam.uuid = uuid3(op.uuid, "outParam");
+		outParam.uuid = generateUuid(op.uuid, "return", ".");
 		outParam.input = false;
 		outParam.type = op.ownerClass;
 		op.parameters.add(outParam);

@@ -18,13 +18,14 @@ rule Parameter
 		t.input = true;
 	} else {
 		t.input = false;
+		t.uuid = generateUuid(t.uuid, "return", "");
 	}
 	
 	t.ordered = s.ordered;
-	t.unique = s.unique;
-	t.upper = s.upper;
-	t.lower = s.lower;
+ 	//t.unique = s.isID;
 	
+	t.upper = s.computeUpper();	
+	t.lower = s.computeLower();
 	//s.type.println("TYPE ::==> ");
 	//s.type.equivalent().println("TYPE-EQUIV ::==> ");
 	

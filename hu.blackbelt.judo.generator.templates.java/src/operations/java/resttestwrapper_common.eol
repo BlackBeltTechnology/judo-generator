@@ -48,7 +48,7 @@ operation JAVA!JvmType convertParam(paramName : String) : String {
     if (self.isPrimitive()) {
         return paramName;
     } else if (self.bare().hasFixedEnum()) {
-        return self.clientAccessor() + ".queryByCode(" + paramName + ")";
+        return self.bare().clientAccessor() + ".queryByCode(" + paramName + ")";
     } else if (self.isCollection()) {
         return self.restTestWrapperM().bare().fqName() + ".convert(" + paramName + ")";
     } else {

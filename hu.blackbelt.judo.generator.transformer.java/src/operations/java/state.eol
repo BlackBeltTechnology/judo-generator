@@ -3,10 +3,10 @@ operation JAVA!JvmState getOutgoingTransitionsGroupedByExecutingMethod () : Map 
 	var ret = new Map;
 	for (tr in self.outgoingTransitions) {
 		if (tr.executingMethod.isDefined()) {
-			var val = ret.get(tr.executingMethod);
+			var val = ret.get(tr.executingMethod.uuid);
 			if (val.isUndefined()) {
 				val = new Set;
-				ret.put(tr.executingMethod, val);
+				ret.put(tr.executingMethod.uuid, val);
 			}
 			val.add(tr);
 		}
@@ -15,7 +15,7 @@ operation JAVA!JvmState getOutgoingTransitionsGroupedByExecutingMethod () : Map 
 }
 
 operation JAVA!JvmState getDecideMethodFor (method : JAVA!JvmMethod) : JAVA!JvmMethod {
-	var transitions = self.getOutgoingTransitionsGroupedByExecutingMethod().get(method);
+	var transitions = self.getOutgoingTransitionsGroupedByExecutingMethod().get(method.uuid);
 	if (transitions.isDefined() and transitions.notEmpty()) {
 		var guards = transitions.guard;
 		if (guards.isDefined() and guards.notEmpty() and guards.size() > 0) {
@@ -26,7 +26,7 @@ operation JAVA!JvmState getDecideMethodFor (method : JAVA!JvmMethod) : JAVA!JvmM
 
 
 operation JAVA!JvmState toStateViaExecutingMethod (executingMethod : JAVA!JvmMethod) : JAVA!JvmState {
-	var  ret =  self.outgoingTransitions.select(t | t.executingMethod = executingMethod).toState;
+	var  ret =  self.outgoingTransitions.select(t | t.executingMethod.uuid = executingMethod.uuid).toState;
 	if (ret.size() == 1) {
 		return ret.first();
 	} else {

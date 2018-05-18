@@ -9,14 +9,12 @@ import "modules/attribute.etl";
 import "modules/parameter.etl";
 import "modules/stateMachine.etl";
 
-import "pre/addParticipateToAllElement.eol";
 import "pre/modifyVoidBusinessMethodsToReturnDeclaringClass.eol";
-import "pre/addIdToEntities.eol";
 
+import "post/addHuBlackbeltPackages.eol";
 import "post/addGuardMethodsAndEnum.eol";
 import "post/addPackageBasedAndSingleClasses.eol";
 import "post/addAndModifyMethods.eol";
-import "post/addHuBlackbeltPackages.eol";
 import "post/modifyReferenceTypeToInterfaceForFrameworkEntities.eol";
 
 pre {
@@ -68,9 +66,7 @@ pre {
 			JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "M", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M}
 		};
 
-	addParticipateToAllElement();
 	modifyVoidBusinessMethodsToReturnDeclaringClass();
-	
 }
 
 post {
@@ -84,6 +80,16 @@ post {
 	addHuBlackbeltPackages();
 	addSingleClasses();
 	modifyReferenceTypeToInterfaceForFrameworkEntities();
+	
+	//HACK - repairs broken uuids
+	for (attr in JAVA!JvmAttribute.all) {
+		attr.uuid = generateUuid(attr.ownerClass.uuid, attr.name, ".");
+	}
+	
+	//Use it to check if all Uuids are unique
+	//Impacts performance
+	
+	checkAllUuidsForDuplicateOrMissing();
 }
 
 operation hacklongtoPOId () : Any {

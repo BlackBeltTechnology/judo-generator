@@ -41,7 +41,7 @@
 		[%}%]		
 	[% } %]
 	],
-	"selector" : "[%=self.selector.id%]",
+	"selector" : "[%=self.selector.uuid%]",
 	"readonly" : [%=self.readonly%],
 	[% if (self.representation.isDefined()) { %]
 	"representation" : "<%= [%=self.representation.name%] %>",

@@ -2,26 +2,23 @@ rule UIMenuItem
 	transform jUIMenuItem: PSM!JUIMenuItem
 	to uiMenuItem : UI!UIMenuItem {
 	guard : jUIMenuItem.parent.isDefined()
-		uiMenuItem.uuid = jUIMenuItem.uuid;
+		uiMenuItem.uuid = generateUuid(jUIMenuItem.uuid, "", "");
 		uiMenuItem.name = jUIMenuItem.name;
 		var menuView;
 		
 		if (jUIMenuItem.type = PSM!JMenuItemType#LIST) {
-			menuView = new UI!UIListView();
-			menuView.uuid = jUIMenuItem.represent.uuid + "_lview_" + "default";
-			menuView.name = jUIMenuItem.name;
+			menuView = jUIMenuItem.represent.equivalent("UIClass").selector;
 			
 			for (filter in jUIMenuItem.uifilters) {
 				uiMenuItem.filters.add(filter.equivalent("UIFilter"));
 			}
 		} else if (jUIMenuItem.type = PSM!JMenuItemType#OBJECT) {
-			menuView = new UI!UIClassView();
-			menuView.name = jUIMenuItem.name;
+			menuView = jUIMenuItem.represent.equivalent("UIClass").selector.detailView;
 			
 			if (jUIMenuItem.`alias`.isDefined()) {
-				menuView.uuid = jUIMenuItem.represent.uuid + "_oview_" + jUIMenuItem.`alias`.name;
+				menuView.uuid = generateUuid(generateUuid(jUIMenuItem.uuid, "_oview_" + jUIMenuItem.`alias`.name, ""), "menuView", "_");
 			} else {
-				menuView.uuid = jUIMenuItem.represent.uuid + "_oview_" + "default";				
+				menuView.uuid = generateUuid(generateUuid(jUIMenuItem.uuid, "_oview_default", ""), "menuView", "_");			
 			}
 		}
 		

@@ -26,7 +26,7 @@ public final class DerivedAttributeExpressionToRdbmsModelParser {
             expr = expr.replaceAll("\\}([^\\'\\{\\}]*)$", "} '$1'");
         }
 
-        log.info("Original: " + exprOrig + " Parsing: " + expr);
+        // log.info("Original: " + exprOrig + " Parsing: " + expr);
 
         DerivedAttributeExpressionLexer lexer = new DerivedAttributeExpressionLexer(new ANTLRInputStream(expr));
 

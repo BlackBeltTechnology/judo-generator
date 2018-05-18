@@ -2,6 +2,7 @@
 import "operations/_importAll.eol";
 
 var COORDINATE_TO_TEMPLATE = Map {
+
 		JAVA!JvmJudoCoordinate#PO = "po",
 		JAVA!JvmJudoCoordinate#PO_ENUM = "enum",
 

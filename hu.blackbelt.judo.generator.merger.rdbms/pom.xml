@@ -15,6 +15,7 @@
 
   <build>
     <plugins>
+<!--
       <plugin>
           <groupId>${project.groupId}</groupId>
           <artifactId>epsilon-maven-plugin</artifactId>
@@ -53,7 +54,6 @@
 						</metaModelUris>
 						<platformAlias>platform:/resource/hu.blackbelt.judo.generator.merger.rdbms/src/model/rdbmsPostgres.model</platformAlias>
 					</model>
-                    <!--  Target -->
                     <model>
                        <artifact>${project.build.directory}/target.model</artifact>
                        <name>TARGET</name>
@@ -81,7 +81,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin> -->
       <plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
@@ -102,7 +102,7 @@
 						</configuration>
 						
 					</execution>
-
+<!--
 					<execution>
 						<id>attach-artifacts</id>
 						<phase>package</phase>
@@ -124,6 +124,7 @@
 							</artifacts>
 						</configuration>
 					</execution>
+-->
 				</executions>
 			</plugin>
     </plugins>

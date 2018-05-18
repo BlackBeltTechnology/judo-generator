@@ -2,7 +2,7 @@ operation addGuardMethodsAndEnum () : Any {
 	for (state in JAVA!JvmState.all.select(s | s.outgoingTransitions.size() > 1)) {
 		var groupedByMethod = state.getOutgoingTransitionsGroupedByExecutingMethod();
 		for (key in groupedByMethod.keySet()) {
-			var val = groupedByMethod.get(key);
+			var val = JAVA!JvmMethod.all.selectOne(m | m.uuid = groupedByMethod.get(key));
 			if (val.size() > 1) {
 				var oClass = state.ownerStateMachine.ownerClass;
 				var enum = new JAVA!JvmEnum;
@@ -10,11 +10,11 @@ operation addGuardMethodsAndEnum () : Any {
 				
 				enum.name.println("ENUM NAME ITTTT: ");
 				
-				enum.uuid = uuid3(oClass.uuid, enum.name);
+				enum.uuid = generateUuid(oClass.uuid, enum.name, ".");
 				enum.package = oClass.package;
 				var decideMethod = new JAVA!JvmMethod;
 				decideMethod.name = "decide" + enum.name;
-				decideMethod.uuid = uuid3(oClass.uuid, decideMethod.name);
+				decideMethod.uuid = generateUuid(oClass.uuid, decideMethod.name, ".");
 				decideMethod.ownerClass = oClass.boServiceAbstract();
 				decideMethod.type = enum;
 				decideMethod.kind = JAVA!JvmMethodKind#SM_DECIDE;
@@ -22,7 +22,7 @@ operation addGuardMethodsAndEnum () : Any {
 				    var p = new JAVA!JvmMethodParameter;
                     p.type = param.type;
                     p.name = param.name;
-                    p.uuid = uuid3(decideMethod.uuid, p.name);
+                    p.uuid = generateUuid(decideMethod.uuid, p.name, ".");
                     decideMethod.parameters.add(p);
 				}
 				decideMethod.addIdParam();
@@ -30,7 +30,7 @@ operation addGuardMethodsAndEnum () : Any {
 				for (tr in val) {
 					var literal = new JAVA!JvmLiteral;
 					literal.name = tr.guard.text.toUpperCase();
-					literal.uuid = uuid3(enum.uuid, literal.name);
+					literal.uuid = generateUuid(enum.uuid, literal.name, ".");
 					literal.ownerEnum = enum;
 					tr.guard.literal = literal;
 					tr.guard.implementingMethod = decideMethod;

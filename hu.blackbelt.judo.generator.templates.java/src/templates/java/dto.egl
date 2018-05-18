@@ -27,15 +27,19 @@ public class [%= class.name %] [% if (class.hasSuper()) { %] extends [%=class.su
 
 	private Metadata $judo$meta;
 	
-	[% for (attr in class.attributes()) { %]
-		@PermissionSubjectAttribute(id = "[%=class.origin.uuid %].[%=class.originAttributeByName(attr.name).uuid %]", resource = "[%=class.origin.package %].[%=class.origin.name %].[%=attr.name %]")
+	[% for (attr in class.attributes().select(a | a.representsId)) { %]
+		private [%=attr.type.fqName() %] [%=attr.name %];
+	[%}%]
+	
+	[% for (attr in class.attributes().select(a | not a.representsId)) { %]
+		@PermissionSubjectAttribute(id = "[%=class.origin.uuid %]@[%=class.originAttributeByName(attr.name).uuid %]", resource = "[%=class.origin.package.name %].[%=class.origin.name %].[%=attr.name %]")
 		private [%=attr.type.fqName() %] [%=attr.name %];
 	[%}%]
 	
 	[% for (ref in class.references()) { %]
 		[% if (ref.navigable) { %]
-			@PermissionSubjectRelation(id = "[%=class.origin.uuid %].[%=class.originReferenceByName(ref.name).uuid %]", resource = "[%=class.origin.package %].[%=class.origin.name %].[%=ref.name %]")
-			@PermissionSubjectAttribute(id = "[%=class.origin.uuid %].[%=class.originReferenceByName(ref.name).uuid %]", resource = "[%=class.origin.package %].[%=class.origin.name %].[%=ref.name %]")
+			@PermissionSubjectRelation(id = "[%=class.origin.uuid %]@[%=class.originReferenceByName(ref.name).uuid %]", resource = "[%=class.origin.package.name %].[%=class.origin.name %].[%=ref.name %]")
+			@PermissionSubjectAttribute(id = "[%=class.origin.uuid %]@[%=class.originReferenceByName(ref.name).uuid %]", resource = "[%=class.origin.package.name %].[%=class.origin.name %].[%=ref.name %]")
 			private [%=ref.type.fqName() %] [%=ref.name %];
 		[%}%]
 	[%}%]

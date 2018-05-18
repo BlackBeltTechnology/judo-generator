@@ -28,7 +28,7 @@ operation addAndModifyMethods () : Any {
 operation createQueryCountMethodFor (method : JAVA!JvmMethod) : Any {
 	var countMethod = new JAVA!JvmMethod;
 	countMethod.name = method.name + "Count";
-	countMethod.uuid = uuid3(method.uuid, countMethod.name);
+	countMethod.uuid = generateUuid(method.uuid, countMethod.name, ".");
 	countMethod.origin = method.origin;
 	countMethod.ownerClass = method.ownerClass;
 	countMethod.type = intType();
@@ -38,7 +38,7 @@ operation createQueryCountMethodFor (method : JAVA!JvmMethod) : Any {
 	for (param in allParams) {
 		var countParam = new JAVA!JvmMethodParameter;
 		countParam.name = param.name;
-		countParam.uuid = uuid3(param.uuid, param.name);
+		countParam.uuid = generateUuid(param.uuid, "Count", "_");
 		countParam.type = param.type;
 		countParam.ownerMethod = countMethod;
 	}
@@ -49,7 +49,7 @@ operation createBulkMethodFor (method : JAVA!JvmMethod) : Any {
 	bulkMethod.name = method.name;
 	bulkMethod.classBased = method.classBased;
 	bulkMethod.origin = method.origin;
-	bulkMethod.uuid = uuid3(method.uuid, bulkMethod.name);
+	bulkMethod.uuid = generateUuid(method.uuid, "Bulk", "_");
 	bulkMethod.ownerClass = method.ownerClass;
 	bulkMethod.type = createJvmList(method.type);
 	bulkMethod.kind = JAVA!JvmMethodKind#CUSTOM_BULK;
@@ -58,7 +58,7 @@ operation createBulkMethodFor (method : JAVA!JvmMethod) : Any {
 	for (param in allParams) {
 		var bulkParam = new JAVA!JvmMethodParameter;
 		bulkParam.name = param.name;
-		bulkParam.uuid = uuid3(param.uuid, param.name);
+		bulkParam.uuid = generateUuid(bulkMethod.uuid, param.name, ".");
 		bulkParam.type = param.type;
 		bulkParam.ownerMethod = bulkMethod;
 	}
@@ -123,7 +123,7 @@ operation JAVA!JvmInterface createRestDtoOperationMethods () {
 
         var traverseExportMethod = createMethodFor(self, ref, responseType(), "", JAVA!JvmMethodKind#TRAVERSE_EXPORT);
         traverseExportMethod.name = "traverse" + ref.name.firstToUpperCase() + "Export";
-        traverseExportMethod.uuid = uuid3(ref.uuid, traverseExportMethod.name);
+        traverseExportMethod.uuid = generateUuid(self.uuid, traverseExportMethod.name, ".");
         traverseExportMethod.addIdParam();
         traverseExportMethod.addCustomParam(self.filterRestDto(), "filter");
 
@@ -151,7 +151,7 @@ operation JAVA!JvmInterface createRestDtoOperationMethods () {
 operation createMethodFor (ownerClass : JAVA!JvmInterface, ref : JAVA!JvmReference, returnType : JAVA!JvmType, mNamePrefix : String, kind : Any) : JAVA!JvmMethod {
     var newMethod = new JAVA!JvmMethod;
     newMethod.name = mNamePrefix + ref.name.firstToUpperCase();
-    newMethod.uuid = uuid3(ref.uuid, newMethod.name);
+    newMethod.uuid = generateUuid(ownerClass.uuid, newMethod.name, ".");
     newMethod.originReference = ref;
     newMethod.ownerClass = ownerClass;
     newMethod.type = returnType;

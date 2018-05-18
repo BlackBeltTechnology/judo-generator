@@ -1,0 +1,3 @@
+operation QUERYDSL!QueryDslClass originUuid() : String {
+	return self.originUuid.split("\\.").excluding("hu").excluding("blackbelt").concat(".");
+}

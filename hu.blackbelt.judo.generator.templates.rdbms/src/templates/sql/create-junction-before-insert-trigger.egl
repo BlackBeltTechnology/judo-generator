@@ -1,7 +1,5 @@
 [%
   import "../../operations/_importAll.eol";
-  import "../../main.egl";
-  
   out.setContentType("Java");
 %]
 --liquibase formatted sql
@@ -13,7 +11,7 @@
 [* ORACLE                                *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Oracle') {%]
---changeset generator:CREATE_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true endDelimiter:\n/\s*\n|\n/\s*$
+--changeset generator:CREATE_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true endDelimiter:\n/\s*\n|\n/\s*$ failOnError:[%= failOnError %]
 -- [%= table.name %] [%= table.uuid %]
 CREATE TRIGGER BI_[%= table.sqlName %] BEFORE INSERT ON [%= table.sqlName %]
     FOR EACH ROW
@@ -24,7 +22,7 @@ BEGIN
 END;
 /
 
---changeset generator:RECOMPILE_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:RECOMPILE_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
  alter trigger BI_[%= table.sqlName %] compile;
  select is_trigger_valid('BI_[%= table.sqlName %]') from DUAL;
 [% } %]
@@ -33,7 +31,7 @@ END;
 [* HSQLDB                                *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Hsqldb') { %]
---changeset generator:CREATE_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
+--changeset generator:CREATE_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
 -- [%= table.name %] [%= table.uuid %]
 CREATE TRIGGER BI_[%= table.sqlName %] BEFORE INSERT ON [%= table.sqlName %]
     REFERENCING NEW AS NEW 
@@ -49,7 +47,7 @@ CREATE TRIGGER BI_[%= table.sqlName %] BEFORE INSERT ON [%= table.sqlName %]
 [* POSTGRES                              *]
 [* ------------------------------------- *]
 [% if (dialect() == 'Postgres') {%]
---changeset generator:CREATE_FUNCTION_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_FUNCTION_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
 -- [%= table.name %] [%= table.uuid %]
 CREATE FUNCTION BI_[%= table.sqlName %]() RETURNS TRIGGER AS $BI_[%= table.sqlName %]$
     BEGIN
@@ -61,7 +59,7 @@ CREATE FUNCTION BI_[%= table.sqlName %]() RETURNS TRIGGER AS $BI_[%= table.sqlNa
     END;
 $BI_[%= table.sqlName %]$ LANGUAGE plpgsql;
 
---changeset generator:CREATE_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
 CREATE TRIGGER BI_[%= table.sqlName %]
     BEFORE INSERT ON [%= table.sqlName %]
     FOR EACH ROW

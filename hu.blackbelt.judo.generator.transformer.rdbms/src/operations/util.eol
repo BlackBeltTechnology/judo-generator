@@ -1,9 +1,5 @@
-operation randomUUID() : String {
-	return UUIDUtils.randomUUID();
-}
-
-operation uuid3 (namespace : String, name : String) : String {
-	return UUIDUtils.uuid3(namespace, name);
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
 }
 
 operation md5 (name : String) : String {
@@ -26,4 +22,20 @@ operation RDBMS!EObject clone() : RDBMS!EObject {
 operation parseDerivedExpression(expression : String) : Sequence {
     var parser = new Native("hu.blackbelt.judo.generator.parser.derived.expression.sql.DerivedAttributeExpressionToRdbmsModelParser");
 	return parser.parseExpression(expression);
+}
+
+operation checkAllUuidsForDuplicateOrMissing() {
+	var all = RDBMS!RdbmsElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println("DUPLICATE: ");
+		}
+	}
+	
+	RDBMS!RdbmsElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
 }

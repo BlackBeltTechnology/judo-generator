@@ -8,12 +8,12 @@ operation transformJAttribute(uiClass : UI!UIClass, jAttribute : PSM!JAttribute,
 	
 	uiClass.attributes.add(attribute);
 	attribute.inherited = inherited;
-	attribute.uuid = uuid3(uiClass.uuid, jAttribute.uuid);
+	attribute.uuid = generateUuid(uiClass.uuid, jAttribute.name, ".");
 	if (not inherited) {
 		attribute.createIntervals(jAttribute.interval, uiClass.uuid);
 	}  else if (attribute.intervals.size() > 0) {
 		for (interval in attribute.intervals) {
-			interval.uuid = uuid3(uuid3(uiClass.uuid, attribute.uuid), attribute.intervals.indexOf(interval).asString());
+			interval.uuid = generateUuid(generateUuid(uiClass.uuid, attribute.name, "."), attribute.intervals.indexOf(interval).asString(), "_");
 		}	
 	}		
 }
@@ -28,7 +28,7 @@ operation transformJRole(uiClass : UI!UIClass, jRole : PSM!JRole, inherited : Bo
 	
 	uiClass.attributes.add(reference);
 	reference.inherited = inherited;
-	reference.uuid = uuid3(uiClass.uuid, jRole.uuid);
+	reference.uuid = generateUuid(uiClass.uuid, jRole.name, ".");
 			
 	reference.opposite = jRole.opposite().equivalent("UIReferenceComponentType");
 	reference.referenced = jRole.opposite().ownerClass.equivalent("UIClass");
@@ -38,7 +38,7 @@ operation transformJRole(uiClass : UI!UIClass, jRole : PSM!JRole, inherited : Bo
 		reference.createIntervals(jRole.interval, uiClass.uuid);
 	}  else if (reference.intervals.size() > 0) {
 		for (interval in reference.intervals) {
-			interval.uuid = uuid3(uuid3(uiClass.uuid, reference.uuid), reference.intervals.indexOf(interval).asString());
+			interval.uuid = generateUuid(generateUuid(uiClass.uuid, reference.name, "."), reference.intervals.indexOf(interval).asString(), "_");
 		}	
 	}
 }

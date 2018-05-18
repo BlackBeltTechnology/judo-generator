@@ -8,11 +8,32 @@ rule JvmClassToQueryDslClass
             and s.fqName() <> "javax.ws.rs.core.Response" /*Skip Response class*/
 
         t.name = "Q" + s.name;
-        t.uuid = uuid3(s.uuid, "Q");
+        t.uuid = generateUuid(s.uuid, "", "");
         t.originUuid = s.uuid;
         t.originName = s.name;
         t.packageName = s.package.fqName();
         t.supertype = s.supertype.equivalent("JvmClassToQueryDslClass");
-        t.view = RDBMS!RdbmsView.all.selectOne(rt | rt.originUuid = t.originUuid).equivalent("RdbmsViewToQueryDslView");
+        t.view = RDBMS!RdbmsView.all.selectOne(rt | rt.originUuid = t.originUuid()).equivalent("RdbmsViewToQueryDslView");
         targetModel.queryDslClasses.add(t);
+        
+        var uuidList : Sequence(String) = t.references.collect(reference | reference.originUuid);
+        for (jvmRef in s.members.select(ref | ref.isTypeOf(JAVA!JvmReference))) {
+        	if (uuidList.excludes(jvmRef.uuid)) {
+        		var junctionReference = jvmRef.equivalent("JvmReferenceToQueryDslReference");
+        		junctionReference.uuid = generateUuid(t.uuid, jvmRef.name, ".");
+        		junctionReference.opposite = jvmRef.opposite.equivalent("JvmReferenceToQueryDslReference");
+        		junctionReference.representsJunction = true;
+        		t.references.add(junctionReference);
+        	}
+        }
+        
+        if (t.supertype.isDefined()) {
+        	var junctionReferences : OrderedSet(QUERYDSL!QueryDslReference) = t.supertype.references.select(ref | ref.representsJunction);
+        	for (junctionReference in junctionReferences) {
+        		var inheritedJunctionRef = junctionReference.clone();
+        		t.references.add(inheritedJunctionRef);
+        		inheritedJunctionRef.uuid = generateUuid(t.uuid, junctionReference.name, ".");
+        		inheritedJunctionRef.opposite = junctionReference.opposite;
+        	}
+        }        
     }

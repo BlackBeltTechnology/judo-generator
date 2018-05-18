@@ -35,7 +35,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeFqName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeIdentifierField"
-        lowerBound="1" upperBound="-1" eType="#//QueryDslAttributeField" eOpposite="#//QueryDslAttributeField/javaAttribute"/>
+        upperBound="-1" eType="#//QueryDslAttributeField" eOpposite="#//QueryDslAttributeField/javaAttribute"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="QueryDslReference" eSuperTypes="#//QueryDslElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" lowerBound="1"
@@ -45,12 +45,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" lowerBound="1"
         eType="#//QueryDslReference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="relationIdentifierField"
-        lowerBound="1" upperBound="-1" eType="#//QueryDslReferenceField" eOpposite="#//QueryDslReferenceField/javaReference"/>
+        upperBound="-1" eType="#//QueryDslReferenceField" eOpposite="#//QueryDslReferenceField/javaReference"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="0"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="options" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsJunction" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="QueryDslElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

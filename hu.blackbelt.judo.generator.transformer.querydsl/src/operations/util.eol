@@ -2,12 +2,17 @@ operation voidType () : JAVA!JvmType {
     return JAVATYPES!JvmType.all.select( t | t.name = "Void").first();
 }
 
-operation randomUUID() : String {
-	return UUIDUtils.randomUUID();
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
 }
 
-operation uuid3 (namespace : String, name : String) : String {
-	return UUIDUtils.uuid3(namespace, name);
+@cached
+operation JAVA!JvmElement baseUUID() : String {
+	return self.uuid.split("\\.").excluding("hu").excluding("blackbelt").concat(".");
+}
+
+operation RDBMS!EObject clone() : RDBMS!EObject {
+	return EMFTool.ecoreUtil.copy(self);
 }
 
 operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
@@ -47,4 +52,21 @@ operation abbreviate(text : String, maxLength : Integer) : String {
     } else {
         return text.toLowerCase();
     }
+}
+
+
+operation checkAllUuidsForDuplicateOrMissing() {
+	var all = QUERYDSL!QueryDslElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			uuid.println("DUPLICATE: ");
+		}
+	}
+	
+	QUERYDSL!QueryDslElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
 }

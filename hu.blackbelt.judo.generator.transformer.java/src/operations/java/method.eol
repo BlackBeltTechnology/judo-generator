@@ -73,7 +73,7 @@ operation JAVA!JvmMethod addIdParam() : Any {
 	var idParam = new JAVA!JvmMethodParameter;
 	idParam.type = idType();
 	idParam.name = "id";
-	idParam.uuid = uuid3(self.uuid, idParam.name);
+	idParam.uuid = generateUuid(self.uuid, idParam.name, ".");
 	idParam.representsJudoId = true;
 	self.parameters.add(0, idParam);
 }
@@ -82,7 +82,7 @@ operation JAVA!JvmMethod addPaginationParam() : Any {
 	var param = new JAVA!JvmMethodParameter;
 	param.type = paginationClass(COORDINATES.get(self.ownerClass.coordinate).get(COORDINATE_GROUP));
 	param.name = "pagination";
-	param.uuid = uuid3(self.uuid, param.name);
+	param.uuid = generateUuid(self.uuid, param.name, ".");
 	self.parameters.add(param);
 }
 
@@ -90,7 +90,7 @@ operation JAVA!JvmMethod addFilterParam() : Any {
     var param = new JAVA!JvmMethodParameter;
     param.type = filterClass(COORDINATES.get(self.ownerClass.coordinate).get(COORDINATE_GROUP));
     param.name = "filter";
-    param.uuid = uuid3(self.uuid, param.name);
+    param.uuid = generateUuid(self.uuid, param.name, ".");
     self.parameters.add(param);
 }
 
@@ -98,7 +98,7 @@ operation JAVA!JvmMethod addIdsParam(addToFront : Boolean) : Any {
 	var idsParam = new JAVA!JvmMethodParameter;
 	idsParam.type = createJvmList(idType());
 	idsParam.name = "ids";
-	idsParam.uuid = uuid3(self.uuid, idsParam.name);
+	idsParam.uuid = generateUuid(self.uuid, idsParam.name, ".");
 	idsParam.representsJudoId = true;
 	if(addToFront) {
 	   self.parameters.add(0, idsParam);
@@ -111,6 +111,6 @@ operation JAVA!JvmMethod addCustomParam(type : JAVA!JvmType, name : String) : An
     var param = new JAVA!JvmMethodParameter;
     param.type = type;
     param.name = name;
-    param.uuid = uuid3(self.uuid, param.name);
+    param.uuid = generateUuid(self.uuid, param.name, ".");
     self.parameters.add(param);
 }

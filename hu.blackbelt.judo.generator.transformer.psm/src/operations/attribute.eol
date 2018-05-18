@@ -64,12 +64,17 @@ operation tgtPSM!JAttribute placeholder(txt) : tgtPSM!JAttribute {
 }
 
 operation tgtPSM!JAttribute uuid(namespace : String) : tgtPSM!JAttribute {
-	self.uuid = uuid3(namespace, self.name);
+	self.uuid = namespace + "." + self.name;
 	return self;
 }
 
 operation tgtPSM!JAttribute type(type : tgtPSM!JType) : tgtPSM!JAttribute {
 	self.type = type;
+	return self;
+}
+
+operation tgtPSM!JAttribute representsId() : tgtPSM!JAttribute {
+	self.representsId = true;
 	return self;
 }
 

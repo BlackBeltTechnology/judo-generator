@@ -77,8 +77,11 @@ operation JAVA!JvmCoordinated bql () : JAVA!JvmCoordinated {
 }
 
 @cached
-operation JAVA!JvmCoordinated bqlDomain () : JAVA!JvmCoordinated {
-	return self.find(JAVA!JvmJudoCoordinate#BO_BQL);
+operation JAVA!JvmCoordinated bqlDomain (framework : Boolean) : JAVA!JvmCoordinated {
+	if (framework)
+		return self.find(JAVA!JvmJudoCoordinate#BO_BQL_FRAMEWORK);
+	else
+		return self.find(JAVA!JvmJudoCoordinate#BO_BQL);
 }
 
 @cached

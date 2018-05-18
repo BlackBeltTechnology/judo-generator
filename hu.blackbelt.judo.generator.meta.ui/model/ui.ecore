@@ -26,7 +26,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="super" eType="#//UIClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//UIBaseComponentType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
-        eType="#//UIAttributeComponentType" containment="true"/>
+        eType="#//UIAttributeComponentType" containment="true" eOpposite="#//UIAttributeComponentType/ownerClass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIAction" eSuperTypes="#//Identifiable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="paramView" lowerBound="1"
@@ -84,8 +84,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UIMenuItem" eSuperTypes="#//Identifiable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="menuView" eType="#//UIView"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="menuView" eType="#//UIView"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="filters" upperBound="-1"
         eType="#//UIFilter" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="menuItems" upperBound="-1"
@@ -163,5 +162,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="readonly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="disableOnCreate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" lowerBound="1"
+        eType="#//UIClass" eOpposite="#//UIClass/attributes"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -1,21 +1,15 @@
-operation JAVA!JvmPackage findOrCreateChild (name : String) : JAVA!JvmPackage {
-	return self.findOrCreateChildRecursively(name);
+operation JAVA!JvmPackage findChild (name : String) : JAVA!JvmPackage {
+	return self.findChildRecursively(name);
 }
 
-operation JAVA!JvmPackage findOrCreateChildRecursively (packageName : String) : JAVA!JvmPackage {
-	return self.findOrCreateChildRecursively(packageName.split("\\."));
+operation JAVA!JvmPackage findChildRecursively (packageName : String) : JAVA!JvmPackage {
+	return self.findChildRecursively(packageName.split("\\."));
 }
 
-operation JAVA!JvmPackage findOrCreateChildRecursively (packageNames : Sequence) : JAVA!JvmPackage {
+operation JAVA!JvmPackage findChildRecursively (packageNames : Sequence) : JAVA!JvmPackage {
 	var currentPackage = self;
 	for (packName in packageNames) {
 		var candidate = currentPackage.contents.select(p | (p.name = packName and p.package.uuid = currentPackage.uuid)).first();
-		if (candidate.isUndefined()) {
-			candidate = new JAVA!JvmPackage;
-			candidate.name = packName;
-			candidate.uuid = uuid3(currentPackage.uuid, packName);
-			candidate.package = currentPackage;
-		}
 		currentPackage = candidate;
 	}
 	return currentPackage;

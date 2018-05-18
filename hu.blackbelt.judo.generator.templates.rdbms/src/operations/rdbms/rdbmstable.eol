@@ -31,7 +31,10 @@ operation RDBMS!RdbmsTable allInheritedIdentifier() : Collection {
 	return ret;
 }
 	
-	
+operation RDBMS!RdbmsTable inheritedIdentifierForTable(tableFor : RDBMS!RdbmsTable) : RDBMS!RdbmsField {
+	return self.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.inheritenceBased and tableFor == f.referenceKey.table).first;
+}
+
 @cached
 operation RDBMS!RdbmsTable allSupertypes() : Collection {
 	var ret : Sequence = new Sequence();

@@ -80,7 +80,7 @@ operation PSM!JClass allRoles() : Collection {
 operation PSM!JClass createForeginKey(otherTable : PSM!JClass) : RDBMS!RdbmsForeignKey {
 	var created : RDBMS!RdbmsForeignKey = new RDBMS!RdbmsForeignKey();
 	created.name = otherTable.package.fqName() + "." + otherTable.name;
-	created.uuid = uuid3(self.uuid, otherTable.uuid);
+	created.uuid = generateUuid(generateUuid(self.uuid, otherTable.uuid, "_"), "foreignKey","_");
 	created.description = otherTable.name + otherTable.primaryKeyAttribute().name;
 	created.sqlName = "C_" + otherTable.tableSqlName() + "_ID";
 	created.inheritenceBased = true;
@@ -88,7 +88,8 @@ operation PSM!JClass createForeginKey(otherTable : PSM!JClass) : RDBMS!RdbmsFore
 	created.referenceKey = otherTable.primaryKeyAttribute().equivalent("JAttributeToTableIdField");
 	created.deleteOnCascade = true;
 	created.readOnly = true;
-	created.foreignKeySqlName = ("FK_" + created.uuid.replaceAll("-", "")).substring(0,30);
+	//created.foreignKeySqlName = ("FK_" + created.uuid.replaceAll("-", "")).substring(0,30);
+	created.foreignKeySqlName = "FK_" + md5(created.uuid.replaceAll("-", ""));
 	return created;
 }
 

@@ -18,3 +18,19 @@ operation QUERYDSL!QueryDslView getInvKeys() : OrderedSet(QUERYDSL!QueryDslRelat
 operation QUERYDSL!QueryDslView getNmKeys() : OrderedSet(QUERYDSL!QueryDslRelationIdentifierField) {
 	return self.nmKeys;
 }
+
+@cached
+operation QUERYDSL!QueryDslView getAllNmKeys() : OrderedSet(QUERYDSL!QueryDslRelationIdentifierField) {
+	var all = self.getNmKeys().clone();
+	
+	if (self.class.supertype.isDefined()) {
+		var superView = QUERYDSL!QueryDslView.all.selectOne(v | v.class == self.class.supertype);
+		all.addAll(superView.getAllNmKeys());
+	}
+	return all; //.sortBy(a | a.name);
+}
+
+
+@cached
+operation QUERYDSL!QueryDslClass allReferences () : Collection {
+}

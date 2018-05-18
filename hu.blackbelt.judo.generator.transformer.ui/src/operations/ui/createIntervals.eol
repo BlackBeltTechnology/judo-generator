@@ -20,7 +20,7 @@ operation UI!UIComponentType createIntervals(intervalString : String, classUuid 
 				}
 				
 				uiInterval.name = "UIInterval";
-				uiInterval.uuid = uuid3(uuid3(classUuid, self.uuid), n.asString);
+				uiInterval.uuid = generateUuid(generateUuid(classUuid, self.name, "."), n.asString, "_");
 				n++;
 				
 				self.intervals.add(uiInterval);

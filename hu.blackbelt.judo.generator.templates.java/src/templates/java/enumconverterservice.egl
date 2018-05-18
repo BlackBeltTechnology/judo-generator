@@ -25,11 +25,11 @@ import hu.blackbelt.judo.business.service.api.*;
 public class [%=class.name%] {
 
     @Reference
-    private EnumServiceLocator enumServiceLockator;
+    private EnumServiceLocator enumServiceLocator;
 
     [% for (class in fixedEnumClasses()) { %]
 	    public EnumService<[%=class.name%], [%=class.fixedEnum.name%]> [%=class.name.firstToLowerCase()%]() {
-            return enumServiceLockator.findEnumService([%=class.fixedEnum.name%].class);
+            return enumServiceLocator.findEnumService([%=class.fixedEnum.name%].class);
         }
     [%}%]
 }
@@ -37,6 +37,10 @@ public class [%=class.name%] {
 [%
 @cached
 operation fixedEnumClasses () {
-    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and c.fixedEnum.isDefined());
+	if (transformDomain.asBoolean()) {
+		return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO_INTERFACE and c.fixedEnum.isDefined());
+	} else {
+	    return JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#BO and c.fixedEnum.isDefined());
+	}
 }
 %]

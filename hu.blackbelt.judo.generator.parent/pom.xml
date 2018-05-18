@@ -11,6 +11,8 @@
 		<tycho.version>0.23.0</tycho.version>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+	     <epsilon.maven.plugin.version>1.0.0-5</epsilon.maven.plugin.version>
+          <generator.runner.version>1.0.0-187</generator.runner.version>
 	</properties>
 
 	<dependencies>
@@ -168,7 +170,19 @@
 						<target>1.8</target>
 					</configuration>
 				</plugin>
-			
+
+				<plugin>
+					<groupId>hu.blackbelt.judo.generator</groupId>
+					<artifactId>epsilon-maven-plugin</artifactId>
+					<version>${epsilon.maven.plugin.version}</version>
+				</plugin>
+
+		          <plugin>
+                		<groupId>hu.blackbelt.judo.generator.runner</groupId>
+                		<artifactId>run-judo-genertor-maven-plugin</artifactId>
+                		<version>${generator.runner.version}</version>
+           		</plugin>
+
 			
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>

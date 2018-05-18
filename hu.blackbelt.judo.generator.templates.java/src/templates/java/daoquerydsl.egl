@@ -17,7 +17,7 @@ import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 
-@Component(configurationPid = "hu.blackbelt.querydsl.persistence", immediate = true, policy = ConfigurationPolicy.REQUIRE)
+@Component(configurationPid = "[%= queryDslPeristencePid %]", immediate = true, policy = ConfigurationPolicy.REQUIRE)
 @Properties(value = {
         @Property(name = "provider.target", value = "")
 })

@@ -4,7 +4,7 @@ import "../../../operations/_importAll.eol";
 rule QueryDslFieldGeneric
     transform s : RDBMS!RdbmsViewField
     to t : QUERYDSL!QueryDslField {
-    	t.uuid = uuid3(uuid3(s.view.uuid, s.uuid), "RdbmsViewTableField");
+    	t.uuid = generateUuid(s.view.uuid, s.name, ".");
     	t.originUuid = s.uuid;
         t.name = s.name.split("\\.").last();
         t.sqlName = s.sqlName;
