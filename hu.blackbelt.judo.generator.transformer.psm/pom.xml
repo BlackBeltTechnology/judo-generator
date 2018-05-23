@@ -13,8 +13,9 @@
     <packaging>jar</packaging>
 
 	<properties>
+        <framework.model.version>1.4.0-1</framework.model.version>
         <src.dir>src</src.dir>
-        
+
         <!-- src.model>car</src.model>
         <target.model>car</target.model>
         <model>Model</model>
@@ -98,7 +99,7 @@
                                     </metaModels>
                                     <models>
                                         <model>
-                                            <artifact>file:${basedir}/src/model/${src.model}.uml</artifact>
+                                            <artifact>mvn:hu.blackbelt.judo:hu.blackbelt.judo.framework.domain:uml:model:${framework.model.version}</artifact>
                                             <name>inpPIM</name>
                                             <metaModelUris>
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
