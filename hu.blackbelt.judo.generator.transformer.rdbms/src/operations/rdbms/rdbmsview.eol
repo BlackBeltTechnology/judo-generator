@@ -168,7 +168,7 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 						} else {					
 
 							// var valueField : RDBMS!RdbmsViewValueField = new RDBMS!RdbmsViewValueField();
-							var valueFieldName = attr.ownerClass.package.fqName() + "." + attr.ownerClass.name + "." + attr.name;  // currentAlias.name +"." + attr.equivalent("JAttributeToViewValueField").name;
+							var valueFieldName = currentAlias.name +"." + attr.name;
 
 							if (attribute.ownerClass == attr.ownerClass or attribute.ownerClass.allSupertypes().contains(attr.ownerClass) ) {
 								// attribute.name.println("Local field added: ");
