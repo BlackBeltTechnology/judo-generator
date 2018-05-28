@@ -3,6 +3,15 @@ operation paginationOrigin () : FWELEMENTS!JvmClass {
     return FWELEMENTS!JvmClass.all.select(c | c.name = "Pagination" and c.coordinate=JAVA!JvmJudoCoordinate#ORIGIN).first();
 }
 
+@cached
+operation filterOrigin () : FWELEMENTS!JvmClass {
+    return FWELEMENTS!JvmClass.all.select(c | c.name = "Filter" and c.coordinate=JAVA!JvmJudoCoordinate#ORIGIN).first();
+}
+
 operation paginationClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
     return FWELEMENTS!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Pagination" and c.coordinate = jvmJudoCoordinate)).first();
+}
+
+operation filterClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
+    return FWELEMENTS!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Filter" and c.coordinate = jvmJudoCoordinate)).first();
 }

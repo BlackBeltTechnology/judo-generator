@@ -27,6 +27,18 @@
         reqSpecBuilder.page(page);
         return this;
    }
+   
+   
+   public [%=class.name%] filterString(String filter){
+        reqSpecBuilder.filter(filter);
+        return this;
+   }
+   
+   
+   public [%=class.name%] orderString(String order){
+        reqSpecBuilder.order(order);
+        return this;
+   }
 
    /**
    * <p>Set the members needs to be initialized as a plain string, or as a sequence of members.</p>

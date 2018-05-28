@@ -87,6 +87,22 @@ operation JAVA!JvmMethod addPaginationParam() : Any {
 }
 
 operation JAVA!JvmMethod addFilterParam() : Any {
+	var param = new JAVA!JvmMethodParameter;
+	param.type = filterClass(COORDINATES.get(self.ownerClass.coordinate).get(COORDINATE_GROUP));
+	param.name = "filter";
+	param.uuid = generateUuid(self.uuid, param.name, ".");
+	self.parameters.add(param);
+}
+
+operation JAVA!JvmMethod addFilterParam() : Any {
+	var param = new JAVA!JvmMethodParameter;
+	param.type = filterClass(COORDINATES.get(self.ownerClass.coordinate).get(COORDINATE_GROUP));
+	param.name = "filter";
+	param.uuid = generateUuid(self.uuid, param.name, ".");
+	self.parameters.add(param);
+}
+
+operation JAVA!JvmMethod addFilterParam() : Any {
     var param = new JAVA!JvmMethodParameter;
     param.type = filterClass(COORDINATES.get(self.ownerClass.coordinate).get(COORDINATE_GROUP));
     param.name = "filter";

@@ -67,7 +67,7 @@ public interface [%=class.name%] extends CrudRestOperation<[%=class.restDto().fq
         @Data
         @NoArgsConstructor
         public static class Action[%=method.name%]RestDto {
-            [% for (param in method.parameters.select(p | not p.isPagination())) { %]
+            [% for (param in method.parameters.select(p | not p.isPagination() and not p.isFilter())) { %]
                 [% if (method.isQuery()) { %] @QueryParam("[%=param.name%]") [%}%] private [%=param.type.fqName()%] [%=param.name%];
             [%}%]
         }
@@ -83,6 +83,7 @@ public interface [%=class.name%] extends CrudRestOperation<[%=class.restDto().fq
         public [% if (method.isQuery()) { %]Response[% } else { out.print(method.type.fqName()); }%] [%=method.name%](
             [% if (method.isQuery()) { %] @BeanParam [%}%]Action[%=method.name%]RestDto action[%=method.name%]RestDto
             [% if (method.isQuery()) { %], @BeanParam [%=paginationClass(JAVA!JvmJudoCoordinate#REST_DTO).fqName()%] pagination[%}%]
+            [% if (method.isQuery()) { %], @BeanParam [%=class.filterRestDto().fqName()%] filter[%}%]
             ) throws AuthorizationException;
     [%}%]
 
