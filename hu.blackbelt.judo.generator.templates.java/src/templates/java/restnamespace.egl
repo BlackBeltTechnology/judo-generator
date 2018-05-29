@@ -18,10 +18,10 @@ public final class Namespace {
     }
 
     public static final VersionInfo VERSION_INFO = VersionInfo.builder()
-        .version("development")
+        .version("[%=projectVersion%]")
         .application("[%=class.package.ownerModel().name.firstToUpperCase()%]")
         .domain("[%=class.package.restBaseUri(".")%]")
-        .commitId("development")
+        .commitId("[%=commitId%]")
         .modules(ImmutableList.<Module>builder() 
             .add(Module.builder().id("[%=class.package.ownerModel().name%]").name("").version("[%=class.package.ownerModel().version%]").build())
             .build())
