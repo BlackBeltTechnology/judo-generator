@@ -3,7 +3,13 @@ operation transformAttribute(attribute : pimEXT!EAttribute, newPimAttr : inpPIM!
 	if (attrAnnotation <> null) {
 	
 		newPimAttr.name = attribute.name;
-		newPimAttr.type = inpPIM!PrimitiveType.all.selectOne(type | type.name = ecoreUMLTypeMap.get(attribute.getEAttributeType().name).name);
+		
+		if (attribute.getEAttributeType().isTypeOf(pimEXT!EEnum)) {
+			newPimAttr.type = inpPIM!Enumeration.all.selectOne(type | type.name = attribute.getEAttributeType().name);
+		} else {
+			newPimAttr.type = inpPIM!PrimitiveType.all.selectOne(type | type.name = ecoreUMLTypeMap.get(attribute.getEAttributeType().name).name);
+		}
+		
 		newPimAttr.lower = attribute.lowerBound;
 		newPimAttr.upper = attribute.upperBound;
 		newPimAttr.isUnique = attribute.unique;

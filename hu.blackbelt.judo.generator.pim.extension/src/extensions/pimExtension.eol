@@ -23,6 +23,11 @@ for (annotation : pimEXT!EAnnotation in annotations) {
 	transformAdditionPackage(annotation, extensionPackage);
 }
 
+annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EEnum));
+for (annotation : pimEXT!EAnnotation in annotations) {
+	transformEnum(annotation);
+}
+
 annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EClass));
 for (annotation : pimEXT!EAnnotation in annotations) {
 	transformAdditionClass(annotation, associationList);
@@ -41,11 +46,6 @@ for (annotation : pimEXT!EAnnotation in annotations) {
 annotations = pimEXT!EAnnotation.all.select(an | an.source = "Screen" and an.eModelElement.isTypeOf(pimEXT!EClass));
 for (annotation : pimEXT!EAnnotation in annotations) {
 	transformScreen(annotation);
-}
-
-annotations = pimEXT!EAnnotation.all.select(an | an.source = "Addition" and an.eModelElement.isTypeOf(pimEXT!EEnum));
-for (annotation : pimEXT!EAnnotation in annotations) {
-	transformEnum(annotation);
 }
 
 annotations = pimEXT!EAnnotation.all.select(an | an.source = "Target" and an.eModelElement.isTypeOf(pimEXT!EClass));
