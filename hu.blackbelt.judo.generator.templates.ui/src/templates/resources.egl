@@ -3,7 +3,6 @@
 	"resources": [
 		[% 	for (resource in Resources!Resource.all) { %]
 		{
-			"py/object": "models.uiresource.Resource",
 			"key": "[%=resource.key%]",
 			"id": "[%=resource.uuid%]",
 			"value": "[%=resource.value%]"
