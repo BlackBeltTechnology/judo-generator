@@ -405,8 +405,7 @@
 	"userClass" : "[%=self.userClass%]",
 	[% } %]
 	"versions" : {
-		"judo.framework": "[%=projectVersion%]",
-		"project_version_comes_here"
+		"judo.framework": "[%=projectVersion%]"
 	}
 }	
 [% } %]
