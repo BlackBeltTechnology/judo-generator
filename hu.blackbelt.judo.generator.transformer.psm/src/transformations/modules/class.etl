@@ -116,6 +116,15 @@ rule Class
 		 t.watched = true;
 	}
 	
+	if ( stereotypeApplications.get("processData").includes(s)) {
+		if (transformDomain.asBoolean()) {
+			t.supertype = inpPIM!Class.allInstances()->select(c | c.name = "ProcessData" and c.package.name = "framework").first().equivalent("Class");
+		} else {
+			t.supertype = tgtPSM!JClass.allInstances()->selectOne(c | c.name = "ProcessData" and c.framework);
+		}
+		t.supertype.println("ProcessData: ");
+	}
+	
 }
 
 rule UIMenu
