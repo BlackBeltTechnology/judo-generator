@@ -44,10 +44,12 @@ rule UIClass
 		
 		for (op : PSM!JOperation in currentClass.operations) {
 			if (op.visibility = PSM!JVisibility#PUBLIC) {
-				var action : UI!UIAction = createActions(op, inherited, uiclass.uuid);
-				action.inherited = inherited;
-				action.uuid = generateUuid(uiclass.uuid, op.name, ".");
-				uiclass.actions.add(action);
+				if (uiclass.actions.selectOne(action | action.uuid = generateUuid(uiclass.uuid, op.name, ".")).isUndefined()) {
+					var action : UI!UIAction = createActions(op, inherited, uiclass.uuid);
+					action.inherited = inherited;
+					action.uuid = generateUuid(uiclass.uuid, op.name, ".");
+					uiclass.actions.add(action);
+				}
 			}	
 		}
 		

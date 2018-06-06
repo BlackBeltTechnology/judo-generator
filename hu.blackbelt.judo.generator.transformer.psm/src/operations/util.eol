@@ -129,14 +129,21 @@ operation checkAllUuidsForDuplicateOrMissing() {
 	var all = tgtPSM!JElement.all.collect(e | e.uuid);
 	var set = all.asSet();
 
+	var duplicated : Boolean = false;
+
 	set.size.println("SET: ");
 	all.size.println("ALL: ");
 
 	for (uuid in set) {
 		if (all.count(uuid) > 1) {
-			uuid.println();
+			duplicated = true;
+			uuid.println("DUPLICATE: ");
 		}
 	}
 	
 	tgtPSM!JElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	
+	if (duplicated) {
+		throw "Duplicated ID!";
+	}
 }

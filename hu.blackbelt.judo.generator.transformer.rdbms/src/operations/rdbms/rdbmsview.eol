@@ -81,6 +81,7 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
     		var labelExpression : RDBMS!RdbmsLabelExpression = new RDBMS!RdbmsLabelExpression();
     		labelExpression.expression = expr.getLabelExpression().getText();
     		labelExpression.text = expr.getLabelExpression().getText();
+    		labelExpression.uuid = generateUuid(attribute.uuid, expr.getLabelExpression().getText(), ".");
     		vf.expressions.add(labelExpression);
     	} else if (expr.isExpressionRelationExpression()) {
 
@@ -185,8 +186,8 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 									foreignValueField.view = self;
 									foreignValueField.name = valueFieldName;								
 									foreignValueField.`alias` = currentAlias;
-									foreignValueField.uuid = generateUuid(attr.ownerClass.uuid, currentParsedRelationExpression.getRelationName() + "_" + self.name, ".");
 									foreignValueField.sqlName = currentAlias.sqlName + "_" + attr.ownerClass.classSqlName() + "_" + attr.sqlName();
+									foreignValueField.uuid = generateUuid(attr.ownerClass.uuid, currentParsedRelationExpression.getRelationName() + "_" + currentAlias, ".");
 									foreignValueField.tableField = attr.equivalent("JAttributeToTableValueField");
 									foreignValueField.description = currentRelationName + "." + attr.name;
 							    }
