@@ -14,6 +14,8 @@ operation transformOperation(op : pimEXT!EOperation, pimClass : inpPIM!Class) {
 			
 			if (parameter.eType.isTypeOf(pimEXT!EClass)) {
 				newPimParameter.type = inpPIM!Class.all.selectOne(class | class.name = parameter.eType.name);
+			} else if (parameter.eType.isTypeOf(pimEXT!EEnum)) {
+				newPimParameter.type = inpPIM!Enumeration.all.selectOne(enum | enum.name = parameter.eType.name);
 			} else {		
 				newPimParameter.type = inpPIM!PrimitiveType.all.selectOne(type | type.name = ecoreUMLTypeMap.get(parameter.eType.name).name);
 			}			
