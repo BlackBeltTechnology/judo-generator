@@ -139,10 +139,10 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 					currentParsedRelationExpression = currentParsedRelationExpression.getRelationExpression();						
 				} else {
 					// (currentClass.name + " " + currentParsedRelationExpression.getRelationName()).println("Current class: ");
-					var attr : PSM!JAttribute = currentClass.allAttributes().select(sa | sa.name == currentParsedRelationExpression.getRelationName()).first;
+					var relAttr : PSM!JAttribute = currentClass.allAttributes().select(sa | sa.name == currentParsedRelationExpression.getRelationName()).first;
 					currentRelationExpression.expression = currentParsedRelationExpression.getRelationName();
 
-					if (attr.isUndefined()) {
+					if (relAttr.isUndefined()) {
 						var role : PSM!JRole = currentClass.allRoles().select(sr | sr.name == currentParsedRelationExpression.getRelationName()).first;
 						if (role.isUndefined()) {
 							throw "No attribute or role is undefined on relation: " + currentClass.name + " " + currentParsedRelationExpression.getRelationName();
@@ -155,42 +155,59 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 							if (role.opposite().ownerClass.representsEnum) {									
 								"- ENUM Value".println();
 							}
-							attr = role.opposite().ownerClass.allAttributes().select(sa | sa.name == "code").first;
-						}																		
+							relAttr = role.opposite().ownerClass.allAttributes().select(sa | sa.name == "code").first;
+						}																								
 					}
-
-					if (attr.isDefined()) {
-						// attr.name.println("Attribute: ");
-						// attr.ownerClass.name.println("Class: ");
-						
+					
+					if (relAttr.isDefined()) {
 						// Check the type is identifier field or not. Have to find better way to determinate.
-						if (attr.name == "id") {
+						if (relAttr.name == "id") {
 							currentRelationExpression.field = currentRelationIdentifierField;
 						} else {					
 
-							// var valueField : RDBMS!RdbmsViewValueField = new RDBMS!RdbmsViewValueField();
-							var valueFieldName = currentAlias.name +"." + attr.name;
-
-							if (attribute.ownerClass == attr.ownerClass or attribute.ownerClass.allSupertypes().contains(attr.ownerClass) ) {
-								// attribute.name.println("Local field added: ");
-								// var localFieldName = attr.equivalent("JAttributeToViewValueField").name;
-								currentRelationExpression.field =  attr.equivalent("JAttributeToViewValueField"); // self.fields.select(s | s.name == valueFieldName).first;
+							var valueFieldName = currentAlias.name + "." + relAttr.name;							
+							
+							// The attribute exists in the base table or inherited attribute of the base table
+							if (attribute.ownerClass == relAttr.ownerClass or attribute.ownerClass.allSupertypes().contains(relAttr.ownerClass)) {
+								currentRelationExpression.field =  relAttr.equivalent("JAttributeToViewValueField");	
+							// Foreign referenced field
 							} else {
 								var foreignValueField : RDBMS!RdbmsViewField = self.fields.select(s | s.name == valueFieldName).first;
-								
+							
 							    if (foreignValueField.isUndefined()) {
-									// attr.name.println("Foreign field added: ");
 									foreignValueField = new RDBMS!RdbmsViewValueField(); 
 									self.fields.add(foreignValueField);
 									foreignValueField.foreign = true;
 									foreignValueField.view = self;
 									foreignValueField.name = valueFieldName;								
-									foreignValueField.`alias` = currentAlias;
-									foreignValueField.sqlName = currentAlias.sqlName + "_" + attr.ownerClass.classSqlName() + "_" + attr.sqlName();
-									foreignValueField.uuid = generateUuid(attr.ownerClass.uuid, currentParsedRelationExpression.getRelationName() + "_" + currentAlias, ".");
-									foreignValueField.tableField = attr.equivalent("JAttributeToTableValueField");
-									foreignValueField.description = currentRelationName + "." + attr.name;
-							    }
+									foreignValueField.sqlName = currentAlias.sqlName + "_" + relAttr.ownerClass.classSqlName() + "_" + relAttr.sqlName();
+									foreignValueField.uuid = generateUuid(relAttr.ownerClass.uuid, currentParsedRelationExpression.getRelationName() + "_" + currentAlias.name, ".");
+									foreignValueField.description = currentRelationName + "." + relAttr.name;
+									foreignValueField.tableField = relAttr.equivalent("JAttributeToTableValueField");
+							
+									// The relation attribute is an inherited attribute 	
+									if (relAttr.ownerClass <> currentClass) {
+										// (currentClass.fqName() + relAttr.ownerClass.fqName()).println("The used attribute is an inherited attribute: ");
+										
+										// Adding alias for superclass if does not exists.
+										var relationSuperAlias = self.findOrAddAliasByClassPair(currentClass, relAttr.ownerClass, 
+											currentRelationName + "@" + relAttr.ownerClass.fqName(), 
+											currentAliasName + "-DescendantOf-" + relAttr.ownerClass.fqName());					
+
+										// Add relation identifier field. TODO: Now ignored
+					    				// currentRelationIdentifierField = self.findOrAddViewRelationIdentifierField(currentRole, currentRelationName, previousAlias, currentAlias);
+
+										// Add relation.
+										self.findOrAddRelation(currentAlias, relationSuperAlias, currentAlias.table.primaryKey, relationSuperAlias.table.primaryKey);
+
+										foreignValueField.`alias` = relationSuperAlias;
+																														
+									// The attribute owned the foreign class itself
+									} else {
+										// relAttr.name.println("Foreign field added: ");
+										foreignValueField.`alias` = currentAlias;
+							    	}
+						    	}
 						    	currentRelationExpression.field = foreignValueField;
 							}
 
@@ -199,29 +216,13 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 							currentRelationExpression.shortName = currentRelationExpression.field.shortName;																	
 							currentRelationExpression.fullName = currentRelationExpression.field.fullName;																	
 							currentRelationExpression.uuid = generateUuid(currentRelationExpression.field.uuid, currentRelationName, ".");
-							currentRelationExpression.description = currentRelationName + "." + attr.name;
+							currentRelationExpression.description = currentRelationName + "." + relAttr.name;
 
 						}
 						// Check if field added or not
 						if (not self.fields.select(s | s.name == currentRelationIdentifierFieldName).isEmpty()) {
 							self.fields.add(currentRelationExpression.field);
 						}
-					} else {
-						var role : PSM!JRole = currentClass.allRoles().select(sr | sr.name == currentParsedRelationExpression.getRelationName()).first;
-						if (role.isUndefined()) {
-							throw "No attribute or role is undefined on relation: " + currentClass.name + " " + currentParsedRelationExpression.getRelationName();
-						} else {
-							// role.name.println("Role: ");
-							
-							// TODO: Check if role have a representation. If yes, have to use that one.
-							// Recursively have to traverse. 
-							// Now fast solution we put ID on normal role as representation, for Enum using Code.
-							// if (role.opposite().ownerClass.representsEnum) {									
-							//	"- ENUM Value".println();
-							// }
-							
-							
-						}													
 					}
 					currentParsedRelationExpression = null;
 				}
@@ -232,24 +233,29 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
   	// vf.name.println("Addig expression field: ");
 }
 
-operation RDBMS!RdbmsView findOrAddAlias(role : PSM!JRole, relationName : String) : RDBMS!RdbmsTableAlias {
-	// Find alias
-	var aliasName : String = role.ownerClass.package.fqName() +  "." + role.ownerClass.name;
-	if (relationName.isDefined() and relationName <> "") {
-		aliasName += "." + relationName;
-	}
+operation RDBMS!RdbmsView findOrAddAliasByClassPair(class : PSM!JClass, oppositeClass : PSM!JClass, aliasName : String, relationName : String) : RDBMS!RdbmsTableAlias {
 	var currentAlias : RDBMS!RdbmsTableAlias = self.tables.select(e | e.name = aliasName).first;
 
 	// Creaate alias
 	if (currentAlias.isUndefined()) {
 		currentAlias = new RDBMS!RdbmsTableAlias();
 		self.tables.add(currentAlias);
-		currentAlias.table = role.opposite().ownerClass.equivalent("JClassToRdbmsTable");
+		currentAlias.table = oppositeClass.equivalent("JClassToRdbmsTable");
 		currentAlias.uuid = generateUuid(self.uuid, relationName + "TableAlias", ".");
-		currentAlias.sqlName = 'REL_' + abbreviate(relationName.replaceAll("\\.", ""), 12).toUpperCase();
+		currentAlias.sqlName = 'REL_' + abbreviate(relationName.replaceAll("\\.", ""), 30).toUpperCase();
 		currentAlias.name = aliasName;
 	}
 	return currentAlias;
+}
+
+
+operation RDBMS!RdbmsView findOrAddAlias(role : PSM!JRole, relationName : String) : RDBMS!RdbmsTableAlias {
+	// Find alias
+	var aliasName : String = role.ownerClass.package.fqName() +  "." + role.ownerClass.name;
+	if (relationName.isDefined() and relationName <> "") {
+		aliasName += "." + relationName;
+	}
+    return self.findOrAddAliasByClassPair(role.ownerClass, role.opposite().ownerClass, aliasName, relationName);
 }
 
 operation RDBMS!RdbmsView findOrAddRelation(fromAlias : RDBMS!RdbmsTableAlias, toAlias : RDBMS!RdbmsTableAlias, fromField : RDBMS!RdbmsIdentifierField, toField : RDBMS!RdbmsIdentifierField) : RDBMS!RdbmsViewRelation {
