@@ -7,11 +7,14 @@ pre {
 	var newModel = NEW!RdbmsModel.all.first();
 }
 
-/*
 rule CreateNewTable 
 	transform s : NEW!RdbmsTable
 	to t : TARGET!RdbmsTableOperation {
 	guard : not previousModel.tableExists(s)
+		t.name = "Create " + s.name;
+	    t.uuid =  s.uuid + "CreateTable";
+	    t.operationType = RDBMS!RdbmsTableOperationType#CREATE;
+	    t.table = s;
 		s.uuid.println("Created table: ");
 }
 
@@ -19,11 +22,13 @@ rule DeletePreviousTable
 	transform s : PREVIOUS!RdbmsTable
 	to t : TARGET!RdbmsTableOperation {
 	guard : not newModel.tableExists(s)
+		t.name = "Delete " + s.name;
+	    t.uuid =  s.uuid + "DeleteTable";
+	    t.operationType = RDBMS!RdbmsTableOperationType#DELETE;
+	    t.table = s;
 		s.uuid.println("Deleted table: ");
 }
-*/
 
-/*
 @lazy
 rule CreateTableOperationForExistingTable 
 	transform s : RDBMS!RdbmsTable
@@ -31,12 +36,36 @@ rule CreateTableOperationForExistingTable
 	guard : not previousModel.tableExists(s)
 		s.uuid.println("Modified table: ");
 }
-*/
 
-rule CreateNsewFieldOnExistingTable
-	transform s : NEW!RdbmsField
-	to t : TARGET!RdbmsField {
-	// guard : previousModel.tableExists(s.table)	
-	// and not previousModel.tableOf(s.table).fieldExists(s)
-		s.uuid.println("Create new field on existing table: ");
+rule CreateNewValueFieldOnExistingTable
+	transform f : NEW!RdbmsValueField
+	to t : TARGET!RdbmsCreateFieldOperation {
+		guard : previousModel.tableExists(f.table) and not previousModel.tableOf(f.table).fieldExists(f)
+	    t.uuid =  f.uuid + "CreateValueField";
+		f.uuid.println("Create new field on existing table: ");
 }
+
+rule DeletePreviousValueFieldOnExistingTable
+	transform f : PREVIOUS!RdbmsValueField
+	to t : TARGET!RdbmsDeleteFieldOperation {
+		guard : newModel.tableExists(f.table) and not newModel.tableOf(f.table).fieldExists(f)
+	    t.uuid =  f.uuid + "DeletessValueField";
+		f.uuid.println("Delete field on existing table: ");
+}
+
+rule CreateNewForeignKeyOnExistingTable
+	transform f : NEW!RdbmsForeignKey
+	to t : TARGET!RdbmsCreateFieldOperation {
+		guard : previousModel.tableExists(f.table) and not previousModel.tableOf(f.table).fieldExists(f)
+	    t.uuid =  f.uuid + "CreateForeignKey";
+		f.uuid.println("Create new foreign key on existing table: ");
+}
+
+rule DeletePreviousForeignKeyOnExistingTable
+	transform f : PREVIOUS!RdbmsForeignKey
+	to t : TARGET!RdbmsDeleteFieldOperation {
+		guard : newModel.tableExists(f.table) and not newModel.tableOf(f.table).fieldExists(f)
+	    t.uuid =  f.uuid + "DeleteForeignKey";
+		f.uuid.println("Delete foreign key on existing table: ");
+}
+

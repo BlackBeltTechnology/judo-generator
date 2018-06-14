@@ -19,6 +19,46 @@
 
 		  <build>
 		    <plugins>
+			      <plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-dependency-plugin</artifactId>
+			        <version>3.1.1</version>
+			        <executions>
+			          <execution>
+			            <id>copy</id>
+			            <phase>generate-resources</phase>
+			            <goals>
+			              <goal>copy</goal>
+			            </goals>
+			            <configuration>
+			              <artifactItems>
+			                <artifactItem>
+			                  <groupId>hu.blackbelt.anakin</groupId>
+			                  <artifactId>anakin-model</artifactId>
+			                  <version>1.4.2-66</version>
+			                  <type>model</type>
+			                  <classifier>rdbmsPostgres</classifier>
+			                  <overWrite>true</overWrite>
+			                  <outputDirectory>target</outputDirectory>
+			                  <destFileName>anakin-model-1.4.2-66.rdbmsPostgres.model</destFileName>
+			                </artifactItem>
+
+			                <artifactItem>
+			                  <groupId>hu.blackbelt.anakin</groupId>
+			                  <artifactId>anakin-model</artifactId>
+			                  <version>1.1.4-23</version>
+			                  <type>model</type>
+			                  <classifier>rdbmsPostgres</classifier>
+			                  <overWrite>true</overWrite>
+			                  <outputDirectory>target</outputDirectory>
+			                  <destFileName>anakin-model-1.1.4-23.rdbmsPostgres.model</destFileName>
+			                </artifactItem>
+
+			              </artifactItems>
+			            </configuration>
+			          </execution>
+			        </executions>
+			      </plugin>
 		      <plugin>
 		          <groupId>${project.groupId}</groupId>
 		          <artifactId>epsilon-maven-plugin</artifactId>
@@ -35,8 +75,7 @@
 		              </metaModels>
 		                <models>
 		                    <model>
-								<!--   <artifact>${basedir}/src/model/anakin-model-1.4.1-49-rdbmsPostgres.model</artifact> -->
-								<artifact>mvn:hu.blackbelt.anakin:anakin-model:model:rdbmsPostgres:1.4.2-66</artifact>
+								<artifact>${project.build.directory}/anakin-model-1.4.2-66.rdbmsPostgres.model</artifact>
 								<name>NEW</name>
 								<aliases>
 									<alias>SOURCE</alias>
@@ -45,11 +84,11 @@
 								<metaModelUris>
 									<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 								</metaModelUris>
-								<!-- <platformAlias>platform:/resource/new.model</platformAlias> -->
+								
+								<platformAlias>platform:/resource/${project.artifactId}/target/anakin-model-1.4.2-66.rdbmsPostgres.model</platformAlias>
 							</model>
 							<model>
-								<!--  <artifact>${basedir}/src/model/anakin-model-1.3.0-34-rdbmsPostgres.model</artifact> -->
-								<artifact>mvn:hu.blackbelt.anakin:anakin-model:model:rdbmsPostgres:1.1.4-23</artifact>
+								<artifact>${project.build.directory}/anakin-model-1.1.4-23.rdbmsPostgres.model</artifact>
 								<name>PREVIOUS</name>
 								<aliases>
 									<alias>SOURCE</alias>
@@ -59,10 +98,10 @@
 								<metaModelUris>
 									<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 								</metaModelUris>
-								<!-- <platformAlias>platform:/resource/old.model</platformAlias> -->
+								<platformAlias>platform:/resource/${project.artifactId}/target/anakin-model-1.1.4-23.rdbmsPostgres.model</platformAlias>
 							</model>
 		                    <model>
-		                       <artifact>${project.build.directory}/target.model</artifact>
+		                       <artifact>${project.build.directory}/anakin-model-delta-1.1.4-23_1.4.2-66.rdbmsPostgrges.model</artifact>
 		                       <name>TARGET</name>
 		                       <readOnLoad>false</readOnLoad>
 		                       <storeOnDisposal>true</storeOnDisposal>
