@@ -191,8 +191,8 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 										
 										// Adding alias for superclass if does not exists.
 										var relationSuperAlias = self.findOrAddAliasByClassPair(currentClass, relAttr.ownerClass, 
-											currentRelationName + "@" + relAttr.ownerClass.fqName(), 
-											currentAliasName + "-DescendantOf-" + relAttr.ownerClass.fqName());					
+											currentRelationName + " Descendant Of " + relAttr.ownerClass.fqName(), 
+											currentAliasName + "@" + relAttr.ownerClass.fqName());					
 
 										// Add relation identifier field. TODO: Now ignored
 					    				// currentRelationIdentifierField = self.findOrAddViewRelationIdentifierField(currentRole, currentRelationName, previousAlias, currentAlias);
@@ -215,7 +215,7 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
 							currentRelationExpression.name = currentRelationExpression.field.name;																	
 							currentRelationExpression.shortName = currentRelationExpression.field.shortName;																	
 							currentRelationExpression.fullName = currentRelationExpression.field.fullName;																	
-							currentRelationExpression.uuid = generateUuid(currentRelationExpression.field.uuid, currentRelationName, ".");
+							currentRelationExpression.uuid = generateUuid(currentRelationExpression.field.uuid, currentRelationName + " @ " + relAttr.ownerClass.fqName(), ".");
 							currentRelationExpression.description = currentRelationName + "." + relAttr.name;
 
 						}
@@ -242,7 +242,7 @@ operation RDBMS!RdbmsView findOrAddAliasByClassPair(class : PSM!JClass, opposite
 		self.tables.add(currentAlias);
 		currentAlias.table = oppositeClass.equivalent("JClassToRdbmsTable");
 		currentAlias.uuid = generateUuid(self.uuid, relationName + "TableAlias", ".");
-		currentAlias.sqlName = 'REL_' + abbreviate(relationName.replaceAll("\\.", ""), 30).toUpperCase();
+		currentAlias.sqlName = 'REL_' + abbreviate(relationName.replaceAll("\\.", "").replaceAll("@", ""), 30).toUpperCase();
 		currentAlias.name = aliasName;
 	}
 	return currentAlias;
