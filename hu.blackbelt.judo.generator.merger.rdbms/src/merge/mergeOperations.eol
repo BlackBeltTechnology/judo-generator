@@ -35,7 +35,7 @@ operation transformFieldTypes() {
 operation SOURCE!RdbmsTable createCreateTableOperation() {
 	var tableOp = new TARGET!RdbmsTableOperation();
 	
-	tableOp.uuid = uuid3(self.uuid, "CREATED");
+	tableOp.uuid = self.uuid + "_CREATED";
 	tableOp.sqlName = self.sqlName + "_OPERATION_CREATE";
 	tableOp.name = self.name + "_OPERATION_CREATE";
 	
@@ -46,7 +46,7 @@ operation SOURCE!RdbmsTable createCreateTableOperation() {
 operation SOURCE!RdbmsTable createDeleteTableOperation() {
 	var tableOp = new TARGET!RdbmsTableOperation();
 	
-	tableOp.uuid = uuid3(self.uuid, "DELETED");
+	tableOp.uuid = self.uuid + "_DELETED";
 	tableOp.sqlName = self.sqlName + "_OPERATION_DELETE";
 	tableOp.name = self.name + "_OPERATION_DELETE";
 	
@@ -63,7 +63,17 @@ operation SOURCE!RdbmsTable transformTable() : TARGET!RdbmsTable {
 	for (field in self.fields) {
 		target.fields.add(field.transformField());
 	}
-	target.primaryKey = target.fields.select(field | field.uuid = self.primaryKey.uuid).first();
+	
+	/*
+	if (self.primaryKey.uuid.isUndefined()) {
+		self.primaryKey.name.println("Primary Name: ");
+	} */
+	/*
+	if (field.uuid.isUndefined()) {
+		field.name.println("Field Name: ");
+	} */
+
+	// target.primaryKey = target.fields.select(field | field.uuid = self.primaryKey.uuid).first();
 	
 	return target;
 }

@@ -12,7 +12,7 @@ rule MergeTables
 	into target : TARGET!RdbmsTableOperation {
 	guard : not oldTable.fields.collect(field | field.uuid).includesAll(newTable.fields.collect(field | field.uuid)) 
 				or not newTable.fields.collect(field | field.uuid).includesAll(oldTable.fields.collect(field | field.uuid))
-			target.uuid = uuid3(newTable.uuid, "MODIFY");
+			target.uuid = newTable.uuid + "_MODIFY";
 			target.sqlName = newTable.sqlName + "_OPERATION_MODIFY";
 			target.name = newTable.name + "_OPERATION_MODIFY";
 			
@@ -23,7 +23,7 @@ rule MergeTables
 			var deletedFields : OrderedSet(TARGET!RdbmsField) = oldTable.fields.select(field | newFieldUuids.excludes(field.uuid));
 			for (field in deletedFields) {
 				var fieldOperation = new TARGET!RdbmsDeleteFieldOperation();
-				fieldOperation.uuid = uuid3(field.uuid, "_RdbmsDeleteFieldOperation");
+				fieldOperation.uuid = field.uuid +"_RdbmsDeleteFieldOperation";
 				fieldOperation.name = field.name + "_RdbmsDeleteFieldOperation";
 				fieldOperation.field = field.transformField();
 				target.table.fields.add(fieldOperation.field);
@@ -34,7 +34,7 @@ rule MergeTables
 			var createdFields : OrderedSet(TARGET!RdbmsField) = newTable.fields.select(field | oldFieldUuids.excludes(field.uuid));
 			for (field in createdFields) {
 				var fieldOperation = new TARGET!RdbmsCreateFieldOperation();
-				fieldOperation.uuid = uuid3(field.uuid, "_RdbmsCreateFieldOperation");
+				fieldOperation.uuid = field.uuid + "_RdbmsCreateFieldOperation";
 				fieldOperation.name = field.name + "_RdbmsCreateFieldOperation";
 				fieldOperation.field = target.table.fields.select(f | f.uuid = field.uuid).first();
 				target.createFieldOperations.add(fieldOperation);
@@ -46,7 +46,7 @@ rule MergeTables
 				var oldField = oldTable.fields.select(oldField | oldField.uuid = field.uuid).first();
 				if (field.type.uuid <> oldField.type.uuid or field.mandatory <> oldField.mandatory) {
 					var fieldOperation = new TARGET!RdbmsModifyFieldOperation();
-					fieldOperation.uuid = uuid3(field.uuid, "_RdbmsModifyFieldOperation");
+					fieldOperation.uuid = field.uuid + "_RdbmsModifyFieldOperation";
 					fieldOperation.name = field.name + "_RdbmsModifyFieldOperation";
 					fieldOperation.field = target.table.fields.select(f | f.uuid = field.uuid).first();
 					

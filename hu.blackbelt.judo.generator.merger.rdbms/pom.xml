@@ -13,120 +13,92 @@
     <artifactId>hu.blackbelt.judo.generator.merger.rdbms</artifactId>
     <packaging>jar</packaging>
 
-  <build>
-    <plugins>
-<!--
-      <plugin>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>epsilon-maven-plugin</artifactId>
-          <version>${project.version}</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <metaModels>
-                <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>             
-              </metaModels>
-                <models>
-                    <model>
-						<artifact>${basedir}/src/model/rdbmsPostgres_modify.model</artifact>
-						<name>NEW</name>
-						<aliases>
-							<alias>SOURCE</alias>
-						</aliases>		
-						<metaModelUris>
-							<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
-						</metaModelUris>
-						<platformAlias>platform:/resource/hu.blackbelt.judo.generator.merger.rdbms/src/model/rdbmsPostgres_modify.model</platformAlias>
-					</model>
-					<model>
-						<artifact>${basedir}/src/model/rdbmsPostgres.model</artifact>
-						<name>PREVIOUS</name>
-						<aliases>
-							<alias>SOURCE</alias>
-						</aliases>
-						
-						<metaModelUris>
-							<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
-						</metaModelUris>
-						<platformAlias>platform:/resource/hu.blackbelt.judo.generator.merger.rdbms/src/model/rdbmsPostgres.model</platformAlias>
-					</model>
-                    <model>
-                       <artifact>${project.build.directory}/target.model</artifact>
-                       <name>TARGET</name>
-                       <readOnLoad>false</readOnLoad>
-                       <storeOnDisposal>true</storeOnDisposal>
-                       <metaModelUris>
-                           <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
-                       </metaModelUris>
-                    </model>
-                </models>
-                <eolPrograms>
-                    <Ecl>
-                        <source>src/compare/compareElements.ecl</source>
-                        <exportMatchTrace>matchTrace</exportMatchTrace>
-                    </Ecl>
-                    <Eml>
-                        <source>src/merge/mergeElements.eml</source>
-                        <useMatchTrace>matchTrace</useMatchTrace>
-                    </Eml>
-                    <Egl>
-                        <source>src/templates/mainIncremental.egl</source>
-                        <outputRoot>${project.basedir}/target/generated-sources</outputRoot>
-                    </Egl>
-                </eolPrograms>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin> -->
-      <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>add-resource</id>
-						<goals>
-							<goal>add-resource</goal>
-						</goals>
-						
-						<configuration>
-							<resources>
-								<resource>
-									<directory>src</directory>
-								</resource>
-							</resources>
-						</configuration>
-						
-					</execution>
-<!--
-					<execution>
-						<id>attach-artifacts</id>
-						<phase>package</phase>
-						<goals>
-							<goal>attach-artifact</goal>
-						</goals>
-						<configuration>
-							<artifacts>
-								<artifact>
-									<file>src/model/rdbmsPostgres_modify.model</file>
-									<type>model</type>
-									<classifier>modified</classifier>
-								</artifact>
-								<artifact>
-									<file>src/model/rdbmsPostgres.model</file>
-									<type>model</type>
-									<classifier>original</classifier>
-								</artifact>
-							</artifacts>
-						</configuration>
-					</execution>
--->
-				</executions>
-			</plugin>
-    </plugins>
-  </build>
+    <profiles>
+    	<profile>
+    		<id>rdbms-merger-development</id>
+
+		  <build>
+		    <plugins>
+		      <plugin>
+		          <groupId>${project.groupId}</groupId>
+		          <artifactId>epsilon-maven-plugin</artifactId>
+		          <version>${project.version}</version>
+		        <executions>
+		          <execution>
+		            <phase>generate-resources</phase>
+		            <goals>
+		              <goal>execute</goal>
+		            </goals>
+		            <configuration>
+		              <metaModels>
+		                <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>             
+		              </metaModels>
+		                <models>
+		                    <model>
+								<!--   <artifact>${basedir}/src/model/anakin-model-1.4.1-49-rdbmsPostgres.model</artifact> -->
+								<artifact>mvn:hu.blackbelt.anakin:anakin-model:model:rdbmsPostgres:1.4.2-66</artifact>
+								<name>NEW</name>
+								<aliases>
+									<alias>SOURCE</alias>
+									<alias>RDBMS</alias>
+								</aliases>		
+								<metaModelUris>
+									<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+								</metaModelUris>
+								<!-- <platformAlias>platform:/resource/new.model</platformAlias> -->
+							</model>
+							<model>
+								<!--  <artifact>${basedir}/src/model/anakin-model-1.3.0-34-rdbmsPostgres.model</artifact> -->
+								<artifact>mvn:hu.blackbelt.anakin:anakin-model:model:rdbmsPostgres:1.1.4-23</artifact>
+								<name>PREVIOUS</name>
+								<aliases>
+									<alias>SOURCE</alias>
+									<alias>RDBMS</alias>
+								</aliases>
+								
+								<metaModelUris>
+									<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+								</metaModelUris>
+								<!-- <platformAlias>platform:/resource/old.model</platformAlias> -->
+							</model>
+		                    <model>
+		                       <artifact>${project.build.directory}/target.model</artifact>
+		                       <name>TARGET</name>
+		                       <readOnLoad>false</readOnLoad>
+		                       <storeOnDisposal>true</storeOnDisposal>
+		                       <metaModelUris>
+		                           <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+		                       </metaModelUris>
+		                    </model>
+		                </models>
+		                <eolPrograms>
+		                    <!-- 
+
+		                    <Ecl>
+		                        <source>src/compare/compareElements.ecl</source>
+		                        <exportMatchTrace>matchTrace</exportMatchTrace>
+		                    </Ecl>
+		                    <Eml>
+		                        <source>src/merge/mergeElements.eml</source>
+		                        <useMatchTrace>matchTrace</useMatchTrace>
+		                    </Eml>
+		                    <Egl>
+		                        <source>src/templates/mainIncremental.egl</source>
+		                        <outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+		                    </Egl>
+		                     -->
+		                    <Etl>
+		                        <source>src/createOperationModel.etl</source>
+		                    </Etl>
+
+
+		                </eolPrograms>
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>
+		    </plugins>
+		  </build>
+	  </profile>
+  </profiles>
 </project>

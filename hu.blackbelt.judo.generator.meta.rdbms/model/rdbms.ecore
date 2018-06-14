@@ -182,6 +182,8 @@
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatoryChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalField" lowerBound="1"
+        eType="#//RdbmsField"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsDeleteFieldOperation" eSuperTypes="#//RdbmsFieldOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewRelation">

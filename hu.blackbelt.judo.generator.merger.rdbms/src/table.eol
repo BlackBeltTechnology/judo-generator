@@ -1,0 +1,8 @@
+operation RDBMS!RdbmsTable fieldExists(field : RDBMS!RdbmsField) : Boolean {
+	return self.fieldOf(field).isDefined;
+}
+
+operation RDBMS!RdbmsTable fieldOf(field : RDBMS!RdbmsField) : Boolean {
+	return self.fields.select(f | f.uuid == field.uuid).first;
+}
+

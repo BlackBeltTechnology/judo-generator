@@ -1,0 +1,7 @@
+operation RDBMS!RdbmsModel tableExists(table : RDBMS!RdbmsTable) : Boolean {
+	return self.tableOf(table).isDefined();
+}
+
+operation RDBMS!RdbmsModel tableOf(table : RDBMS!RdbmsTable) : RDBMS!RdbmsTable {
+	return self.rdbmsTables.select(t | t.uuid == table.uuid).first;
+}
