@@ -6,12 +6,6 @@
     operationReflection="true" importOrganizing="true">
   <foreignModel>rdbms.ecore</foreignModel>
   <genPackages prefix="Rdbms" disposableProviderFactory="true" ecorePackage="rdbms.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="rdbms.ecore#//RdbmsTableOperationType">
-      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsTableOperationType/CREATE"/>
-      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsTableOperationType/DELETE"/>
-      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsTableOperationType/MODIFY"/>
-      <genEnumLiterals ecoreEnumLiteral="rdbms.ecore#//RdbmsTableOperationType/NONE"/>
-    </genEnums>
     <genClasses image="false" ecoreClass="rdbms.ecore#//RdbmsElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsElement/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsElement/uuid"/>
@@ -116,12 +110,12 @@
     <genClasses ecoreClass="rdbms.ecore#//RdbmsViewAliasField">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewAliasField/alias"/>
     </genClasses>
-    <genClasses ecoreClass="rdbms.ecore#//RdbmsTableOperation">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTableOperation/table"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsTableOperation/operationType"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTableOperation/createFieldOperations"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTableOperation/modifyFieldOperations"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTableOperation/deleteFieldOperations"/>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsModifyTableOperation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModifyTableOperation/createFieldOperations"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModifyTableOperation/modifyFieldOperations"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModifyTableOperation/deleteFieldOperations"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModifyTableOperation/previousTable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyTableOperation/nameChanged"/>
     </genClasses>
     <genClasses image="false" ecoreClass="rdbms.ecore#//RdbmsFieldOperation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsFieldOperation/field"/>
@@ -130,7 +124,9 @@
     <genClasses ecoreClass="rdbms.ecore#//RdbmsModifyFieldOperation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/typeChanged"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/mandatoryChanged"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModifyFieldOperation/originalField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModifyFieldOperation/previousField"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/sizeChanged"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/nameChanged"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsDeleteFieldOperation"/>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsViewRelation">
@@ -160,6 +156,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsViewRecordValue/value"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewRecordValue/identifierField"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsViewRecordValue/valueField"/>
+    </genClasses>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsTableOperation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsTableOperation/table"/>
+    </genClasses>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsCreateTableOperation"/>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsDeleteTableOperation"/>
+    <genClasses ecoreClass="rdbms.ecore#//RdbmsOperationMeta">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsOperationMeta/previousModel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsOperationMeta/currentModel"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -1,39 +1,47 @@
-import "model.eol";
-import "table.eol";
-import "field.eol";
+import "../../operations/rdbms/model.eol";
+import "../../operations/rdbms/table.eol";
+import "../../operations/rdbms/field.eol";
 
 pre {
 	var previousModel = PREVIOUS!RdbmsModel.all.first();
 	var newModel = NEW!RdbmsModel.all.first();
 }
 
+rule CreateOperationMeta 
+	transform s : NEW!RdbmsModel
+	to t : TARGET!RdbmsOperationMeta {
+		t.previousModel = previousModel;
+		t.currentModel = newModel;
+		"".println("Created operation meta: ");
+}
+
 rule CreateNewTable 
 	transform s : NEW!RdbmsTable
-	to t : TARGET!RdbmsTableOperation {
+	to t : TARGET!RdbmsCreateTableOperation {
 	guard : not previousModel.tableExists(s)
 		t.name = "Create " + s.name;
-	    t.uuid =  s.uuid + "CreateTable";
-	    t.operationType = RDBMS!RdbmsTableOperationType#CREATE;
+	    t.uuid =  s.uuid + "-CreateTable";
 	    t.table = s;
 		s.uuid.println("Created table: ");
 }
 
 rule DeletePreviousTable 
 	transform s : PREVIOUS!RdbmsTable
-	to t : TARGET!RdbmsTableOperation {
+	to t : TARGET!RdbmsDeleteTableOperation {
 	guard : not newModel.tableExists(s)
 		t.name = "Delete " + s.name;
-	    t.uuid =  s.uuid + "DeleteTable";
-	    t.operationType = RDBMS!RdbmsTableOperationType#DELETE;
+	    t.uuid =  s.uuid + "-DeleteTable";
 	    t.table = s;
 		s.uuid.println("Deleted table: ");
 }
 
 @lazy
-rule CreateTableOperationForExistingTable 
+rule ModifyTableOperationForExistingTable 
 	transform s : RDBMS!RdbmsTable
-	to t : TARGET!RdbmsTableOperation {
-	guard : not previousModel.tableExists(s)
+	to t : TARGET!RdbmsModifyTableOperation {
+		t.name = "Modify " + s.name;
+	    t.uuid =  s.uuid + "-ModifyTable";
+	    t.table = s;
 		s.uuid.println("Modified table: ");
 }
 
@@ -41,7 +49,9 @@ rule CreateNewValueFieldOnExistingTable
 	transform f : NEW!RdbmsValueField
 	to t : TARGET!RdbmsCreateFieldOperation {
 		guard : previousModel.tableExists(f.table) and not previousModel.tableOf(f.table).fieldExists(f)
-	    t.uuid =  f.uuid + "CreateValueField";
+	    f.table.equivalent("ModifyTableOperationForExistingTable").createFieldOperations.add(t);
+	    t.uuid =  f.uuid + "-CreateValueField";
+	    t.field = f;
 		f.uuid.println("Create new field on existing table: ");
 }
 
@@ -49,7 +59,9 @@ rule DeletePreviousValueFieldOnExistingTable
 	transform f : PREVIOUS!RdbmsValueField
 	to t : TARGET!RdbmsDeleteFieldOperation {
 		guard : newModel.tableExists(f.table) and not newModel.tableOf(f.table).fieldExists(f)
-	    t.uuid =  f.uuid + "DeletessValueField";
+	    f.table.equivalent("ModifyTableOperationForExistingTable").deleteFieldOperations.add(t);
+	    t.uuid =  f.uuid + "-DeleteValueField";
+	    t.field = f;
 		f.uuid.println("Delete field on existing table: ");
 }
 
@@ -57,7 +69,9 @@ rule CreateNewForeignKeyOnExistingTable
 	transform f : NEW!RdbmsForeignKey
 	to t : TARGET!RdbmsCreateFieldOperation {
 		guard : previousModel.tableExists(f.table) and not previousModel.tableOf(f.table).fieldExists(f)
-	    t.uuid =  f.uuid + "CreateForeignKey";
+	    f.table.equivalent("ModifyTableOperationForExistingTable").createFieldOperations.add(t);
+	    t.uuid =  f.uuid + "-CreateForeignKey";
+	    t.field = f;
 		f.uuid.println("Create new foreign key on existing table: ");
 }
 
@@ -65,7 +79,9 @@ rule DeletePreviousForeignKeyOnExistingTable
 	transform f : PREVIOUS!RdbmsForeignKey
 	to t : TARGET!RdbmsDeleteFieldOperation {
 		guard : newModel.tableExists(f.table) and not newModel.tableOf(f.table).fieldExists(f)
-	    t.uuid =  f.uuid + "DeleteForeignKey";
+	    f.table.equivalent("ModifyTableOperationForExistingTable").deleteFieldOperations.add(t);
+	    t.uuid =  f.uuid + "-DeleteForeignKey";
+	    t.field = f;
 		f.uuid.println("Delete foreign key on existing table: ");
 }
 
