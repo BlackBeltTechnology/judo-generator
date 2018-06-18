@@ -11,9 +11,13 @@
 		<tycho.version>0.23.0</tycho.version>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-	     <epsilon.maven.plugin.version>1.0.0-5</epsilon.maven.plugin.version>
-          <generator.runner.version>1.0.0-187</generator.runner.version>
-	</properties>
+	    <epsilon.maven.plugin.version>1.0.0-5</epsilon.maven.plugin.version>
+        <generator.runner.version>1.0.0-187</generator.runner.version>
+        
+        <test.model.groupId>hu.blackbelt.anakin</test.model.groupId>
+		<test.model.artifactId>anakin-model</test.model.artifactId>
+		<test.model.version>1.4.2-SNAPSHOT</test.model.version>
+    </properties>
 
 	<dependencies>
 		<dependency>
