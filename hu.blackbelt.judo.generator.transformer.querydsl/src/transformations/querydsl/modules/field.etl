@@ -19,13 +19,13 @@ rule QueryDslFieldGenericWithTypeName
     transform s : RDBMS!RdbmsViewTableField
     to t : QUERYDSL!QueryDslField 
     extends QueryDslFieldGeneric {
-    	t.typeName = s.tableField.type.name;
-        if (s.tableField.type.rdbmsTypeName.toUpperCase() = "INT") {
+    	// t.typeName = s.tableField.type.name;
+        if (s.tableField.rdbmsTypeName.toUpperCase() = "INT") {
         	t.rdbmsTypeName = "INTEGER";
-        } else if (s.tableField.type.rdbmsTypeName.toUpperCase() = "TEXT") {
+        } else if (s.tableField.rdbmsTypeName.toUpperCase() = "TEXT") {
         	t.rdbmsTypeName = "CLOB";
         } else {
-        	t.rdbmsTypeName = s.tableField.type.rdbmsTypeName.toUpperCase();
+        	t.rdbmsTypeName = s.tableField.rdbmsTypeName.toUpperCase();
         }  
     }
     
@@ -48,7 +48,7 @@ rule RdbmsViewIdentifierFieldToQueryDslField
     transform s : RDBMS!RdbmsViewIdentifierField
     to t : QUERYDSL!QueryDslIdentifierField
     extends QueryDslFieldGenericWithTypeName {
-    guard : s.tableField.isTypeOf(RDBMS!RdbmsIdentifierField) and not s.tableField.type.name.equals("Id")
+    guard : s.tableField.isTypeOf(RDBMS!RdbmsIdentifierField) and s.tableField.table.primaryKey <> s.tableField
     	t.javaAttribute = transformAttributeField(s);
     }
 

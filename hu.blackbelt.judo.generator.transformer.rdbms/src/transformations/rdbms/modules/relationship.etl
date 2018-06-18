@@ -65,7 +65,13 @@ rule JRoleToRdbmsJunctionTable
 		p.name = "id";
 		p.sqlName = "ID";
 		p.mandatory = true;
-		p.type = idType();
+		
+		p.rdbmsTypeName = idType().rdbmsTypeName;
+		p.size = idType().size;
+		p.precision = idType().precision;
+		p.scale = idType().scale;
+		p.storageByte = idType().storageByte;
+		
 		p.uuid =  generateUuid(t.uuid, "indentifierField", "_");
 
 		f1.deleteOnCascade = true;
