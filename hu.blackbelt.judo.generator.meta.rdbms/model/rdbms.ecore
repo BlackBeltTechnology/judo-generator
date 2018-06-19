@@ -13,9 +13,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalPackage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsTable" eSuperTypes="#//RdbmsElement">
-    <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
-      <details key="archetype" value="MomentInterval"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
         eType="#//RdbmsField" containment="true" eOpposite="#//RdbmsField/table"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueConstraints" upperBound="-1"
@@ -27,9 +24,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//RdbmsTable"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsField" abstract="true" eSuperTypes="#//RdbmsElement">
-    <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
-      <details key="archetype" value="MomentInterval"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"
         eOpposite="#//RdbmsTable/fields"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//RdbmsFieldType"/>
@@ -68,9 +62,6 @@
         eType="#//RdbmsForeignKey"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsIdentifierField" eSuperTypes="#//RdbmsField">
-    <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
-      <details key="archetype" value="MomentInterval"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foreignKeys" upperBound="-1"
         eType="#//RdbmsForeignKey" eOpposite="#//RdbmsForeignKey/referenceKey"/>
   </eClassifiers>
