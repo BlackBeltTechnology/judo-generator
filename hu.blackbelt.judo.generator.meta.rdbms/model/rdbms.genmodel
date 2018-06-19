@@ -132,6 +132,8 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsModifyFieldOperation/previousField"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/sizeChanged"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/nameChanged"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/changedValueFieldToForeignKey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsModifyFieldOperation/changedForeignKeyToValueField"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsDeleteFieldOperation"/>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsViewRelation">

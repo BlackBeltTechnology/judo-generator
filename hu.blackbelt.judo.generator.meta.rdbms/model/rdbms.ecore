@@ -185,6 +185,10 @@
         eType="#//RdbmsField"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sizeChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nameChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="changedValueFieldToForeignKey"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="changedForeignKeyToValueField"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsDeleteFieldOperation" eSuperTypes="#//RdbmsFieldOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewRelation">
