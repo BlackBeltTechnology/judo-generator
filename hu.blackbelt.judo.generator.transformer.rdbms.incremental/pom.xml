@@ -9,20 +9,17 @@
 		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
 	</parent>
 
-	<artifactId>hu.blackbelt.judo.generator.merger.rdbms</artifactId>
+	<artifactId>hu.blackbelt.judo.generator.transformer.rdbms.incremental</artifactId>
 	<packaging>jar</packaging>
 
 	<profiles>
 		<profile>
 			<properties>
-				<model.groupId>hu.blackbelt.anakin</model.groupId>
-				<model.artifactId>anakin-model</model.artifactId>
-				<model.type>model</model.type>
-				<model.classifier>rdbmsPostgres</model.classifier>
-				<model.currentVersion>1.4.2-66</model.currentVersion>
-				<model.previousVersion>1.1.4-23</model.previousVersion>
+				<test.model.previousVersion>1.1.4-23</test.model.previousVersion>
+				<test.model.type>model</test.model.type>
+				<test.model.classifier>rdbmsPostgres</test.model.classifier>
 			</properties>
-			<id>rdbms-merger-development</id>
+			<id>rdbms-transformer-incremental-development</id>
 
 			<build>
 				<plugins>
@@ -40,25 +37,25 @@
 								<configuration>
 									<artifactItems>
 										<artifactItem>
-											<groupId>${model.groupId}</groupId>
-											<artifactId>${model.artifactId}</artifactId>
-											<version>${model.currentVersion}</version>
-											<type>${model.type}</type>
-											<classifier>${model.classifier}</classifier>
+											<groupId>${test.model.groupId}</groupId>
+											<artifactId>${test.model.artifactId}</artifactId>
+											<version>${test.model.version}</version>
+											<type>${test.model.type}</type>
+											<classifier>${test.model.classifier}</classifier>
 											<overWrite>true</overWrite>
 											<outputDirectory>target</outputDirectory>
-											<destFileName>${model.artifactId}-${model.currentVersion}.${model.classifier}.model</destFileName>
+											<destFileName>${test.model.artifactId}-${test.model.version}.${test.model.classifier}.model</destFileName>
 										</artifactItem>
 
 										<artifactItem>
-											<groupId>${model.groupId}</groupId>
-											<artifactId>${model.artifactId}</artifactId>
-											<version>${model.previousVersion}</version>
-											<type>${model.type}</type>
-											<classifier>${model.classifier}</classifier>
+											<groupId>${test.model.groupId}</groupId>
+											<artifactId>${test.model.artifactId}</artifactId>
+											<version>${test.model.previousVersion}</version>
+											<type>${test.model.type}</type>
+											<classifier>${test.model.classifier}</classifier>
 											<overWrite>true</overWrite>
 											<outputDirectory>target</outputDirectory>
-											<destFileName>${model.artifactId}-${model.previousVersion}.${model.classifier}.model</destFileName>
+											<destFileName>${test.model.artifactId}-${test.model.previousVersion}.${test.model.classifier}.model</destFileName>
 										</artifactItem>
 
 									</artifactItems>
@@ -82,7 +79,7 @@
 									</metaModels>
 									<models>
 										<model>
-											<artifact>${project.build.directory}/anakin-model-${model.currentVersion}.${model.classifier}.model</artifact>
+											<artifact>${project.build.directory}/anakin-model-${test.model.version}.${test.model.classifier}.model</artifact>
 											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
@@ -92,10 +89,10 @@
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
 
-											<platformAlias>platform:/resource/${project.artifactId}/target/${model.artifactId}-${model.currentVersion}.${model.classifier}.model</platformAlias>
+											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.version}.${test.model.classifier}.model</platformAlias>
 										</model>
 										<model>
-											<artifact>${project.build.directory}/${model.artifactId}-${model.previousVersion}.${model.classifier}.model</artifact>
+											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.previousVersion}.${test.model.classifier}.model</artifact>
 											<name>PREVIOUS</name>
 											<aliases>
 												<alias>SOURCE</alias>
@@ -105,10 +102,10 @@
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
-											<platformAlias>platform:/resource/${project.artifactId}/target/${model.artifactId}-${model.previousVersion}.${model.classifier}.model</platformAlias>
+											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.previousVersion}.${test.model.classifier}.model</platformAlias>
 										</model>
 										<model>
-											<artifact>${project.build.directory}/${model.artifactId}-delta-${model.previousVersion}_${model.currentVersion}.${model.classifier}.model</artifact>
+											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.${test.model.classifier}.model</artifact>
 											<name>TARGET</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
@@ -141,9 +138,9 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>${project.build.directory}/${model.artifactId}-delta-${model.previousVersion}_${model.currentVersion}.${model.classifier}.model</file>
+									<file>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.${test.model.classifier}.model</file>
 									<type>model</type>
-									<classifier>rdbmsPostgres--delta-${model.previousVersion}_${model.currentVersion}</classifier>
+									<classifier>rdbmsPostgres-incremental-${model.previousVersion}_${model.currentVersion}</classifier>
 								</artifact>
 							</artifacts>
 						</configuration>
