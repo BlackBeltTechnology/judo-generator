@@ -7,3 +7,22 @@ operation RDBMS!RdbmsField isPrimary () : Boolean {
 operation RDBMS!RdbmsField isForeignKey () : Boolean {
 	return self.isKindOf(RDBMS!RdbmsForeignKey);
 }
+
+@cached
+operation RDBMS!RdbmsField toFieldDefinition () : String {
+	if (self.rdbmsTypeName.isDefined()) {
+		var typedef = self.rdbmsTypeName.toUpperCase();
+		if (self.precision > 0) {
+			typedef += "(" + self.precision;
+			if (self.scale > 0) {
+				typedef += ", " + self.scale;
+			}
+			typedef += ")";	
+		} else if (self.size > 0) {
+			typedef += "(" + self.size + ")";
+		}
+		return typedef;
+	} else if (self.type.isDefined()) {
+		return self.type.toString();
+	}
+}

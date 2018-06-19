@@ -9,7 +9,7 @@
 -- [%= table.name %] [%= table.uuid %]
 CREATE TABLE [%= table.sqlName %] (
 	[% for (field in table.fields) { %]
-		[%= field.sqlName %] [%= field.type.toString() %] [% if (field.isPrimary()) { %] NOT NULL PRIMARY KEY[% } %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %]
+		[%= field.sqlName %] [%= field.toFieldDefinition() %] [% if (field.isPrimary()) { %] NOT NULL PRIMARY KEY[% } %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %]
 	[% } %]
 );[% out.println("\n"); %]
 [% } %]
