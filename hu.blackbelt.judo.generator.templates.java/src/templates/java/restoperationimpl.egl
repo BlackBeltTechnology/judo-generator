@@ -67,7 +67,7 @@ public class [%=class.name%] extends AbstractCrudRestOperation<[%=class.restDto(
         [%=class.references().select(r | r.navigable).collect(r | "\"" + r.name + "\"").concat(", ")%]
     );
 
-    @Reference
+    @Reference(policyOption = org.apache.felix.scr.annotations.ReferencePolicyOption.GREEDY)
     private [%=class.dtoOperation().fqName()%] [%=class.dtoOperation().name.firstToLowerCase()%];
 
     @Reference
