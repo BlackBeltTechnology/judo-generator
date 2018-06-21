@@ -10,7 +10,8 @@ var ecoreUMLTypeMap = Map {
 	"EBoolean" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "Boolean"),
 	"EFloat" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "float"),
 	"EFloatObject" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "float"),
-	"EDate" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "date")
+	"EDate" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "date"),
+	"EInt" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "Integer")
 	//"DateTime" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "datetime")
 };
 
