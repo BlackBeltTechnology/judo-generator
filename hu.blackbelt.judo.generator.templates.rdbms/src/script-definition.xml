@@ -38,6 +38,9 @@
 	<sql name = "drop-not-null-constraint" scriptName="templates/sql/drop-not-null-constraint.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-not-null-constraint.sql"/>
 	<sql name = "drop-foreignkey" scriptName="templates/sql/drop-foreignkey.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-foreignkey.sql"/>
 	<sql name = "drop-table-full" scriptName="templates/sql/drop-table-full.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-full.sql"/>
+
+	<sql name = "create-table-incremental" scriptName="templates/sql/create-table-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-table-incremental.sql"/>
+
 	<sql name = "end-version" scriptName="templates/sql/end-version.egl" out ="schema/sql/${currentVersion}/${dialect}/end-version.sql"/>
 
 	<changeset name = "start"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-start.xml" >

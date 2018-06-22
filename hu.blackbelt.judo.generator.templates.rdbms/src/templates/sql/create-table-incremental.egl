@@ -4,9 +4,9 @@
 %]
 --liquibase formatted sql
 
-[% for (table in RDBMS!RdbmsTable.all) {
+[% for (createTableOperation in INCREMENTAL!RdbmsCreateTableOperation.all) {
 		var inc : Template = TemplateFactory.load("templates/sql/macros/create-table.egl");
-		inc.populate("table", table);
+		inc.populate("table", createTableOperation.table);
     	inc.populate("scriptName", scriptName);
     	inc.populate("failOnError",  failOnError);
 		out.println(inc.process());
