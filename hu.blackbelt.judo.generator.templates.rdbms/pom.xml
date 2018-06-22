@@ -78,6 +78,34 @@
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
+											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</platformAlias>
+											<aliases>
+												<alias>RDBMS</alias>
+											</aliases>
+										</model>
+
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsHsqldb:${project.version}</artifact>
+											<name>PREVIOUS</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</platformAlias>											
+											<aliases>
+												<alias>PREVIOUS</alias>
+											</aliases>
+										</model>
+
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms.incremental:model:rdbmsHsqldb-incremental-${test.model.previousVersion}_${test.model.version}:${project.version}</artifact>
+											<name>INCREMENTAL</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<aliases>
+												<alias>RDBMS</alias>
+											</aliases>
+											<expand>true</expand>
 										</model>
 									</models>
 									<xmlModels>
@@ -86,6 +114,9 @@
 											<name>SCRIPT</name>
 											<readOnLoad>true</readOnLoad>
 											<storeOnDisposal>false</storeOnDisposal>
+											<aliases>
+												<alias>SCRIPT</alias>
+											</aliases>											
 										</model>
 									</xmlModels>
 
@@ -118,6 +149,7 @@
 											</metaModelUris>
 										</model>
 									</models>
+
 									<xmlModels>
 										<model>
 											<artifact>${project.basedir}/src/script-definition.xml</artifact>

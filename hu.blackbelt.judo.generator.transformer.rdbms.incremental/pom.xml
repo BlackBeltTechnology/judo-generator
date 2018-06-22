@@ -15,9 +15,7 @@
 	<profiles>
 		<profile>
 			<properties>
-				<test.model.previousVersion>1.1.4-23</test.model.previousVersion>
 				<test.model.type>model</test.model.type>
-				<test.model.classifier>rdbmsPostgres</test.model.classifier>
 			</properties>
 			<id>rdbms-transformer-incremental-development</id>
 
@@ -41,10 +39,10 @@
 											<artifactId>${test.model.artifactId}</artifactId>
 											<version>${test.model.version}</version>
 											<type>${test.model.type}</type>
-											<classifier>${test.model.classifier}</classifier>
+											<classifier>rdbmsPostgres</classifier>
 											<overWrite>true</overWrite>
 											<outputDirectory>target</outputDirectory>
-											<destFileName>${test.model.artifactId}-${test.model.version}.${test.model.classifier}.model</destFileName>
+											<destFileName>${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</destFileName>
 										</artifactItem>
 
 										<artifactItem>
@@ -52,10 +50,54 @@
 											<artifactId>${test.model.artifactId}</artifactId>
 											<version>${test.model.previousVersion}</version>
 											<type>${test.model.type}</type>
-											<classifier>${test.model.classifier}</classifier>
+											<classifier>rdbmsPostgres</classifier>
 											<overWrite>true</overWrite>
 											<outputDirectory>target</outputDirectory>
-											<destFileName>${test.model.artifactId}-${test.model.previousVersion}.${test.model.classifier}.model</destFileName>
+											<destFileName>${test.model.artifactId}-${test.model.previousVersion}.rdbmsPostgres.model</destFileName>
+										</artifactItem>
+
+										<artifactItem>
+											<groupId>${test.model.groupId}</groupId>
+											<artifactId>${test.model.artifactId}</artifactId>
+											<version>${test.model.version}</version>
+											<type>${test.model.type}</type>
+											<classifier>rdbmsOracle</classifier>
+											<overWrite>true</overWrite>
+											<outputDirectory>target</outputDirectory>
+											<destFileName>${test.model.artifactId}-${test.model.version}.rdbmsOracle.model</destFileName>
+										</artifactItem>
+
+										<artifactItem>
+											<groupId>${test.model.groupId}</groupId>
+											<artifactId>${test.model.artifactId}</artifactId>
+											<version>${test.model.previousVersion}</version>
+											<type>${test.model.type}</type>
+											<classifier>rdbmsOracle</classifier>
+											<overWrite>true</overWrite>
+											<outputDirectory>target</outputDirectory>
+											<destFileName>${test.model.artifactId}-${test.model.previousVersion}.rdbmsOracle.model</destFileName>
+										</artifactItem>
+
+										<artifactItem>
+											<groupId>${test.model.groupId}</groupId>
+											<artifactId>${test.model.artifactId}</artifactId>
+											<version>${test.model.version}</version>
+											<type>${test.model.type}</type>
+											<classifier>rdbmsHsqldb</classifier>
+											<overWrite>true</overWrite>
+											<outputDirectory>target</outputDirectory>
+											<destFileName>${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</destFileName>
+										</artifactItem>
+
+										<artifactItem>
+											<groupId>${test.model.groupId}</groupId>
+											<artifactId>${test.model.artifactId}</artifactId>
+											<version>${test.model.previousVersion}</version>
+											<type>${test.model.type}</type>
+											<classifier>rdbmsHsqldb</classifier>
+											<overWrite>true</overWrite>
+											<outputDirectory>target</outputDirectory>
+											<destFileName>${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</destFileName>
 										</artifactItem>
 
 									</artifactItems>
@@ -69,6 +111,7 @@
 						<version>${project.version}</version>
 						<executions>
 							<execution>
+								<id>create-incremental-postgres</id>
 								<phase>generate-resources</phase>
 								<goals>
 									<goal>execute</goal>
@@ -79,7 +122,7 @@
 									</metaModels>
 									<models>
 										<model>
-											<artifact>${project.build.directory}/anakin-model-${test.model.version}.${test.model.classifier}.model</artifact>
+											<artifact>${project.build.directory}/anakin-model-${test.model.version}.rdbmsPostgres.model</artifact>
 											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
@@ -89,10 +132,10 @@
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
 
-											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.version}.${test.model.classifier}.model</platformAlias>
+											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</platformAlias>
 										</model>
 										<model>
-											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.previousVersion}.${test.model.classifier}.model</artifact>
+											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.previousVersion}.rdbmsPostgres.model</artifact>
 											<name>PREVIOUS</name>
 											<aliases>
 												<alias>SOURCE</alias>
@@ -102,10 +145,10 @@
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
-											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.previousVersion}.${test.model.classifier}.model</platformAlias>
+											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsPostgres.model</platformAlias>
 										</model>
 										<model>
-											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.${test.model.classifier}.model</artifact>
+											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsPostgres.model</artifact>
 											<name>TARGET</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
@@ -121,6 +164,117 @@
 									</eolPrograms>
 								</configuration>
 							</execution>
+
+							<execution>
+								<id>create-incremental-oracle</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/anakin-model-${test.model.version}.rdbmsOracle.model</artifact>
+											<name>NEW</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+
+											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.version}.rdbmsOracle.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.previousVersion}.rdbmsOracle.model</artifact>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsOracle.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsOracle.model</artifact>
+											<name>TARGET</name>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+										</model>
+									</models>
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createIncrementalOperationModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+
+							<execution>
+								<id>create-incremental-hsqldb</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/anakin-model-${test.model.version}.rdbmsHsqldb.model</artifact>
+											<name>NEW</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+
+											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</artifact>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsHsqldb.model</artifact>
+											<name>TARGET</name>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+										</model>
+									</models>
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createIncrementalOperationModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+
 						</executions>
 					</plugin>
 
@@ -138,9 +292,19 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.${test.model.classifier}.model</file>
+									<file>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsPostgres.model</file>
 									<type>model</type>
-									<classifier>rdbmsPostgres-incremental-${model.previousVersion}_${model.currentVersion}</classifier>
+									<classifier>rdbmsPostgres-incremental-${test.model.previousVersion}_${test.model.version}</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsOracle.model</file>
+									<type>model</type>
+									<classifier>rdbmsOracle-incremental-${test.model.previousVersion}_${test.model.version}</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsHsqldb.model</file>
+									<type>model</type>
+									<classifier>rdbmsHsqldb-incremental-${test.model.previousVersion}_${test.model.version}</classifier>
 								</artifact>
 							</artifacts>
 						</configuration>
