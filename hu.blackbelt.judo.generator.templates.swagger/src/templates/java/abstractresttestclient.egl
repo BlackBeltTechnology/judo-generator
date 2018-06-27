@@ -1,0 +1,414 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import javax.ws.rs.Path;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import com.jayway.restassured.response.ValidatableResponse;
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
+
+import hu.blackbelt.judo.example.common.rest.test.AbstractRestClient;
+import hu.blackbelt.judo.example.common.rest.test.AbstractEnumRestClient;
+import [%=class.restTestWrapperS().package.fqName()%].*;
+
+import hu.blackbelt.judo.example.common.rest.test.JudoReqSpec;
+
+[% for (m in class.methods(Set{JAVA!JvmMethodKind#CUSTOM,JAVA!JvmMethodKind#QUERY})) { %]
+    import [%=class.restOperation().fqName()%].Action[%=m.name%]RestDto;
+[%}%]
+
+import static java.util.Arrays.asList;
+
+public abstract class [%=class.name%] extends [%=class.isEnum().ternary("AbstractEnumRestClient", "AbstractRestClient")%]<[%=class.restDto().name%]> {
+
+    protected static final String PATH = [%=class.restOperation().fqName()%].class.getAnnotation(Path.class).value();
+    private static [%=class.restTestClient().name%] instance = new [%=class.restTestClient().name%]();
+
+    public static [%=class.restTestClient().name%] [%=class.origin().name.firstToLowerCase()%]() {
+        return instance;
+    }
+
+    @Override
+    protected String getPath() {
+        return PATH;
+    }
+
+    [% if (class.isEnum()) { %]
+         public [%=class.restDto().fqName()%] queryByCode([%=class.bare().restDtoEnum().fqName()%] value){
+             return super.queryByCode(value);
+         }
+         
+         public List<[%=class.restDto().fqName()%]> queryByCode([%=class.bare().restDtoEnum().fqName()%]... values){
+         	List<[%=class.restDto().fqName()%]> ret = new java.util.ArrayList();
+         	for ([%=class.bare().restDtoEnum().fqName()%] e : values) {
+         		ret.add(queryByCode(e));
+         	}
+             return ret;
+         }
+         
+         public List<[%=class.restDto().fqName()%]> queryByCode(List<[%=class.bare().restDtoEnum().fqName()%]> values){
+         	List<[%=class.restDto().fqName()%]> ret = new java.util.ArrayList();
+         	for ([%=class.bare().restDtoEnum().fqName()%] e : values) {
+         		ret.add(queryByCode(e));
+         	}
+             return ret;
+         }
+    [% } else { %]
+        public [%=class.restDtoBuilder().fqName()%] builder() {
+            [%=class.restDtoBuilder().fqName()%] builder = new [%=class.restDtoBuilder().fqName()%]()
+            [% for (attr in class.allAttributes().select(a | a.mandatory)) { %]
+                .[%=attr.name%](getUniqueValue("[%=attr.name%]", [%=attr.placeholder.length()%], [%=attr.type.fqName()%].class))
+            [%}%]
+
+            [% for (ref in class.allReferences().select(r | not r.derived)) { %]
+                    [% if (ref.isMandatory()) { %]
+                        [% if (ref.type.bare().isEnum()) { %]
+                            [% if (not ref.type.bare().origin.getEnum().literals.isEmpty()) { %]
+                                .[%=ref.name%]([%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]().queryByCode([%=ref.type.bare().restDtoEnum().fqName()%].[%=ref.type.bare().restDtoEnum().origin().literals.at(0).name%]))
+                            [% } else { %]
+                                //nincs enum value: [%=class.name%]
+                                .[%=ref.name%]([%=ref.type.restTestClient().fqName()%].[%=class.name%][%=ref.name%]().queryByCode(null))
+                            [%}%]
+                        [% } else { %]
+                            .[%=ref.name%]([%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]().builder().build())
+                        [%}%]
+                    [%}%]
+                    [% if (ref.stateMachineReference().isDefined()) { %]
+                        .[%=ref.name%]([%=ref.type.abstractRestTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().queryByCode([%=ref.type.restDtoEnum().fqName()%].[%=ref.stateMachineReference().states.selectOne(s | s.initialState).getEnumLiteral().name %]))
+                    [%}%]
+            [%}%];
+            prepareBuilder(builder);
+            return builder;
+        }
+
+        protected void build([%=class.restDto().fqName()%] dto) {
+            [% for (ref in class.allReferences().select(r | not r.derived)) { %]
+                    [% if (ref.isMandatory() and ref.upper = 1) { %]
+                        [%=ref.type.bare().restDto().fqName()%] [%=ref.name%] = dto.get[%=ref.name.firstToUpperCase()%]();
+                        if ([%=ref.name%] != null && [%=ref.name%].getId() == null) {
+                            [%=ref.type.bare().restTestClient().fqName()%] client = [%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]();
+                            dto.set[%=ref.name.firstToUpperCase()%](client.extract(client.create([%=ref.name%])));
+                        }
+                    [%}%]
+            [%}%]
+        }
+    [%}%]
+
+    [% if (not class.isEnum()) { %]
+
+        public ValidatableResponse create([%=class.restDto().fqName()%] dto) {
+            build(dto);
+            return super.create(dto);
+        }
+
+        public ValidatableResponse create([%=class.restDto().fqName()%] dto, JudoReqSpec reqSpec) {
+            build(dto);
+            return super.create(dto, reqSpec);
+        }
+
+        public [%=class.restDto().fqName()%] create([%=class.restDtoBuilder().fqName()%] builder, JudoReqSpec reqSpec) {
+            [%=class.restDto().fqName()%] dto = builder.build();
+            build(dto);
+            return extract(create(dto, reqSpec));
+        }
+
+        public [%=class.restDto().fqName()%] create([%=class.restDtoBuilder().fqName()%] builder) {
+            [%=class.restDto().fqName()%] dto = builder.build();
+            build(dto);
+            return extract(create(dto));
+        }
+
+        public [%=class.restDto().fqName()%] createDefault() {
+            return create(builder());
+        }
+
+        public [%=class.restDto().fqName()%] createDefault(JudoReqSpec reqSpec) {
+            return create(builder(), reqSpec);
+        }
+
+        protected void prepareBuilder([%=class.restDtoBuilder().fqName()%] builder) {
+
+        }
+
+        [% if (class.businessSingleton) { %]
+            public [%=class.restDto().fqName()%] getOrCreateSilent() {
+                java.util.List<[%=class.restDto().fqName()%]> dtos = extractList(list());
+
+                if (dtos.isEmpty()) {
+                    return createDefault();
+                } else {
+                    return dtos.get(0);
+                }
+            }
+
+            public [%=class.restDto().fqName()%] getOrCreate() {
+                java.util.List<[%=class.restDto().fqName()%]> dtos = extractList(list());
+
+                if (dtos.isEmpty()) {
+                    return createDefault();
+                } else if (dtos.size() > 1) {
+                    throw new IllegalArgumentException([%=class.restDto().fqName()%].class + " class is singleton, but found: " + dtos.size());
+                } else {
+                    return dtos.get(0);
+                }
+            }
+
+        [%}%]
+    [%}%]
+
+    [% for (method in class.methods().select(m | m.isCustomBulk() or m.isQuery() or m.isCustomClassBased())) { %]
+        public static final String ACTION_[%=method.nameToUpperCase()%] = "[%=method.name%]";
+        [% if (not method.classBased) { %]
+
+            public ValidatableResponse [%=method.name.firstToLowerCase()%]([%=method.parameterSignatureRestDto()%]) {
+                Action[%=method.name%]RestDto dto = new Action[%=method.name%]RestDto();
+                [% for (param in method.parameters) { %]
+                    dto.set[%=param.name.firstToUpperCase()%]([%=param.name%]);
+                [%}%]
+                return action(ACTION_[%=method.nameToUpperCase()%], dto);
+            }
+
+            public ValidatableResponse [%=method.name.firstToLowerCase()%]([%=method.parameterSignatureRestDto()%], JudoReqSpec reqSpec) {
+                Action[%=method.name%]RestDto dto = new Action[%=method.name%]RestDto();
+                [% for (param in method.parameters) { %]
+                    dto.set[%=param.name.firstToUpperCase()%]([%=param.name%]);
+                [%}%]
+                return action(ACTION_[%=method.nameToUpperCase()%], dto, reqSpec);
+            }
+
+            public ValidatableResponse [%=method.name.firstToLowerCase()%]([%=method.parameterSignatureReplaceIds(Sequence{"java.lang.String... ids"})%]) {
+                return [%=method.name.firstToLowerCase()%]([%=method.parameterNameSequenceReplaceIds(Sequence{"asList(ids)"})%]);
+            }
+
+            public ValidatableResponse [%=method.name.firstToLowerCase()%]([%=method.parameterSignatureReplaceIds(Sequence{"JudoReqSpec reqSpec", "java.lang.String... ids"})%]) {
+                return [%=method.name.firstToLowerCase()%]([%=method.parameterNameSequenceReplaceIds(Sequence{"asList(ids)", "reqSpec"})%]);
+            }
+
+            public [%=method.type.restDtoOrPrimitive().fqName()%] [%=method.name.firstToLowerCase()%]E(
+                    [%=method.parameterSignatureRestDto()%], JudoReqSpec reqSpec) {
+                [% if (not method.type.bare().isPrimitive()) { %]
+                    return [%=method.type.bare().restTestClient().fqName()%].[%=method.type.bare().origin().name.firstToLowerCase()%]().extractList(
+                [% } else { %]
+                    return Arrays.asList(
+                [%}%]
+                [%=method.name.firstToLowerCase()%]([%=method.parameterNameSequence()%], reqSpec)
+                [% if (method.type.isListofLists()) { %]
+                	.extract().jsonPath().getList("")
+                [%} else if (method.type.isPrimitive()) {%]
+                	.extract().as([%=method.type.bare().restDtoOrPrimitive().fqName()%][].class)
+                [%}%]);
+            }
+
+            public [%=method.type.restDtoOrPrimitive().fqName()%] [%=method.name.firstToLowerCase()%]E(
+                    [%=method.parameterSignatureRestDto()%]) {
+                [% if (not method.type.bare().isPrimitive()) { %]
+                    return [%=method.type.bare().restTestClient().fqName()%].[%=method.type.bare().origin().name.firstToLowerCase()%]().extractList(
+                [% } else { %]
+                    return Arrays.asList(
+                [%}%]
+                [%=method.name.firstToLowerCase()%]([%=method.parameterNameSequence()%])
+                [% if (method.type.isListofLists()) { %]
+                	.extract().jsonPath().getList("")
+                [%} else if (method.type.isPrimitive()) {%]             
+                	.extract().as([%=method.type.bare().restDtoOrPrimitive().fqName()%][].class)
+                [%}%]);
+            }
+
+            public [%=method.type.restDtoOrPrimitive().fqName()%] [%=method.name.firstToLowerCase()%]E(
+                    [%=method.parameterSignatureReplaceIds(Sequence{"JudoReqSpec reqSpec", "java.lang.String... ids"})%]) {
+                return [%=method.name.firstToLowerCase()%]E([%=method.parameterNameSequenceReplaceIds(Sequence{"asList(ids)", "reqSpec"})%]);
+            }
+
+            public [%=method.type.restDtoOrPrimitive().fqName()%] [%=method.name.firstToLowerCase()%]E(
+                    [%=method.parameterSignatureReplaceIds(Sequence{"java.lang.String... ids"})%]) {
+                return [%=method.name.firstToLowerCase()%]E([%=method.parameterNameSequenceReplaceIds(Sequence{"asList(ids)"})%]);
+            }
+        [% } else { %]
+            public ValidatableResponse [%=method.name.firstToLowerCase()%]([%=method.parameterSignatureRestDto()%][% if (not method.parameters.isEmpty()) { %], [%}%]JudoReqSpec reqSpec) {
+                Action[%=method.name%]RestDto dto = new Action[%=method.name%]RestDto();
+                [% for (param in method.parameters) { %]
+                    [% if (method.isQuery() and not param.type.isPrimitive()) { %]
+                        [% if (param.type.isCollection()) { %]
+                            dto.set[%=param.name.firstToUpperCase()%](
+                                    FluentIterable.from([%=param.name%]).transform(new Function<[%=param.type.bare().restDto().fqName()%], String>() {
+                                        public String apply([%=param.type.bare().restDto().fqName()%] input) {
+                                            return (String) input.getId();
+                                        }
+                                    }).toList());
+                        [% } else { %]
+                            dto.set[%=param.name.firstToUpperCase()%]((String)[%=param.name%].getId());
+                        [%}%]
+                    [% } else { %]
+                        dto.set[%=param.name.firstToUpperCase()%]([%=param.name%]);
+                    [%}%]
+                [%}%]
+                [% if (method.isQuery()) { %]
+                    return customQuery(ACTION_[%=method.nameToUpperCase()%], reqSpec, null);
+                [% } else { %]
+                    return action(ACTION_[%=method.nameToUpperCase()%], dto, reqSpec);
+                [%}%]
+            }
+            public ValidatableResponse [%=method.name.firstToLowerCase()%]([%=method.parameterSignatureRestDto()%]) {
+                Action[%=method.name%]RestDto dto = new Action[%=method.name%]RestDto();
+                [% for (param in method.parameters) { %]
+                    [% if (method.isQuery() and not param.type.isPrimitive()) { %]
+                        [% if (param.type.isCollection()) { %]
+                            dto.set[%=param.name.firstToUpperCase()%](
+                                    FluentIterable.from([%=param.name%]).transform(new Function<[%=param.type.bare().restDto().fqName()%], String>() {
+                                        public String apply([%=param.type.bare().restDto().fqName()%] input) {
+                                            return (String) input.getId();
+                                        }
+                                    }).toList());
+                        [% } else { %]
+                            dto.set[%=param.name.firstToUpperCase()%]((String)[%=param.name%].getId());
+                        [%}%]
+                    [% } else { %]
+                        dto.set[%=param.name.firstToUpperCase()%]([%=param.name%]);
+                    [%}%]
+                [%}%]
+                [% if (method.isQuery()) { %]
+                    return customQuery(ACTION_[%=method.nameToUpperCase()%], null);
+                [% } else { %]
+                    return action(ACTION_[%=method.nameToUpperCase()%], dto);
+                [%}%]
+            }
+    
+            public [%=method.type.restDtoOrPrimitive().fqName()%] [%=method.name.firstToLowerCase()%]E([%=method.parameterSignatureRestDto()%][% if (not method.parameters.isEmpty()) { %],[%}%] JudoReqSpec reqSpec ) {
+                [% if (not method.type.isPrimitive()) { %]
+                    return [%=method.type.bare().restTestClient().fqName()%].[%=method.type.bare().origin().name.firstToLowerCase()%]().extract[% if (method.type.isCollection()) { %]List[%}%]([%=method.name.firstToLowerCase()%]([%=method.parameterNameSequence()%][% if (not method.parameters.isEmpty()) { %],[%}%] reqSpec));
+                [% } else { %]
+                    return [% if (method.type.isCollection()) { %]Arrays.asList([%}%] [%=method.name.firstToLowerCase()%](
+                        [%=method.parameterNameSequence()%][% if (not method.parameters.isEmpty()) { %],[%}%] reqSpec
+                        [% if (not method.type.isCollection()) { %]
+                            ).extract().as([%=method.type.bare().name%].class);
+                        [% } else { %]
+                            ).extract().as([%=method.type.bare().name%][].class));
+                        [%}%]
+                [%}%]
+            }
+
+            public [%=method.type.restDtoOrPrimitive().fqName()%] [%=method.name.firstToLowerCase()%]E([%=method.parameterSignatureRestDto()%]) {
+                [% if (not method.type.isPrimitive()) { %]
+                    return [%=method.type.bare().restTestClient().fqName()%].[%=method.type.bare().origin().name.firstToLowerCase()%]().extract[% if (method.type.isCollection()) { %]List[%}%]([%=method.name.firstToLowerCase()%]([%=method.parameterNameSequence()%]));
+                [% } else { %]
+                    return [% if (method.type.isCollection()) { %]Arrays.asList([%}%] [%=method.name.firstToLowerCase()%](
+                        [%=method.parameterNameSequence()%]
+                        [% if (not method.type.isCollection()) { %]
+                            ).extract().as([%=method.type.bare().name%].class);
+                        [% } else { %]
+                            ).extract().as([%=method.type.bare().name%][].class));
+                        [%}%]
+                [%}%]
+            }
+        [%}%]
+    [%}%]
+
+    [% for (ref in class.allReferences().select(r | not "Value".isSubstringOf(r.name))) { %]
+
+        public static final String REL_[%=ref.nameToUpperCase()%] = "[%=ref.name.toLowerCase()%]";
+
+        [% if (ref.type.isCollection()) { %]
+            public [%=ref.type.restDto().fqName()%] traverse[%=ref.name.firstToUpperCase()%](String id) {
+                return [%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]().extractList(traverse(id, REL_[%=ref.nameToUpperCase()%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] attach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.restDto().fqName()%] [%=ref.name%]) {
+                return [%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]().extractList(attach(id, REL_[%=ref.nameToUpperCase()%], [%=ref.name%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] attach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.bare().restDto().fqName()%]... [%=ref.name%]) {
+                return attach[%=ref.name.firstToUpperCase()%](id, asList([%=ref.name%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] detach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.restDto().fqName()%] [%=ref.name%]) {
+                return [%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]().extractList(detach(id, REL_[%=ref.nameToUpperCase()%], [%=ref.name%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] detach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.bare().restDto().fqName()%]... [%=ref.name%]) {
+                return detach[%=ref.name.firstToUpperCase()%](id, asList([%=ref.name%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] available[%=ref.name.firstToUpperCase()%](String id) {
+                return [%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]().extractList(available(id, REL_[%=ref.nameToUpperCase()%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] availableAll[%=ref.name.firstToUpperCase()%]() {
+                return [%=ref.type.bare().restTestClient().fqName()%].[%=ref.type.bare().origin().name.firstToLowerCase()%]().extractList(availableAll(REL_[%=ref.nameToUpperCase()%]));
+            }
+        [% } else { %]
+            public [%=ref.type.restDto().fqName()%] traverse[%=ref.name.firstToUpperCase()%](String id) {
+                return [%=ref.type.restTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().extract(traverse(id, REL_[%=ref.nameToUpperCase()%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] attach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.restDto().fqName()%] [%=ref.name%]) {
+                return [%=ref.type.restTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().extract(attach(id, REL_[%=ref.nameToUpperCase()%], [%=ref.name%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] detach[%=ref.name.firstToUpperCase()%](String id, [%=ref.type.restDto().fqName()%] [%=ref.name%]) {
+                return [%=ref.type.restTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().extract(detach(id, REL_[%=ref.nameToUpperCase()%], [%=ref.name%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] available[%=ref.name.firstToUpperCase()%](String id) {
+                return [%=ref.type.restTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().extract(available(id, REL_[%=ref.nameToUpperCase()%]));
+            }
+
+            public [%=ref.type.restDto().fqName()%] availableAll[%=ref.name.firstToUpperCase()%]() {
+                return [%=ref.type.restTestClient().fqName()%].[%=ref.type.origin().name.firstToLowerCase()%]().extract(availableAll(REL_[%=ref.nameToUpperCase()%]));
+            }
+        [%}%]
+    [%}%]
+}
+
+[%
+@cached
+operation JAVA!JvmInterface isEnum () : Boolean {
+    return self.origin().fixedEnum.isDefined();
+}
+
+@cached
+operation JAVA!JvmClass getEnum () : JAVA!JvmEnum {
+    return self.fixedEnum;
+}
+
+@cached
+operation JAVA!JvmReference isMandatory () : Boolean {
+    return self.lower <> 0;
+}
+
+@cached
+operation JAVA!JvmMethod parameterSignatureRestDto () : String {
+    return self.parameters.collect(p | p.type.restDtoOrPrimitive().fqName() + " " + p.name).concat(", ");
+}
+
+operation JAVA!JvmMethod parameterSignatureReplaceIds (addParams : Sequence) : String {
+    return self.parameters.select(p | not p.representsJudoId).collect(p | p.type.restDtoOrPrimitive().fqName() + " " + p.name).includingAll(addParams).concat(", ");
+}
+
+operation JAVA!JvmMethod parameterNameSequenceReplaceIds (addParams : Sequence) : String {
+    return self.parameters.select(p | not p.representsJudoId).collect(p | p.name).includingAll(addParams).concat(", ");
+}
+
+@cached
+operation JAVA!JvmType restDtoOrPrimitive () : JAVA!JvmType {
+    if (self.bare().isPrimitive()) {
+        return self;
+    } else {
+        return self.restDto();
+    }
+}
+
+@cached
+operation JAVA!JvmReference stateMachineReference () : JAVA!JvmStateMachine {
+    if (self.type.bare().isEnum()) {
+    	return JAVA!JvmStateMachine.all.selectOne(sm | sm.correspondingEnum = self.type.bare().origin.fixedEnum);
+    }
+}
+
+%]

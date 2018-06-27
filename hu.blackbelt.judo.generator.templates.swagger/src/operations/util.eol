@@ -1,0 +1,51 @@
+operation voidType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Void").first();
+}
+
+operation intType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Integer").first();
+}
+
+operation stringType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "String").first();
+}
+
+operation longType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Long").first();
+}
+
+operation urlType () : JAVA!JvmType {
+    return JAVATYPES!JvmType.all.select( t | t.name = "URL").first();
+}
+
+operation idType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.useForJudoId).first();
+}
+
+operation JAVA!JvmType isURL() : Boolean {
+    return self.uuid = urlType().uuid;
+}
+
+operation Boolean ternary(ifTrue : Any, ifFalse : Any) : Any {
+    if (self) {
+        return ifTrue;
+    } else {
+        return ifFalse;
+    }
+}
+
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
+}
+
+operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
+	var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
+	if (ret.isUndefined()) {
+		ret = new JAVA!JvmList;
+		ret.uuid = generateUuid(componentType.uuid, "list", "_");
+		ret.name = "List";	
+		ret.package = JAVA!JvmModel.all.first().findJavaUtilPackage();
+		ret.componentType = componentType;
+	}
+	return ret;
+}

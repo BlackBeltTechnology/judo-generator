@@ -1,0 +1,24 @@
+operation JAVA!JvmMethodParameter restAnnotation() : String {
+    if (self.isId()) {
+        return "@PathParam(\"" + self.name +"\") ";
+    } else if (self.isPagination() or self.isFilterRestDto()) {
+        return "@BeanParam ";
+    }
+    return "";
+}
+
+operation JAVA!JvmMethodParameter isId() : Boolean {
+    return self.representsJudoId;
+}
+
+operation JAVA!JvmMethodParameter isPagination() : Boolean {
+    return self.type.isKindOf(JAVA!JvmCoordinated) and self.type.origin.uuid = paginationOrigin().uuid;
+}
+
+operation JAVA!JvmMethodParameter isFilter() : Boolean {
+    return self.type.isKindOf(JAVA!JvmCoordinated) and self.type.origin.uuid = filterOrigin().uuid;
+}
+
+operation JAVA!JvmMethodParameter isFilterRestDto() : Boolean {
+    return self.type.isKindOf(JAVA!JvmCoordinated) and self.type.coordinate = JAVA!JvmJudoCoordinate#FILTER_REST_DTO;
+}

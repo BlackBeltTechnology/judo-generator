@@ -1,0 +1,187 @@
+@cached
+operation JAVA!JvmCoordinated dto () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#DTO);
+}
+
+@cached
+operation JAVA!JvmCoordinated dtoAccessor () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#DTO_ACCESSOR);
+}
+
+@cached
+operation JAVA!JvmCoordinated dtoOperation () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#DTO_OPERATION);
+}
+
+@cached
+operation JAVA!JvmCoordinated restDto () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#REST_DTO);
+}
+
+@cached
+operation JAVA!JvmCoordinated restDtoBuilder () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#REST_DTO_BUILDER);
+}
+
+@cached
+operation JAVA!JvmCoordinated restDtoEnum () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#REST_DTO_ENUM);
+}
+
+@cached
+operation JAVA!JvmCoordinated filterRestDto () : JAVA!JvmCoordinated {
+    return self.find(JAVA!JvmJudoCoordinate#FILTER_REST_DTO);
+}
+
+@cached
+operation JAVA!JvmCoordinated restOperation () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#REST_OPERATION);
+}
+
+@cached
+operation JAVA!JvmCoordinated po () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#PO);
+}
+
+@cached
+operation JAVA!JvmCoordinated bo () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO);
+}
+
+@cached
+operation JAVA!JvmCoordinated boInterface () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_INTERFACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated boBuilder () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_BUILDER);
+}
+
+@cached
+operation JAVA!JvmCoordinated boBuilderInterface () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_BUILDER_INTERFACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated boFactoryInterface () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_FACTORY_INTERFACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated bql () : JAVA!JvmCoordinated {
+	if (self.framework)
+		return self.find(JAVA!JvmJudoCoordinate#BO_BQL_FRAMEWORK);
+	else
+		return self.find(JAVA!JvmJudoCoordinate#BO_BQL);
+}
+
+@cached
+operation JAVA!JvmCoordinated bqlDomain (framework : Boolean) : JAVA!JvmCoordinated {
+	if (framework)
+		return self.find(JAVA!JvmJudoCoordinate#BO_BQL_FRAMEWORK);
+	else
+		return self.find(JAVA!JvmJudoCoordinate#BO_BQL);
+}
+
+@cached
+operation JAVA!JvmCoordinated daoMinimal () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#DAO_MINIMAL);
+}
+
+@cached
+operation JAVA!JvmCoordinated daoQClass () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#DAO_Q_CLASS);
+}
+
+@cached
+operation JAVA!JvmCoordinated boServiceInterface () : JAVA!JvmCoordinated {
+	if (self.framework)
+		return self.find(JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_INTERFACE);
+	else
+		return self.find(JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated boServiceDefault () : JAVA!JvmCoordinated {
+	if (self.framework)
+		return self.find(JAVA!JvmJudoCoordinate#BO_FRAMEWORK_SERVICE_DEFAULT);
+	else
+		return self.find(JAVA!JvmJudoCoordinate#BO_SERVICE_DEFAULT);
+	
+}
+
+@cached
+operation JAVA!JvmCoordinated boServiceAbstract () : JAVA!JvmCoordinated {
+	return self.find(JAVA!JvmJudoCoordinate#BO_SERVICE_ABSTRACT);
+}
+
+@cached
+operation JAVA!JvmCoordinated restNamespace () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_NAMESPACE);
+}
+
+@cached
+operation JAVA!JvmCoordinated restNamespaceOperation () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_NAMESPACE_OPERATION);
+}
+
+@cached
+operation JAVA!JvmCoordinated abstractRestTestClient () {
+    return self.find(JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestClient () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_CLIENT);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestWrapperC () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestWrapperT () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_T);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestWrapperS () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S);
+}
+
+@cached
+operation JAVA!JvmCoordinated restTestWrapperM () {
+    return self.find(JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M);
+}
+
+@cached
+operation JAVA!JvmCoordinated origin() : JAVA!JvmCoordinated {
+	if (self.coordinate = JAVA!JvmJudoCoordinate#ORIGIN) {
+		return self;
+	} else {
+		return self.origin;
+	}
+}
+
+operation JAVA!JvmCoordinated find (jvmJudoCoordinate : Any) : JAVA!JvmCoordinated {
+	if (self.isTypeOf(JAVA!JvmEnum)) {
+		if (jvmJudoCoordinate.asString().endsWith("ENUM")) {
+			return JAVA!JvmEnum.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().uuid = self.origin().uuid)).first();
+		} else {
+			return JAVA!JvmInterface.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().fixedEnum.uuid = self.origin().uuid)).first();
+		}
+	} else {
+		if (jvmJudoCoordinate.asString().endsWith("ENUM")) {
+			return JAVA!JvmEnum.all.select(e | (e.coordinate = jvmJudoCoordinate and e.classRepresentation.origin().uuid = self.origin().uuid)).first();
+		} else {
+			return JAVA!JvmInterface.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().uuid = self.origin().uuid)).first();
+		}
+	}
+}
+
+@cached
+operation JAVA!JvmCoordinated isPrimitive () : Boolean {
+    return false;
+}

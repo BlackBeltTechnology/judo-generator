@@ -1,0 +1,80 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+  
+%]
+package [%=class.package.fqName()%];
+
+import hu.blackbelt.judo.business.bo.api.BoTypeResolver;
+import hu.blackbelt.judo.business.service.api.DelegateCall;
+import hu.blackbelt.judo.business.service.api.ServiceListener;
+import hu.blackbelt.judo.business.service.api.base.AbstractWrapperCrudService;
+import hu.blackbelt.judo.common.lang.api.exception.PlatformException;
+
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+import org.apache.felix.scr.annotations.ReferenceCardinality;
+import org.osgi.framework.Constants;
+
+import java.io.Serializable;
+import java.util.List;
+
+@Component(immediate = true)
+@Service
+@org.apache.felix.scr.annotations.Property(name = Constants.SERVICE_RANKING, intValue = Integer.MAX_VALUE)
+public class [%=class.name%]
+    extends hu.blackbelt.judo.business.service.api.base.AbstractWrapperCrudService<[%=class.bo().fqName()%], [%=class.boServiceDefault().fqName()%]>
+    implements [%=class.boServiceInterface().fqName()%] {
+    @Reference
+    private  [%=class.boServiceDefault().fqName()%] delegate;
+
+    @Reference
+    private BoTypeResolver boTypeResolver;
+
+    @Override
+    public  [%=class.boServiceDefault().fqName()%] getDelegate() {
+        return delegate;
+    }
+
+    @Override
+    public BoTypeResolver getBoTypeResolver() {
+        return boTypeResolver;
+    }
+
+	[%for (method in class.methods()) { %]
+		public [%=method.type.fqName()%] [%=method.name%] ([%=method.parametersSignatureWithFinalModifier()%]){
+			return doDelegate(new DelegateCall<[%=method.type.fqName()%]>() {
+				@Override
+	            public [%=method.type.fqName()%] call() throws hu.blackbelt.judo.common.lang.api.exception.PlatformException {
+	            	return getDelegate().[%=method.name%]([%=method.parameterNameSequence()%]);
+	            }
+	        
+		        @Override
+				public ServiceListener.Source getSource() {
+				    [%if (method.parameters.size() > 0) {%]
+				        final ServiceListener.Parameter[] parameters = {
+				        	[%for (param in method.parameters) { %]
+				        		ServiceListener.Parameter.builder()
+				        			.instance([%=param.name%])
+				        			.name("[%=param.name%]")
+				        			.type([%=param.type.javaClassName()%].class)
+				        			.build()[%if (hasMore) { %],[%}%]
+							[%}%]
+				        };
+				    [%}%]
+				    return initSourceBuilder()
+						    .methodName("[%=method.name%]")
+						    .parameterTypes(new Class[] {[%=method.parameterTypeSequence()%]})
+						    .parameters(new Object[] {[%=method.parameterNameSequence()%]})
+						    [%if (method.parameters.size() > 0) {%]
+						    	.params(parameters)
+						    [%}%]
+						    .build();
+				}
+	        });
+		}
+	[%}%]
+}

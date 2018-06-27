@@ -1,0 +1,11 @@
+operation JAVA!JvmReference restName () : String {
+	return self.name.toLowerCase();
+}
+
+operation JAVA!JvmReference restClassName () : String {
+	return self.opposite.ownerClass.restName();
+}
+
+operation JAVA!JvmReference isSingle () : Boolean {
+	return self.upper == 1;
+}

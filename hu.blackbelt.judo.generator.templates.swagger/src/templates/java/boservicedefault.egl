@@ -1,0 +1,19 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+  
+%]
+package [%=class.package.fqName()%];
+
+import hu.blackbelt.judo.business.dao.api.EntityDao;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+
+@Component(immediate = true)
+@Service([%=class.name%].class)
+public class [%=class.name%] extends [%=class.boServiceAbstract().fqName()%] {
+
+}

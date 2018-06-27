@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>hu.blackbelt.judo.generator</groupId>
+		<artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+	</parent>
+
+	<artifactId>hu.blackbelt.judo.generator.templates.swagger</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+        <src.dir>src</src.dir>
+    </properties>
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+    	<profile>
+    		<id>java-templates-development</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-psm-md5</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>${test.model.groupId}</groupId>
+											<artifactId>${test.model.artifactId}</artifactId>
+											<version>${test.model.version}</version>
+											<type>md5</type>
+											<classifier>psm</classifier>
+											<overWrite>false</overWrite>
+											<outputDirectory>${project.build.directory}</outputDirectory>
+											<destFileName>psm.md5</destFileName>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.gmaven</groupId>
+						<artifactId>gmaven-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>read-psm-md5</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<properties>
+										<header_file>${project.build.directory}/psm.md5</header_file>
+									</properties>
+									<source>
+										def file = new File(project.properties.header_file)
+										project.properties.psmversion = file.getText()
+									</source>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+
+					<plugin>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>epsilon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:ecore:java:${project.version}</metaModel>
+									</metaModels>
+		
+									<models>
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:frameworkElements:${project.version}</artifact>
+											<name>FWELEMENTS</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/java</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/frameworkElements.model</platformAlias>
+										</model>
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.java:model:javaTypes:${project.version}</artifact>
+											<name>JAVATYPES</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/java</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
+										</model>
+										<model>
+											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.java:model:java:${project.version}</artifact>
+											<name>JAVA</name>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/java</param>
+											</metaModelUris>
+											<expand>true</expand>
+										</model>
+									</models>
+									<eolPrograms>
+										<Egl>
+											<source>src/main.egl</source>
+											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+                                            <parameters>
+                                                <parameter>
+                                                    <name>transformDomain</name>
+                                                    <value>false</value>
+                                                </parameter>
+                                                <parameter>
+                                                	<name>queryDslPeristencePid</name>
+                                                	<value>hu.blackbelt.judo.querydsl.persistence</value>
+                                                </parameter>
+												<parameter>
+													<name>psmVersion</name>
+													<value>${project.version}-${psmversion}</value>
+												</parameter>
+												<parameter>
+													<name>applicationName</name>
+													<value>Anakin</value>
+												</parameter>
+
+                                            </parameters>
+										</Egl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>add-resource</id>
+								<goals>
+									<goal>add-resource</goal>
+								</goals>
+								
+								<configuration>
+									<resources>
+										<resource>
+											<directory>src</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>	
+				</plugins>
+			</build>
+    	</profile>
+    </profiles>
+</project>

@@ -1,0 +1,58 @@
+operation JAVA!JvmPackage restBaseUri(separator : String) : String {
+	var restBaseUri : String = self.package.name;
+	var currentPackage = self.package.package;
+	
+	while (currentPackage.name <> "blackbelt") {
+		restBaseUri = currentPackage.name + separator + restBaseUri;
+		currentPackage = currentPackage.package;
+	}
+	
+	return restBaseUri;
+}
+
+operation JAVA!JvmPackage restBaseName() : String {
+	var restBaseUri : String = self.package.name;
+	var currentPackage = self.package.package;
+	
+	while (currentPackage.name <> "blackbelt") {
+	    // pe.name.substring(0, 1).toUpperCase() + pe.name.substring(1);
+		restBaseUri = currentPackage.name.substring(0, 1).toUpperCase() + currentPackage.name.substring(1) + restBaseUri;
+		currentPackage = currentPackage.package;
+	}
+	
+	return restBaseUri;
+}
+
+
+
+operation JAVA!JvmPackage findChild (name : String) : JAVA!JvmPackage {
+	return self.findChildRecursively(name);
+}
+
+operation JAVA!JvmPackage findChildRecursively (packageName : String) : JAVA!JvmPackage {
+	return self.findChildRecursively(packageName.split("\\."));
+}
+
+operation JAVA!JvmPackage findChildRecursively (packageNames : Sequence) : JAVA!JvmPackage {
+	var currentPackage = self;
+	for (packName in packageNames) {
+		var candidate = currentPackage.contents.select(p | (p.name = packName and p.package.uuid = currentPackage.uuid)).first();
+		currentPackage = candidate;
+	}
+	return currentPackage;
+}
+
+@cached
+operation JAVA!JvmPackage classes () : Collection {
+	return self.contents.select(c : JAVA!JvmClass | true);
+}
+
+@cached
+operation JAVA!JvmPackage ownerModel () : JAVA!JvmModel {
+	if (self.ownerModel.isDefined()) {
+		return self.ownerModel;
+	} else if (self.package.isDefined()) {
+		return self.package.ownerModel();
+	}
+}
+

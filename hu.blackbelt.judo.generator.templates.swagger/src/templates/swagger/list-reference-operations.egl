@@ -1,0 +1,128 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+  [% for (ref in dto.origin.allReferences().select(r | r.navigable and not r.isSingle())) { %]
+  /rest/[%= dto.origin.restUri() %]/{id}/[%= ref.restName()%]:
+    get:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        list attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      summary: |
+        List attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      description: |
+        List attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]. It can be fitered, paged and sorted. Support projection of the result.
+      parameters:
+      - $ref: '#/parameters/identifier'
+      - $ref: '#/parameters/projection'
+      - $ref: '#/parameters/filter'
+      - $ref: '#/parameters/pageSize'
+      - $ref: '#/parameters/pageNumber'
+      - $ref: '#/parameters/sort'
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            List of [%= ref.restClassName() %] is OK.
+          schema:
+            $ref: '#/definitions/ArrayOf[%= ref.restClassName() %]'
+          headers:
+            X-Total-Count:
+              type: integer
+              description: The total records of query.
+            X-Page-Size:
+              type: integer
+              description: The current page size of query            
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    put:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      summary: |
+        Attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      description: |
+        Attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %].
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/identifier'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            [%=dto.origin.name%] attached
+          schema:
+            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    delete:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      summary: |
+        Detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      description: |
+        Detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %].
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/identifier'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: |
+            [%=dto.origin.name%] detached
+          schema:
+            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+  [%}%]

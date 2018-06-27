@@ -1,0 +1,334 @@
+# [%=dto.origin.name%] CRUD operations
+  /rest/[%=dto.origin.restUri() %]:
+    get:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        list [%=dto.origin.name%]
+      summary: |
+        List [%= dto.origin.name %]
+      description: |
+        List [%=dto.origin.name%]. It can be fitered, paged and sorted. Support projection of the result.
+      parameters:
+      - $ref: '#/parameters/projection'
+      - $ref: '#/parameters/filter'
+      - $ref: '#/parameters/pageSize'
+      - $ref: '#/parameters/pageNumber'
+      - $ref: '#/parameters/sort'
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            List of [%=dto.origin.name%] is OK.
+          schema:
+            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+          headers:
+            X-Total-Count:
+              type: integer
+              description: The total records of query.
+            X-Page-Size:
+              type: integer
+              description: The current page size of query            
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    post:
+      tags:
+        - [%= dto.origin.restTag() %]
+      operationId: | 
+        create new [%=dto.origin.name%]
+      summary: |
+        Create [%= dto.origin.name %]
+      description: |
+        Create new [%=dto.origin.name%].
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/[%= dto.origin.restName() %]'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: |
+            [%=dto.origin.name%] created
+          schema:
+            $ref: '#/definitions/[%= dto.origin.restName() %]'
+        '400':
+          $ref: '#/responses/badRequest'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+  /rest/[%=dto.origin.restUri() %]/{id}:
+    parameters:
+      - $ref: '#/parameters/identifier'
+    get:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: | 
+        get [%=dto.origin.name%]
+      summary: |
+        Get [%= dto.origin.name %] by identifier.
+      description: |
+        Get [%=dto.origin.name%] by identifier.  If it does not exists, sending 404.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            [%=dto.origin.name%] retreived.
+          schema:
+            $ref: '#/definitions/[%= dto.origin.restName() %]'
+        '404':
+          $ref: '#/responses/notFound'
+        '400':
+          $ref: '#/responses/badRequest'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+    put:
+      tags:
+      - [%= dto.origin.restTag() %]
+      operationId: |
+        update [%=dto.origin.name%]
+      summary: |
+        Update [%= dto.origin.name %] by identifier. 
+      description: |
+        Update existing [%=dto.origin.name%] by identifier. If it does not exists, sending 404.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            successful operation
+          schema:
+             $ref: '#/definitions/[%= dto.origin.restName() %]'
+        '404':
+          $ref: '#/responses/notFound'
+        '400':
+          $ref: '#/responses/badRequest'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+    delete:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        delete [%=dto.origin.name%]
+      summary: |
+        Delete [%= dto.origin.name %] by identifier. 
+      description: |
+        Delete existing [%=dto.origin.name%] by identifier. If it does not exists, sending 404.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            successful operation
+          schema:
+            $ref: '#/definitions/[%= dto.origin.restName() %]'
+        '404':
+          $ref: '#/responses/notFound'
+        '400':
+          $ref: '#/responses/badRequest'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+# [%=dto.origin.name%] Custom operations
+
+  [% for (method in dto.origin.methods.select(m | m.isCustomBulk() or m.isQuery() or (m.isCustom() and m.classBased)).sortBy(m | m.name)) { %]
+  /rest/[%= dto.origin.restUri() %]/[%= method.restUri() %]:
+    post:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      summary: "[%= method.restName() %] [%= dto.origin.restName() %]"
+      operationId: |
+        [%= method.restName() %] [%= dto.origin.restName() %]
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: dto
+          schema:
+            $ref: '#/definitions/Action[%= dto.origin.restName() %][%= method.restName() %]'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            successful operation
+          schema:
+            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+        '400':
+          $ref: '#/responses/badRequest'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+ [%}%]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  [% for (ref in dto.origin.allReferences().select(r | r.navigable and r.isSingle())) { %]
+  /rest/[%= dto.origin.restUri() %]/{id}/[%= ref.restName() %]:
+    get:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        get attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      summary: |
+        Get attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      description: |
+        Get attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]. It can be fitered, paged and sorted. Support projection of the result.
+      parameters:
+      - $ref: '#/parameters/identifier'
+      - $ref: '#/parameters/projection'
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            Rettreive of [%= ref.restClassName() %] is OK.
+          schema:
+            $ref: '#/definitions/[%= ref.restClassName() %]'
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    put:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      summary: |
+        Attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      description: |
+        Attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %].
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/identifier'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/[%= dto.origin.restName() %]'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            [%=dto.origin.name%] attached
+          schema:
+            $ref: '#/definitions/[%= dto.origin.restName() %]'
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    delete:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      summary: |
+        Detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+      description: |
+        Detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %].
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/identifier'
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/[%= dto.origin.restName() %]'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: |
+            [%=dto.origin.name%] detached
+          schema:
+            $ref: '#/definitions/[%= dto.origin.restName() %]'
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+  [%}%]
+ 

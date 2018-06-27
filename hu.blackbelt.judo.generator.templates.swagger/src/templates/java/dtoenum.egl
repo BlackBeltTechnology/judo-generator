@@ -1,0 +1,11 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+public enum [%=class.name%] {
+    [%=class.origin.literals.collect( l | l.name).concat(', ')%];
+}

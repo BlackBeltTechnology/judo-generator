@@ -1,0 +1,72 @@
+@cached
+operation JAVA!JvmCollection fqName () : String {
+	if (self.componentType.uuid == voidType().uuid) {
+		return "void";
+	}
+	return self.package.fqName() + "." + self.name + "<" + self.componentType.fqName() + ">";
+}
+
+@cached
+operation JAVA!JvmCollection bare () : JAVA!JvmType {
+	if (self.isListofLists()) {
+		return self.componentType.componentType;
+	} else {
+		return self.componentType;
+	}
+	
+}
+
+@cached
+operation JAVA!JvmType javaClassName () : String {
+	return self.package.fqName() + "." + self.name;
+}
+
+@cached
+operation JAVA!JvmCollection isVoid () : Boolean {
+	return self.bare().isVoid();
+}
+
+@cached
+operation JAVA!JvmCollection isPrimitive () : Boolean {
+    return not self.isListofLists() and self.componentType.isPrimitive();
+}
+
+@cached
+operation JAVA!JvmCollection isListofLists () : Boolean {
+    return self.componentType.isKindOf(JAVA!JvmCollection);
+}
+
+@cached
+operation JAVA!JvmCollection bo () : JAVA!JvmCollection {
+    return createJvmList(self.bare().bo());
+}
+
+@cached
+operation JAVA!JvmCollection boInterface () : JAVA!JvmCollection {
+    return createJvmList(self.bare().boInterface());
+}
+
+@cached
+operation JAVA!JvmCollection dto () : JAVA!JvmCollection {
+    return createJvmList(self.bare().dto());
+}
+
+@cached
+operation JAVA!JvmCollection restDto () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restDto());
+}
+
+@cached
+operation JAVA!JvmCollection restDtoEnum () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restDtoEnum());
+}
+
+@cached
+operation JAVA!JvmCollection restTestWrapperT () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restTestWrapperT());
+}
+
+@cached
+operation JAVA!JvmCollection restTestWrapperM () : JAVA!JvmCollection {
+    return createJvmList(self.bare().restTestWrapperM());
+}

@@ -1,0 +1,35 @@
+[%
+  import "../../../operations/_importAll.eol";
+  import "../../../main.egl";
+  import "../../../operations/java/resttestwrapper_common.eol";
+
+  var extraParams : Sequence = (idsParam.length() > 0).ternary(Sequence{idsParam, "reqSpecBuilder.build()"}, Sequence{"reqSpecBuilder.build()"});
+%]
+
+[% for (method in class.methods().select(m | (not showClassBased and m.isCustomBulk()) or (showClassBased and (m.isCustom() or m.isQuery()) and m.classBased))) { %]
+    public ValidatableResponse [%=method.name%]V([%=method.parametersSignatureRestTestWrapperT()%]) {
+        reqSpecBuilder.queryGraph(qgBuilder.build());
+        reqSpecBuilder.suppressions(suppBuilder.build());
+        ValidatableResponse ret = [%=class.clientAccessor()%].[%=method.name.firstToLowerCase()%]([%=method.parameters.select(p | not p.representsJudoId).collect(p | p.type.convertParam(p.name)).includingAll(extraParams).concat(", ")%]
+            );
+        reqSpecBuilder = JudoReqSpec.withDefaults();
+        qgBuilder = QueryGraph.builder();
+        suppBuilder = Suppressions.builder();
+        return ret;
+    }
+
+    public [%=method.type.typeDeclaration()%] [%=method.name%]([%=method.parametersSignatureRestTestWrapperT()%]) {
+        return
+            [% if (not method.type.bare().isPrimitive()) { %]
+                [%=method.type.returnPre()%]
+                [%=method.type.extractCall()%]([%=method.name%]V([%=method.parameters.select(p | not p.representsJudoId).collect(p | p.name).concat(", ")%]))
+                [%=method.type.returnPost()%];
+            [% } else if (method.type.isCollection() and not method.type.isListofLists()) { %]
+                asList([%=method.name%]V([%=method.parameterNameSequenceWithoutId()%]).extract().as([%=method.type.bare().fqName()%][].class));
+            [% } else if (method.type.isCollection() and method.type.isListofLists()) { %]
+            	asList([%=method.name%]V([%=method.parameterNameSequenceWithoutId()%]).extract().jsonPath().getList(""));
+            [% } else { %]
+                [%=method.name%]V([%=method.parameterNameSequenceWithoutId()%]).extract().as([%=method.type.fqName()%].class);
+            [%}%]
+    }
+[%}%]

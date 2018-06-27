@@ -1,0 +1,24 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=class.package.fqName()%];
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
+
+import [%=class.restNamespace().fqName()%];
+import [%=class.restNamespaceOperation().fqName()%];
+
+@Component(immediate=true)
+@Service
+public class DefaultNamespaceRestOperation implements NamespaceOperation {
+    @Override
+    public Response namespace() {
+        return Response.ok().entity(Namespace.VERSION_INFO).build();
+    }
+}

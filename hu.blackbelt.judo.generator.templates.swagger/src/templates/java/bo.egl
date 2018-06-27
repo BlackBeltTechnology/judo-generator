@@ -1,0 +1,131 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+  
+  var className = class.name;
+  
+  var equalsHashcodeMacro = getJavaMacro("equalsToStringHashCode");
+  equalsHashcodeMacro.populate("classForEquals", "hu.blackbelt.judo.business.bo.api.Entity");
+  equalsHashcodeMacro.populate("className", className);
+  
+  var multiplicity = Map{ -1 = "Multiplicity.Star", 0 = "Multiplicity.Zero", 1 = "Multiplicity.One"};
+  var kind = Map{ JvmReferenceKind#ASSOCIATION = "Kind.Association", JvmReferenceKind#AGGREGATION = "Kind.Aggregation", JvmReferenceKind#COMPOSITION = "Kind.Composition"};
+  
+  var metainfoMacro = getJavaMacro("metainfo");
+  metainfoMacro.populate("class", class);
+  metainfoMacro.populate("onlyFramework", false);
+%]
+
+package [%=class.package.fqName()%];
+
+import hu.blackbelt.judo.business.bo.api.BoInfo.Kind;
+import hu.blackbelt.judo.business.bo.api.BoInfo.Multiplicity;
+import hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationEnd;
+import hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationOtherEnd;
+import hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationExpression;
+import hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationVirtualExpression;
+import hu.blackbelt.judo.business.bo.api.meta.annotation.Field;
+import hu.blackbelt.judo.business.bo.api.meta.annotation.Meta;
+import hu.blackbelt.judo.business.bo.api.meta.annotation.Relation;
+import hu.blackbelt.judo.business.bo.api.meta.annotation.RelationEnd;
+
+import javax.validation.constraints.*;
+
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyChangeListener;
+import java.util.List;
+
+[%=metainfoMacro.process()%]
+
+[%if (class.businessSingleton) {%]
+	@hu.blackbelt.judo.business.validator.api.CustomValidator({hu.blackbelt.judo.business.validator.api.BusinessSingletonValidator.class})
+[%}%]
+[%if (class.tenantMember) {%]
+	@hu.blackbelt.judo.business.bo.api.tenant.TenantMember
+[%}%]
+[%if (class.technicalObject) {%]
+	@hu.blackbelt.judo.business.bo.api.customfield.TechnicalObject
+[%}%]
+
+@hu.blackbelt.judo.business.bo.api.EntityInfo(name = "[%=class.origin.package.name.firstToUpperCase() + class.name %]")
+
+@lombok.Getter
+@lombok.Setter
+public class [%=className%] [%if (class.hasSuper()) {%] extends [%=class.supertype.fqName()%] [%}%]
+	implements hu.blackbelt.judo.business.bo.api.Entity, hu.blackbelt.judo.business.bo.api.PropertyChangeTracked
+	[%if (class.representsEnum) {%]
+		, hu.blackbelt.judo.business.bo.api.Enumeration
+	[%}%]
+	[%for (interface in class.implements) {%]
+		,[%=interface.fqName()%]
+	[%}%]
+	{
+	
+	[%for (attr in class.attributes()) {%]
+		[%if (attr.mandatory and not attr.derived) {%]
+			@javax.validation.constraints.NotNull
+		[%} %]
+		[%if (attr.unique) { %]
+			@hu.blackbelt.judo.business.validator.api.CustomValidator(hu.blackbelt.judo.business.validator.api.UniqueValidator.class)
+		[%} %]
+		[%if (attr.regexpForValidation.isDefined()) {%]
+			@javax.validation.constraints.Pattern(regexp = "[%=attr.regexpForValidation%]")
+		[%} %]
+		[%if (attr.calculationScript.isDefined()) {%]
+			@hu.blackbelt.judo.business.bo.api.CalculatedAttribute(script = "[%=attr.calculationScript%]")
+		[%} %]
+		[%if (attr.defaultValueExpression.isDefined()) {%]
+			@hu.blackbelt.judo.business.bo.api.AttributeDefaultValue(expression = "[%=attr.defaultValueExpression%]")
+		[%} %]
+		@hu.blackbelt.judo.business.bo.api.XmiId("[%=attr.originUUID()%]")
+		private [%=attr.type.fqName()%] [%=attr.name%];
+	[% } %]
+	
+	[%for (ref in class.references()) {%]
+		[%if (ref.optionScript.isDefined()) {%]
+			@hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationExpression(script = "[%=ref.optionScript%]")
+		[% } %]
+		[%if (ref.derived) {%]
+			@hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationVirtualExpression(script = "[%=ref.virtualExpressionScript%]", description="[%=ref.derivedDescription%]")
+		[% } %]
+		[%if (ref.defaultValueExpression.isDefined()) {%]
+			@hu.blackbelt.judo.business.bo.api.AttributeDefaultValue(expression = "[%=ref.defaultValueExpression%]")
+		[% } %]
+		@AssociationEnd(type = [%=ref.type.bare().fqName()%].class, kind = [%=kind.get(ref.kind)%], minimum = [%=multiplicity.get(ref.lower)%], maximum = [%=multiplicity.get(ref.upper)%], xmiId = "[%=ref.originUUID()%]")
+   		@AssociationOtherEnd(field = "[%=ref.opposite.name%]", kind = [%=kind.get(ref.opposite.kind)%], minimum = [%=multiplicity.get(ref.opposite.lower)%], maximum = [%=multiplicity.get(ref.opposite.upper)%], navigable = [%=ref.opposite.navigable%], xmiId = "[%=ref.opposite.originUUID()%]")
+		private [%=ref.type.fqName()%] [%=ref.name%];
+	[%}%]
+	
+	public [%=className%] () {
+	}
+	
+	[%=equalsHashcodeMacro.process()%]
+	
+	[%if (not class.abstract) {%]
+		public static [%=class.boBuilder().fqName()%] [%=className.firstToLowerCase()%]Builder() {
+			return new [%=class.boBuilder().fqName()%]();
+		}
+	[%}%]
+	
+	private hu.blackbelt.judo.common.lang.api.meta.Metadata $judo$meta;
+	private static final String CLASS_XMIID = "[%=class.origin().uuid%]";
+	
+	private PropertyChangeSupport $judo$pcs = new PropertyChangeSupport(this);
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		$judo$pcs.addPropertyChangeListener(listener);
+		[%if (class.hasSuper()) {%]
+			super.addPropertyChangeListener(listener);
+		[%}%]
+	}
+	
+	[%for (attr in class.attributes()) {%]
+		public void set[%=attr.name.firstToUpperCase()%]([%=attr.type.bare().fqName()%] [%=attr.name%]) {
+			$judo$pcs.firePropertyChange("[%=attr.name%]", this.[%=attr.name%], [%=attr.name%]);
+			this.[%=attr.name%] = [%=attr.name%];
+		}
+	[%}%]
+
+}
