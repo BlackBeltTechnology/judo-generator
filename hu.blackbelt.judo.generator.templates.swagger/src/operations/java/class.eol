@@ -23,6 +23,25 @@ operation JAVA!JvmClass references () : Collection {
 	return self.members.select( m | m.isTypeOf(JAVA!JvmReference)).sortBy(r | r.name);
 }
 
+operation JAVA!JvmClass allReferencedClass () : Collection {
+	var ret:List = new List();
+	self.allReferencedClassInternal(ret);
+	return ret;	
+}
+
+operation JAVA!JvmClass allReferencedClassInternal (alreadyCollected : List) {
+    alreadyCollected.add(self);
+	// Traverse supertype
+	if (self.supertype.isDefined() and not alreadyCollected.contains(self.supertype)) {
+	   self.supertype.allReferencedClassInternal(alreadyCollected);
+	} 
+	
+	// Traverse references
+	for (c : JAVA!JvmClass in self.references().select(r | r.navigable).collect(r | r.opposite.ownerClass).select(c | not alreadyCollected.contains(c))) {
+		c.allReferencedClassInternal(alreadyCollected);
+	}	
+}
+
 /*
 @cached
 operation JAVA!JvmClass attributes () : Collection {

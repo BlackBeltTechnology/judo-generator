@@ -8,6 +8,11 @@ operation JAVA!JvmPackagableElement restTag () : String {
 	return restNameInternal(self, " ");
 }
 
+@cached
+operation JAVA!JvmPackagableElement restFileName () : String {
+	return restNameInternal(self, "-");
+}
+
 operation restNameInternal (pe : JAVA!JvmPackagableElement, separator : String) : String {
 	if (pe.package.isDefined() and pe.package.name <> "blackbelt") {
 		return restNameInternal(pe.package, separator) + separator + pe.name.substring(0, 1).toUpperCase() + pe.name.substring(1);

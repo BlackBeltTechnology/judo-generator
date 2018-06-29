@@ -1,7 +1,7 @@
 [%
   import "../../operations/_importAll.eol";
 %]
-  [% for (ref in dto.origin.allReferences().select(r | r.navigable and not r.isSingle())) { %]
+[% for (ref in dto.origin.allReferences().select(r | r.navigable and not r.isSingle())) { %]
   /rest/[%= dto.origin.restUri() %]/{id}/[%= ref.restName()%]:
     get:
       tags:
@@ -26,7 +26,57 @@
           description: |
             List of [%= ref.restClassName() %] is OK.
           schema:
-            $ref: '#/definitions/ArrayOf[%= ref.restClassName() %]'
+            type: array
+            items:
+              $ref: '#/definitions/[%= ref.restClassName() %]'
+          headers:
+            X-Total-Count:
+              type: integer
+              description: The total records of query.
+            X-Page-Size:
+              type: integer
+              description: The current page size of query            
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    options:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        get available [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %] for attach to specified instance.
+      summary: |
+        Get available [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %] for attach to specified instance.
+      description: |
+        Get available [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %] for attach to specified instance. It can be fitered, paged and sorted. Support projection of the result.
+      parameters:
+      - $ref: '#/parameters/identifier'
+      - $ref: '#/parameters/projection'
+      - $ref: '#/parameters/filter'
+      - $ref: '#/parameters/pageSize'
+      - $ref: '#/parameters/pageNumber'
+      - $ref: '#/parameters/sort'
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            List of [%= ref.restClassName() %] is OK.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/[%= ref.restClassName() %]'
           headers:
             X-Total-Count:
               type: integer
@@ -65,7 +115,9 @@
         - in: body
           name: body
           schema:
-            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.restName() %]'
       produces:
         - application/json
       responses:
@@ -73,7 +125,9 @@
           description: |
             [%=dto.origin.name%] attached
           schema:
-            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.restName() %]'
         '400':
           $ref: '#/responses/badRequest'
         '404':
@@ -103,7 +157,9 @@
         - in: body
           name: body
           schema:
-            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.restName() %]'
       produces:
         - application/json
       responses:
@@ -111,7 +167,9 @@
           description: |
             [%=dto.origin.name%] detached
           schema:
-            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.restName() %]'
         '400':
           $ref: '#/responses/badRequest'
         '404':
@@ -125,4 +183,4 @@
         '459':
           $ref: '#/responses/passwordMustChange'
 
-  [%}%]
+[%}%]

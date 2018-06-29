@@ -24,7 +24,9 @@
           description: |
             List of [%=dto.origin.name%] is OK.
           schema:
-            $ref: '#/definitions/ArrayOf[%= dto.origin.restName() %]'
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.restName() %]'
           headers:
             X-Total-Count:
               type: integer

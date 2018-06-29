@@ -1,0 +1,210 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+swagger: '2.0'
+info:
+  version: [%= psmVersion %]
+  title: [%= applicationName %]
+schemes:
+  - http
+
+securityDefinitions: 
+  JWT:
+    description: |
+      The authentication workflow - in any resource request
+        - When the user does not have valid token, requests return with 401. 
+        - Authneticate user: 
+            - in the 'Authorization' header put 'Judo' and base64 encoded value of 'username:password'. 
+              It can be any request, if it is successfull the operation is executed. It is recommended to use only when there is not valid token, 
+              becase it can penetrate the performance of the system.
+            - in the 'Authorization' header put 'Bearer' and the token given by previous response in the 'X-Judo-Auth' header.
+        - Authenticated respose contains 'X-Judo-Auth' header with a valid the token.
+    type: apiKey
+    in: header
+    name: Authorization
+
+security:
+  - JWT: []
+    
+tags:
+[% for (dto in dtos) {%]
+- name: "[%= dto.origin.restTag() %]"
+[% } %]
+
+parameters:
+  identifier: 
+    in: path
+    name: id
+    required: true
+    description: Identifier of entity.
+    type: string
+
+  projection:
+    in: query
+    name: f
+    description: |
+      Query graph. It is a simplified version of GraphQL to project the resutset.
+      The references can be used as edges. There is no filter can be used.
+      Example:
+      ```
+      id,name, relation{id, name, {rel2: {id}}}
+      ```
+    required: false
+    type: string
+
+  pageNumber:  
+    in: query
+    name: p
+    description: |
+      For paging it is the page number
+    required: false
+    type: integer
+
+  pageSize:    
+    in: query
+    name: c
+    description: |
+      For paging it is the page size
+    required: false
+    type: integer
+  sort:
+    in: query
+    name: s
+    description: | 
+      Sorting parameter. 
+      The sort fields are separated with coma, the field name can have prefixed plus sign for ascending, minus sign for descending sort
+    required: false
+    type: string
+  
+  filter:
+    in: query
+    name: q
+    description: |
+      Filtering parameters. 
+      The attributes and single relation can be used for filtering the entities. The filtering parameters can be separated with whitespace, and the form is:
+      ```attrname OPERATION value```
+      The operations can be:
+      - neq Not equal
+      - eq Equal
+      - notlike Not like (Value have to be String)
+      - like Like (Value have to be String)
+      - gt Greater
+      - gte Greater or equal
+      - lt Less
+      - lte Less or equal
+      - notin Not in (Value have to be list)
+      - in In (Value have to be list)           
+    required: false
+    type: string
+
+responses:
+  notFound:
+    description: Entity not found.
+
+  noContent:
+    description: Empty result of operation.
+
+  badRequest:
+    description: Validation error.
+    schema:
+      $ref: '#/definitions/defaultErrorBody'
+
+  internalError:
+    description: Internal error.
+    schema:
+      $ref: '#/definitions/defaultErrorBody'
+
+  unauthorized:
+    description: Unauthorized. There is no authorization token or it is invalid.
+    schema:
+      $ref: '#/definitions/defaultErrorBody'
+
+  forbidden:
+    description: Forbidden. The user have no access for resource.
+    schema:
+      $ref: '#/definitions/defaultErrorBody'
+
+  passwordMustChange:
+    description: Password must change. The user password have to be changed to access system.
+    schema:
+      $ref: '#/definitions/defaultErrorBody'
+
+paths:
+[% for (dto in dtos) {
+	var inc : Template = TemplateFactory.load("templates/swagger/crud-operations.egl");
+	inc.populate("dto", dto);
+	out.println(inc.process());
+/*
+	var inc : Template = TemplateFactory.load("templates/swagger/single-reference-operations.egl");
+	inc.populate("dto", dto);
+	out.println(inc.process());
+
+	var inc : Template = TemplateFactory.load("templates/swagger/list-reference-operations.egl");
+	inc.populate("dto", dto);
+	out.println(inc.process());
+
+	var inc : Template = TemplateFactory.load("templates/swagger/reference-operations.egl");
+	inc.populate("dto", dto);
+	out.println(inc.process());
+*/
+}%]
+definitions:
+  defaultErrorBody:
+    type: object
+    properties:
+      guid: 
+        type: string
+        description: The UUID of the object. Optional.
+      code: 
+        type: string
+        description: The unique identifier of the error. It can be used for creating custom messages in client side.
+      message: 
+        type: string
+        description: The message serviced by backend.        
+      type:
+        type: string
+        description: The context type. It is unspecified now.      
+      context: 
+        type: object
+        description: The context object which contains data related for operation, validation.sss
+      
+[% for (dto in dtos) {%]
+  [%= dto.origin.restName() %]:
+  [% if (dto.origin.hasSuper()) { %]
+    allOf:
+        - $ref: "#/definitions/[%=dto.origin.supertype.restName() %]"
+	[% if (dto.origin.attributes().size > 0 or dto.origin.references().select(r | r.navigable).size > 0) { %]
+        - properties:
+	[% } %] 
+  [% } else { %]
+    type: object
+	[% if (dto.origin.attributes().size > 0) { %]
+    properties:
+	[% } %] 
+  [% } %]
+    [% for (attr in dto.origin.attributes()) { %]
+            [%= attr.name%]:
+              [%= attr.type.swaggerTypeName() %]
+              [%= attr.type.swaggerTypeFormat() %]
+    [% } %]
+    [% for (ref in dto.origin.references().select(r | r.navigable and r.isSingle())) { %]
+            [%=ref.name%]:
+              $ref: '#/definitions/[%= ref.restClassName() %]'
+    [% } %]
+    [% for (ref in dto.origin.references().select(r | r.navigable and not r.isSingle())) { %]
+            [%=ref.name%]:
+              type: array
+              items:
+                $ref: '#/definitions/[%= ref.restClassName() %]'
+    [% } %]
+
+  [% for (method in dto.origin.methods.select(m | m.isCustomBulk() or m.isQuery() or (m.isCustom() and m.classBased)).sortBy(m | m.name)) { %]
+  Action[%= dto.origin.restName() %][%= method.restName() %]:
+      type: object
+      properties:
+          ids:
+              type: array
+              items:
+                 type: string
+  [%}%]
+[%}%]

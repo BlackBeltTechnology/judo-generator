@@ -1,14 +1,33 @@
 [%
 import "operations/_importAll.eol";
 
+/*for (package : JAVA!JvmPackage in JAVA!JvmPackage.all().select(p | p.isDefined() and p.package.isDefined() and p.package.package.isDefined() and p.name.isDefined())) {
+	package.restBaseUri('-').println("Package: ");
+}*/
+
+for (package : JAVA!JvmPackage in getPackages()) {
+	package.restFileName().println("Package: ");
+
+    var template = TemplateFactory.load("templates/swagger/swagger.egl");
+    template.populate("dtos", getPackageDtos(package));
+    template.populate("definitions", getPackageReferencedDtos(package));
+    template.populate("psmVersion", psmVersion);
+    template.populate("applicationName", applicationName);
+    template.generate("swagger-" + package.restFileName() +".yaml");
+    template.reset();
+
+}
+
+
 var template = TemplateFactory.load("templates/swagger/swagger.egl");
-template.populate("dtos", getDtos());
+template.populate("dtos", getAllDtos());
+template.populate("definitions", getAllDtos());
 template.populate("psmVersion", psmVersion);
 template.populate("applicationName", applicationName);
 template.generate("swagger.yaml");
 template.reset();
 
-operation getDtos() : Collection {
+operation getAllDtos() : Collection {
 	var toBeRemovedCoordinatesHack = Set{
 									JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE,
 									JAVA!JvmJudoCoordinate#BO_SERVICE_ABSTRACT,
@@ -24,6 +43,23 @@ operation getDtos() : Collection {
 				and not (c.coordinate = JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_C and (c.abstract or c.hasFixedEnum()))
 				and not (excludedFwElements.contains(c.origin.restName()))
 				);
+}
+
+@cached
+operation getPackages() : Collection {
+	return getAllDtos().collect(d | d.origin.package).asSet();
+}
+
+operation getPackageDtos(package : JAVA!JvmPackage) : Collection {
+	return getAllDtos().select(d | d.origin.package == package).asSet();
+}
+
+operation getPackageReferencedDtos(package : JAVA!JvmPackage) : Collection {
+	var ret:List = new List();
+	for (c : JAVA!JvmClass in getPackageDtos(package)) {
+		ret.addAll(c.allReferencedClass());
+	}
+	return ret.asSet();
 }
 
 /*
