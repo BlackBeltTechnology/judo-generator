@@ -42,6 +42,10 @@ operation JAVA!JvmClass allReferencedClassInternal (alreadyCollected : List) {
 	}	
 }
 
+operation JAVA!JvmClass isPrimitive() : Boolean {
+	return false;
+}
+
 /*
 @cached
 operation JAVA!JvmClass attributes () : Collection {

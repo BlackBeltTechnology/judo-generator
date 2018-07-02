@@ -12,13 +12,13 @@ for (package : JAVA!JvmPackage in getPackages()) {
     template.populate("dtos", getPackageDtos(package));
     template.populate("definitions", getPackageReferencedDtos(package));
     template.populate("psmVersion", psmVersion);
-    template.populate("applicationName", applicationName);
+    template.populate("applicationName", applicationName + " Package: " + package.restTag());
     template.generate("swagger-" + package.restFileName() +".yaml");
     template.reset();
 
 }
 
-
+/*
 var template = TemplateFactory.load("templates/swagger/swagger.egl");
 template.populate("dtos", getAllDtos());
 template.populate("definitions", getAllDtos());
@@ -26,7 +26,7 @@ template.populate("psmVersion", psmVersion);
 template.populate("applicationName", applicationName);
 template.generate("swagger.yaml");
 template.reset();
-
+*/
 operation getAllDtos() : Collection {
 	var toBeRemovedCoordinatesHack = Set{
 									JAVA!JvmJudoCoordinate#BO_SERVICE_INTERFACE,
