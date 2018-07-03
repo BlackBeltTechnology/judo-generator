@@ -1,0 +1,101 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+
+  [% for (method in dto.origin.methods.select(m | m.isQuery()).sortBy(m | m.name)) { %]
+  /rest/[%= dto.origin.restUri() %]/[%= method.restUri() %]:
+    get:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        custom query [%= method.restName() %] on [%= dto.origin.restName() %]
+      summary: |
+        Custom query [%= method.restName() %] on [%= dto.origin.restName() %]
+      description: |
+        Custom query [%= method.restName() %] on [%= dto.origin.restName() %]. It can be fitered, paged and sorted. Support projection of the result.
+      consumes:
+      - "application/json"
+      parameters:
+          - $ref: '#/parameters/filter'
+          - $ref: '#/parameters/pageSize'
+          - $ref: '#/parameters/pageNumber'
+          - $ref: '#/parameters/sort'
+        [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and p.type.isPrimitive())) { %]
+          - in: query  
+            name: [%= param.name%]
+            [%= param.type.swaggerTypeName() %]
+            [%= param.type.swaggerTypeFormat() %]
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and p.type.isPrimitive())) { %]
+          - in: query  
+            name: [%= param.name%]
+            type: array
+            items:
+              [%= param.type.componentType.swaggerTypeName() %]
+              [%= param.type.componentType.swaggerTypeFormat() %]
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and not p.type.isPrimitive())) { %]
+          - in: query  
+            name: [%= param.name%]
+            $ref: '#/definitions/[%= param.type.restName() %]'
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and not p.type.isPrimitive())) { %]
+          - in: query  
+            name: [%= param.name%]
+            type: array
+            items:
+              $ref: '#/definitions/[%= param.type.componentType.restName() %]'
+        [% } %]         
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            Custom query [%= dto.origin.restName() %] is OK.
+
+          schema:
+          [% if (method.type.isDefined() and not method.type.isCollection() and method.type.isPrimitive()) { %]
+            [%= method.type.swaggerTypeName() %]
+            [%= method.type.swaggerTypeFormat() %]
+          [% } %]
+        
+          [% if (method.type.isDefined() and method.type.isCollection() and method.type.isPrimitive()) { %]
+            type: array
+            items:
+              [%= method.type.componentType.swaggerTypeName() %]
+              [%= method.type.componentType.swaggerTypeFormat() %]
+          [% } %]
+        
+          [% if (method.type.isDefined() and not method.type.isCollection() and not method.type.isPrimitive()) { %]
+            $ref: '#/definitions/[%= method.type.restName() %]'
+          [% } %]
+        
+          [% if (method.type.isDefined() and method.type.isCollection() and not method.type.isPrimitive()) { %]
+            type: array
+            items:
+              $ref: '#/definitions/[%= method.type.componentType.restName() %]'
+          [% } %]
+
+          headers:
+            X-Total-Count:
+              type: integer
+              description: The total records of query.
+            X-Page-Size:
+              type: integer
+              description: The current page size of query            
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+  [%}%]

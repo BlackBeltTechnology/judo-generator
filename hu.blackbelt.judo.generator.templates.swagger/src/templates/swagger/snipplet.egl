@@ -332,3 +332,67 @@
 
   [%}%]
  
+ 
+ 
+ 
+[% for (dto in definitions) {%]
+  [% for (method in dto.origin.methods.select(m | m.parameters.select(p | p.type.isDefined()).size() > 0 and (m.isCustomBulk() or m.isQuery() or (m.isCustom() and m.classBased))).sortBy(m | m.name)) { %]
+  # CustomBulk: [%= method.isCustomBulk() %]
+  # IsQuery: [%= method.isQuery() %]
+  # IsCustom: [%= method.isCustom() %]
+  # ClassBased: [%= method.classBased %]  
+  Action[%= dto.origin.restName() %][%= method.restName() %]Return:
+	[% if (method.type.isDefined() and not method.type.isCollection() and method.type.isPrimitive()) { %]
+	      [%= method.type.swaggerTypeName() %]
+	      [%= method.type.swaggerTypeFormat() %]
+	  [% } %]
+	
+	  [% if (method.type.isDefined() and method.type.isCollection() and method.type.isPrimitive()) { %]
+	      type: array
+	      items:
+	        [%= method.type.componentType.swaggerTypeName() %]
+	        [%= method.type.componentType.swaggerTypeFormat() %]
+	  [% } %]
+	
+	  [% if (method.type.isDefined() and not method.type.isCollection() and not method.type.isPrimitive()) { %]
+	    $ref: '#/definitions/[%= method.type.restName() %]'
+	  [% } %]
+	
+	  [% if (method.type.isDefined() and method.type.isCollection() and not method.type.isPrimitive()) { %]
+	      type: array
+	      items:
+	        $ref: '#/definitions/[%= method.type.componentType.restName() %]'
+	[% } %]
+
+
+  Action[%= dto.origin.restName() %][%= method.restName() %]Parameter:
+      type: object
+      properties:  
+	    [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and p.type.isPrimitive())) { %]
+	      [%= param.name%]:
+	          [%= param.type.swaggerTypeName() %]
+	          [%= param.type.swaggerTypeFormat() %]
+	      [% } %]
+	
+	      [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and p.type.isPrimitive())) { %]
+	      [%= param.name%]:
+	          type: array
+	          items:
+	            [%= param.type.componentType.swaggerTypeName() %]
+	            [%= param.type.componentType.swaggerTypeFormat() %]
+	      [% } %]
+	
+	      [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and not p.type.isPrimitive())) { %]
+	      [%= param.name%]:
+	        $ref: '#/definitions/[%= param.type.restName() %]'
+	      [% } %]
+	
+	      [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and not p.type.isPrimitive())) { %]
+	      [%= param.name%]:
+	          type: array
+	          items:
+	            $ref: '#/definitions/[%= param.type.componentType.restName() %]'
+	    [% } %]
+  [%}%]
+[%}%]
+ 

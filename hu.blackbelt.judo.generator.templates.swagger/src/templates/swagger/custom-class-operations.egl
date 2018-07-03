@@ -1,0 +1,68 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+
+  [% for (method in dto.origin.methods.select(m | m.isCustomBulk() or m.isCustomClassBased()).sortBy(m | m.name)) { %]
+  /rest/[%= dto.origin.restUri() %]/[%= method.restUri() %]:
+    post:
+      tags:
+        - "[%= dto.origin.restTag() %]"
+      operationId: |
+        custom operation [%= method.restName() %] on [%= dto.origin.restName() %]
+      summary: |
+        Custom operation [%= method.restName() %] on [%= dto.origin.restName() %]
+      description: |
+        Custom operation [%= method.restName() %] on [%= dto.origin.restName() %]. 
+      consumes:
+      - "application/json"
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:            
+        [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and p.type.isPrimitive())) { %]
+              [%= param.name%]:
+                [%= param.type.swaggerTypeName() %]
+                [%= param.type.swaggerTypeFormat() %]
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and p.type.isPrimitive())) { %]
+              [%= param.name%]:
+                type: array
+                items:
+                  [%= param.type.componentType.swaggerTypeName() %]
+                  [%= param.type.componentType.swaggerTypeFormat() %]
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and not p.type.isPrimitive())) { %]
+              [%= param.name%]:
+                $ref: '#/definitions/[%= param.type.restName() %]'
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and not p.type.isPrimitive())) { %]
+              [%= param.name%]:
+                type: array
+                items:
+                  $ref: '#/definitions/[%= param.type.componentType.restName() %]'
+        [% } %]         
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+        [% if (method.type.isDefined() and not method.type.isCollection() and method.type.isPrimitive()) { %]
+              [%= method.type.swaggerTypeName() %]
+              [%= method.type.swaggerTypeFormat() %]
+          [% } %]
+          [% if (method.type.isDefined() and method.type.isCollection() and method.type.isPrimitive()) { %]
+              type: array
+              items:
+                [%= method.type.componentType.swaggerTypeName() %]
+                [%= method.type.componentType.swaggerTypeFormat() %]
+          [% } %]
+          [% if (method.type.isDefined() and not method.type.isCollection() and not method.type.isPrimitive()) { %]
+            $ref: '#/definitions/[%= method.type.restName() %]'
+          [% } %]
+          [% if (method.type.isDefined() and method.type.isCollection() and not method.type.isPrimitive()) { %]
+              type: array
+              items:
+                $ref: '#/definitions/[%= method.type.componentType.restName() %]'
+        [% } %]
+  [%}%]
