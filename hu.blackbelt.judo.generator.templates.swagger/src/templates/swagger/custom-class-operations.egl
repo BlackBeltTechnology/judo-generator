@@ -3,16 +3,16 @@
 %]
 
   [% for (method in dto.origin.methods.select(m | m.isCustomBulk() or m.isCustomClassBased()).sortBy(m | m.name)) { %]
-  /rest/[%= dto.origin.restUri() %]/[%= method.restUri() %]:
+  /rest/[%= dto.origin.swaggerUri() %]/[%= method.swaggerUri() %]:
     post:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: |
-        custom operation [%= method.restName() %] on [%= dto.origin.restName() %]
+        custom operation [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]
       summary: |
-        Custom operation [%= method.restName() %] on [%= dto.origin.restName() %]
+        Custom operation [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]
       description: |
-        Custom operation [%= method.restName() %] on [%= dto.origin.restName() %]. 
+        Custom operation [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]. 
       consumes:
       - "application/json"
       [% if (method.parameters.select(p | p.type.isDefined()).size > 0) { %]
@@ -36,13 +36,13 @@
         [% } %]
         [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and not p.type.isPrimitive())) { %]
               [%= param.name%]:
-                $ref: '#/definitions/[%= param.type.restName() %]'
+                $ref: '#/definitions/[%= param.type.swaggerName() %]'
         [% } %]
         [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and not p.type.isPrimitive())) { %]
               [%= param.name%]:
                 type: array
                 items:
-                  $ref: '#/definitions/[%= param.type.componentType.restName() %]'
+                  $ref: '#/definitions/[%= param.type.componentType.swaggerName() %]'
         [% } %]         
       [% } %]         
       responses:

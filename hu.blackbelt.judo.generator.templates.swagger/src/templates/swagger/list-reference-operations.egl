@@ -2,16 +2,16 @@
   import "../../operations/_importAll.eol";
 %]
 [% for (ref in dto.origin.allReferences().select(r | r.navigable and not r.isSingle())) { %]
-  /rest/[%= dto.origin.restUri() %]/{id}/[%= ref.restName()%]:
+  /rest/[%= dto.origin.swaggerUri() %]/{id}/[%= ref.swaggerName()%]:
     get:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: |
-        list attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+        list attached [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
       summary: |
-        List attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+        List attached [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
       description: |
-        List attached [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]. It can be fitered, paged and sorted. Support projection of the result.
+        List attached [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]. It can be fitered, paged and sorted. Support projection of the result.
       parameters:
       - $ref: '#/parameters/identifier'
       - $ref: '#/parameters/projection'
@@ -24,11 +24,11 @@
       responses:
         '200':        
           description: |
-            List of [%= ref.restClassName() %] is OK.
+            List of [%= ref.swaggerClassName() %] is OK.
           schema:
             type: array
             items:
-              $ref: '#/definitions/[%= ref.restClassName() %]'
+              $ref: '#/definitions/[%= ref.swaggerClassName() %]'
           headers:
             X-Total-Count:
               type: integer
@@ -53,13 +53,13 @@
 
     options:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: |
-        get available [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %] for attach to specified instance.
+        get available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to specified instance.
       summary: |
-        Get available [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %] for attach to specified instance.
+        Get available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to specified instance.
       description: |
-        Get available [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %] for attach to specified instance. It can be fitered, paged and sorted. Support projection of the result.
+        Get available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to specified instance. It can be fitered, paged and sorted. Support projection of the result.
       parameters:
       - $ref: '#/parameters/identifier'
       - $ref: '#/parameters/projection'
@@ -72,11 +72,11 @@
       responses:
         '200':        
           description: |
-            List of [%= ref.restClassName() %] is OK.
+            List of [%= ref.swaggerClassName() %] is OK.
           schema:
             type: array
             items:
-              $ref: '#/definitions/[%= ref.restClassName() %]'
+              $ref: '#/definitions/[%= ref.swaggerClassName() %]'
           headers:
             X-Total-Count:
               type: integer
@@ -101,13 +101,13 @@
 
     put:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: |
-        attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+        attach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
       summary: |
-        Attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+        Attach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
       description: |
-        Attach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %].
+        Attach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %].
       consumes:
         - application/json
       parameters:
@@ -117,7 +117,7 @@
           schema:
             type: array
             items:
-              $ref: '#/definitions/[%= dto.origin.restName() %]'
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
       produces:
         - application/json
       responses:
@@ -127,7 +127,7 @@
           schema:
             type: array
             items:
-              $ref: '#/definitions/[%= dto.origin.restName() %]'
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
         '400':
           $ref: '#/responses/badRequest'
         '404':
@@ -143,13 +143,13 @@
 
     delete:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: |
-        detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+        detach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
       summary: |
-        Detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %]
+        Detach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
       description: |
-        Detach [%= ref.restClassName() %] on [%= dto.origin.name %] over [%= ref.restName() %].
+        Detach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %].
       consumes:
         - application/json
       parameters:
@@ -159,7 +159,7 @@
           schema:
             type: array
             items:
-              $ref: '#/definitions/[%= dto.origin.restName() %]'
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
       produces:
         - application/json
       responses:
@@ -169,7 +169,7 @@
           schema:
             type: array
             items:
-              $ref: '#/definitions/[%= dto.origin.restName() %]'
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
         '400':
           $ref: '#/responses/badRequest'
         '404':

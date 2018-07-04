@@ -1,13 +1,12 @@
 @cached
-operation JAVA!JvmMethod restName () : String {
+operation JAVA!JvmMethod swaggerName () : String {
 	return self.name.substring(0, 1).toUpperCase() + self.name.substring(1);
 }
 
 @cached
-operation JAVA!JvmMethod restUri () : String {
+operation JAVA!JvmMethod swaggerUri () : String {
 	return self.name;
 }
-
 
 @cached
 operation JAVA!JvmMethod isQuery () : Boolean {
@@ -34,68 +33,3 @@ operation JAVA!JvmMethod isCustomBulk () : Boolean {
 	return self.kind = JAVA!JvmMethodKind#CUSTOM_BULK;
 }
 
-@cached
-operation JAVA!JvmMethod isGuardDecide () : Boolean {
-	return self.kind = JAVA!JvmMethodKind#SM_DECIDE;
-}
-
-@cached
-operation JAVA!JvmMethod isTransitionExecutingMethod () : Boolean {
-	return self.origin.transitions.size() > 0;
-}
-
-@cached
-operation JAVA!JvmMethod isReturnVoid () : Boolean {
-	return self.type.isVoid();
-}
-
-@cached
-operation JAVA!JvmMethod parametersSignature () : String {
-	return self.parameters.collect(p | p.type.fqName() + " " + p.name).concat(", ");
-}
-
-@cached
-operation JAVA!JvmMethod parametersSignatureRest () : String {
-    return self.parameters.collect(p | p.restAnnotation() + p.type.fqName() + " " + p.name).concat(", ");
-}
-
-@cached
-operation JAVA!JvmMethod parametersSignatureWithFinalModifier () : String {
-	return self.parameters.collect(p | "final " + p.type.fqName() + " " + p.name).concat(", ");
-}
-
-@cached
-operation JAVA!JvmMethod parameterNameSequence () : String {
-	return self.parameters.collect(p | p.name).concat(", ");
-}
-
-@cached
-operation JAVA!JvmMethod parameterNameSequenceWithoutId () : String {
-    return self.parameters.select(p | not p.representsJudoId).collect(p | p.name).concat(", ");
-}
-
-@cached
-operation JAVA!JvmMethod parameterTypeSequence () : String {
-	return self.parameters.collect(p | p.type.javaClassName() + ".class").concat(", ");
-}
-
-@cached
-operation JAVA!JvmMethod signature () : String {
-    return self.type.fqName() + " " + self.name + "(" + self.parametersSignature() + ")";
-}
-
-@cached
-operation JAVA!JvmMethod getFromStatesInStateMachine (sm : JAVA!JvmStateMachine) : Set {
-	return self.origin.transitions.select(t | t.ownerStateMachine = sm).fromState.asSet();
-}
-
-operation JAVA!JvmMethod parameterSequenceReplacedForCall (toBeReplaced : String, replacement : String) : String {
-	var origSeq = self.parameters.collect(p | p.name);
-	var ret = origSeq;
-	var index = origSeq.indexOf(toBeReplaced);
-	if (index > -1) {
-		ret = origSeq.excluding(toBeReplaced);
-		ret.add(index, replacement);
-	}
-	return ret.concat(", ");
-}

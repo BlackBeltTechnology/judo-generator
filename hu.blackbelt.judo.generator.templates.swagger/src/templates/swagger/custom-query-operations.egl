@@ -3,16 +3,16 @@
 %]
 
   [% for (method in dto.origin.methods.select(m | m.isQuery()).sortBy(m | m.name)) { %]
-  /rest/[%= dto.origin.restUri() %]/[%= method.restUri() %]:
+  /rest/[%= dto.origin.swaggerUri() %]/[%= method.swaggerUri() %]:
     get:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: |
-        custom query [%= method.restName() %] on [%= dto.origin.restName() %]
+        custom query [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]
       summary: |
-        Custom query [%= method.restName() %] on [%= dto.origin.restName() %]
+        Custom query [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]
       description: |
-        Custom query [%= method.restName() %] on [%= dto.origin.restName() %]. It can be fitered, paged and sorted. Support projection of the result.
+        Custom query [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]. It can be fitered, paged and sorted. Support projection of the result.
       consumes:
       - "application/json"
       parameters:
@@ -37,21 +37,21 @@
         [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and not p.type.isPrimitive())) { %]
           - in: query  
             name: [%= param.name%]
-            $ref: '#/definitions/[%= param.type.restName() %]'
+            $ref: '#/definitions/[%= param.type.swaggerName() %]'
         [% } %]
         [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and not p.type.isPrimitive())) { %]
           - in: query  
             name: [%= param.name%]
             type: array
             items:
-              $ref: '#/definitions/[%= param.type.componentType.restName() %]'
+              $ref: '#/definitions/[%= param.type.componentType.swaggerName() %]'
         [% } %]         
       produces:
         - application/json
       responses:
         '200':        
           description: |
-            Custom query [%= dto.origin.restName() %] is OK.
+            Custom query [%= dto.origin.swaggerName() %] is OK.
           [% 
             var inc : Template = TemplateFactory.load("templates/swagger/custom-response-schema.egl");
             inc.populate("method", method);

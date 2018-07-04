@@ -1,4 +1,5 @@
-operation JAVA!JvmElement nameToRest() : String {
+@cached
+operation JAVA!JvmElement nameToSwagger() : String {
 	return self.name.toLowerCase();
 }
 

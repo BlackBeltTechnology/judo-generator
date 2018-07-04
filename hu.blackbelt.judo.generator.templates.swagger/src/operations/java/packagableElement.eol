@@ -1,34 +1,34 @@
 @cached
-operation JAVA!JvmPackagableElement restName () : String {
-	return restNameInternal(self, "");
+operation JAVA!JvmPackagableElement swaggerName () : String {
+	return swaggerNameInternal(self, "");
 }
 
 @cached
-operation JAVA!JvmPackagableElement restTag () : String {
-	return restNameInternal(self, " ");
+operation JAVA!JvmPackagableElement swaggerTag () : String {
+	return swaggerNameInternal(self, " ");
 }
 
 @cached
-operation JAVA!JvmPackagableElement restFileName () : String {
-	return restNameInternal(self, "-");
+operation JAVA!JvmPackagableElement swaggerFileName () : String {
+	return swaggerNameInternal(self, "-");
 }
 
-operation restNameInternal (pe : JAVA!JvmPackagableElement, separator : String) : String {
+operation swaggerNameInternal (pe : JAVA!JvmPackagableElement, separator : String) : String {
 	if (pe.package.isDefined() and pe.package.name <> "blackbelt") {
-		return restNameInternal(pe.package, separator) + separator + pe.name.substring(0, 1).toUpperCase() + pe.name.substring(1);
+		return swaggerNameInternal(pe.package, separator) + separator + pe.name.substring(0, 1).toUpperCase() + pe.name.substring(1);
 	} else {
 		return pe.name.substring(0, 1).toUpperCase() + pe.name.substring(1);
 	}
 }
 
 @cached
-operation JAVA!JvmPackagableElement restUri () : String {
-	return restUriInternal(self, "/");
+operation JAVA!JvmPackagableElement swaggerUri () : String {
+	return swaggerUriInternal(self, "/");
 }
 
-operation restUriInternal (pe : JAVA!JvmPackagableElement, separator : String) : String {
+operation swaggerUriInternal (pe : JAVA!JvmPackagableElement, separator : String) : String {
 	if (pe.package.isDefined() and pe.package.name <> "blackbelt") {
-		return restUriInternal(pe.package, separator) + separator + pe.name.toLowerCase();
+		return swaggerUriInternal(pe.package, separator) + separator + pe.name.toLowerCase();
 	} else {
 		return pe.name;
 	}

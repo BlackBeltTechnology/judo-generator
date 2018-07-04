@@ -1,9 +1,9 @@
-operation JAVA!JvmReference restName () : String {
+operation JAVA!JvmReference swaggerName () : String {
 	return self.name.toLowerCase();
 }
 
-operation JAVA!JvmReference restClassName () : String {
-	return self.opposite.ownerClass.restName();
+operation JAVA!JvmReference swaggerClassName () : String {
+	return self.opposite.ownerClass.swaggerName();
 }
 
 operation JAVA!JvmReference isSingle () : Boolean {

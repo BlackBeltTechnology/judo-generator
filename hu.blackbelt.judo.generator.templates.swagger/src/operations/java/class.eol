@@ -23,6 +23,7 @@ operation JAVA!JvmClass references () : Collection {
 	return self.members.select( m | m.isTypeOf(JAVA!JvmReference)).sortBy(r | r.name);
 }
 
+@cached
 operation JAVA!JvmClass allReferencedClass () : Collection {
 	var ret:List = new List();
 	self.allReferencedClassInternal(ret);
@@ -42,92 +43,8 @@ operation JAVA!JvmClass allReferencedClassInternal (alreadyCollected : List) {
 	}	
 }
 
+@cached
 operation JAVA!JvmClass isPrimitive() : Boolean {
 	return false;
 }
-
-/*
-@cached
-operation JAVA!JvmClass attributes () : Collection {
-	return self.members.select( m | m.isTypeOf(JAVA!JvmAttribute)).sortBy(a | a.name);
-}
-
-@cached
-operation JAVA!JvmClass allAttributes () : Collection {
-	var all = self.attributes().clone();
-	if (self.supertype.isDefined()) {
-		var allNames = all.collect(attr | attr.name);
-		var superAttributes = self.supertype.allAttributes();
-		all.addAll(superAttributes.select(attr | allNames.excludes(attr.name)));
-	}
-	return all.sortBy(a | a.name);
-}
-
-@cached
-operation JAVA!JvmClass exportableAttrs () : Collection {
-    return self.allAttributes().select(a | not a.technical);
-}
-
-@cached
-operation JAVA!JvmClass exportableTechnicalAttrs () : Collection {
-    return self.allAttributes().select(a | a.technical);
-}
-
-@cached
-operation JAVA!JvmClass references () : Collection {
-	return self.members.select( m | m.isTypeOf(JAVA!JvmReference)).sortBy(r | r.name);
-}
-
-@cached
-operation JAVA!JvmClass allReferences () : Collection {
-	var all = self.references().clone();
-	if (self.supertype.isDefined()) {
-		all.addAll(self.supertype.allReferences());
-	}
-	return all.sortBy(a | a.name);
-}
-
-@cached
-operation JAVA!JvmClass members () : Collection {
-	return self.members.sortBy(r | r.name);
-}
-
-@cached
-operation JAVA!JvmClass hasFixedEnum () : Boolean {
-    return self.origin().fixedEnum.isDefined();
-}
-
-@cached
-operation JAVA!JvmClass guardEnums () : Collection {
-	var allGuards = self.methods.guards.flatten();
-	if (allGuards.notEmpty()) {
-		return allGuards.literal.ownerEnum.asSet();
-	} else {
-		return new Set;
-	}
-}
-
-@cached
-operation JAVA!JvmClass createAllowed () : Boolean {
-	return not (self.abstract and self.references().size() > 0);
-}
-
-operation JAVA!JvmClass enumValueClass () : JAVA!JvmClass {
-    //TODO: this should be introduced in the meta PSM model
-    var ref = self.origin.allReferences().selectOne(r | Set{self.origin.name + "Value", self.origin.shortName + "Value"}.includes(r.opposite.ownerClass.name));
-    if (ref.isDefined()) {
-        return ref.opposite.ownerClass.find(self.coordinate);
-    }
-}
-
-@cahced
-operation JAVA!JvmClass originAttributeByName(name : String) : JAVA!JvmAttribute {
-	return self.origin.attributes().selectOne(attr | attr.name.equals(name));
-}
-
-@cahced
-operation JAVA!JvmClass originReferenceByName(name : String) : JAVA!JvmReference {
-	return self.origin.references().selectOne(ref | ref.name.equals(name));
-}
-*/
 

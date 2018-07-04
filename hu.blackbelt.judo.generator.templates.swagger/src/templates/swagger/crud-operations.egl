@@ -1,10 +1,10 @@
 [%
   import "../../operations/_importAll.eol";
 %]
-  /rest/[%=dto.origin.restUri() %]:
+  /rest/[%=dto.origin.swaggerUri() %]:
     get:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: |
         list [%=dto.origin.name%]
       summary: |
@@ -26,7 +26,7 @@
           schema:
             type: array
             items:
-              $ref: '#/definitions/[%= dto.origin.restName() %]'
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
           headers:
             X-Total-Count:
               type: integer
@@ -49,7 +49,7 @@
 
     post:
       tags:
-        - [%= dto.origin.restTag() %]
+        - [%= dto.origin.swaggerTag() %]
       operationId: | 
         create new [%=dto.origin.name%]
       summary: |
@@ -62,7 +62,7 @@
         - in: body
           name: body
           schema:
-            $ref: '#/definitions/[%= dto.origin.restName() %]'
+            $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
       produces:
         - application/json
       responses:
@@ -70,7 +70,7 @@
           description: |
             [%=dto.origin.name%] created
           schema:
-            $ref: '#/definitions/[%= dto.origin.restName() %]'
+            $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
         '400':
           $ref: '#/responses/badRequest'
         '500':
@@ -82,12 +82,12 @@
         '459':
           $ref: '#/responses/passwordMustChange'
 
-  /rest/[%=dto.origin.restUri() %]/{id}:
+  /rest/[%=dto.origin.swaggerUri() %]/{id}:
     parameters:
       - $ref: '#/parameters/identifier'
     get:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: | 
         get [%=dto.origin.name%]
       summary: |
@@ -101,7 +101,7 @@
           description: |
             [%=dto.origin.name%] retreived.
           schema:
-            $ref: '#/definitions/[%= dto.origin.restName() %]'
+            $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
         '404':
           $ref: '#/responses/notFound'
         '400':
@@ -116,7 +116,7 @@
           $ref: '#/responses/passwordMustChange'
     put:
       tags:
-      - [%= dto.origin.restTag() %]
+      - [%= dto.origin.swaggerTag() %]
       operationId: |
         update [%=dto.origin.name%]
       summary: |
@@ -130,7 +130,7 @@
           description: |
             successful operation
           schema:
-             $ref: '#/definitions/[%= dto.origin.restName() %]'
+             $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
         '404':
           $ref: '#/responses/notFound'
         '400':
@@ -145,7 +145,7 @@
           $ref: '#/responses/passwordMustChange'
     delete:
       tags:
-        - "[%= dto.origin.restTag() %]"
+        - "[%= dto.origin.swaggerTag() %]"
       operationId: |
         delete [%=dto.origin.name%]
       summary: |
@@ -159,7 +159,7 @@
           description: |
             successful operation
           schema:
-            $ref: '#/definitions/[%= dto.origin.restName() %]'
+            $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
         '404':
           $ref: '#/responses/notFound'
         '400':

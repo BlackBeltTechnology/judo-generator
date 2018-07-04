@@ -29,7 +29,7 @@ security:
     
 tags:
 [% for (dto in dtos) {%]
-- name: "[%= dto.origin.restTag() %]"
+- name: "[%= dto.origin.swaggerTag() %]"
 [% } %]
 
 parameters:
@@ -156,6 +156,10 @@ paths:
 	inc.populate("dto", dto);
 	out.println(inc.process());
 
+	var inc : Template = TemplateFactory.load("templates/swagger/download.egl");
+	inc.populate("dto", dto);
+	out.println(inc.process());
+
 }%]
 
 
@@ -180,10 +184,10 @@ definitions:
         description: The context object which contains data related for operation, validation.sss
       
 [% for (dto in definitions) {%]
-  [%= dto.origin.restName() %]:
+  [%= dto.origin.swaggerName() %]:
   [% if (dto.origin.hasSuper()) { %]
     allOf:
-        - $ref: "#/definitions/[%=dto.origin.supertype.restName() %]"
+        - $ref: "#/definitions/[%=dto.origin.supertype.swaggerName() %]"
 	[% if (dto.origin.attributes().size > 0 or dto.origin.references().select(r | r.navigable).size > 0) { %]
         - properties:
 	[% } %] 
@@ -200,12 +204,12 @@ definitions:
     [% } %]
     [% for (ref in dto.origin.references().select(r | r.navigable and r.isSingle())) { %]
             [%=ref.name%]:
-              $ref: '#/definitions/[%= ref.restClassName() %]'
+              $ref: '#/definitions/[%= ref.swaggerClassName() %]'
     [% } %]
     [% for (ref in dto.origin.references().select(r | r.navigable and not r.isSingle())) { %]
             [%=ref.name%]:
               type: array
               items:
-                $ref: '#/definitions/[%= ref.restClassName() %]'
+                $ref: '#/definitions/[%= ref.swaggerClassName() %]'
     [% } %]
 [%}%]

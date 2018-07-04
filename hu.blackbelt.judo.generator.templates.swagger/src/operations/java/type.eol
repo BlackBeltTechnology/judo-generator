@@ -1,24 +1,44 @@
 @cached
-operation JAVA!JvmType bare () : JAVA!JvmType {
-	return self;
-}
-
-@cached
-operation JAVA!JvmType javaClassName () : String {
-	return self.fqName();
-}
-
-@cached
 operation JAVA!JvmType isCollection () : Boolean {
 	return self.isKindOf(JAVA!JvmCollection);
 }
 
 @cached
-operation JAVA!JvmType isVoid () : Boolean {
-	return self.uuid = voidType().uuid;
+operation JAVA!JvmType hasSuper () : Boolean {
+    return self.supertype.isDefined();
 }
 
 @cached
-operation JAVA!JvmType hasSuper () : Boolean {
-    return self.supertype.isDefined();
+operation voidType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Void").first();
+}
+
+@cached
+operation intType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Integer").first();
+}
+
+@cached
+operation stringType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "String").first();
+}
+
+@cached
+operation longType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.name = "Long").first();
+}
+
+@cached
+operation urlType () : JAVA!JvmType {
+    return JAVATYPES!JvmType.all.select( t | t.name = "URL").first();
+}
+
+@cached
+operation idType () : JAVA!JvmType {
+	return JAVATYPES!JvmType.all.select( t | t.useForJudoId).first();
+}
+
+@cached
+operation JAVA!JvmType isURL() : Boolean {
+    return self.uuid = urlType().uuid;
 }

@@ -1,26 +1,27 @@
-operation JAVA!JvmPackage restBaseUri(separator : String) : String {
-	var restBaseUri : String = self.package.name;
+operation JAVA!JvmPackage swaggerBaseUri(separator : String) : String {
+	var swaggerBaseUri : String = self.package.name;
 	var currentPackage = self.package.package;
 	
 	while (currentPackage.name <> "blackbelt") {
-		restBaseUri = currentPackage.name + separator + restBaseUri;
+		swaggerBaseUri = currentPackage.name + separator + swaggerBaseUri;
 		currentPackage = currentPackage.package;
 	}
 	
-	return restBaseUri;
+	return swaggerBaseUri;
 }
 
-operation JAVA!JvmPackage restBaseName() : String {
-	var restBaseUri : String = self.package.name;
+@cached
+operation JAVA!JvmPackage swaggerBaseName() : String {
+	var swaggerBaseUri : String = self.package.name;
 	var currentPackage = self.package.package;
 	
 	while (currentPackage.name <> "blackbelt") {
 	    // pe.name.substring(0, 1).toUpperCase() + pe.name.substring(1);
-		restBaseUri = currentPackage.name.substring(0, 1).toUpperCase() + currentPackage.name.substring(1) + restBaseUri;
+		swaggerBaseUri = currentPackage.name.substring(0, 1).toUpperCase() + currentPackage.name.substring(1) + swaggerBaseUri;
 		currentPackage = currentPackage.package;
 	}
 	
-	return restBaseUri;
+	return swaggerBaseUri;
 }
 
 
@@ -41,18 +42,3 @@ operation JAVA!JvmPackage findChildRecursively (packageNames : Sequence) : JAVA!
 	}
 	return currentPackage;
 }
-
-@cached
-operation JAVA!JvmPackage classes () : Collection {
-	return self.contents.select(c : JAVA!JvmClass | true);
-}
-
-@cached
-operation JAVA!JvmPackage ownerModel () : JAVA!JvmModel {
-	if (self.ownerModel.isDefined()) {
-		return self.ownerModel;
-	} else if (self.package.isDefined()) {
-		return self.package.ownerModel();
-	}
-}
-

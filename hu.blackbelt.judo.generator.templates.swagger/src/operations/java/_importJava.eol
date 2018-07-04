@@ -1,16 +1,11 @@
 //it is important for correct method polymorphism to import the custom operations in bottom-up topological sort order of the type hierarchy graph
 import "class.eol";
 import "interface.eol";
-import "coordinated.eol";
 import "primitive.eol";
 import "collection.eol";
-import "member.eol";
 import "method.eol";
-import "methodparameter.eol";
 import "type.eol";
 import "package.eol";
 import "packagableElement.eol";
-import "model.eol";
-import "state.eol";
 import "element.eol";
 import "reference.eol";

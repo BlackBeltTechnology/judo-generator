@@ -1,6 +1,0 @@
-operation PSM!JPrimitive findJavaPrimitive () : JAVATYPES!JvmPrimitive {
-	// return JTM!Mapping.all.select(m | m.psmType.name = self.name).first().javaType;
-	// HACK! Problem with cross model reference without it.
-	var name = JTM!Mapping.all.select(m | m.psmType.name = self.name).first().javaType.name;
-	return JAVATYPES!JvmPrimitive.all.select( p | p.name = name).first();
-}
