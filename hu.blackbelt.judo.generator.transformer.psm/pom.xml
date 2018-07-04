@@ -96,6 +96,7 @@
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfileWf:${project.version}</metaModel>
                                     </metaModels>
                                     <models>
                                         <model>
@@ -109,6 +110,7 @@
                                                 <param>http:///schemas/ValidationProfile/_E8DQcDGdEei6IdEFC9bfxw/0</param>
                                                 <param>http:///schemas/DSLCustomization/_E8xpMDGdEei6IdEFC9bfxw/0</param>
                                                 <param>http://www.blackbelt.hu/metamodel/pim/v1.0</param>
+                                                <param>http:///schemas/JudoProfileForWf/_BXRFIGiSEeif9NN75tdasg/0</param>
                                             </metaModelUris>
                                             <expand>true</expand>
                                         </model>
