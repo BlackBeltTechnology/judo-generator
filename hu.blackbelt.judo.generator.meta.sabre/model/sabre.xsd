@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:sabre="http://blackbelt.hu/sabre/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://blackbelt.hu/sabre/schema">
+  <xs:element name="document">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="sabre:primitive"/>
+          <xs:element ref="sabre:list"/>
+          <xs:element ref="sabre:structure"/>
+          <xs:element ref="sabre:template"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="UniqueNamesInDocument">
+      <xs:selector xpath="./*"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+  </xs:element>
+
+  <!-- sequence -->
+  <xs:element name="list">
+    <xs:complexType>
+      <xs:choice maxOccurs="1" minOccurs="1">
+        <xs:element ref="sabre:structure"/>
+        <xs:element ref="sabre:primitive"/>
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="path" type="xs:string" use="required"/>
+      <xs:attribute name="mandatory" type="xs:boolean" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- record -->
+  <xs:element name="structure">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="sabre:primitive"/>
+          <xs:element ref="sabre:list"/>
+          <xs:element ref="sabre:structure"/>
+          <xs:element ref="sabre:template"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="mandatory" type="xs:boolean" use="required"/>
+    </xs:complexType>
+    <xs:unique name="UniqueNamesInStructure">
+      <xs:selector xpath="./*"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+  </xs:element>
+
+  <!-- data node -->
+  <xs:element name="primitive">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="type" type="sabre:data-type" use="required"/>
+      <xs:attribute name="path" type="xs:string" use="required"/>
+      <xs:attribute name="mandatory" type="xs:boolean" use="required"/>
+      <xs:attribute name="default-value" type="xs:string" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- template -->
+  <xs:element name="template">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- enumeration for data types -->
+  <xs:simpleType name="data-type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="xs:string"/>
+      <xs:enumeration value="xs:int"/>
+      <xs:enumeration value="xs:float"/>
+      <xs:enumeration value="xs:date"/>
+      <xs:enumeration value="xs:dateTime"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

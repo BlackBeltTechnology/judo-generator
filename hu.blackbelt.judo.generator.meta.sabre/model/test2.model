@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sabre:document xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:sabre="http://blackbelt.hu/sabre/schema" xmi:id="_NSjlYH_eEeib6IVfpyQxoA">
+    <structure  xmi:id="_000001_eEeib6IVfpyQxoA" name="ujHozzaferesiPont" mandatory="true">
+        <primitive xmi:id="_000002_eEeib6IVfpyQxoA" name="cim" type="xs:string" path="" mandatory="true"/>
+        <structure xmi:id="_000003_eEeib6IVfpyQxoA" name="kapcsolattarto" mandatory="true">
+            <primitive xmi:id="_000004_eEeib6IVfpyQxoA" name="tel" type="xs:string" path="" mandatory="true"/>
+            <primitive xmi:id="_000005_eEeib6IVfpyQxoA" name="nev" type="xs:string" path="" mandatory="true"/>
+            <primitive xmi:id="_000006_eEeib6IVfpyQxoA" name="mobil" type="xs:string" path="" mandatory="false"/>
+            <primitive xmi:id="_000007_eEeib6IVfpyQxoA" name="fax" type="xs:string" path="" mandatory="false"/>
+            <primitive xmi:id="_000008_eEeib6IVfpyQxoA" name="email" type="xs:string" path="" mandatory="true"/>
+        </structure>
+    </structure>
+    <structure xmi:id="_000009_eEeib6IVfpyQxoA" name="ugyintezo" mandatory="true">
+        <primitive xmi:id="_00000A_eEeib6IVfpyQxoA" name="nev" type="xs:string" path="" mandatory="true"/>
+    </structure>
+    <structure xmi:id="_00000B_eEeib6IVfpyQxoA" name="szolgaltato" mandatory="true">
+        <primitive xmi:id="_00000C_eEeib6IVfpyQxoA" name="ugyfelSzolgalat" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000D_eEeib6IVfpyQxoA" name="szekhely" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000E_eEeib6IVfpyQxoA" name="nev" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000F_eEeib6IVfpyQxoA" name="levelezesiCim" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000G_eEeib6IVfpyQxoA" name="honlap" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000H_eEeib6IVfpyQxoA" name="email" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000I_eEeib6IVfpyQxoA" name="cjszam" type="xs:string" path="" mandatory="true"/>
+    </structure>
+    <structure xmi:id="_00000J_eEeib6IVfpyQxoA" name="szolgaltatas" mandatory="true">
+        <primitive xmi:id="_00000K_eEeib6IVfpyQxoA" name="telefonszam" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000P_eEeib6IVfpyQxoA" name="szolgaltatas" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000Q_eEeib6IVfpyQxoA" name="szerzodesszam" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000R_eEeib6IVfpyQxoA" name="szerelesiKoltseg" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000S_eEeib6IVfpyQxoA" name="leszerelesIdopont" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000T_eEeib6IVfpyQxoA" name="internetLogin" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000U_eEeib6IVfpyQxoA" name="felszerelesIdopont" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000V_eEeib6IVfpyQxoA" name="dijcsomagNev" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000W_eEeib6IVfpyQxoA" name="azonosito" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_00000X_eEeib6IVfpyQxoA" name="athelyezesDij" type="xs:string" path="" mandatory="true"/>
+    </structure>
+    <structure xmi:id="_00000Y_eEeib6IVfpyQxoA" name="elofizeto" mandatory="true">
+        <primitive xmi:id="_00000Z_eEeib6IVfpyQxoA" name="ugyfelkod" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_000010_eEeib6IVfpyQxoA" name="szekhely" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_000011_eEeib6IVfpyQxoA" name="szamlazasiCim" type="xs:string" path="" mandatory="false"/>
+        <primitive xmi:id="_000012_eEeib6IVfpyQxoA" name="rovidNev" type="xs:string" path="" mandatory="false"/>
+        <primitive xmi:id="_000013_eEeib6IVfpyQxoA" name="nev" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_000014_eEeib6IVfpyQxoA" name="felszerelesCim" type="xs:string" path="" mandatory="true"/>
+        <primitive xmi:id="_000015_eEeib6IVfpyQxoA" name="adoszam" type="xs:string" path="" mandatory="true"/>
+        <structure xmi:id="_000016_eEeib6IVfpyQxoA" name="kapcsolattarto" mandatory="true">
+            <primitive xmi:id="_000017_eEeib6IVfpyQxoA" name="tel" type="xs:string" path="" mandatory="true"/>
+            <primitive xmi:id="_000018_eEeib6IVfpyQxoA" name="nev" type="xs:string" path="" mandatory="true"/>
+            <primitive xmi:id="_000019_eEeib6IVfpyQxoA" name="mobil" type="xs:string" path="" mandatory="false"/>
+            <primitive xmi:id="_00001A_eEeib6IVfpyQxoA" name="fax" type="xs:string" path="" mandatory="false"/>
+            <primitive xmi:id="_00001B_eEeib6IVfpyQxoA" name="email" type="xs:string" path="" mandatory="true"/>
+        </structure>
+    </structure>
+    <structure xmi:id="_00001C_eEeib6IVfpyQxoA" name="documentum" mandatory="true">
+        <primitive xmi:id="_00001D_eEeib6IVfpyQxoA" name="azonosito" type="xs:string" path="" mandatory="true"/>
+    </structure>
+</sabre:document>
