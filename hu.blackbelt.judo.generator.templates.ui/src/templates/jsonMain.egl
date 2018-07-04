@@ -405,11 +405,7 @@
 	"userClass" : "[%=self.userClass%]",
 	[% } %]
 	"versions" : {
-	[% if(not self.submodels.isEmpty())  { %]
-	[%for (submodel in self.submodels) { %]
-		"[%=submodel%]": "[%=self.versions.at(self.submodels.indexOf(submodel))%]" [% if (hasMore) { out.println(","); } %]
-	[% }%]
-	[% }%]
+		"judo.framework": "[%=projectVersion%]"
 	}
 }	
 [% } %]

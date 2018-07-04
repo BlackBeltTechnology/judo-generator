@@ -13,8 +13,9 @@
     <packaging>jar</packaging>
 
 	<properties>
+        <framework.model.version>1.4.0-1</framework.model.version>
         <src.dir>src</src.dir>
-        
+
         <!-- src.model>car</src.model>
         <target.model>car</target.model>
         <model>Model</model>
@@ -95,10 +96,11 @@
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfileWf:${project.version}</metaModel>
                                     </metaModels>
                                     <models>
                                         <model>
-                                            <artifact>file:${basedir}/src/model/${src.model}.uml</artifact>
+                                            <artifact>mvn:hu.blackbelt.judo:hu.blackbelt.judo.framework.domain:uml:model:${framework.model.version}</artifact>
                                             <name>inpPIM</name>
                                             <metaModelUris>
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
@@ -108,6 +110,7 @@
                                                 <param>http:///schemas/ValidationProfile/_E8DQcDGdEei6IdEFC9bfxw/0</param>
                                                 <param>http:///schemas/DSLCustomization/_E8xpMDGdEei6IdEFC9bfxw/0</param>
                                                 <param>http://www.blackbelt.hu/metamodel/pim/v1.0</param>
+                                                <param>http:///schemas/JudoProfileForWf/_BXRFIGiSEeif9NN75tdasg/0</param>
                                             </metaModelUris>
                                             <expand>true</expand>
                                         </model>

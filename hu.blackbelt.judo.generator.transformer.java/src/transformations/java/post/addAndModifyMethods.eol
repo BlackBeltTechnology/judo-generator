@@ -11,6 +11,7 @@ operation addAndModifyMethods () : Any {
 				createQueryCountMethodFor(method);
 				if(not Set{JAVA!JvmJudoCoordinate#ABSTRACT_REST_TEST_CLIENT, JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S}.includes(method.ownerClass.coordinate)) {
 				    method.addPaginationParam();
+				    method.addFilterParam();
 				}
 			}
 		}

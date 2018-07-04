@@ -12,6 +12,7 @@ operation transformEnum(annotation : pimEXT!EAnnotation) {
 			
 	var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = extEnum.ePackage.fqName());
 	pimPackage.packagedElement.add(pimEnum);
+	pimEnum.addStereotypes(annotation);
 }
 
 operation inpPIM!Enumeration addStereotypes(annotation : pimEXT!EAnnotation) {

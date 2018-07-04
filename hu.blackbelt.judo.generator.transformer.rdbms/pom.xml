@@ -14,6 +14,9 @@
 
 	<properties>
         <src.dir>src</src.dir>
+        <model.groupId>hu.blackbelt.anakin</model.groupId>
+		<model.artifactId>anakin-model</model.artifactId>
+		<model.version>1.4.0-45</model.version>
     </properties>
 
     <build>
@@ -43,9 +46,9 @@
 								<configuration>
 									<artifactItems>
 										<artifactItem>
-											<groupId>${project.groupId}</groupId>
-											<artifactId>hu.blackbelt.judo.generator.model.car</artifactId>
-											<version>${project.version}</version>
+											<groupId>${model.groupId}</groupId>
+											<artifactId>${model.artifactId}</artifactId>
+											<version>${model.version}</version>
 											<type>md5</type>
 											<classifier>psm</classifier>
 											<overWrite>false</overWrite>
@@ -117,7 +120,7 @@
 										</model>
 		
 										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.model.car:model:psm:${project.version}</artifact>
+											<artifact>mvn:${model.groupId}:${model.artifactId}:model:psm:${model.version}</artifact>
 											<name>PSM</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -193,9 +196,8 @@
 											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
 										</model>
 		
-										<model>
-		
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+										<model>		
+											<artifact>mvn:${model.groupId}:${model.artifactId}:model:psm:${model.version}</artifact>
 											<name>PSM</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm</param>
@@ -282,7 +284,7 @@
 		
 										<model>
 		
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+											<artifact>mvn:${model.groupId}:${model.artifactId}:model:psm:${model.version}</artifact>
 											<name>PSM</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm</param>

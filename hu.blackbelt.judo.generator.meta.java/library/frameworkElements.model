@@ -10,8 +10,10 @@
               <contents xsi:type="java:JvmInterface" xmi:id="_P4JhoPnNEeaF7KDkx6Ekbw" name="PropertyChangeTracked" uuid="interface-PropertyChangeTracked" fwElement="true"/>
               <contents xsi:type="java:JvmClass" xmi:id="_B5-_0A1kEeePApeXDfl6EQ" name="Pagination" uuid="class-Pagination-Origin" fwElement="true"/>
               <contents xsi:type="java:JvmClass" xmi:id="_X9llUA7iEeeyVfeP-oty4Q" name="Pagination" uuid="class-pagination-bo" fullName="" description="" framework="true" fwElement="true" coordinate="BO" origin="_B5-_0A1kEeePApeXDfl6EQ"/>
-              <contents xsi:type="java:JvmClass" xmi:id="_TFAcIBCrEeeq5otXuvwEoA" name="PaginationPo" uuid="class-pagination-po" fwElement="true" coordinate="PO" origin="_B5-_0A1kEeePApeXDfl6EQ"/>
-              <contents xsi:type="java:JvmClass" xmi:id="_UhEoYNN1Eeeb2-wbY5TnMw" name="Filter" uuid="class-Filter-Origin" fwElement="true"/>
+              <contents xsi:type="java:JvmClass" xmi:id="_TFAcIBCrEeeq5otXuvwEoA" name="PaginationPo" uuid="class-pagination-po" framework="true" fwElement="true" coordinate="PO" origin="_B5-_0A1kEeePApeXDfl6EQ"/>
+              <contents xsi:type="java:JvmClass" xmi:id="_UhEoYNN1Eeeb2-wbY5TnMw" name="Filter" uuid="class-Filter-Origin" framework="true" fwElement="true"/>
+              <contents xsi:type="java:JvmClass" xmi:id="_S4piQFOLEeiPetw4gIhqjA" name="Filter" uuid="class-filter-bo" framework="true" fwElement="true" coordinate="BO" origin="_UhEoYNN1Eeeb2-wbY5TnMw"/>
+              <contents xsi:type="java:JvmClass" xmi:id="_fucI8FOLEeiPetw4gIhqjA" name="FilterPo" uuid="class-filter-po" framework="true" fwElement="true" coordinate="PO" origin="_UhEoYNN1Eeeb2-wbY5TnMw"/>
             </contents>
           </contents>
           <contents xsi:type="java:JvmPackage" xmi:id="_jUCyAMn0EeeX449WIjE-Vg" name="dto" uuid="package-judo-dto-api-root" framework="true" fwElement="true">
@@ -25,6 +27,7 @@
           <contents xsi:type="java:JvmPackage" xmi:id="_ymvzsNQ_EeevDrBcZLTQcQ" name="rest">
             <contents xsi:type="java:JvmPackage" xmi:id="_0GVXINQ_EeevDrBcZLTQcQ" name="api">
               <contents xsi:type="java:JvmClass" xmi:id="_2bG2INQ_EeevDrBcZLTQcQ" name="PaginationRestDto" framework="true" fwElement="true" coordinate="REST_DTO" origin="_B5-_0A1kEeePApeXDfl6EQ"/>
+              <contents xsi:type="java:JvmClass" xmi:id="_zFoYYFOREeiPetw4gIhqjA" name="FilterRestDto" framework="true" fwElement="true" coordinate="REST_DTO" origin="_UhEoYNN1Eeeb2-wbY5TnMw"/>
             </contents>
           </contents>
         </contents>

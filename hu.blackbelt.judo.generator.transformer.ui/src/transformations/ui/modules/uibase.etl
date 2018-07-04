@@ -26,17 +26,6 @@ rule UIBase
 	uibase.mainMenu = mainMenu;
 	
 	var uiInfo = new UI!UIInfo();
-	if (jmodel.info.isDefined()) {
-		for (submodel in jmodel.info.submodels) {
-			if (submodel.version.isDefined()) {
-				uiInfo.versions.add(submodel.version);
-			} else {
-				uiInfo.versions.add("");
-			}
-			
-			uiInfo.submodels.add(submodel.name);
-		}
-	}
 	
 	for (jclass in PSM!JClass.all) {
 		if (jclass.representsUser) {
