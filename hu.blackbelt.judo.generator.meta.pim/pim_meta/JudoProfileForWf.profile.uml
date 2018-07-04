@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_18_5_3_1c100dd_1527836460797_849501_7802" name="JudoProfileForWf" visibility="public" URI="" metamodelReference="_18_5_3_1c100dd_1527836460798_975005_7803">
+  <eAnnotations xmi:id="_BXbd4GiSEeif9NN75tdasg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <contents xmi:type="ecore:EPackage" xmi:id="_BXbd4WiSEeif9NN75tdasg" name="JudoProfileForWf" nsURI="http:///schemas/JudoProfileForWf/_BXRFIGiSEeif9NN75tdasg/0" nsPrefix="JudoProfileForWf">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_BXbd4miSEeif9NN75tdasg" name="ProcessData">
+        <eAnnotations xmi:id="_BXbd42iSEeif9NN75tdasg" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_18_5_3_1c100dd_1527836601327_363573_7873"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_BXbd5GiSEeif9NN75tdasg" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <packageImport xmi:id="_18_5_3_1c100dd_1527836460798_975005_7803">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_0primitiveTypesJudoProfileForWf">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_0javaPrimitiveTypesJudoProfileForWf">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_18_5_3_1c100dd_1527836601327_363573_7873" name="ProcessData" visibility="public">
+    <ownedAttribute xmi:id="_18_5_3_1c100dd_1527837006981_87824_8040" name="base_Class" visibility="private" association="_18_5_3_1c100dd_1527837006981_931510_8039">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_18_5_3_1c100dd_1527837006981_931510_8039" name="" visibility="public" memberEnd="_18_5_3_1c100dd_1527837006981_87824_8040 _18_5_3_1c100dd_1527837006982_80391_8041" navigableOwnedEnd="_18_5_3_1c100dd_1527837006982_80391_8041">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_18_5_3_1c100dd_1527837006982_80391_8041" name="extension_ProcessData" visibility="private" type="_18_5_3_1c100dd_1527836601327_363573_7873" aggregation="composite" association="_18_5_3_1c100dd_1527837006981_931510_8039">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_5_3_1c100dd_1527837006982_159890_8042" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_3_1c100dd_1527837006982_544219_8043" name="" visibility="public" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Profile>
