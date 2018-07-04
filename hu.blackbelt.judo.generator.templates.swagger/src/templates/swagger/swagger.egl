@@ -209,15 +209,3 @@ definitions:
                 $ref: '#/definitions/[%= ref.restClassName() %]'
     [% } %]
 [%}%]
-
-
-[% for (dto in dtos) {%]
-  [% for (method in dto.origin.methods.select(m | m.parameters.select(p | p.type.isDefined()).size() > 0).sortBy(m | m.name)) { %]
-  # [%= dto.origin.restName() %] -> [%= method.name %]
-  #   CustomBulk: [%= method.isCustomBulk() %]
-  #   IsQuery: [%= method.isQuery() %]
-  #   IsCustom: [%= method.isCustom() %]
-  #   ClassBased: [%= method.classBased %]  
-    [% } %]
-[%}%]
-  

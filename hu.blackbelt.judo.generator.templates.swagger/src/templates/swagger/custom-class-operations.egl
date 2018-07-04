@@ -15,6 +15,7 @@
         Custom operation [%= method.restName() %] on [%= dto.origin.restName() %]. 
       consumes:
       - "application/json"
+      [% if (method.parameters.select(p | p.type.isDefined()).size > 0) { %]
       parameters:
         - in: body
           name: body
@@ -43,26 +44,14 @@
                 items:
                   $ref: '#/definitions/[%= param.type.componentType.restName() %]'
         [% } %]         
+      [% } %]         
       responses:
         200:
           description: "successful operation"
-          schema:
-        [% if (method.type.isDefined() and not method.type.isCollection() and method.type.isPrimitive()) { %]
-              [%= method.type.swaggerTypeName() %]
-              [%= method.type.swaggerTypeFormat() %]
-          [% } %]
-          [% if (method.type.isDefined() and method.type.isCollection() and method.type.isPrimitive()) { %]
-              type: array
-              items:
-                [%= method.type.componentType.swaggerTypeName() %]
-                [%= method.type.componentType.swaggerTypeFormat() %]
-          [% } %]
-          [% if (method.type.isDefined() and not method.type.isCollection() and not method.type.isPrimitive()) { %]
-            $ref: '#/definitions/[%= method.type.restName() %]'
-          [% } %]
-          [% if (method.type.isDefined() and method.type.isCollection() and not method.type.isPrimitive()) { %]
-              type: array
-              items:
-                $ref: '#/definitions/[%= method.type.componentType.restName() %]'
-        [% } %]
+
+          [% 
+            var inc : Template = TemplateFactory.load("templates/swagger/custom-response-schema.egl");
+            inc.populate("method", method);
+            out.println(inc.process());
+          %]
   [%}%]
