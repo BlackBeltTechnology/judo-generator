@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ASCII"?>
+<document xmlns="http://blackbelt.hu/meta/sabre">
+  <structure mandatory="true" name="ujHozzaferesiPont">
+    <primitive mandatory="true" name="cim" path=""/>
+    <structure mandatory="true" name="kapcsolattarto">
+      <primitive mandatory="true" name="tel2" path=""/>
+      <primitive mandatory="true" name="nev" path=""/>
+      <primitive name="mobil" path=""/>
+      <primitive name="fax" path=""/>
+      <primitive mandatory="true" name="email" path=""/>
+    </structure>
+  </structure>
+  <structure mandatory="true" name="ugyintezo">
+    <primitive mandatory="true" name="nev" path=""/>
+  </structure>
+  <structure mandatory="true" name="szolgaltato">
+    <primitive mandatory="true" name="ugyfelSzolgalat" path=""/>
+    <primitive mandatory="true" name="szekhely" path=""/>
+    <primitive mandatory="true" name="nev" path=""/>
+    <primitive mandatory="true" name="levelezesiCim" path=""/>
+    <primitive mandatory="true" name="honlap" path=""/>
+    <primitive mandatory="true" name="email" path=""/>
+    <primitive mandatory="true" name="cjszam" path=""/>
+  </structure>
+  <structure mandatory="true" name="szolgaltatas">
+    <primitive mandatory="true" name="telefonszam" path=""/>
+    <primitive mandatory="true" name="szolgaltatas" path=""/>
+    <primitive mandatory="true" name="szerzodesszam" path=""/>
+    <primitive mandatory="true" name="szerelesiKoltseg" path=""/>
+    <primitive mandatory="true" name="leszerelesIdopont" path=""/>
+    <primitive mandatory="true" name="internetLogin" path=""/>
+    <primitive mandatory="true" name="felszerelesIdopont" path=""/>
+    <primitive mandatory="true" name="dijcsomagNev" path=""/>
+    <primitive mandatory="true" name="azonosito" path=""/>
+    <primitive mandatory="true" name="athelyezesDij" path=""/>
+  </structure>
+  <structure mandatory="true" name="elofizeto">
+    <primitive mandatory="true" name="ugyfelkod" path=""/>
+    <primitive mandatory="true" name="szekhely" path=""/>
+    <primitive name="szamlazasiCim" path=""/>
+    <primitive name="rovidNev" path=""/>
+    <primitive mandatory="true" name="nev" path=""/>
+    <primitive mandatory="true" name="felszerelesCim" path=""/>
+    <primitive mandatory="true" name="adoszam" path=""/>
+    <structure mandatory="true" name="kapcsolattarto">
+      <primitive mandatory="true" name="tel" path=""/>
+      <primitive mandatory="true" name="nev" path=""/>
+      <primitive name="mobil" path=""/>
+      <primitive name="fax" path=""/>
+      <primitive mandatory="true" name="email" path=""/>
+    </structure>
+  </structure>
+  <structure mandatory="true" name="documentum">
+    <primitive mandatory="true" name="azonosito" path=""/>
+  </structure>
+</document>
