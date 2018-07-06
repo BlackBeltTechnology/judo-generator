@@ -1,0 +1,83 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+
+  [% for (method in dto.origin.methods.select(m | m.isQuery()).sortBy(m | m.name)) { %]
+  /rest/[%= dto.origin.swaggerUri() %]/[%= method.swaggerUri() %]:
+    get:
+      tags:
+        - "[%= dto.origin.swaggerTag() %]"
+      operationId: |
+        custom query [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]
+      summary: |
+        Custom query [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]
+      description: |
+        Custom query [%= method.swaggerName() %] on [%= dto.origin.swaggerName() %]. It can be fitered, paged and sorted. Support projection of the result.
+      consumes:
+      - "application/json"
+      parameters:
+          - $ref: '#/parameters/filter'
+          - $ref: '#/parameters/pageSize'
+          - $ref: '#/parameters/pageNumber'
+          - $ref: '#/parameters/sort'
+        [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and p.type.isPrimitive())) { %]
+          - in: query  
+            name: [%= param.name%]
+            [%= param.type.swaggerTypeName() %]
+            [%= param.type.swaggerTypeFormat() %]
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and p.type.isPrimitive())) { %]
+          - in: query  
+            name: [%= param.name%]
+            type: array
+            items:
+              [%= param.type.componentType.swaggerTypeName() %]
+              [%= param.type.componentType.swaggerTypeFormat() %]
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and not p.type.isCollection() and not p.type.isPrimitive())) { %]
+          - in: query  
+            name: [%= param.name%]
+            $ref: '#/definitions/[%= param.type.swaggerName() %]'
+        [% } %]
+        [% for (param in method.parameters.select(p | p.type.isDefined() and p.type.isCollection() and not p.type.isPrimitive())) { %]
+          - in: query  
+            name: [%= param.name%]
+            type: array
+            items:
+              $ref: '#/definitions/[%= param.type.componentType.swaggerName() %]'
+        [% } %]         
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            Custom query [%= dto.origin.swaggerName() %] is OK.
+          [% 
+            var inc : Template = TemplateFactory.load("templates/swagger/custom-response-schema.egl");
+            inc.populate("method", method);
+            out.println(inc.process());
+          %]
+
+          headers:
+            X-Total-Count:
+              type: integer
+              description: The total records of query.
+            X-Page-Size:
+              type: integer
+              description: The current page size of query            
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+  [%}%]

@@ -1,0 +1,44 @@
+operation JAVA!JvmPackage swaggerBaseUri(separator : String) : String {
+	var swaggerBaseUri : String = self.package.name;
+	var currentPackage = self.package.package;
+	
+	while (currentPackage.name <> "blackbelt") {
+		swaggerBaseUri = currentPackage.name + separator + swaggerBaseUri;
+		currentPackage = currentPackage.package;
+	}
+	
+	return swaggerBaseUri;
+}
+
+@cached
+operation JAVA!JvmPackage swaggerBaseName() : String {
+	var swaggerBaseUri : String = self.package.name;
+	var currentPackage = self.package.package;
+	
+	while (currentPackage.name <> "blackbelt") {
+	    // pe.name.substring(0, 1).toUpperCase() + pe.name.substring(1);
+		swaggerBaseUri = currentPackage.name.substring(0, 1).toUpperCase() + currentPackage.name.substring(1) + swaggerBaseUri;
+		currentPackage = currentPackage.package;
+	}
+	
+	return swaggerBaseUri;
+}
+
+
+
+operation JAVA!JvmPackage findChild (name : String) : JAVA!JvmPackage {
+	return self.findChildRecursively(name);
+}
+
+operation JAVA!JvmPackage findChildRecursively (packageName : String) : JAVA!JvmPackage {
+	return self.findChildRecursively(packageName.split("\\."));
+}
+
+operation JAVA!JvmPackage findChildRecursively (packageNames : Sequence) : JAVA!JvmPackage {
+	var currentPackage = self;
+	for (packName in packageNames) {
+		var candidate = currentPackage.contents.select(p | (p.name = packName and p.package.uuid = currentPackage.uuid)).first();
+		currentPackage = candidate;
+	}
+	return currentPackage;
+}
