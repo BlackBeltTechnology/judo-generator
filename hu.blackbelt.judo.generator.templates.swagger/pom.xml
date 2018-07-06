@@ -115,7 +115,10 @@
 											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
 										</model>
 										<model>
+										    <!-- 
 											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.java:model:java:${project.version}</artifact>
+											 -->
+											<artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:java:${test.model.version}</artifact>
 											<name>JAVA</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/java</param>
@@ -142,7 +145,7 @@
 												</parameter>
 												<parameter>
 													<name>applicationName</name>
-													<value>Anakin</value>
+													<value>${test.model.applicationName}</value>
 												</parameter>
 
                                             </parameters>
