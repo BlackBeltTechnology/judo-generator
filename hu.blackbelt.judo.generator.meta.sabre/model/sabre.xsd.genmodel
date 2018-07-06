@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.blackbelt.judo.generator.meta.sabre/src" modelPluginID="hu.blackbelt.judo.generator.meta.sabre"
+    modelName="Sabre" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>sabre.xsd.ecore</foreignModel>
+  <genPackages prefix="Sabre" resource="XML" disposableProviderFactory="true" ecorePackage="sabre.xsd.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sabre.xsd.ecore#//DataType">
+      <genEnumLiterals ecoreEnumLiteral="sabre.xsd.ecore#//DataType/xsString"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.xsd.ecore#//DataType/xsInt"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.xsd.ecore#//DataType/xsFloat"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.xsd.ecore#//DataType/xsDate"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.xsd.ecore#//DataType/xsDateTime"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="sabre.xsd.ecore#//DataTypeObject"/>
+    <genClasses ecoreClass="sabre.xsd.ecore#//document">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//document/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//document/primitive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//document/list"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//document/structure"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//document/template"/>
+    </genClasses>
+    <genClasses ecoreClass="sabre.xsd.ecore#//ListType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sabre.xsd.ecore#//ListType/structure"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sabre.xsd.ecore#//ListType/primitive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//ListType/mandatory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//ListType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//ListType/path"/>
+    </genClasses>
+    <genClasses ecoreClass="sabre.xsd.ecore#//PrimitiveType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//PrimitiveType/default"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//PrimitiveType/mandatory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//PrimitiveType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//PrimitiveType/path"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//PrimitiveType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="sabre.xsd.ecore#//SabreModel">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//SabreModel/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//SabreModel/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//SabreModel/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sabre.xsd.ecore#//SabreModel/document"/>
+    </genClasses>
+    <genClasses ecoreClass="sabre.xsd.ecore#//StructureType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//StructureType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//StructureType/primitive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//StructureType/list"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//StructureType/structure"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.xsd.ecore#//StructureType/template"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//StructureType/mandatory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//StructureType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="sabre.xsd.ecore#//TemplateType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//TemplateType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.xsd.ecore#//TemplateType/name"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

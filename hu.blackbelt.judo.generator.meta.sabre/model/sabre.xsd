@@ -7,13 +7,10 @@
 	targetNamespace="http://blackbelt.hu/meta/sabre"
 	elementFormDefault="unqualified" 
 	attributeFormDefault="unqualified"
-	ecore:documentRoot="SabreModel">
-
-<!-- 
 	ecore:name="sabre"
 	ecore:package="sabre"
-
- -->
+	ecore:documentRoot="SabreModel">
+  
   <xs:element name="document" type="sabre:DocumentType" ecore:featureMap="">
 	<xs:unique name="UniqueNamesInDocument">
       <xs:selector xpath="./*"/>
@@ -49,8 +46,8 @@
       <xs:element name="primitive" type="sabre:PrimitiveType" ecore:featureMap=""/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="path" type="xs:string" use="required"/>
-    <xs:attribute name="mandatory" type="xs:boolean" use="required"/>
+    <xs:attribute name="path" type="xs:string" use="optional"/>
+    <xs:attribute name="mandatory" type="xs:boolean" use="optional" default="false"/>
   </xs:complexType>
   
 
@@ -70,15 +67,15 @@
       </xs:choice>
     </xs:sequence>
     <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="mandatory" type="xs:boolean" use="required"/>
+    <xs:attribute name="mandatory" type="xs:boolean" use="optional" default="false"/>
   </xs:complexType>
 
   <xs:complexType name="PrimitiveType" mixed="false">
       <xs:attribute name="name" type="xs:string" use="required"/>
       <xs:attribute name="type" type="sabre:data-type" use="required"/>
-      <xs:attribute name="path" type="xs:string" use="required"/>
-      <xs:attribute name="mandatory" type="xs:boolean" use="required"/>
-      <xs:attribute name="default-value" type="xs:string" use="optional"/>
+      <xs:attribute name="path" type="xs:string" use="optional"/>
+      <xs:attribute name="mandatory" type="xs:boolean" use="optional" default="false"/>
+      <xs:attribute name="default" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <xs:complexType name="TemplateType" mixed="false">
