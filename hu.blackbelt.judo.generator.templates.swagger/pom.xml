@@ -131,14 +131,6 @@
 											<source>src/main.egl</source>
 											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
                                             <parameters>
-                                                <parameter>
-                                                    <name>transformDomain</name>
-                                                    <value>false</value>
-                                                </parameter>
-                                                <parameter>
-                                                	<name>queryDslPeristencePid</name>
-                                                	<value>hu.blackbelt.judo.querydsl.persistence</value>
-                                                </parameter>
 												<parameter>
 													<name>psmVersion</name>
 													<value>${project.version}-${psmversion}</value>
