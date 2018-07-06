@@ -1,0 +1,149 @@
+operation inpPIM!Element getUuid() : String {
+	if (self.owner.isDefined()) {
+		return (self.owner.getUuid() + "." + self.name).replace(" ","_");
+	} else {
+		return self.name.replace(" ","_");
+	}
+}
+
+operation inpPIM!Property computeLower() : Integer {
+	if (self.lowerValue.isDefined()) {
+		return self.lowerValue.value;
+	} else {
+		return self.lower;
+	}
+}
+
+operation inpPIM!Property computeUpper() : Integer {
+	self.name.println("PROP NAME: ");
+	if (self.upperValue.isDefined()) {
+		return self.upperValue.value.println("PROP VALUE: ");
+	} else {
+		return self.upper;
+	}
+}
+
+operation inpPIM!Parameter computeLower() : Integer {
+	if (self.lowerValue.isDefined()) {
+		return self.lowerValue.value;
+	} else {
+		return self.lower;
+	}
+}
+
+operation inpPIM!Parameter computeUpper() : Integer {
+	if (self.upperValue.isDefined()) {
+		return self.upperValue.value;
+	} else {
+		return self.upper;
+	}
+}
+
+operation inpPIM!Property getUuid() : String {
+	if (self.owner.isTypeOf(inpPIM!Association)) {
+		return (self.otherEnd.type.getUuid() + "." + self.name).replace(" ","_");
+	} else {
+		return (self.owner.getUuid() + "." + self.name).replace(" ","_");
+	}
+}
+
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
+}
+
+@cached
+operation inpPIM!Association getBothRoles() : Sequence(inpPIM!Property) {
+	var c1 : inpPIM!Property =  self.memberEnd.first();
+    var c2 : inpPIM!Property =  self.memberEnd.second();
+    var primary = c1;
+    var secondary = c2;
+    if (c1.name > c2.name) {
+    	primary = c2;
+    	secondary = c1;
+    }
+    if (primary.isUndefined()) {
+    	throw "No primary role found: " + self.name;
+    }
+    if (secondary.isUndefined()) {
+    	throw "No secondary role found: " + self.name;
+    }
+    
+    var roles = new Sequence(inpPIM!Property);
+    roles.add(primary);
+    roles.add(secondary);
+    
+    return roles;
+}
+
+
+@cached
+operation inpPIM!Association primaryRole() : inpPIM!Property {
+    return self.getBothRoles().first();
+}
+
+@cached
+operation inpPIM!Association secondaryRole() : inpPIM!Property {
+	return self.getBothRoles().second();
+}
+
+@cached
+operation NamedElement name() : String {
+	var name : String;
+
+	if (self.name.isDefined() and self.name.size > 0) {
+		name = self.name;
+	} else {
+		name = "<<UNNAMED>>";
+	}
+	
+	return name;
+}
+
+@cached
+operation Any fullyQualifiedPath() : String {
+
+	if (self.isKindOf(NamedElement)) {
+		if (self.owner.isUndefined()) {
+			return self.name();
+		} else {
+			return self.owner.fullyQualifiedPath().concat("::").concat(self.name());
+		}
+	} else {
+		if (self.owner.isUndefined()) {
+			return self.name();
+		} else {
+			return self.owner.fullyQualifiedPath().concat("::__");
+		}	
+	}
+}
+
+operation escapeJavaLiteral(toEscape : String) : String {
+	if (toEscape.isDefined()) {
+		toEscape.println("TO ESCAPE: ");
+		return toEscape.replaceAll("\\\"", "\\\\\"").replaceAll("\n", " ").println("ESCAPED: ");
+	}
+}
+
+
+operation checkAllUuidsForDuplicateOrMissing() {
+	var all = tgtPSM!JElement.all.collect(e | e.uuid);
+	var set = all.asSet();
+
+	var duplicated : Boolean = false;
+
+	set.size.println("SET: ");
+	all.size.println("ALL: ");
+
+	for (uuid in set) {
+		if (all.count(uuid) > 1) {
+			duplicated = true;
+			uuid.println("DUPLICATE: ");
+		}
+	}
+	
+	tgtPSM!JElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	
+	if (duplicated) {
+		throw "Duplicated ID!";
+	}
+}

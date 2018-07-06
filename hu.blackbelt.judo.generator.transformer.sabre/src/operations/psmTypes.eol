@@ -1,0 +1,36 @@
+
+operation PrimitiveType getEquivalentPrimType() : psmTypes!JPrimitive {
+	return getPSMPrimitiveType(self.name);
+}
+operation getPSMPrimitiveType(name : String) : psmTypes!JPrimitive {
+	var jType;
+
+	switch (name.toUpperCase()) {
+		case "BOOLEAN" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Boolean").first();
+		case "STRING" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+		case "INTEGER" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Integer").first();
+		case "VOID" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Void").first();
+		case "DATE" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Date").first();
+		case "DATETIME" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "DateTime").first();
+		case "TIME" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Time").first();
+		case "TEXT" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Text").first();
+		case "MEMO" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Memo").first();
+		case "FLOAT" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Float").first();
+		case "PERCENTAGE" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Percentage").first();
+		case "CURRENCY" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Currency").first();
+		case "GPS" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Gps").first();
+		case "TRACK" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Track").first();
+		case "FILE" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "File").first();
+		case "UUID" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "UUID").first();
+		case "DURATION" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Integer").first();
+		case "EMAIL" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+		case "PHONE" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+		case "NATURAL" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Natural").first();
+		case "IPADDRESS" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Ipaddress").first();
+		case "URL" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+		case "ID" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.useForIdType).first();
+		default:		name.println("TYPE IS NOT HANDLED: ");
+	}
+	
+	return jType;
+}

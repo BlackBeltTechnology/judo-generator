@@ -1,0 +1,26 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+@primary
+rule Class
+	transform s : Class
+	to        t : tgtPSM!JClass
+	extends PackageableElement {
+	
+	guard: s.owner.equivalent("Package").isDefined() and not stereotypeApplications.get("document").includes(s.owner)
+	
+	
+	s.owner.equivalent("Package").classes.add( t);
+	
+	"".println("RULE::Class");
+	s.name.println("RULE::Class: ");
+	
+	if ( s.superClass.isDefined() ) {
+		t.supertype ::= s.superClass.first();
+		s.superClass.println("RULE::Class - SUPERCLASS : ");
+		s.superClass.equivalent("Class").println("RULE::Class - SUPERCLASS EQUIV : ");
+	}
+}
+
+
+

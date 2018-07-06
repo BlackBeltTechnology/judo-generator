@@ -1,0 +1,3 @@
+operation tgtPSM!JElement participates (jLayerEnum : Any) : Boolean {
+	return self.participates.includes(tgtPSM!JLayer#ALL) or self.participates.includes(jLayerEnum);
+}

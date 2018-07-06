@@ -1,0 +1,198 @@
+import "../../operations/_importAll.eol";
+import "element.etl";
+
+rule StateMachine
+	transform s : StateMachine
+	to 		  t : tgtPSM!JStateMachine 
+	extends NamedElement {
+	
+	guard: s.owner.equivalent("Class").isDefined()
+
+	s.owner.equivalent("Class").stateMachines.add(t);
+
+	var ownerClass = s.owner.equivalent("Class");
+	var ownerPackage = s.owner.owner.equivalent("Package"); 
+	var stateMachineEnum : tgtPSM!JEnumeration = new tgtPSM!JEnumeration;
+	
+	ownerClass.println("OWNERCLASS ==> ");
+	ownerPackage.println("OWNERPACKAGE ==> ");
+	
+	stateMachineEnum.name = ownerClass.name.concat( s.name.firstToUpperCase());
+	stateMachineEnum.uuid = generateUuid(ownerPackage.uuid, stateMachineEnum.name + "Enum", ".");
+	
+	ownerPackage.enumerations.add(stateMachineEnum);
+	
+	t.uuid = generateUuid(t.uuid, "StateMachine", "_");
+	t.correspondingEnum = stateMachineEnum; 
+	
+	t.createEnumImplInfrastucture();
+	
+	if (s.stereotype("private")) {
+		t.visibility = tgtPSM!JVisibility#PRIVATE;
+	} else if (s.stereotype("protected")) {
+		t.visibility = tgtPSM!JVisibility#PROTECTED;
+	}
+
+	s.println("STATEMACHINE ==> ");
+	s.equivalent().println("STATEMACHINE ==> ");
+}
+
+rule State
+	transform s : State
+	to        t : tgtPSM!JState
+	extends NamedElement {
+	
+	guard: s.owner.owner.equivalent("StateMachine").isDefined()
+
+	t.uuid = generateUuid(s.owner.owner.equivalent("StateMachine").uuid, t.name, ".");
+	// TODO : check if works with owningPackage
+	s.owner.owner.equivalent("StateMachine").states.add(t);
+	
+	// finalState: no output OR only output to finalStates
+	t.finalState = 	s.outgoing.isEmpty() or 
+					s.outgoing->forAll( trans | trans.target.isTypeOf(FinalState));
+	
+	// initialState: has incoming transition w. Initial PseudoState at the other end
+	t.initialState = s.incoming->exists(v | v.source.isTypeOf(Pseudostate) and v.source.kind = PseudostateKind#initial); 
+	
+	var stateEnumLiteral : tgtPSM!JLiteral = new tgtPSM!JLiteral;
+	
+	stateEnumLiteral.name = s.name;
+	stateEnumLiteral.uuid = generateUuid(s.owner.owner.equivalent("StateMachine").correspondingEnum.uuid, s.name, ".");
+	s.owner.owner.equivalent("StateMachine").correspondingEnum.literals.add( stateEnumLiteral );
+	
+	s.owner.owner.equivalent("StateMachine").println("SM ==> ");
+	s.owner.owner.equivalent("StateMachine").correspondingEnum.println("SM -> enum ==> ");
+	s.owner.owner.equivalent("StateMachine").correspondingEnum.literals.println("SM -> enum::literals ==> ");
+	
+	s.println("STATE ==> ");
+}
+
+
+// TODO: Operation for the Transitions should be implemented
+rule Transition
+	transform s : Transition
+	to        t : tgtPSM!JTransition
+	extends NamedElement {
+
+	guard: 	s.owner.owner.equivalent("StateMachine").isDefined() and
+			s.Source.isTypeOf(State) and s.Target.isTypeOf(State) 
+	
+	t.toState ::= s.Target;
+	t.fromState ::= s.Source;
+	t.uuid = generateUuid(generateUuid(s.owner.owner.equivalent("StateMachine").uuid, t.name, "."), t.fromState.name + t.toState.name, "_");
+	s.owner.owner.equivalent("StateMachine").transitions.add(t);
+		
+	s.Target.equivalent("State").incomingTransitions.add(t);
+	s.Source.equivalent("State").outgoingTransitions.add(t);
+	
+	s.Source.equivalent("State").outgoingTransitions.add( t );
+	
+	s.Source.println("STATE :: Source ==> ");
+	s.Target.println("TARGET :: Source ==> ");
+	
+/*	// create JGuard if Transition ownes a <<guard>> stereotyped Constraint
+	if ( stereotypeApplications.get("guard").containsKey(s) ) {
+		var g : tgtPSM!JGuard = new tgtPSM!JGuard;
+		
+		g.transition = t;
+		t.`guard` = g;
+		
+		var sttype = tgtPSM!`guard`.allInstances()->selectOne( sttyp | sttyp.base_Constraint.constrainedElement->exists( s ));
+
+		// set 'text' if Constraint::specification is LiteralString - surely we have this assigned to s in "guard"
+		if ( sttype.isDefined() and sttype.base_Constraint.specification.isTypeOf( LiteralString )) {
+			t.text = stereotypeApplications.get("guard").get(s);
+			t.expression = "";
+		} else if (sttype.base_Constraint.specification.isTypeOf( LiteralString )) {	// set 'expression' if it is OpaqueExpression
+			t.expression = stereotypeApplications.get("guard").get(s);
+			t.text = "";
+		} else { 	// empty str in all other cases
+			t.text = "";
+			t.expression = "";
+		}
+	}*/
+	
+	if ( s.trigger.event.`operation`.isDefined() and s.trigger.event.`operation`.size() > 0) {
+	
+		s.trigger.event.`operation`.println("RULE: TRANSITION - EXECUTING METHOD");
+	
+		var op = s.trigger.event.`operation`.first().equivalent("Operation");
+		t.executingOperation = op;
+		op.transition.add( t );	
+	}
+	
+	t.println("RULE::Transition - tgt : ");
+}
+
+// Preconditions for createEnumImplInfrastucture(): 
+// Enumeration for StateMachine : DEFINED
+// EnumerationLiteral for StateMachine : DEFINED
+operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
+
+	var returnValue : Map ;
+	var tgtPkg : tgtPSM!JPackage = self.ownerClass.package; // stateMachine is ownd by a class, inside a package
+	var corrEnum : tgtPSM!JEnumeration = self.correspondingEnum; 
+
+	// Def Class for Enum
+	var enumClass : tgtPSM!JClass = new tgtPSM!JClass;
+	enumClass.name = corrEnum.name;
+	enumClass.fixedEnum = corrEnum; 
+	enumClass.uuid = generateUuid(tgtPkg.uuid, enumClass.name, ".");
+	enumClass.representsEnum = true;
+	if (self.shortName.isDefined()) {
+		enumClass.shortName = self.shortName.concat("E");
+	}
+	
+	createRelationWithRoles( tgtPkg, self.name.firstToUpperCase() + "Inverse", self.name,
+									 enumClass, self.ownerClass);
+	
+	enumClass.attributes.add(createDefaultAttribute("code").uuid(enumClass.uuid).type(getPSMPrimitiveType("String")));
+	
+	var att = createDefaultAttribute("value").uuid(enumClass.uuid).type(getPSMPrimitiveType("String"));	
+	enumClass.attributes.add(att);
+	enumClass.representation = att;
+	
+		// ownerships
+		enumClass.package = tgtPkg;
+		tgtPkg.classes.add( enumClass );
+
+	// Def Class for EnumLiterals - Values
+	var enumValueClass : tgtPSM!JClass = new tgtPSM!JClass;
+	enumValueClass.name = enumClass.name + "Value"; 
+	enumValueClass.uuid = generateUuid(tgtPkg.uuid, enumValueClass.name, ".");
+	enumValueClass.representsEnumValue = true;
+	if (self.shortName.isDefined()) {
+		enumValueClass.shortName = self.shortName.concat("V");
+	}
+	
+	enumValueClass.attributes.add(createDefaultAttribute("value").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")));
+		// ownerships
+		enumValueClass.package = tgtPkg;
+		tgtPkg.classes.add( enumValueClass );
+
+	enumValueClass.attributes.add( createDefaultAttribute("langcode").uuid(enumValueClass.uuid).type(getPSMPrimitiveType("String")).derived().value("{self.language.code}"));
+	
+// add relation : enum - enumClass
+// add relation : enumClass - enumValueClass
+	createRelationWithRoles( tgtPkg, "", enumClass.name,			// TODO: check & ensure correct role assignments
+									 enumClass, enumValueClass);
+
+	// TODO: refactor to a cached operation 
+	var langClass;
+	
+	if (transformDomain.asBoolean()) {
+		langClass = inpPIM!Class.allInstances()->select(c | c.name = "Language" and c.package.name = "framework").first().equivalent("Class");
+	} else {
+		langClass = tgtPSM!JClass.allInstances()->select(c | c.name = "Language" and c.framework).first();
+	}
+	langClass.println("RULE::STATEMACHINE - LANGCLASS : ");
+
+// add relation : enumValueClass - Language - First part of Relation name should coume first!
+	createRelationWithRoles( tgtPkg, "Values", "language",			// TODO: check & ensure correct role assignments
+									 langClass, enumValueClass);
+
+
+	return returnValue;
+}
+
