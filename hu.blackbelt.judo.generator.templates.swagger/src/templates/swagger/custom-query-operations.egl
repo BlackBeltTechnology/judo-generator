@@ -30,6 +30,7 @@
           - in: query  
             name: [%= param.name%]
             type: array
+            collectionFormat: multi
             items:
               [%= param.type.componentType.swaggerTypeName() %]
               [%= param.type.componentType.swaggerTypeFormat() %]
@@ -43,6 +44,7 @@
           - in: query  
             name: [%= param.name%]
             type: array
+            collectionFormat: multi
             items:
               $ref: '#/definitions/[%= param.type.componentType.swaggerName() %]'
         [% } %]         
