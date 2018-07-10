@@ -1,0 +1,35 @@
+@cached
+operation JAVA!JvmMethod swaggerName () : String {
+	return self.name.substring(0, 1).toUpperCase() + self.name.substring(1);
+}
+
+@cached
+operation JAVA!JvmMethod swaggerUri () : String {
+	return self.name;
+}
+
+@cached
+operation JAVA!JvmMethod isQuery () : Boolean {
+	return self.kind = JAVA!JvmMethodKind#QUERY;
+}
+
+@cached
+operation JAVA!JvmMethod isQueryCount () : Boolean {
+	return self.kind = JAVA!JvmMethodKind#QUERY_COUNT;
+}
+
+@cached
+operation JAVA!JvmMethod isCustom () : Boolean {
+	return self.kind = JAVA!JvmMethodKind#CUSTOM;
+}
+
+@cached
+operation JAVA!JvmMethod isCustomClassBased () : Boolean {
+    return self.isCustom() and self.classBased;
+}
+
+@cached
+operation JAVA!JvmMethod isCustomBulk () : Boolean {
+	return self.kind = JAVA!JvmMethodKind#CUSTOM_BULK;
+}
+

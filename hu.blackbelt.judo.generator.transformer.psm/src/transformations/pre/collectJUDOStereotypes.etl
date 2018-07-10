@@ -63,6 +63,7 @@ operation collectJUDOStereotypeInstances() : Map {
 	// validation Constraint			POSTPONE		COLL
 	// watch Class						POSTPONE		COLL
 	// watch Property					POSTPONE		COLL
+	// processData Class				POSTPONE		COLL
 
 	// <<rest>>
 	JUDOStereotypeInstances.put("restPackages", 		
@@ -154,6 +155,7 @@ operation collectJUDOStereotypeInstances() : Map {
 	//JUDOStereotypeInstances.put("representation",	inpPIM!representation.allInstances()->select(e | e.base_Constraint.isDefined()).collectConstrainedElements()); 
 	JUDOStereotypeInstances.put("shortname", 		inpPIM!shortname.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("validation", 		inpPIM!validation.allInstances().collectConstrainedElements());
+	JUDOStereotypeInstances.put("processData", 		inpPIM!ProcessData.allInstances()->collect(c | c.base_Class).asSet());
 
 	// dump result Map
 	dumpStereotypeInstances( JUDOStereotypeInstances );
@@ -227,6 +229,7 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	//dumpMapAt( JUDOStereotypeInstances, "representation");
 	dumpMapAt( JUDOStereotypeInstances, "shortname");
 	dumpMapAt( JUDOStereotypeInstances, "validation");
+	dumpSetAt( JUDOStereotypeInstances, "processData");
 }
 
 operation seqOfMapsToMap( seqOfMaps : Sequence ) : Map {

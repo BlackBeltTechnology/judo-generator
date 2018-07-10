@@ -1,0 +1,40 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+
+[% for (attr in dto.origin.attributes().select(a | a.type.isURL())) { %]
+  /rest/[%=dto.origin.swaggerUri() %]/{id}/[%=attr.nameToSwagger()%]:
+    parameters:
+      - $ref: '#/parameters/identifier'
+      - in: query  
+        name: inline
+        type: boolean
+    get:
+      tags:
+        - "[%= dto.origin.swaggerTag() %]"
+      operationId: | 
+        Download [%= attr.name %] on identified [%= dto.origin.swaggerName() %]
+      summary: |
+        Download [%= attr.name %] on identified [%= dto.origin.swaggerName() %]
+      description: |
+        Download [%= attr.name %] on identified [%= dto.origin.swaggerName() %]
+      responses:
+        '200':
+          description: |
+            Download file.
+          schema:
+            type: file
+        '404':
+          $ref: '#/responses/notFound'
+        '400':
+          $ref: '#/responses/badRequest'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+[%}%]
+          
