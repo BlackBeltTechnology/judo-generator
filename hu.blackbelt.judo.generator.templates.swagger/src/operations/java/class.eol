@@ -1,0 +1,50 @@
+
+@cached
+operation JAVA!JvmClass hasFixedEnum () : Boolean {
+    return self.origin().fixedEnum.isDefined();
+}
+
+@cached
+operation JAVA!JvmClass attributes () : Collection {
+	return self.members.select( m | m.isTypeOf(JAVA!JvmAttribute)).sortBy(a | a.name);
+}
+
+@cached
+operation JAVA!JvmClass allReferences () : Collection {
+	var all = self.references().clone();
+	if (self.supertype.isDefined()) {
+		all.addAll(self.supertype.allReferences());
+	}
+	return all.sortBy(a | a.name);
+}
+
+@cached
+operation JAVA!JvmClass references () : Collection {
+	return self.members.select( m | m.isTypeOf(JAVA!JvmReference)).sortBy(r | r.name);
+}
+
+@cached
+operation JAVA!JvmClass allReferencedClass () : Collection {
+	var ret:List = new List();
+	self.allReferencedClassInternal(ret);
+	return ret;	
+}
+
+operation JAVA!JvmClass allReferencedClassInternal (alreadyCollected : List) {
+    alreadyCollected.add(self);
+	// Traverse supertype
+	if (self.supertype.isDefined() and not alreadyCollected.contains(self.supertype)) {
+	   self.supertype.allReferencedClassInternal(alreadyCollected);
+	} 
+	
+	// Traverse references
+	for (c : JAVA!JvmClass in self.references().select(r | r.navigable).collect(r | r.opposite.ownerClass).select(c | not alreadyCollected.contains(c))) {
+		c.allReferencedClassInternal(alreadyCollected);
+	}	
+}
+
+@cached
+operation JAVA!JvmClass isPrimitive() : Boolean {
+	return false;
+}
+

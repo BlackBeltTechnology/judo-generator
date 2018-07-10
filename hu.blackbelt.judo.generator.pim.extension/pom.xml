@@ -50,7 +50,7 @@
 
     <profiles>
         <profile>
-            <id>jpim-extension-development</id>
+            <id>pim-extension-development</id>
             <build>
                 <plugins>
                     <plugin>
@@ -92,7 +92,6 @@
                                 </goals>
                                 <configuration>
                                     <metaModels>
-                                        <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
                                         <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
                                         <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
         
