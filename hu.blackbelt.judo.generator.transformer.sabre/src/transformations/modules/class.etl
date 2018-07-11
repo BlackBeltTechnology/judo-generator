@@ -1,28 +1,39 @@
 import "../../operations/_importAll.eol";
-import "element.etl";
 
 @primary
-rule Class
+rule SabreClassDocument
 	transform s : Class
 	to        t : SABRE!document {
-	
-	guard: stereotypeApplications.get("documentClasses").includes(s)
-	// guard: s.owner.equivalent("Package").isDefined() and not stereotypeApplications.get("document").includes(s.owner)
-	
-	// s.owner.equivalent("Package").classes.add( t);
-	
-	"".println("RULE::Class");
-	s.name.println("RULE::Class: ");
+	guard: s.isDocument()
+
+	s.name.println("PRIMARY RULE :: SabreClassDocument: ");
 	sabreModel.document.add(t);
-	t.name = s.name;
-	
-	/*
-	if ( s.superClass.isDefined() ) {
-		t.supertype ::= s.superClass.first();
-		s.superClass.println("RULE::Class - SUPERCLASS : ");
-		s.superClass.equivalent("Class").println("RULE::Class - SUPERCLASS EQUIV : ");
-	} */
+	t.name = s.name.decapitalize();
+
+    s.primitiveProperties().collect(p | p.name).println("    Primitives: ");
+	t.primitive.addAll(s.primitiveProperties().collect(p | p.equivalent("SabrePropertyPrimitive")));	
+
+    s.classProperties().collect(p | p.name).println("    Classes: ");
+	t.structure.addAll(s.classProperties().collect(p | p.association.compositedClass().equivalent("SabreClassStructure")));	
+
+    s.classListProperties().collect(p | p.name).println("    List of Classes: ");
+	t.list.addAll(s.classListProperties().collect(p | p.equivalent("SabrePropertyList")));	
 }
 
+@lazy
+rule SabreClassStructure
+	transform s : Class
+	to        t : SABRE!structure {
+	
+	s.name.println("LAZY RULE :: SabreClassStructure: ");
+	t.name = s.name.decapitalize();
 
+    s.primitiveProperties().collect(p | p.name).println("    Primitives: ");
+	t.primitive.addAll(s.primitiveProperties().collect(p | p.equivalent("SabrePropertyPrimitive")));	
 
+    s.classProperties().collect(p | p.name).println("    Classes: ");
+	t.structure.addAll(s.classProperties().collect(p | p.association.compositedClass().equivalent("SabreClassStructure")));	
+
+    s.classListProperties().collect(p | p.name).println("    List of Classes: ");
+	t.list.addAll(s.classListProperties().collect(p | p.equivalent("SabrePropertyList")));	
+}

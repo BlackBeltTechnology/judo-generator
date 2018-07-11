@@ -1,3 +1,4 @@
+/*
 operation inpPIM!Element getUuid() : String {
 	if (self.owner.isDefined()) {
 		return (self.owner.getUuid() + "." + self.name).replace(" ","_");
@@ -50,11 +51,12 @@ operation inpPIM!Property getUuid() : String {
 operation generateUuid(namespace : String, name : String, separator : String) : String {
 	return namespace + separator + name;
 }
-
+*/
+/*
 @cached
-operation inpPIM!Association getBothRoles() : Sequence(inpPIM!Property) {
-	var c1 : inpPIM!Property =  self.memberEnd.first();
-    var c2 : inpPIM!Property =  self.memberEnd.second();
+operation Association getBothRoles() : Sequence(Property) {
+	var c1 : Property =  self.memberEnd.first();
+    var c2 : Property =  self.memberEnd.second();
     var primary = c1;
     var secondary = c2;
     if (c1.name > c2.name) {
@@ -68,24 +70,62 @@ operation inpPIM!Association getBothRoles() : Sequence(inpPIM!Property) {
     	throw "No secondary role found: " + self.name;
     }
     
-    var roles = new Sequence(inpPIM!Property);
+    var roles = new Sequence(Property);
     roles.add(primary);
     roles.add(secondary);
     
     return roles;
 }
 
-
 @cached
-operation inpPIM!Association primaryRole() : inpPIM!Property {
+operation Association primaryRole() : Property {
     return self.getBothRoles().first();
 }
 
 @cached
-operation inpPIM!Association secondaryRole() : inpPIM!Property {
+operation Association secondaryRole() : Property {
 	return self.getBothRoles().second();
 }
+*/
+@cached
+operation Association compositedClass() : Class {
+	return self.memberEnd.at(0).type;
+}
 
+@cached
+operation Class properties() : Collection {
+	return Property.all.select(p | p.owner == self);
+}
+
+@cached
+operation Class primitiveProperties() : Collection {
+	return self.properties().select(s | not s.association.isDefined() and not s.type.isTypeOf(Class) and not s.type.isTypeOf(Enumeration));
+}
+
+@cached
+operation Class classProperties() : Collection {
+	return self.properties().select(s | s.association.isDefined() and not s.type.isTypeOf(Enumeration) and s.upperValue.isDefined() and (s.upperValue.value > -1 and s.upperValue.value <= 1));
+}
+
+@cached
+operation Class classListProperties() : Collection {
+	return self.properties().select(s | s.association.isDefined() and s.upperValue.isDefined() and (s.upperValue.value <= -1 or s.upperValue.value > 1));
+}
+
+
+/*
+@cached
+operation Association getLists() : SABRE!list {
+}
+
+@cached
+operation Association getStructures() : SABRE!list {
+}
+
+@cached
+operation Association getStructures() : SABRE!list {
+}
+*/
 @cached
 operation NamedElement name() : String {
 	var name : String;
@@ -98,6 +138,41 @@ operation NamedElement name() : String {
 	
 	return name;
 }
+
+operation String decapitalize() : String {
+
+    if (self.isUndefined() or self.length() == 0) {
+        return self;
+    }
+    return self.characterAt(0).toLowerCase() + self.substring(1);
+}
+
+/*
+operation String logicalName() : String {
+  return self.charAt(0).toLowerCase() + (self.length() > 1 ? self.substring(1) : "");
+}
+*/
+
+/*
+operation Class getAncestors() : Collection {
+	var ret : Set = new Set();
+	if (self.superClass.size > 0) {
+	    self.superClass.first().name.println(" SuperClass: ");
+		ret.add(self.superClass.first());
+		ret.addAll(self.superClass.first().getAncestors());
+	}
+	return ret;
+}
+*/
+operation Class isDocument() : Boolean {
+    return stereotypeApplications.get("documentClasses").includes(self);
+}
+
+/*
+operation Class hasDocumentAncestor() : Boolean {
+    return self.getAncestors().collect(s | s.isDocument()).includes(true);
+}
+*/
 
 @cached
 operation Any fullyQualifiedPath() : String {
@@ -117,6 +192,7 @@ operation Any fullyQualifiedPath() : String {
 	}
 }
 
+/*
 operation escapeJavaLiteral(toEscape : String) : String {
 	if (toEscape.isDefined()) {
 		toEscape.println("TO ESCAPE: ");
@@ -147,3 +223,4 @@ operation checkAllUuidsForDuplicateOrMissing() {
 		throw "Duplicated ID!";
 	}
 }
+*/

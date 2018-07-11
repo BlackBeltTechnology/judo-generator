@@ -1,5 +1,4 @@
 import "../../operations/_importAll.eol";
-import "element.etl";
 
 rule Model
 	transform s : Model
@@ -8,9 +7,8 @@ rule Model
 	guard : (s.name = modelName)
 	
 	sabreModel = t;
-	
 	sabreModel.println("sabreModel ==> ");
-	
+
 	s.fullyQualifiedPath().println("On MODEL :: ");
 	"".println("RULE::Model");
 }

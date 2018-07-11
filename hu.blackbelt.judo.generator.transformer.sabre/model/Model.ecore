@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="Model" nsURI="http:///Model.ecore" nsPrefix="Model">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="Author:ODI.&#xA;Created:11/18/17 9:13 AM.&#xA;Title:.&#xA;Comment:.&#xA;"/>
+  </eAnnotations>
+  <eSubpackages name="judo" nsURI="http:///Model/judo.ecore" nsPrefix="Model.judo">
+    <eSubpackages name="example" nsURI="http:///Model/judo/example.ecore" nsPrefix="Model.judo.example">
+      <eSubpackages name="car" nsURI="http:///Model/judo/example/car.ecore" nsPrefix="Model.judo.example.car">
+        <eSubpackages name="domain" nsURI="http:///Model/judo/example/car/domain.ecore"
+            nsPrefix="Model.judo.example.car.domain">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="documentation" value="dom"/>
+          </eAnnotations>
+          <eClassifiers xsi:type="ecore:EEnum" name="EngineType">
+            <eLiterals name="Diesel"/>
+            <eLiterals name="Gasoline" value="1"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Car" eSuperTypes="#//judo/example/car/domain/Vehicle">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="extraWheel:self.wheels&#xA;self.color == 'green' &amp;&amp; self.maxSpeed > 1000 ? self.wheels.size() > 4 : true&#xA;{color}&#xA;self.wheels.size() &lt; 100&#xA;self.licensePlate.person&#xA;self.licensePlate.punishments&#xA;self.licensePlate&#xA;self.wheels"/>
+            </eAnnotations>
+            <eOperations name="xxxef" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+              <eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML">
+                <details key="originalName" value="xxx:ef"/>
+              </eAnnotations>
+              <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                <details key="documentation" value="not_empty"/>
+              </eAnnotations>
+              <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The chain of diagnostics to which problems are to be appended."/>
+                </eAnnotations>
+              </eParameters>
+              <eParameters name="context">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The cache of context-specific information."/>
+                </eAnnotations>
+                <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                </eGenericType>
+              </eParameters>
+            </eOperations>
+            <eOperations name="xxxabc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+              <eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML">
+                <details key="originalName" value="xxx:abc"/>
+              </eAnnotations>
+              <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                <details key="documentation" value="size=0"/>
+              </eAnnotations>
+              <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The chain of diagnostics to which problems are to be appended."/>
+                </eAnnotations>
+              </eParameters>
+              <eParameters name="context">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The cache of context-specific information."/>
+                </eAnnotations>
+                <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                </eGenericType>
+              </eParameters>
+            </eOperations>
+            <eOperations name="Size" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+              <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                <details key="documentation" value="min = 4, max = 5"/>
+              </eAnnotations>
+              <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The chain of diagnostics to which problems are to be appended."/>
+                </eAnnotations>
+              </eParameters>
+              <eParameters name="context">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The cache of context-specific information."/>
+                </eAnnotations>
+                <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                </eGenericType>
+              </eParameters>
+            </eOperations>
+            <eOperations name="CarNoWheelSize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+              <eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML">
+                <details key="originalName" value="CarNoWheel:Size"/>
+              </eAnnotations>
+              <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                <details key="documentation" value="min = 0, max = 0"/>
+              </eAnnotations>
+              <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The chain of diagnostics to which problems are to be appended."/>
+                </eAnnotations>
+              </eParameters>
+              <eParameters name="context">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The cache of context-specific information."/>
+                </eAnnotations>
+                <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                </eGenericType>
+              </eParameters>
+            </eOperations>
+            <eOperations name="carimplop" ordered="false" lowerBound="1"/>
+            <eOperations name="createWithFourWheels" ordered="false" lowerBound="1">
+              <eParameters name="car" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/Car"/>
+              <eParameters name="wheelType" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/WheelType"/>
+            </eOperations>
+            <eOperations name="addWheel" ordered="false" lowerBound="1">
+              <eParameters name="numberOfWheels" ordered="false" unique="false" lowerBound="1"
+                  eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+              <eParameters name="wheelType" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/WheelType"/>
+            </eOperations>
+            <eOperations name="addFourWheels" ordered="false" lowerBound="1">
+              <eParameters name="wheelType" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/WheelType"/>
+            </eOperations>
+            <eOperations name="testCustomWithMoreParameter" ordered="false" lowerBound="1">
+              <eParameters name="wheels" ordered="false" unique="false" lowerBound="1"
+                  upperBound="-1" eType="#//judo/example/car/domain/Wheel"/>
+              <eParameters name="engine" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/Engine"/>
+              <eParameters name="licensePlate" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/LicensePlate"/>
+              <eParameters name="color" ordered="false" unique="false" lowerBound="1"
+                  eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            </eOperations>
+            <eOperations name="addCustomWheels" ordered="false" lowerBound="1">
+              <eParameters name="wheels" ordered="false" unique="false" lowerBound="1"
+                  upperBound="-1" eType="#//judo/example/car/domain/Wheel"/>
+            </eOperations>
+            <eOperations name="Transition1" ordered="false" lowerBound="1"/>
+            <eOperations name="Transition2" ordered="false" lowerBound="1"/>
+            <eOperations name="Transition3" ordered="false" lowerBound="1"/>
+            <eOperations name="sumOfWheelsOnCarsByWheelType" ordered="false" unique="false"
+                lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer">
+              <eParameters name="cars" ordered="false" unique="false" upperBound="-1"
+                  eType="#//judo/example/car/domain/Car"/>
+              <eParameters name="wheelType" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/WheelType"/>
+            </eOperations>
+            <eOperations name="findWheelOnCarByColorsEngineTypeAndWheelType" ordered="false"
+                unique="false" lowerBound="1" eType="#//judo/example/car/domain/Wheel">
+              <eParameters name="wheelType" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/WheelType"/>
+              <eParameters name="colors" ordered="false" unique="false" upperBound="-1"
+                  eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+              <eParameters name="engineType" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/EngineType"/>
+            </eOperations>
+            <eOperations name="justificationsByPersonWithValidDrivingLicence" ordered="false"
+                unique="false" upperBound="-1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eOperations name="drivingLicencesOfPersonWhoHasPunishmentOnCarWithEngineType"
+                ordered="false" unique="false" upperBound="-1" eType="#//judo/example/car/domain/DrivingLicense">
+              <eParameters name="engineType" ordered="false" unique="false" lowerBound="1"
+                  eType="#//judo/example/car/domain/EngineType"/>
+            </eOperations>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="licensePlateDerived"
+                ordered="false" eType="#//judo/example/car/domain/LicensePlate"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="licensePlate" ordered="false"
+                eType="#//judo/example/car/domain/LicensePlate" containment="true"
+                eOpposite="#//judo/example/car/domain/LicensePlate/car"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="wheelsDerived"
+                ordered="false" upperBound="-1" eType="#//judo/example/car/domain/Wheel"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="wheels" ordered="false"
+                upperBound="-1" eType="#//judo/example/car/domain/Wheel" eOpposite="#//judo/example/car/domain/Wheel/car"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="extraWheel" ordered="false"
+                eType="#//judo/example/car/domain/Wheel" eOpposite="#//judo/example/car/domain/Wheel/extraOfCar"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="hoppa" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="engine" ordered="false"
+                eType="#//judo/example/car/domain/Engine" containment="true" eOpposite="#//judo/example/car/domain/Engine/car"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="punishments" ordered="false"
+                upperBound="-1" eType="#//judo/example/car/domain/Punishment"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="person" ordered="false"
+                eType="#//judo/example/car/domain/Person"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="lengthOfColorAttribute"
+                ordered="false" unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfWheels"
+                ordered="false" unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="self.numberOfWheels = self.wheels.size()"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="regNumber" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="{self.licensePlate.regNumber}"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="owner" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="{self.licensePlate.person.name}..({self.licensePlate.regNumber}) ez meg AVEGE"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="teszt" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="concatattr" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="{self.color} ({self.teszt})"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="withDefValue" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="defaultValue"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="valid" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Boolean"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Vehicle" abstract="true">
+            <eOperations name="Min" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+              <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                <details key="documentation" value="150"/>
+              </eAnnotations>
+              <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The chain of diagnostics to which problems are to be appended."/>
+                </eAnnotations>
+              </eParameters>
+              <eParameters name="context">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The cache of context-specific information."/>
+                </eAnnotations>
+                <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                </eGenericType>
+              </eParameters>
+            </eOperations>
+            <eOperations name="Max" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+              <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                <details key="documentation" value="300"/>
+              </eAnnotations>
+              <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The chain of diagnostics to which problems are to be appended."/>
+                </eAnnotations>
+              </eParameters>
+              <eParameters name="context">
+                <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+                  <details key="documentation" value="The cache of context-specific information."/>
+                </eAnnotations>
+                <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                  <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+                </eGenericType>
+              </eParameters>
+            </eOperations>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxSpeed" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="LicensePlate">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="person" ordered="false"
+                eType="#//judo/example/car/domain/Person" eOpposite="#//judo/example/car/domain/Person/licensePlates"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="car" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Car" eOpposite="#//judo/example/car/domain/Car/licensePlate"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="regNumber" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Person">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="pers&#xA;dls"/>
+            </eAnnotations>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="drivingLicenses"
+                ordered="false" upperBound="-1" eType="#//judo/example/car/domain/DrivingLicense"
+                containment="true" eOpposite="#//judo/example/car/domain/DrivingLicense/person"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="email2" ordered="false"
+                unique="false" lowerBound="1" eType="#//PIMTypes/email"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="photo" ordered="false"
+                unique="false" eType="#//PIMTypes/file"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="memo" ordered="false"
+                unique="false" eType="#//PIMTypes/memo"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="licensePlates"
+                ordered="false" upperBound="-1" eType="#//judo/example/car/domain/LicensePlate"
+                eOpposite="#//judo/example/car/domain/LicensePlate/person"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="DrivingLicense">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="drvlic&#xA;regnum"/>
+            </eAnnotations>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="regNumber" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="valid" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Boolean"
+                changeable="false" defaultValueLiteral="false"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="person" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Person" eOpposite="#//judo/example/car/domain/Person/drivingLicenses"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Wheel">
+            <eOperations name="print" ordered="false" lowerBound="1"/>
+            <eOperations name="warningOpNoArg" ordered="false" lowerBound="1"/>
+            <eOperations name="warningOp" ordered="false" lowerBound="1"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="car" ordered="false"
+                eType="#//judo/example/car/domain/Car" eOpposite="#//judo/example/car/domain/Car/wheels"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="extraOfCar" ordered="false"
+                eType="#//judo/example/car/domain/Car" eOpposite="#//judo/example/car/domain/Car/extraWheel"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="diameter" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="wheelType" ordered="false"
+                unique="false" lowerBound="1" eType="#//judo/example/car/domain/WheelType"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="area" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="self.area = self.diameter * self.diameter * self.width / 4"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="price" ordered="false"
+                unique="false" eType="#//PIMTypes/currency"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="printResult" ordered="false"
+                unique="false" eType="#//PIMTypes/file"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EEnum" name="WheelType">
+            <eLiterals name="FrontLeft"/>
+            <eLiterals name="FrontRight" value="1"/>
+            <eLiterals name="RearLeft" value="2"/>
+            <eLiterals name="RearRight" value="3"/>
+            <eLiterals name="Extra" value="4"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Engine">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="volume" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="enginetType" ordered="false"
+                unique="false" lowerBound="1" eType="#//judo/example/car/domain/EngineType"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="car" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Car" eOpposite="#//judo/example/car/domain/Car/engine"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Punishment">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="licensePlate:self.subject.licensePlates"/>
+            </eAnnotations>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="subject" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Person"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="licensePlate" ordered="false"
+                eType="#//judo/example/car/domain/LicensePlate"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="amount" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="justification"
+                ordered="false" unique="false" eType="#//PIMTypes/text"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Car_machine1">
+            <eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details key="originalName" value="machine1"/>
+            </eAnnotations>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Car_mysm">
+            <eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML">
+              <details key="originalName" value="mysm"/>
+            </eAnnotations>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="AllAttributes">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="^[A-Z]+$&#xA;attrBoolean&#xA;attrDate&#xA;attrInteger&#xA;attrString&#xA;attrEmail&#xA;attrDatetime&#xA;attrTime&#xA;attrEmail&#xA;attrString&#xA;attrDate&#xA;attrInteger&#xA;{attrInteger} &lt; {attrNatural} &amp;&amp; {attrInterval} = {attrInteger}&#xA;aatts&#xA;[-10,10,2],[11,20]&#xA;[-10,10,2],[11,20]&#xA;100.0&#xA;1&#xA;ABCDEF"/>
+            </eAnnotations>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrBoolean" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Boolean"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrDate" ordered="false"
+                unique="false" eType="#//PIMTypes/date"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrFloat" ordered="false"
+                unique="false" eType="#//PIMTypes/float"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrInteger" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrString" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrEmail" ordered="false"
+                unique="false" eType="#//PIMTypes/email"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrDatetime" ordered="false"
+                unique="false" eType="#//PIMTypes/datetime"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrTime" ordered="false"
+                unique="false" eType="#//PIMTypes/time"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrDuration" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrPercentage"
+                ordered="false" unique="false" eType="#//PIMTypes/percentage"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrPhone" ordered="false"
+                unique="false" eType="#//PIMTypes/phone"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrUrl" ordered="false"
+                unique="false" eType="#//PIMTypes/url"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrIpaddress"
+                ordered="false" unique="false" eType="#//PIMTypes/ipaddress"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrUuid" ordered="false"
+                unique="false" eType="#//PIMTypes/uuid"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrCurrency" ordered="false"
+                unique="false" eType="#//PIMTypes/currency"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrNatural" ordered="false"
+                unique="false" eType="#//PIMTypes/natural"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrCapitals" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="vfloat" ordered="false"
+                unique="false" eType="#//PIMTypes/float"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="attrInterval" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="AllAttributes2" eSuperTypes="#//judo/example/car/domain/AllAttributes">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="attrBoolean&#xA;validation_test1&#xA;validation_test2&#xA;{validation_test1} &lt; {validation_test2}&#xA;aatts2"/>
+            </eAnnotations>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="validation_test1"
+                ordered="false" unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="validation_test2"
+                ordered="false" unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Company">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="nonTenantMember"
+                ordered="false" eType="#//judo/example/car/domain/NonTenantMember"
+                eOpposite="#//judo/example/car/domain/NonTenantMember/companies"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="tenantMember2"
+                ordered="false" lowerBound="1" upperBound="-1" eType="#//judo/example/car/domain/TenantMember2"
+                containment="true" eOpposite="#//judo/example/car/domain/TenantMember2/company"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="tenantMember" ordered="false"
+                lowerBound="1" upperBound="-1" eType="#//judo/example/car/domain/TenantMember"
+                containment="true" eOpposite="#//judo/example/car/domain/TenantMember/company"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="tenantSingletonTest"
+                ordered="false" eType="#//judo/example/car/domain/TenantSingletonTest"
+                containment="true" eOpposite="#//judo/example/car/domain/TenantSingletonTest/company"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="level2Sub2" ordered="false"
+                lowerBound="1" upperBound="-1" eType="#//judo/example/car/domain/Level2Sub2"
+                containment="true" eOpposite="#//judo/example/car/domain/Level2Sub2/company"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="level1Sub2" ordered="false"
+                lowerBound="1" upperBound="-1" eType="#//judo/example/car/domain/Level1Sub2"
+                containment="true" eOpposite="#//judo/example/car/domain/Level1Sub2/company"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="NonTenantMember">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="tenantMember" ordered="false"
+                eType="#//judo/example/car/domain/TenantMember" eOpposite="#//judo/example/car/domain/TenantMember/nonTenantMembers"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="companies" ordered="false"
+                upperBound="-1" eType="#//judo/example/car/domain/Company" eOpposite="#//judo/example/car/domain/Company/nonTenantMember"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="TenantMember">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="nonTenantMembers2"
+                ordered="false" lowerBound="1" upperBound="-1" eType="#//judo/example/car/domain/NonTenantMember2"
+                eOpposite="#//judo/example/car/domain/NonTenantMember2/tenantMeber"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="company" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Company" eOpposite="#//judo/example/car/domain/Company/tenantMember"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="nonTenantMembers"
+                ordered="false" lowerBound="1" upperBound="-1" eType="#//judo/example/car/domain/NonTenantMember"
+                eOpposite="#//judo/example/car/domain/NonTenantMember/tenantMember"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="NonTenantMember2">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="tenantMembers2"
+                ordered="false" lowerBound="1" upperBound="-1" eType="#//judo/example/car/domain/TenantMember2"
+                eOpposite="#//judo/example/car/domain/TenantMember2/nonTenantMembers2"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="tenantMeber" ordered="false"
+                eType="#//judo/example/car/domain/TenantMember" eOpposite="#//judo/example/car/domain/TenantMember/nonTenantMembers2"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="TenantMember2">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="company" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Company" eOpposite="#//judo/example/car/domain/Company/tenantMember2"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="nonTenantMembers2"
+                ordered="false" lowerBound="1" upperBound="-1" eType="#//judo/example/car/domain/NonTenantMember2"
+                eOpposite="#//judo/example/car/domain/NonTenantMember2/tenantMembers2"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="TenantSingletonTest">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="company" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Company" eOpposite="#//judo/example/car/domain/Company/tenantSingletonTest"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Level2Sub2" eSuperTypes="#//judo/example/car/domain/Level1Sub1">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="company" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Company" eOpposite="#//judo/example/car/domain/Company/level2Sub2"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Level1Sub1" eSuperTypes="#//judo/example/car/domain/Master"/>
+          <eClassifiers xsi:type="ecore:EClass" name="Master">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="valid" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Boolean"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="price" ordered="false"
+                unique="false" eType="#//PIMTypes/currency"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="age" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Level1Sub2" eSuperTypes="#//judo/example/car/domain/Master">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="company" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/Company" eOpposite="#//judo/example/car/domain/Company/level1Sub2"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Level2Sub1" eSuperTypes="#//judo/example/car/domain/Level1Sub1"/>
+          <eClassifiers xsi:type="ecore:EClass" name="Level2Sub3" eSuperTypes="#//judo/example/car/domain/Level1Sub2"/>
+          <eClassifiers xsi:type="ecore:EClass" name="Level2Sub4" eSuperTypes="#//judo/example/car/domain/Level1Sub2"/>
+          <eClassifiers xsi:type="ecore:EClass" name="Level3Sub1" eSuperTypes="#//judo/example/car/domain/Level2Sub4"/>
+          <eClassifiers xsi:type="ecore:EClass" name="Level3Sub2" eSuperTypes="#//judo/example/car/domain/Level2Sub4"/>
+          <eClassifiers xsi:type="ecore:EClass" name="TenantPerson"/>
+          <eClassifiers xsi:type="ecore:EEnum" name="FixedEnum1">
+            <eLiterals name="Valami"/>
+            <eLiterals name="Barmi" value="1"/>
+            <eLiterals name="AkarmiMas" value="2"/>
+            <eLiterals name="Akarmi" value="3"/>
+            <eLiterals name="valamiMas" value="4"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EEnum" name="FixedEnum2">
+            <eLiterals name="Semmi"/>
+            <eLiterals name="Minden" value="1"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="FixedEnumTester">
+            <eOperations name="testFixedEnums" ordered="false" lowerBound="1"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="UniqueTest">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="secNumber" ordered="false"
+                unique="false" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="taxNumber" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"
+                iD="true"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="ValidationCodeTest">
+            <eOperations name="testCustomOpValidationCode" ordered="false" lowerBound="1"/>
+            <eOperations name="testCustomValidationCode" ordered="false" lowerBound="1"/>
+            <eOperations name="testContextMapperMissing" ordered="false" lowerBound="1"/>
+            <eOperations name="testMissingValidationCode" ordered="false" lowerBound="1"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="mandRel" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/domain/ValidationTestMandatoryRelation"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="validatioTestOptionalRelation"
+                ordered="false" eType="#//judo/example/car/domain/ValidatioTestOptionalRelation"
+                eOpposite="#//judo/example/car/domain/ValidatioTestOptionalRelation/optionalTest"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="validatioTestOptionalRelation2"
+                ordered="false" eType="#//judo/example/car/domain/ValidatioTestOptionalRelation2"
+                eOpposite="#//judo/example/car/domain/ValidatioTestOptionalRelation2/optionalTest2"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="validationTestMandatoryRelation2"
+                ordered="false" lowerBound="1" eType="#//judo/example/car/domain/ValidationTestMandatoryRelation2"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="ValidationTestMandatoryRelation"/>
+          <eClassifiers xsi:type="ecore:EClass" name="ValidatioTestOptionalRelation">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="optionalTest" ordered="false"
+                eType="#//judo/example/car/domain/ValidationCodeTest" eOpposite="#//judo/example/car/domain/ValidationCodeTest/validatioTestOptionalRelation"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="ValidatioTestOptionalRelation2">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="optionalTest2"
+                ordered="false" eType="#//judo/example/car/domain/ValidationCodeTest"
+                eOpposite="#//judo/example/car/domain/ValidationCodeTest/validatioTestOptionalRelation2"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="ValidationTestMandatoryRelation2"/>
+          <eClassifiers xsi:type="ecore:EClass" name="DefaultAttributeValueTest">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="defaultName"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="valid" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Boolean"
+                defaultValueLiteral="true"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="doubleWidth" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//Integer"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="20"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" ordered="false"
+                unique="false" lowerBound="1" eType="#//judo/example/car/domain/Shape"
+                defaultValueLiteral="round"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="datum" ordered="false"
+                unique="false" lowerBound="1" eType="#//PIMTypes/datetime"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EEnum" name="Shape">
+            <eLiterals name="round"/>
+            <eLiterals name="rectangle" value="1"/>
+          </eClassifiers>
+        </eSubpackages>
+        <eSubpackages name="ui" nsURI="http:///Model/judo/example/car/ui.ecore" nsPrefix="Model.judo.example.car.ui">
+          <eClassifiers xsi:type="ecore:EClass" name="Menu"/>
+          <eClassifiers xsi:type="ecore:EClass" name="AllViews"/>
+          <eClassifiers xsi:type="ecore:EClass" name="Customer">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="{amount} > 0"/>
+            </eAnnotations>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Security"/>
+          <eClassifiers xsi:type="ecore:EClass" name="DecisionModel"/>
+        </eSubpackages>
+        <eSubpackages name="doc" nsURI="http:///Model/judo/example/car/doc.ecore"
+            nsPrefix="Model.judo.example.car.doc">
+          <eClassifiers xsi:type="ecore:EClass" name="Wheel">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="wheelType" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/doc/WheelType" containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="comments" ordered="false"
+                upperBound="-1" eType="#//judo/example/car/doc/Comment" containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="company" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/doc/Company" containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="guid" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a guid"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a width"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="diameter" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a diamater"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="area" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez az area"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="price" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a price"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="WheelType">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="code" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a code"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Comment">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="author" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez az author"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Company">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="employees" ordered="false"
+                upperBound="-1" eType="#//judo/example/car/doc/Employee" containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="address" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/doc/Address" containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="code" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a code"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Employee">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a name"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Address">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="city" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a city"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="country" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez a country"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="LongName">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstAttribute"
+                ordered="false" unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="Engine">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="engineType" ordered="false"
+                lowerBound="1" eType="#//judo/example/car/doc/EngineType" containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EReference" name="engineLists" ordered="false"
+                upperBound="-1" eType="#//judo/example/car/doc/EngineList" containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="regNumber" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="owner" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="EngineType">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="engineType" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="EngineList">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="engineComments"
+                ordered="false" upperBound="-1" eType="#//judo/example/car/doc/EngineComment"
+                containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="engineElem" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="EngineComment">
+            <eStructuralFeatures xsi:type="ecore:EReference" name="sorszamok" ordered="false"
+                upperBound="-1" eType="#//judo/example/car/doc/CommentSorsz" containment="true"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="author" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez az author"/>
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+          </eClassifiers>
+          <eClassifiers xsi:type="ecore:EClass" name="CommentSorsz">
+            <eStructuralFeatures xsi:type="ecore:EAttribute" name="sorsz" ordered="false"
+                unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.uml2.types/model/Types.ecore#//String"
+                defaultValueLiteral="ez az author"/>
+          </eClassifiers>
+        </eSubpackages>
+        <eSubpackages name="permission" nsURI="http:///Model/judo/example/car/permission.ecore"
+            nsPrefix="Model.judo.example.car.permission"/>
+      </eSubpackages>
+    </eSubpackages>
+  </eSubpackages>
+  <eSubpackages name="PIMTypes" nsURI="http:///Model/PIMTypes.ecore" nsPrefix="Model.PIMTypes">
+    <eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <details key="originalName" value="PIM Types"/>
+    </eAnnotations>
+    <eClassifiers xsi:type="ecore:EDataType" name="cjszam" instanceClassName="cjszam">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="^(\d{2})\-(\d{2})\-(\d{6})$&#xA;01-01-012345"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EDataType" name="adoszam" instanceClassName="adoszam">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="^(\d{7})(\d)\-([1-5])\-(0[2-9]|[13][0-9]|2[02-9]|4[0-4]|51)$&#xA;12345678-1-02"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EDataType" name="ipaddress" instanceClassName="ipaddress">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$&#xA;127.0.0.1"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EDataType" name="currency" instanceClassName="currency">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="2"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EDataType" name="time" instanceClassName="time"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="memo" instanceClassName="memo"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="phone" instanceClassName="phone">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="^\+?\(?\d{2,4}\)?[\d\s-]{3,}$&#xA;+36-1-3007777"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EDataType" name="duration" instanceClassName="duration">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="[0,,]"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EDataType" name="percentage" instanceClassName="percentage"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="text" instanceClassName="text"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="natural" instanceClassName="natural">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="[0,,]"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EDataType" name="datetime" instanceClassName="datetime"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="file" instanceClassName="file"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="uuid" instanceClassName="uuid"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="url" instanceClassName="url">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="^(https?\:\/\/)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}(\/.*)*$&#xA;http://www.blackbelt.hu"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EDataType" name="float" instanceClassName="float"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="date" instanceClassName="date"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="email" instanceClassName="email">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$&#xA;name@company.com"/>
+      </eAnnotations>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="DerivedProperties" nsURI="http:///Model/DerivedProperties.ecore"
+      nsPrefix="Model.DerivedProperties">
+    <eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <details key="originalName" value="Derived Properties"/>
+    </eAnnotations>
+  </eSubpackages>
+  <eSubpackages name="UMLStandardProfile" nsURI="http:///Model/UMLStandardProfile.ecore"
+      nsPrefix="Model.UMLStandardProfile">
+    <eAnnotations source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <details key="originalName" value="UML Standard Profile"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="UML Standard Profile contains a UML metamodel (metaclasses without properties and associations), Standard UML stereotypes defined in the annex C of UML specification, validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally."/>
+    </eAnnotations>
+  </eSubpackages>
+</ecore:EPackage>

@@ -1,15 +1,6 @@
-import "modules/element.etl";
 import "modules/model.etl";
-import "modules/package.etl";
 import "modules/class.etl";
-import "modules/property.etl"; // something wrong is here :) TODO: debug transformation... to find the root cause
-////import "modules/role.etl";
-import "modules/enumeration.etl";
-import "modules/operation.etl";
-import "modules/relationship.etl";
-import "modules/parameter.etl";
-import "modules/stateMachine.etl";
-
+import "modules/property.etl"; 
 import "pre/collectJUDOStereotypes.etl";
 
 pre {

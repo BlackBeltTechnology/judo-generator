@@ -99,10 +99,6 @@
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_5_2_1c100dd_1510993400055_684442_2785" name="" visibility="public" value="1"/>
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400055_109146_2786" name="" visibility="public" value="1"/>
               </ownedAttribute>
-              <ownedAttribute xmi:id="_KExAI8w4Eee4YbvpwMXMhQ" name="track" visibility="public" isUnique="false">
-                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KExAKsw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
-                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KExAKcw4Eee4YbvpwMXMhQ" name="" visibility="public" value="*"/>
-              </ownedAttribute>
               <ownedAttribute xmi:id="_KExAK8w4Eee4YbvpwMXMhQ" name="lengthOfColorAttribute" visibility="protected" isUnique="false">
                 <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KExAMcw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
@@ -814,6 +810,7 @@
               </ownedAttribute>
             </packagedElement>
             <packagedElement xmi:type="uml:Class" xmi:id="_KEyPJcw4Eee4YbvpwMXMhQ" name="TenantPerson" visibility="public"/>
+<!--
             <packagedElement xmi:type="uml:Class" xmi:id="_KEyPKcw4Eee4YbvpwMXMhQ" name="ClassA" visibility="public">
               <ownedAttribute xmi:id="_KEyPLcw4Eee4YbvpwMXMhQ" name="x" visibility="public" type="_KEy00cw4Eee4YbvpwMXMhQ" association="_KEyPOcw4Eee4YbvpwMXMhQ">
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_5_2_1c100dd_1510993400077_351232_3347" name="" visibility="public" value="1"/>
@@ -875,6 +872,7 @@
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400116_209911_4599" name="" visibility="public" value="1"/>
               </ownedAttribute>
             </packagedElement>
+-->
             <packagedElement xmi:type="uml:Enumeration" xmi:id="_KEy1B8w4Eee4YbvpwMXMhQ" name="FixedEnum1" visibility="public">
               <ownedLiteral xmi:id="_KEy1C8w4Eee4YbvpwMXMhQ" name="Valami" visibility="public"/>
               <ownedLiteral xmi:id="_KEy1DMw4Eee4YbvpwMXMhQ" name="Barmi" visibility="public"/>
@@ -895,7 +893,7 @@
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_5_2_1c100dd_1510993400124_682103_4839" name="" visibility="public" value="1"/>
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400124_216433_4840" name="" visibility="public" value="1"/>
               </ownedAttribute>
-              <ownedAttribute xmi:id="_KEy1KMw4Eee4YbvpwMXMhQ" name="secNumber" visibility="public" isUnique="false" isID="true">
+              <ownedAttribute xmi:id="_KEy1KMw4Eee4YbvpwMXMhQ" name="secNumber" visibility="public" isUnique="false" isID="false">
                 <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
                 <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KEy1Lsw4Eee4YbvpwMXMhQ" name="" visibility="public"/>
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_2_1c100dd_1510993400085_780080_3586" name="" visibility="public" value="1"/>
