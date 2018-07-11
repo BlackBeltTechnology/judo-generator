@@ -3,14 +3,13 @@ import "element.etl";
 
 rule Model
 	transform s : Model
-	to        t : tgtPSM!JModel 
-	extends NamedElement {
+	to        t : SABRE!sabre {
 	
 	guard : (s.name = modelName)
 	
-	tgtModel = t;
+	sabreModel = t;
 	
-	tgtModel.println("tgtModel ==> ");
+	sabreModel.println("sabreModel ==> ");
 	
 	s.fullyQualifiedPath().println("On MODEL :: ");
 	"".println("RULE::Model");

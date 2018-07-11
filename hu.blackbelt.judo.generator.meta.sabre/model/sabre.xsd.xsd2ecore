@@ -13,64 +13,65 @@
     <nested inputs="sabre.xsd#//data-type;XSDSimpleTypeDefinition/XSDEnumerationFacet=4"
         outputs="sabre.ecore#//DataType/xsDateTime"/>
   </nested>
-  <nested inputs="bundleentry://858.fwk755979402/cache/www.w3.org/2001/XMLSchema.xsd#//string;XSDSimpleTypeDefinition=9"
+  <nested inputs="bundleentry://858.fwk287628665/cache/www.w3.org/2001/XMLSchema.xsd#//string;XSDSimpleTypeDefinition=9"
       outputs="http://www.eclipse.org/emf/2003/XMLType#//String"/>
-  <nested inputs="bundleentry://858.fwk755979402/cache/www.w3.org/2001/XMLSchema.xsd#//boolean;XSDSimpleTypeDefinition=10"
+  <nested inputs="bundleentry://858.fwk287628665/cache/www.w3.org/2001/XMLSchema.xsd#//boolean;XSDSimpleTypeDefinition=10"
       outputs="http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
-  <nested inputs="sabre.xsd#//PrimitiveType;XSDComplexTypeDefinition=3" outputs="sabre.ecore#//PrimitiveType">
-    <nested inputs="sabre.xsd#//PrimitiveType;XSDComplexTypeDefinition=3/XSDAttributeUse=4"
-        outputs="sabre.ecore#//PrimitiveType/default"/>
-    <nested inputs="sabre.xsd#//PrimitiveType;XSDComplexTypeDefinition=3/XSDAttributeUse=3"
-        outputs="sabre.ecore#//PrimitiveType/mandatory"/>
-    <nested inputs="sabre.xsd#//PrimitiveType;XSDComplexTypeDefinition=3/XSDAttributeUse"
-        outputs="sabre.ecore#//PrimitiveType/name"/>
-    <nested inputs="sabre.xsd#//PrimitiveType;XSDComplexTypeDefinition=3/XSDAttributeUse=2"
-        outputs="sabre.ecore#//PrimitiveType/path"/>
-    <nested inputs="sabre.xsd#//PrimitiveType;XSDComplexTypeDefinition=3/XSDAttributeUse=1"
-        outputs="sabre.ecore#//PrimitiveType/type"/>
+  <nested inputs="sabre.xsd#//Primitive;XSDComplexTypeDefinition=4" outputs="sabre.ecore#//primitive">
+    <nested inputs="sabre.xsd#//Primitive;XSDComplexTypeDefinition=4/XSDAttributeUse=4"
+        outputs="sabre.ecore#//primitive/default"/>
+    <nested inputs="sabre.xsd#//Primitive;XSDComplexTypeDefinition=4/XSDAttributeUse=3"
+        outputs="sabre.ecore#//primitive/mandatory"/>
+    <nested inputs="sabre.xsd#//Primitive;XSDComplexTypeDefinition=4/XSDAttributeUse"
+        outputs="sabre.ecore#//primitive/name"/>
+    <nested inputs="sabre.xsd#//Primitive;XSDComplexTypeDefinition=4/XSDAttributeUse=2"
+        outputs="sabre.ecore#//primitive/path"/>
+    <nested inputs="sabre.xsd#//Primitive;XSDComplexTypeDefinition=4/XSDAttributeUse=1"
+        outputs="sabre.ecore#//primitive/type"/>
   </nested>
-  <nested inputs="sabre.xsd#//TemplateType;XSDComplexTypeDefinition=4" outputs="sabre.ecore#//TemplateType">
-    <nested inputs="sabre.xsd#//TemplateType;XSDComplexTypeDefinition=4/XSDAttributeUse"
-        outputs="sabre.ecore#//TemplateType/name"/>
+  <nested inputs="sabre.xsd#//Template;XSDComplexTypeDefinition=5" outputs="sabre.ecore#//template">
+    <nested inputs="sabre.xsd#//Template;XSDComplexTypeDefinition=5/XSDAttributeUse"
+        outputs="sabre.ecore#//template/name"/>
   </nested>
-  <nested inputs="sabre.xsd#//StructureType;XSDComplexTypeDefinition=2" outputs="sabre.ecore#//StructureType">
-    <nested inputs="sabre.xsd#//StructureType;XSDComplexTypeDefinition=2/XSDParticle/XSDModelGroup/XSDParticle"
-        outputs="sabre.ecore#//StructureType/group"/>
-    <nested inputs="sabre.xsd#//StructureType;XSDComplexTypeDefinition=2/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle"
-        outputs="sabre.ecore#//StructureType/primitive"/>
-    <nested inputs="sabre.xsd#//StructureType;XSDComplexTypeDefinition=2/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=1"
-        outputs="sabre.ecore#//StructureType/list"/>
-    <nested inputs="sabre.xsd#//StructureType;XSDComplexTypeDefinition=2/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=2"
-        outputs="sabre.ecore#//StructureType/structure"/>
-    <nested inputs="sabre.xsd#//StructureType;XSDComplexTypeDefinition=2/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=3"
-        outputs="sabre.ecore#//StructureType/template"/>
-    <nested inputs="sabre.xsd#//StructureType;XSDComplexTypeDefinition=2/XSDAttributeUse=1"
-        outputs="sabre.ecore#//StructureType/mandatory"/>
-    <nested inputs="sabre.xsd#//StructureType;XSDComplexTypeDefinition=2/XSDAttributeUse"
-        outputs="sabre.ecore#//StructureType/name"/>
+  <nested inputs="sabre.xsd#//Structure;XSDComplexTypeDefinition=3" outputs="sabre.ecore#//structure">
+    <nested inputs="sabre.xsd#//Structure;XSDComplexTypeDefinition=3/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="sabre.ecore#//structure/primitive"/>
+    <nested inputs="sabre.xsd#//Structure;XSDComplexTypeDefinition=3/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=1"
+        outputs="sabre.ecore#//structure/list"/>
+    <nested inputs="sabre.xsd#//Structure;XSDComplexTypeDefinition=3/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=2"
+        outputs="sabre.ecore#//structure/structure"/>
+    <nested inputs="sabre.xsd#//Structure;XSDComplexTypeDefinition=3/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=3"
+        outputs="sabre.ecore#//structure/template"/>
+    <nested inputs="sabre.xsd#//Structure;XSDComplexTypeDefinition=3/XSDAttributeUse=1"
+        outputs="sabre.ecore#//structure/mandatory"/>
+    <nested inputs="sabre.xsd#//Structure;XSDComplexTypeDefinition=3/XSDAttributeUse"
+        outputs="sabre.ecore#//structure/name"/>
   </nested>
-  <nested inputs="sabre.xsd#//ListType;XSDComplexTypeDefinition=1" outputs="sabre.ecore#//ListType">
-    <nested inputs="sabre.xsd#//ListType;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle"
-        outputs="sabre.ecore#//ListType/structure"/>
-    <nested inputs="sabre.xsd#//ListType;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle=1"
-        outputs="sabre.ecore#//ListType/primitive"/>
-    <nested inputs="sabre.xsd#//ListType;XSDComplexTypeDefinition=1/XSDAttributeUse=2"
-        outputs="sabre.ecore#//ListType/mandatory"/>
-    <nested inputs="sabre.xsd#//ListType;XSDComplexTypeDefinition=1/XSDAttributeUse"
-        outputs="sabre.ecore#//ListType/name"/>
-    <nested inputs="sabre.xsd#//ListType;XSDComplexTypeDefinition=1/XSDAttributeUse=1"
-        outputs="sabre.ecore#//ListType/path"/>
+  <nested inputs="sabre.xsd#//List;XSDComplexTypeDefinition=2" outputs="sabre.ecore#//list">
+    <nested inputs="sabre.xsd#//List;XSDComplexTypeDefinition=2/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="sabre.ecore#//list/structure"/>
+    <nested inputs="sabre.xsd#//List;XSDComplexTypeDefinition=2/XSDParticle/XSDModelGroup/XSDParticle=1"
+        outputs="sabre.ecore#//list/primitive"/>
+    <nested inputs="sabre.xsd#//List;XSDComplexTypeDefinition=2/XSDAttributeUse=2"
+        outputs="sabre.ecore#//list/mandatory"/>
+    <nested inputs="sabre.xsd#//List;XSDComplexTypeDefinition=2/XSDAttributeUse" outputs="sabre.ecore#//list/name"/>
+    <nested inputs="sabre.xsd#//List;XSDComplexTypeDefinition=2/XSDAttributeUse=1"
+        outputs="sabre.ecore#//list/path"/>
   </nested>
-  <nested inputs="sabre.xsd#//DocumentType;XSDComplexTypeDefinition" outputs="sabre.ecore#//document">
-    <nested inputs="sabre.xsd#//DocumentType;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle"
-        outputs="sabre.ecore#//document/group"/>
-    <nested inputs="sabre.xsd#//DocumentType;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle"
+  <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1" outputs="sabre.ecore#//document">
+    <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle"
         outputs="sabre.ecore#//document/primitive"/>
-    <nested inputs="sabre.xsd#//DocumentType;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=1"
+    <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=1"
         outputs="sabre.ecore#//document/list"/>
-    <nested inputs="sabre.xsd#//DocumentType;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=2"
+    <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=2"
         outputs="sabre.ecore#//document/structure"/>
-    <nested inputs="sabre.xsd#//DocumentType;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=3"
+    <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=3"
         outputs="sabre.ecore#//document/template"/>
+    <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDAttributeUse"
+        outputs="sabre.ecore#//document/name"/>
+  </nested>
+  <nested inputs="sabre.xsd#//Sabre;XSDComplexTypeDefinition" outputs="sabre.ecore#//sabre">
+    <nested inputs="sabre.xsd#//Sabre;XSDComplexTypeDefinition/XSDParticle/XSDModelGroup/XSDParticle"
+        outputs="sabre.ecore#//sabre/document"/>
   </nested>
 </xsd2ecore:XSD2EcoreMappingRoot>

@@ -1,0 +1,36 @@
+
+operation PrimitiveType getEquivalentPrimType() : SABRE!DataType {
+	return getSabrePrimitiveType(self.name);
+}
+operation getSabrePrimitiveType(name : String) : SABRE!DataType {
+	var type;
+
+	switch (name.toUpperCase()) {
+		case "BOOLEAN" : type = SABRE!DataType#xsString;
+		case "STRING" : type = SABRE!DataType#xsString;
+		case "INTEGER" : type = SABRE!DataType#xsInt;
+		case "VOID" : type = SABRE!DataType#xsString;
+		case "DATE" : type = SABRE!DataType#xsDate;
+		case "DATETIME" : type = SABRE!DataType#xsDate;
+		case "TIME" : type = SABRE!DataType#xsDate;
+		case "TEXT" : type = SABRE!DataType#xsString;
+		case "MEMO" : type = SABRE!DataType#xsString;
+		case "FLOAT" : type = SABRE!DataType#xsFloat;
+		case "PERCENTAGE" : type = SABRE!DataType#xsFloat;
+		case "CURRENCY" : type = SABRE!DataType#xsFloat;
+		case "GPS" : type = SABRE!DataType#xsString;
+		case "TRACK" : type = SABRE!DataType#xsString;
+		case "FILE" : type = SABRE!DataType#xsString;
+		case "UUID" : type = SABRE!DataType#xsString;
+		case "DURATION" : type = SABRE!DataType#xsInt;
+		case "EMAIL" : type = SABRE!DataType#xsString;
+		case "PHONE" : type = SABRE!DataType#xsString;
+		case "NATURAL" : type = SABRE!DataType#xsFloat;
+		case "IPADDRESS" : type = SABRE!DataType#xsString;
+		case "URL" : type = SABRE!DataType#xsString;
+		case "ID" : type = SABRE!DataType#xsString;
+		default:		name.println("TYPE IS NOT HANDLED: ");
+	}
+	
+	return jType;
+}

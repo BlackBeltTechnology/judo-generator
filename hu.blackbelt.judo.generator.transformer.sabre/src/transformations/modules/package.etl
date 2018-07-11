@@ -1,6 +1,7 @@
 import "../../operations/_importAll.eol";
 import "element.etl";
 
+/*sss
 rule Package
 	transform s : Package
 	to 		  t : tgtPSM!JPackage 
@@ -24,5 +25,5 @@ rule Package
 	s.fullyQualifiedPath().println("RULE::Package - PKG :: ");
 	"".println("c");
 }
-
+*/
 

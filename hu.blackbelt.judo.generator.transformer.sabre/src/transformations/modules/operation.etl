@@ -1,6 +1,7 @@
 import "../../operations/_importAll.eol";
 import "element.etl";
 
+/*
 rule Operation
 	transform s : Operation
 	to 		  t : tgtPSM!JOperation 
@@ -26,3 +27,4 @@ rule Operation
 		t.bulk = false;
 	}
 }
+*/

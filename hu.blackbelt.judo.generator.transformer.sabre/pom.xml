@@ -14,6 +14,8 @@
 
 	<properties>
        <src.dir>src</src.dir>
+        <target.model>sabre</target.model>
+        <model>Model</model>
 
         <!-- src.model>car</src.model>
         <target.model>car</target.model>
@@ -44,7 +46,7 @@
     
     <profiles>
         <profile>
-            <id>psm-transformer-development</id>
+            <id>sabre-transformer-development</id>
             <build>
                 <plugins>
         
@@ -60,7 +62,7 @@
                                 </goals>
                                 <configuration>
                                     <metaModels>
-                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.sabre:ecore:sabre:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
         
@@ -72,7 +74,9 @@
                                     </metaModels>
                                     <models>
                                         <model>
-                                            <artifact>mvn:hu.blackbelt.judo:hu.blackbelt.judo.framework.domain:uml:model:${framework.model.version}</artifact>
+                                            <!-- <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:uml:model:${framework.model.version}</artifact> -->
+                                            <artifact>${basedir}/model/car.uml</artifact> -->
+                                            
                                             <name>inpPIM</name>
                                             <metaModelUris>
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
@@ -89,17 +93,23 @@
                                         <model>
                                             <artifact>${project.build.directory}/${target.model}.model</artifact>
                                             <name>SABRE</name>
-                                            <readOnLoad>true</readOnLoad>
+                                            <readOnLoad>false</readOnLoad>
                                             <storeOnDisposal>true</storeOnDisposal>
                                             <metaModelUris>
-                                                <param>http://blackbelt.hu/judo/meta/psm</param>
+                                                <param>http://blackbelt.hu/meta/sabre</param>
                                             </metaModelUris>
                                         </model>
                                     </models>
                                     <eolPrograms>
                                         <Etl>
                                             <source>src/transformations/pimToSabre.etl</source>
-                                        </Etl>
+                                            <parameters>
+                                            	<parameter>
+                                            	    <name>modelName</name>
+                                                    <value>${model}</value>
+                                            	</parameter>
+                                            </parameters>
+                                        </Etl>                                      
                                     </eolPrograms>
                                 </configuration>
                             </execution>
@@ -122,7 +132,7 @@
                                         <artifact>
                                             <file>${project.build.directory}/${target.model}.model</file>
                                             <type>model</type>
-                                            <classifier>psm</classifier>
+                                            <classifier>sabre</classifier>
                                         </artifact>
                                     </artifacts>
                                 </configuration>

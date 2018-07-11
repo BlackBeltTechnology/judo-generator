@@ -1,6 +1,7 @@
 import "../../operations/_importAll.eol";
 import "element.etl";
 
+/*
 @primary
 rule Enumeration
 	transform s : Enumeration
@@ -163,6 +164,8 @@ rule EnumerationLiteral
 	"".println("RULE::EnumerationLiteral");
 }
 
+*/
+
 /*
 rule EnumUsage2Relationship
 	transform s : Property
@@ -201,6 +204,7 @@ rule EnumUsage2Relationship
 	"".println("RULE::EnumUsage2Relationship");
 }*/
 
+/*
 operation dumpEnumUsage2Relationship( s : Property) {
 	s.println("RULE::EnumUsage2Relationship Property : ");
 	s.type.println("RULE::EnumUsage2Relationship TYPE of Property : ");
@@ -212,3 +216,4 @@ operation dumpEnumUsage2Relationship( s : Property) {
 	tgtPSM!JClass.allInstances()->select( c | c.package = s.type.owner.equivalent("Package") and 
 											  c.name = s.type.name ).first().println("EnumEQUIVClass : ");
 }
+*/

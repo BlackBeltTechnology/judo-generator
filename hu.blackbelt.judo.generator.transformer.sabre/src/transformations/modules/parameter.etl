@@ -1,6 +1,7 @@
 import "../../operations/_importAll.eol";
 import "element.etl";
 
+/*
 rule Parameter
 	transform s : Parameter
 	to 		  t : tgtPSM!JParameter 
@@ -31,7 +32,7 @@ rule Parameter
 	
 	// TODO refactor to EOL operation
 	// suspect that we can not defnie rule on parameter type...
-	/*
+
 	if ( s.type.isTypeOf(Class) and s.type.isUndefined()) {
 		println("Class TYPE EQUIV is UNDEFINED!!!");
 	} else {
@@ -55,5 +56,6 @@ rule Parameter
 		} else {
 			t.type ::= s.type;
 		}
-	}*/
+	}
 }
+*/

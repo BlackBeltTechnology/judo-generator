@@ -3,10 +3,32 @@ import "element.etl";
 
 // TODO: refactor common parts into an operation
 //		 set type - refactor type selection
+
 @primary
 rule ClassProperty
 	transform s : Property
-	to        t : tgtPSM!JAttribute
+	to        t : SABRE!structure {
+	
+	guard : s.owner.equivalent("Class").isDefined() 
+			and s.owner.isTypeOf(Class) 
+			and not s.association.isDefined() 
+			and not s.type.isTypeOf(Class) 
+			and not s.type.isTypeOf(Enumeration)
+	
+	s.owner.equivalent("Class").structure.add(t);
+	
+	t.mandatory = s.lowerValue.isDefined() and s.lowerValue.value > 0;
+	t.name = s.name;
+	
+	s.name.println("RULE::ClassProperty: ");
+	
+}
+
+/*
+@primary
+rule ClassProperty
+	transform s : Property
+	to        t : SABRE!JAttribute
 	extends TypedElement {
 	
 	guard : s.owner.equivalent("Class").isDefined() 
@@ -150,6 +172,7 @@ rule ClassPropertyRole
 	}
 
 }
+*/
 
 /*rule ClassPropertyRole
 	transform s : Property
@@ -174,7 +197,7 @@ rule ClassPropertyRole
 	s.owner.equivalent("Class").package.classes.add(t);
 }*/
 
-
+/*
 rule ClassPropertyRoleEnum
 	transform s : Property
 	to        r1 : tgtPSM!JRole, r2 : tgtPSM!JRole, rs : tgtPSM!JRelationship  
@@ -268,3 +291,4 @@ rule RelationProperty
     
 	"".println("RULE::RelationProperty");
 }
+*/

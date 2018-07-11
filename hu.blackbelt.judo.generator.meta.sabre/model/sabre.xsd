@@ -10,66 +10,72 @@
 	ecore:name="sabre"
 	ecore:package="sabre">
   
-  <xs:element name="document" type="sabre:DocumentType" ecore:ignore="true">
-	<xs:unique name="UniqueNamesInDocument">
+  <xs:element name="document" type="sabre:document" ecore:ignore="true">
+	<xs:unique name="UniqueNamesIndocument">
       <xs:selector xpath="./*"/>
       <xs:field xpath="@name"/>
     </xs:unique>
   </xs:element>
 
-  <xs:complexType name="DocumentType" ecore:name="document" mixed="true">
-   <xs:sequence>
-     <xs:choice maxOccurs="unbounded" minOccurs="0">
-       <xs:element name="primitive" type="sabre:PrimitiveType" ecore:featureMap=""/>
-       <xs:element name="list" type="sabre:ListType" ecore:featureMap=""/>
-       <xs:element name="structure" type="sabre:StructureType" ecore:featureMap="">
-		    <xs:unique name="DocumentUniqueNamesInStructure">
+
+
+  <xs:complexType name="Sabre" ecore:name="sabre" mixed="false" >
+    <xs:sequence minOccurs="0" maxOccurs="unbounded" ecore:featureMap="">
+       <xs:element name="document" type="sabre:document"/>
+	</xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="document" ecore:name="document" mixed="false">
+   <xs:sequence minOccurs="0" maxOccurs="unbounded">
+     <xs:choice maxOccurs="1" minOccurs="1" ecore:featureMap="">
+       <xs:element name="primitive" type="sabre:Primitive"/>
+       <xs:element name="list" type="sabre:List"/>
+       <xs:element name="structure"  type="sabre:Structure">
+		    <xs:unique name="documentUniqueNamesInStructure">
 		      <xs:selector xpath="./*"/>
 		      <xs:field xpath="@name"/>
 		    </xs:unique>
        </xs:element>
-       <xs:element name="template" type="sabre:TemplateType" ecore:featureMap=""/>
+       <xs:element name="template" type="sabre:Template" />
      </xs:choice>
    </xs:sequence>
+   <xs:attribute name="name" type="xs:string" use="optional"/>
  </xs:complexType>
  
- 
-  <xs:complexType name="ListType" mixed="false">
-    <xs:choice maxOccurs="1" minOccurs="1">
-      <xs:element name="structure" type="sabre:StructureType" ecore:featureMap="">
+  <xs:complexType name="List" ecore:name="list" mixed="false">
+    <xs:choice maxOccurs="1" minOccurs="1" ecore:featureMap="">
+      <xs:element name="structure" type="sabre:Structure">
 		    <xs:unique name="ListTypeUniqueNamesInStructure">
 		      <xs:selector xpath="./*"/>
 		      <xs:field xpath="@name"/>
 		    </xs:unique>
       </xs:element>
-      <xs:element name="primitive" type="sabre:PrimitiveType" ecore:featureMap=""/>
+      <xs:element name="primitive" type="sabre:Primitive"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="path" type="xs:string" use="optional"/>
     <xs:attribute name="mandatory" type="xs:boolean" use="optional" default="false"/>
   </xs:complexType>
-  
 
-
-  <xs:complexType name="StructureType" mixed="false">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="primitive" type="sabre:PrimitiveType" ecore:featureMap=""/>
-        <xs:element name="list" type="sabre:ListType" ecore:featureMap=""/>
-        <xs:element name="structure" type="sabre:StructureType" ecore:featureMap="">
+  <xs:complexType name="Structure" ecore:name="structure" mixed="false">
+    <xs:sequence maxOccurs="unbounded" minOccurs="0" >
+      <xs:choice maxOccurs="1" minOccurs="1" ecore:featureMap="">
+        <xs:element name="primitive" type="sabre:Primitive"/>
+        <xs:element name="list" type="sabre:List"/>
+        <xs:element name="structure" type="sabre:Structure">
 		    <xs:unique name="StructureTypeUniqueNamesInStructure">
 		      <xs:selector xpath="./*"/>
 		      <xs:field xpath="@name"/>
 		    </xs:unique>
         </xs:element>
-        <xs:element name="template" type="sabre:TemplateType" ecore:featureMap=""/>
+        <xs:element name="template" type="sabre:Template"/>
       </xs:choice>
     </xs:sequence>
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="mandatory" type="xs:boolean" use="optional" default="false"/>
   </xs:complexType>
 
-  <xs:complexType name="PrimitiveType" mixed="false">
+  <xs:complexType name="Primitive" ecore:name="primitive" mixed="false">
       <xs:attribute name="name" type="xs:string" use="required"/>
       <xs:attribute name="type" type="sabre:data-type" use="required"/>
       <xs:attribute name="path" type="xs:string" use="optional"/>
@@ -77,7 +83,7 @@
       <xs:attribute name="default" type="xs:string" use="optional"/>
   </xs:complexType>
 
-  <xs:complexType name="TemplateType" mixed="false">
+  <xs:complexType name="Template" ecore:name="template" mixed="false">
     <xs:simpleContent>
       <xs:extension base="xs:string">
         <xs:attribute name="name" type="xs:string" use="required"/>

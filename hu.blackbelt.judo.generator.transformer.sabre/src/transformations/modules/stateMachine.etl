@@ -1,6 +1,7 @@
 import "../../operations/_importAll.eol";
 import "element.etl";
 
+/*
 rule StateMachine
 	transform s : StateMachine
 	to 		  t : tgtPSM!JStateMachine 
@@ -111,7 +112,7 @@ rule Transition
 			t.text = "";
 			t.expression = "";
 		}
-	}*/
+	}
 	
 	if ( s.trigger.event.`operation`.isDefined() and s.trigger.event.`operation`.size() > 0) {
 	
@@ -124,7 +125,9 @@ rule Transition
 	
 	t.println("RULE::Transition - tgt : ");
 }
+*/
 
+/*
 // Preconditions for createEnumImplInfrastucture(): 
 // Enumeration for StateMachine : DEFINED
 // EnumerationLiteral for StateMachine : DEFINED
@@ -195,4 +198,4 @@ operation tgtPSM!JStateMachine createEnumImplInfrastucture() : Map {
 
 	return returnValue;
 }
-
+*/

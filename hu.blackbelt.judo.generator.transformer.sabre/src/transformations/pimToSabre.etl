@@ -14,7 +14,7 @@ import "pre/collectJUDOStereotypes.etl";
 
 pre {
 	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
-	var tgtModel;
+	var sabreModel;
 	var stereotypeApplications : Map = collectJUDOStereotypeInstances();
 	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
 	
@@ -25,13 +25,15 @@ pre {
 
 post {
 	"POST processing STARTED:".println();
-	
+
+    /*	
 	// set attributesForListing on all Classes
 	stereotypeApplications.get("list").setAttrForListingAssocs();
 	
 	// set attributeOrder on all Classes
 	stereotypeApplications.get("order").setAttrOrderAssocs();
-	
+	*/
+	/*
 	for (je in tgtPSM!JElement.all) {
 		if (je.participates.size = 0) {
 			je.participates.add(tgtPSM!JLayer#ALL);
@@ -41,6 +43,7 @@ post {
 			je.uuid = generateUuid("FW", je.uuid, "_");
 		}
 	}
+	
 	
 	
 	var allClasses = tgtPSM!JClass.all.select(c | c.supertype.isUndefined() and c.participates(tgtPSM!JLayer#PERSISTENCE) and c.framework = transformDomain.asBoolean());
@@ -59,7 +62,7 @@ post {
 	//Impacts performance
 	
 	checkAllUuidsForDuplicateOrMissing();
-	
+	*/
 	"POST processing FINISHED.".println();
 }
 

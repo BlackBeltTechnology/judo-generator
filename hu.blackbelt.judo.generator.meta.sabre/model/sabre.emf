@@ -1,0 +1,119 @@
+@namespace(uri="http://blackbelt.hu/meta/sabre", prefix="sabre")
+package sabre;
+
+import "http://www.eclipse.org/emf/2003/XMLType";
+
+@ExtendedMetaData(name="data-type")
+enum DataType {
+  xsString = 0;
+  xsInt = 1;
+  xsFloat = 2;
+  xsDate = 3;
+  xsDateTime = 4;
+}
+
+@ExtendedMetaData(name="data-type:Object", baseType="data-type")
+datatype DataTypeObject : org.eclipse.emf.common.util.Enumerator;
+
+@ExtendedMetaData(name="document", kind="mixed")
+class document {
+
+  @ExtendedMetaData(kind="elementWildcard", name=":mixed")
+  !unique attr ecore.EFeatureMapEntry[*] mixed;
+
+  @ExtendedMetaData(kind="element", name="primitive")
+  volatile transient derived !resolve val primitive[*] primitive;
+
+  @ExtendedMetaData(kind="element", name="list")
+  volatile transient derived !resolve val list[*] list;
+
+  @ExtendedMetaData(kind="element", name="structure")
+  volatile transient derived !resolve val structure[*] structure;
+
+  @ExtendedMetaData(kind="element", name="template")
+  volatile transient derived !resolve val template[*] template;
+
+  @ExtendedMetaData(kind="attribute", name="name")
+  attr type.String name;
+}
+
+@ExtendedMetaData(name="List", kind="elementOnly")
+class list {
+
+  @ExtendedMetaData(kind="element", name="structure")
+  !resolve val structure structure;
+
+  @ExtendedMetaData(kind="element", name="primitive")
+  !resolve val primitive primitive;
+
+  @ExtendedMetaData(kind="attribute", name="mandatory")
+  unsettable attr type.Boolean mandatory = "false";
+
+  @ExtendedMetaData(kind="attribute", name="name")
+  attr type.String[1] name;
+
+  @ExtendedMetaData(kind="attribute", name="path")
+  attr type.String path;
+}
+
+@ExtendedMetaData(name="Primitive", kind="empty")
+class primitive {
+
+  @ExtendedMetaData(kind="attribute", name="default")
+  attr type.String default;
+
+  @ExtendedMetaData(kind="attribute", name="mandatory")
+  unsettable attr type.Boolean mandatory = "false";
+
+  @ExtendedMetaData(kind="attribute", name="name")
+  attr type.String[1] name;
+
+  @ExtendedMetaData(kind="attribute", name="path")
+  attr type.String path;
+
+  @ExtendedMetaData(kind="attribute", name="type")
+  unsettable attr DataType[1] type;
+}
+
+@ExtendedMetaData(name="Sabre", kind="elementOnly")
+class sabre {
+
+  @ExtendedMetaData(kind="element", name="document")
+  !resolve val document[*] document;
+}
+
+@ExtendedMetaData(name="Structure", kind="elementOnly")
+class structure {
+
+  @ExtendedMetaData(kind="group", name="group:0")
+  !unique attr ecore.EFeatureMapEntry[*] group;
+
+  @ExtendedMetaData(kind="element", name="primitive", group="#group:0")
+  volatile transient derived !resolve val primitive[*] primitive;
+
+  @ExtendedMetaData(kind="element", name="list", group="#group:0")
+  volatile transient derived !resolve val list[*] list;
+
+  @ExtendedMetaData(kind="element", name="structure", group="#group:0")
+  volatile transient derived !resolve val structure[*] structure;
+
+  @ExtendedMetaData(kind="element", name="template", group="#group:0")
+  volatile transient derived !resolve val template[*] template;
+
+  @ExtendedMetaData(kind="attribute", name="mandatory")
+  unsettable attr type.Boolean mandatory = "false";
+
+  @ExtendedMetaData(kind="attribute", name="name")
+  attr type.String[1] name;
+}
+
+@ExtendedMetaData(name="Template", kind="simple")
+class template {
+
+  @ExtendedMetaData(name=":0", kind="simple")
+  attr type.String value;
+
+  @ExtendedMetaData(kind="attribute", name="name")
+  attr type.String[1] name;
+}
+

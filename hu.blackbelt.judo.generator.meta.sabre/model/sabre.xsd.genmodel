@@ -18,39 +18,40 @@
     </genEnums>
     <genDataTypes ecoreDataType="sabre.ecore#//DataTypeObject"/>
     <genClasses ecoreClass="sabre.ecore#//document">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute sabre.ecore#//document/mixed"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute sabre.ecore#//document/group"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//document/primitive"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//document/list"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//document/structure"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//document/template"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//document/name"/>
     </genClasses>
-    <genClasses ecoreClass="sabre.ecore#//ListType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sabre.ecore#//ListType/structure"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sabre.ecore#//ListType/primitive"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//ListType/mandatory"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//ListType/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//ListType/path"/>
+    <genClasses ecoreClass="sabre.ecore#//list">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sabre.ecore#//list/structure"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sabre.ecore#//list/primitive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//list/mandatory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//list/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//list/path"/>
     </genClasses>
-    <genClasses ecoreClass="sabre.ecore#//PrimitiveType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//PrimitiveType/default"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//PrimitiveType/mandatory"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//PrimitiveType/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//PrimitiveType/path"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//PrimitiveType/type"/>
+    <genClasses ecoreClass="sabre.ecore#//primitive">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//primitive/default"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//primitive/mandatory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//primitive/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//primitive/path"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//primitive/type"/>
     </genClasses>
-    <genClasses ecoreClass="sabre.ecore#//StructureType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute sabre.ecore#//StructureType/group"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//StructureType/primitive"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//StructureType/list"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//StructureType/structure"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//StructureType/template"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//StructureType/mandatory"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//StructureType/name"/>
+    <genClasses ecoreClass="sabre.ecore#//sabre">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//sabre/document"/>
     </genClasses>
-    <genClasses ecoreClass="sabre.ecore#//TemplateType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//TemplateType/value"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//TemplateType/name"/>
+    <genClasses ecoreClass="sabre.ecore#//structure">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//structure/primitive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//structure/list"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//structure/structure"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//structure/template"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//structure/mandatory"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//structure/name"/>
+    </genClasses>
+    <genClasses ecoreClass="sabre.ecore#//template">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//template/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//template/name"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

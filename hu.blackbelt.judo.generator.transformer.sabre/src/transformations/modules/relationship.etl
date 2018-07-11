@@ -1,6 +1,7 @@
 import "../../operations/_importAll.eol";
 import "element.etl";
 
+/*
 @primary
 rule Relationship
 	transform s : Association
@@ -40,4 +41,5 @@ rule Relationship
 	
 	t.println("RULE::Relationship - RESULT : ");
 }
+*/
 
