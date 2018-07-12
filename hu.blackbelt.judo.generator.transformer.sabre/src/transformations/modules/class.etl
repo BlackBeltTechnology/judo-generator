@@ -8,7 +8,9 @@ rule SabreClassDocument
 
 	s.name.println("PRIMARY RULE :: SabreClassDocument: ");
 	sabreModel.document.add(t);
-	t.name = s.name.decapitalize();
+	t.name = s.name.toSnake();
+	t.domain = "document";
+	t.application = packagePrefix + s.fullyQualifiedPath().toLowerCase();
 
     s.primitiveProperties().collect(p | p.name).println("    Primitives: ");
 	t.primitive.addAll(s.primitiveProperties().collect(p | p.equivalent("SabrePropertyPrimitive")));	

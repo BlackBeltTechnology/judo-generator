@@ -108,6 +108,11 @@
                                             	    <name>modelName</name>
                                                     <value>${model}</value>
                                             	</parameter>
+                                            	<parameter>
+                                            	    <name>packagePrefix</name>
+                                                    <value>hu.blackbelt</value>
+                                            	</parameter>
+
                                             </parameters>
                                         </Etl>                                      
                                     </eolPrograms>

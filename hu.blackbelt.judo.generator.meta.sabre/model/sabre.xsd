@@ -40,6 +40,8 @@
      </xs:choice>
    </xs:sequence>
    <xs:attribute name="name" type="xs:string" use="optional"/>
+   <xs:attribute name="domain" type="xs:string" use="optional"/>
+   <xs:attribute name="application" type="xs:string" use="optional"/>
  </xs:complexType>
  
   <xs:complexType name="List" ecore:name="list" mixed="false">
@@ -99,6 +101,11 @@
       <xs:enumeration value="xs:float"/>
       <xs:enumeration value="xs:date"/>
       <xs:enumeration value="xs:dateTime"/>
+      <xs:enumeration value="xs:boolean"/>
+      <xs:enumeration value="xs:time"/>
+      <xs:enumeration value="xs:integer"/>
+      <xs:enumeration value="xs:decimal"/>
+      <xs:enumeration value="xs:long"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

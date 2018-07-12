@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document application="hu.blackbelt.judo.example.car" domain="document" name="engine">
+  <primitive mandatory="true" name="color" path="" type="xs:string"/>
+  <primitive mandatory="true" name="owner" path="" type="xs:string"/>
+  <primitive mandatory="true" name="regNumber" path="" type="xs:string"/>
+  <list mandatory="false" name="engineLists" path="">
+    <structure mandatory="false" name="engineList">
+      <primitive mandatory="true" name="engineElem" path="" type="xs:string"/>
+      <list mandatory="false" name="engineComments" path="">
+        <structure mandatory="false" name="engineComment">
+          <primitive mandatory="true" name="author" path="" type="xs:string"/>
+          <primitive mandatory="true" name="text" path="" type="xs:string"/>
+          <list mandatory="false" name="sorszamok" path="">
+            <structure mandatory="false" name="commentSorsz">
+              <primitive mandatory="true" name="sorsz" path="" type="xs:string"/>
+            </structure>
+          </list>
+        </structure>
+      </list>
+    </structure>
+  </list>
+  <structure mandatory="true" name="engineType">
+    <primitive mandatory="true" name="engineType" path="" type="xs:string"/>
+  </structure>
+</document>

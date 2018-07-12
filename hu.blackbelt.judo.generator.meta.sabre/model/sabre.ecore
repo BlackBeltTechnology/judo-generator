@@ -10,6 +10,11 @@
     <eLiterals name="xsFloat" value="2" literal="xs:float"/>
     <eLiterals name="xsDate" value="3" literal="xs:date"/>
     <eLiterals name="xsDateTime" value="4" literal="xs:dateTime"/>
+    <eLiterals name="xsBoolean" value="5" literal="xs:boolean"/>
+    <eLiterals name="xsTime" value="6" literal="xs:time"/>
+    <eLiterals name="xsInteger" value="7" literal="xs:integer"/>
+    <eLiterals name="xsDecimal" value="8" literal="xs:decimal"/>
+    <eLiterals name="xsLong" value="9" literal="xs:long"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="DataTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -48,6 +53,18 @@
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
         <details key="name" value="template"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="application" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="application"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domain" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="domain"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">

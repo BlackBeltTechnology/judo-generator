@@ -1,0 +1,70 @@
+[%
+  var sb := new Native("java.lang.StringBuilder");
+  document.render(sb, "");
+%][%=sb.toString()%][%
+
+  operation document render(sb, indent : String) {
+    sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+    sb.append("<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" elementFormDefault=\"qualified\">\n");
+    sb.append("  <xs:element name=\"document\">\n");
+	sb.append("	   <xs:complexType>\n");
+	sb.append("	     <xs:all>\n");
+    
+    self.primitive.includingAll(self.structure).includingAll(self.list).includingAll(self.template).collect(p | p.render(sb, indent + "	       "));
+
+    sb.append("      </xs:all>\n");
+    sb.append("    </xs:complexType>\n");
+    sb.append("  </xs:element>\n");
+    sb.append("</xs:schema>\n");
+  }
+  
+  operation Boolean toMinOccurs() {
+     if (self) {
+        return "1";
+     } else {
+        return "0";
+     }
+  }
+  
+  operation primitive render (sb, indent : String) : Boolean {
+  	 sb.append(indent + "<xs:element maxOccurs=\"1\" type=\"" + self.type + "\" name=\"" + self.name + "\" minOccurs=\"" + self.mandatory.toMinOccurs() +"\"/>\n");  
+     return true;
+  }
+
+  operation structure render(sb, indent : String) : Boolean {
+
+  	 sb.append(indent + "<xs:element name=\"" + self.name + "\" maxOccurs=\"1\" minOccurs=\"" + self.mandatory.toMinOccurs() + "\">\n");
+     sb.append(indent + "  <xs:complexType>\n");
+     sb.append(indent + "    <xs:all>\n");
+  
+     self.primitive.includingAll(self.structure).includingAll(self.list).includingAll(self.template).collect(p | p.render(sb, indent + "      "));
+     
+     sb.append(indent + "    </xs:all>\n");
+     sb.append(indent + "  </xs:complexType>\n");
+     sb.append(indent + "</xs:element>\n");
+     return true;
+  }
+ 
+  operation list render(sb, indent : String) : Boolean {
+  	 sb.append(indent + "<xs:element name=\"" + self.name + "\" minOccurs=\"0\">\n");
+     sb.append(indent + "  <xs:complexType>\n");
+     sb.append(indent + "    <xs:sequence maxOccurs=\"unbounded\"" + "\" minOccurs=\"" + self.mandatory.toMinOccurs() + "\">\n");
+  
+     if (self.structure.isDefined()) {
+        self.structure.render(sb, indent + "      ");
+     } else {
+        self.primitive.render(sb, indent + "      ");
+     }
+     
+     sb.append(indent + "    </xs:sequence>\n");
+     sb.append(indent + "  </xs:complexType>\n");
+     sb.append(indent + "</xs:element>\n");
+     return true;
+  }
+
+  operation template render(sb, indent : String) : Boolean {
+  	 // sb.append(indent + "<xs:element maxOccurs=\"1\" type=\"" + self.type + "\" name=\"" + self.name + "\" minOccurs=\"0\" />\n");  
+     return true;
+  }  
+%]
+

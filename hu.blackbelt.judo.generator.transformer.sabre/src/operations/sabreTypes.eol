@@ -6,18 +6,18 @@ operation getSabrePrimitiveType(name : String) : SABRE!DataType {
 	var type;
 
 	switch (name.toUpperCase()) {
-		case "BOOLEAN" : type = SABRE!DataType#xsString;
+		case "BOOLEAN" : type = SABRE!DataType#xsBoolean;
 		case "STRING" : type = SABRE!DataType#xsString;
 		case "INTEGER" : type = SABRE!DataType#xsInt;
 		case "VOID" : type = SABRE!DataType#xsString;
 		case "DATE" : type = SABRE!DataType#xsDate;
-		case "DATETIME" : type = SABRE!DataType#xsDate;
-		case "TIME" : type = SABRE!DataType#xsDate;
+		case "DATETIME" : type = SABRE!DataType#xsDateTime;
+		case "TIME" : type = SABRE!DataType#xsTime;
 		case "TEXT" : type = SABRE!DataType#xsString;
 		case "MEMO" : type = SABRE!DataType#xsString;
-		case "FLOAT" : type = SABRE!DataType#xsFloat;
-		case "PERCENTAGE" : type = SABRE!DataType#xsFloat;
-		case "CURRENCY" : type = SABRE!DataType#xsFloat;
+		case "FLOAT" : type = SABRE!DataType#xsDecimal;
+		case "PERCENTAGE" : type = SABRE!DataType#xsDecimal;
+		case "CURRENCY" : type = SABRE!DataType#xsDecimal;
 		case "GPS" : type = SABRE!DataType#xsString;
 		case "TRACK" : type = SABRE!DataType#xsString;
 		case "FILE" : type = SABRE!DataType#xsString;

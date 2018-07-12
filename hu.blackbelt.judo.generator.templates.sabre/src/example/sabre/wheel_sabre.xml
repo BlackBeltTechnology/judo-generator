@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+  <primitive mandatory="true" name="area" path="" type="xs:string"/>
+  <primitive mandatory="true" name="diameter" path="" type="xs:string"/>
+  <primitive mandatory="true" name="guid" path="" type="xs:string"/>
+  <primitive mandatory="true" name="price" path="" type="xs:string"/>
+  <primitive mandatory="true" name="width" path="" type="xs:string"/>
+  <list mandatory="false" name="comments" path="">
+    <structure mandatory="false" name="comment">
+      <primitive mandatory="true" name="author" path="" type="xs:string"/>
+      <primitive mandatory="true" name="text" path="" type="xs:string"/>
+    </structure>
+  </list>
+  <structure mandatory="true" name="company">
+    <primitive mandatory="true" name="code" path="" type="xs:string"/>
+    <list mandatory="false" name="employees" path="">
+      <structure mandatory="false" name="employee">
+        <primitive mandatory="true" name="name" path="" type="xs:string"/>
+      </structure>
+    </list>
+    <structure mandatory="true" name="address">
+      <primitive mandatory="true" name="city" path="" type="xs:string"/>
+      <primitive mandatory="true" name="country" path="" type="xs:string"/>
+    </structure>
+  </structure>
+  <structure mandatory="true" name="wheelType">
+    <primitive mandatory="true" name="code" path="" type="xs:string"/>
+  </structure>
+</document>

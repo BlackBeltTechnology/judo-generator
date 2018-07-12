@@ -15,6 +15,11 @@
       <genEnumLiterals ecoreEnumLiteral="sabre.ecore#//DataType/xsFloat"/>
       <genEnumLiterals ecoreEnumLiteral="sabre.ecore#//DataType/xsDate"/>
       <genEnumLiterals ecoreEnumLiteral="sabre.ecore#//DataType/xsDateTime"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.ecore#//DataType/xsBoolean"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.ecore#//DataType/xsTime"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.ecore#//DataType/xsInteger"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.ecore#//DataType/xsDecimal"/>
+      <genEnumLiterals ecoreEnumLiteral="sabre.ecore#//DataType/xsLong"/>
     </genEnums>
     <genDataTypes ecoreDataType="sabre.ecore#//DataTypeObject"/>
     <genClasses ecoreClass="sabre.ecore#//document">
@@ -22,6 +27,8 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//document/list"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//document/structure"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sabre.ecore#//document/template"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//document/application"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//document/domain"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sabre.ecore#//document/name"/>
     </genClasses>
     <genClasses ecoreClass="sabre.ecore#//list">

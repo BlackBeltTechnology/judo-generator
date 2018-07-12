@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jxb:bindings version="1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <jxb:bindings node="//xsd:schema" schemaLocation="../../../classes/sabre/xsd/wheel.xsd">
+    <jxb:bindings node="//xsd:element[@name='document']">
+      <jxb:class name="[%= document.name.toCamel() %]Document"/>
+    </jxb:bindings>
+    <jxb:schemaBindings>
+      <jxb:package name="[%= document.application %]"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+</jxb:bindings>
+[%
+
+operation String toCamel() : String {
+
+    if (self.isUndefined() or self.length() == 0) {
+        return self;
+    }
+    var sb := new Native("java.lang.StringBuilder"); 
+    for (s in self.split("_")) {
+       sb.append(s.characterAt(0).toUpperCase() + s.substring(1));
+    }
+    return sb.toString();
+}
+
+
+%]

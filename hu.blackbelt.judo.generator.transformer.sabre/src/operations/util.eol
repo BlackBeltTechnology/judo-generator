@@ -1,92 +1,3 @@
-/*
-operation inpPIM!Element getUuid() : String {
-	if (self.owner.isDefined()) {
-		return (self.owner.getUuid() + "." + self.name).replace(" ","_");
-	} else {
-		return self.name.replace(" ","_");
-	}
-}
-
-operation inpPIM!Property computeLower() : Integer {
-	if (self.lowerValue.isDefined()) {
-		return self.lowerValue.value;
-	} else {
-		return self.lower;
-	}
-}
-
-operation inpPIM!Property computeUpper() : Integer {
-	self.name.println("PROP NAME: ");
-	if (self.upperValue.isDefined()) {
-		return self.upperValue.value.println("PROP VALUE: ");
-	} else {
-		return self.upper;
-	}
-}
-
-operation inpPIM!Parameter computeLower() : Integer {
-	if (self.lowerValue.isDefined()) {
-		return self.lowerValue.value;
-	} else {
-		return self.lower;
-	}
-}
-
-operation inpPIM!Parameter computeUpper() : Integer {
-	if (self.upperValue.isDefined()) {
-		return self.upperValue.value;
-	} else {
-		return self.upper;
-	}
-}
-
-operation inpPIM!Property getUuid() : String {
-	if (self.owner.isTypeOf(inpPIM!Association)) {
-		return (self.otherEnd.type.getUuid() + "." + self.name).replace(" ","_");
-	} else {
-		return (self.owner.getUuid() + "." + self.name).replace(" ","_");
-	}
-}
-
-operation generateUuid(namespace : String, name : String, separator : String) : String {
-	return namespace + separator + name;
-}
-*/
-/*
-@cached
-operation Association getBothRoles() : Sequence(Property) {
-	var c1 : Property =  self.memberEnd.first();
-    var c2 : Property =  self.memberEnd.second();
-    var primary = c1;
-    var secondary = c2;
-    if (c1.name > c2.name) {
-    	primary = c2;
-    	secondary = c1;
-    }
-    if (primary.isUndefined()) {
-    	throw "No primary role found: " + self.name;
-    }
-    if (secondary.isUndefined()) {
-    	throw "No secondary role found: " + self.name;
-    }
-    
-    var roles = new Sequence(Property);
-    roles.add(primary);
-    roles.add(secondary);
-    
-    return roles;
-}
-
-@cached
-operation Association primaryRole() : Property {
-    return self.getBothRoles().first();
-}
-
-@cached
-operation Association secondaryRole() : Property {
-	return self.getBothRoles().second();
-}
-*/
 @cached
 operation Association compositedClass() : Class {
 	return self.memberEnd.at(0).type;
@@ -112,20 +23,6 @@ operation Class classListProperties() : Collection {
 	return self.properties().select(s | s.association.isDefined() and s.upperValue.isDefined() and (s.upperValue.value <= -1 or s.upperValue.value > 1));
 }
 
-
-/*
-@cached
-operation Association getLists() : SABRE!list {
-}
-
-@cached
-operation Association getStructures() : SABRE!list {
-}
-
-@cached
-operation Association getStructures() : SABRE!list {
-}
-*/
 @cached
 operation NamedElement name() : String {
 	var name : String;
@@ -147,80 +44,30 @@ operation String decapitalize() : String {
     return self.characterAt(0).toLowerCase() + self.substring(1);
 }
 
-/*
-operation String logicalName() : String {
-  return self.charAt(0).toLowerCase() + (self.length() > 1 ? self.substring(1) : "");
-}
-*/
+operation String capitalize() : String {
 
-/*
-operation Class getAncestors() : Collection {
-	var ret : Set = new Set();
-	if (self.superClass.size > 0) {
-	    self.superClass.first().name.println(" SuperClass: ");
-		ret.add(self.superClass.first());
-		ret.addAll(self.superClass.first().getAncestors());
-	}
-	return ret;
+    if (self.isUndefined() or self.length() == 0) {
+        return self;
+    }
+    return self.characterAt(0).toUpperCase() + self.substring(1);
 }
-*/
+
+operation String toSnake() : String {
+    return self.decapitalize().replaceAll("([A-Z]+)","\\_$1").toLowerCase();
+}
+
 operation Class isDocument() : Boolean {
     return stereotypeApplications.get("documentClasses").includes(self);
 }
-
-/*
-operation Class hasDocumentAncestor() : Boolean {
-    return self.getAncestors().collect(s | s.isDocument()).includes(true);
-}
-*/
 
 @cached
 operation Any fullyQualifiedPath() : String {
 
 	if (self.isKindOf(NamedElement)) {
 		if (self.owner.isUndefined()) {
-			return self.name();
+			return ""; //self.name();
 		} else {
-			return self.owner.fullyQualifiedPath().concat("::").concat(self.name());
-		}
-	} else {
-		if (self.owner.isUndefined()) {
-			return self.name();
-		} else {
-			return self.owner.fullyQualifiedPath().concat("::__");
-		}	
-	}
-}
-
-/*
-operation escapeJavaLiteral(toEscape : String) : String {
-	if (toEscape.isDefined()) {
-		toEscape.println("TO ESCAPE: ");
-		return toEscape.replaceAll("\\\"", "\\\\\"").replaceAll("\n", " ").println("ESCAPED: ");
-	}
-}
-
-
-operation checkAllUuidsForDuplicateOrMissing() {
-	var all = tgtPSM!JElement.all.collect(e | e.uuid);
-	var set = all.asSet();
-
-	var duplicated : Boolean = false;
-
-	set.size.println("SET: ");
-	all.size.println("ALL: ");
-
-	for (uuid in set) {
-		if (all.count(uuid) > 1) {
-			duplicated = true;
-			uuid.println("DUPLICATE: ");
+			return self.owner.fullyQualifiedPath().concat(".").concat(self.name());
 		}
 	}
-	
-	tgtPSM!JElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
-	
-	if (duplicated) {
-		throw "Duplicated ID!";
-	}
 }
-*/

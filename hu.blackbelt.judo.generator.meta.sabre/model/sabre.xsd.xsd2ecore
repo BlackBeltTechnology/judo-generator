@@ -12,6 +12,16 @@
         outputs="sabre.ecore#//DataType/xsDate"/>
     <nested inputs="sabre.xsd#//data-type;XSDSimpleTypeDefinition/XSDEnumerationFacet=4"
         outputs="sabre.ecore#//DataType/xsDateTime"/>
+    <nested inputs="sabre.xsd#//data-type;XSDSimpleTypeDefinition/XSDEnumerationFacet=5"
+        outputs="sabre.ecore#//DataType/xsBoolean"/>
+    <nested inputs="sabre.xsd#//data-type;XSDSimpleTypeDefinition/XSDEnumerationFacet=6"
+        outputs="sabre.ecore#//DataType/xsTime"/>
+    <nested inputs="sabre.xsd#//data-type;XSDSimpleTypeDefinition/XSDEnumerationFacet=7"
+        outputs="sabre.ecore#//DataType/xsInteger"/>
+    <nested inputs="sabre.xsd#//data-type;XSDSimpleTypeDefinition/XSDEnumerationFacet=8"
+        outputs="sabre.ecore#//DataType/xsDecimal"/>
+    <nested inputs="sabre.xsd#//data-type;XSDSimpleTypeDefinition/XSDEnumerationFacet=9"
+        outputs="sabre.ecore#//DataType/xsLong"/>
   </nested>
   <nested inputs="bundleentry://858.fwk287628665/cache/www.w3.org/2001/XMLSchema.xsd#//string;XSDSimpleTypeDefinition=9"
       outputs="http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -67,6 +77,10 @@
         outputs="sabre.ecore#//document/structure"/>
     <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDParticle/XSDModelGroup/XSDParticle/XSDModelGroup/XSDParticle=3"
         outputs="sabre.ecore#//document/template"/>
+    <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDAttributeUse=2"
+        outputs="sabre.ecore#//document/application"/>
+    <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDAttributeUse=1"
+        outputs="sabre.ecore#//document/domain"/>
     <nested inputs="sabre.xsd#//document;XSDComplexTypeDefinition=1/XSDAttributeUse"
         outputs="sabre.ecore#//document/name"/>
   </nested>
