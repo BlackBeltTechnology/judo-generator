@@ -48,7 +48,7 @@
   operation list render(sb, indent : String) : Boolean {
   	 sb.append(indent + "<xs:element name=\"" + self.name + "\" minOccurs=\"0\">\n");
      sb.append(indent + "  <xs:complexType>\n");
-     sb.append(indent + "    <xs:sequence maxOccurs=\"unbounded\"" + "\" minOccurs=\"" + self.mandatory.toMinOccurs() + "\">\n");
+     sb.append(indent + "    <xs:sequence maxOccurs=\"unbounded\" minOccurs=\"" + self.mandatory.toMinOccurs() + "\">\n");
   
      if (self.structure.isDefined()) {
         self.structure.render(sb, indent + "      ");
