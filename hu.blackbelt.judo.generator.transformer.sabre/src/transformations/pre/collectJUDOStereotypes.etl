@@ -1,0 +1,180 @@
+operation collectPersistenceRelatedStInstances() {
+}
+
+// TODO: outsource Model as parameter
+operation collectJUDOStereotypeInstances() : Map {
+
+	var JUDOStereotypeInstances : Map;
+
+	// some housekeeping.. 	
+	// stereotypes - collect - TODO (pickup list):
+	// 								Status for as-is	Elmts w. St 	Transformation
+	//													are collected	is implemented
+	// alias Constraint					TODO			COLL
+	// application Package				TODO			COLL
+	// attach Dependency				POSTPONE		COLL
+	// attr_read Dependency				POSTPONE		COLL
+	// attr_write Dependency			POSTPONE		COLL
+	// bo Class							TODO			COLL
+	// bo Package						TODO			COLL
+	// calculated Property				TODO			COLL
+	// call Dependency					POSTPONE		COLL
+	// decimals Constraint				TODO			COLL
+	// derived Association (!!Property)	TODO			COLL
+	// derivedDescription Constraint	TODO			COLL
+	// derivedExpression Constraint		TODO			COLL
+	// detach Dependency				POSTPONE		COLL
+	// document Class					TODO			COLL
+	// document Package					TODO			COLL
+	// dto Class						TODO			COLL
+	// dto Package						TODO			COLL
+	// filter Constraint				TODO			COLL
+	// fixed Enumeration				TODO			COLL
+	// guard Constraint					TODO			COLL
+	// implementation Class				POSTPONE		COLL
+	// interval Constraint				TODO			COLL
+	// list Constraint					POSTPONE (?)	COLL
+	// menuitem Class					TODO			COLL
+	// menuroot Class					TODO			COLL
+	// new ElementImport				POSTPONE		COLL
+	// nonconfirmed Operation			POSTPONE		COLL
+	// nosearch Property				POSTPONE		COLL
+	// object_create Dependency			POSTPONE		COLL
+	// object_full Dependency			POSTPONE		COLL
+	// object_read Dependency			POSTPONE		COLL
+	// object_update Dependency			POSTPONE		COLL
+	// options Constraint				POSTPONE		COLL
+	// order Constraint					POSTPONE (?)	COLL
+	// package Package					TODO			COLL
+	// permission Package				POSTPONE		COLL
+	// placeholder Constraint			TODO			COLL
+	// private StateMachine				TODO			COLL
+	// protected StateMachine			TODO			COLL
+	// query Operation					TODO			COLL
+	// regexp Constraint				TODO			COLL
+	// representation Constraint		TODO			COLL
+	// representation Property			TODO			COLL
+	// rest Class						TODO			COLL
+	// rest Package						TODO			COLL
+	// screen Element					POSTPONE		COLL
+	// tenant_role - Actor				NO_TRANSF		-
+	// to Class							POSTPONE		COLL
+	// ui Package						POSTPONE		COLL
+	// validation Constraint			POSTPONE		COLL
+	// watch Class						POSTPONE		COLL
+	// watch Property					POSTPONE		COLL
+	// processData Class				POSTPONE		COLL
+
+	// <<document>>
+	JUDOStereotypeInstances.put("documentPackages", 		
+								inpPIM!document.allInstances()->select(c | c.base_Package.isDefined())->collect(c | c.base_Package).asSet());
+	JUDOStereotypeInstances.put("documentClasses",		
+								inpPIM!document.allInstances()->select(c | c.base_Class.isDefined())->collect(c | c.base_Class).asSet());
+
+
+	// dump result Map
+	dumpStereotypeInstances( JUDOStereotypeInstances );
+	
+	return JUDOStereotypeInstances;
+}
+
+operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
+	"DUMP >> JUDOStereotypeInstances".println();
+	
+	dumpSetAt( JUDOStereotypeInstances, "documentPackages");
+	dumpSetAt( JUDOStereotypeInstances, "documentClasses");
+}
+
+operation seqOfMapsToMap( seqOfMaps : Sequence ) : Map {
+	var r : Map = new Map;
+	
+	for (m in seqOfMaps) {
+		r.putAll( m );
+	}
+	
+	r.println("FullMAP : ");
+
+	return r;
+}
+
+operation LiteralString getSpecification() : String {
+	return self.value;
+}
+
+operation OpaqueExpression getSpecification() : String {
+	if ( self.body.first().isDefined() ) {
+		return self.body.first();
+	} 
+}
+
+operation Sequence collectConstrainedElements() : Map {
+	var withConstrainedElem = self->collect(sttype | sttype.base_Constraint.constrainedElement->aggregate(ce | ce, sttype.base_Constraint
+																								  	  .specification
+																								   	  .getSpecification()));
+	var withoutConstrainedElem = self.select(e | e.base_Constraint.constrainedElement.isUndefined() or e.base_Constraint.constrainedElement.size = 0)
+									 .collect(sttype | sttype.base_Constraint.owner->aggregate(ce | ce, sttype.base_Constraint
+																								  	  .specification
+																								   	  .getSpecification()));
+	withConstrainedElem.addAll(withoutConstrainedElem);
+	return seqOfMapsToMap(withConstrainedElem);
+}
+
+// get a Sequence of Stereotypes - constraining even multiple elements, w. only one Specification
+// this operation presumes that one Element can have multiple Constraints w. the provided Stereotype
+// Map returns Sequence of Specification values for Constrained Elements
+operation Sequence collectMValuedConstrainedElements() : Map {
+	var result = new Map;
+
+	for (sttype in self) {
+		var constrainedElements = sttype.base_Constraint.constrainedElement;
+		var specification = sttype.base_Constraint.specification.getSpecification();
+		
+		for (e in constrainedElements) {
+			if ( result.containsKey(e) ) {
+				result.put(e, result.get(c).add(specification));
+			} else {
+				result.put(e, specification);
+			}
+		}
+	}
+	
+	return result;
+}
+
+operation ElementImport shortDumpElmntStr( ) : String {
+	return self.importedElement.shortDumpElmntStr();
+}
+
+operation Element shortDumpElmntStr( ) : String {
+	var dmpStr = self.type().name + "\t : ";
+	
+	if (self.qualifiedName.isUndefined() or self.qualifiedName.length() == 0) {
+		dmpStr += self.id;
+	} else {
+		dmpStr += self.qualifiedName;
+	}
+	
+	return dmpStr;
+}
+
+operation dumpMapAt( m : Map, key : String) {
+	var map2dump : Map = m.get( key ); 
+	map2dump.size().println("\t" + key + " : ");
+	
+	for (e in map2dump.keySet()) {
+		e.shortDumpElmntStr().print("\t\t");
+		map2dump.get( e ).println("  ~~~> ");
+	}
+}
+
+operation dumpSetAt( m : Map, key : String) {
+	var set2dump : Set = m.get( key ).asSet(); 
+	set2dump.size().println("\t" + key + " : ");
+	
+	for (e in set2dump) {
+		if (e.isDefined()) {
+			e.shortDumpElmntStr().println("\t\t");
+		}
+	}
+}
+

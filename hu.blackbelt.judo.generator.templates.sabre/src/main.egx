@@ -1,0 +1,38 @@
+rule SchemaXmlGeneration 
+  transform document : SABRE!document {
+  
+  parameters {
+    var params : new Map;
+    params.put("document", document);
+    return params;
+  }
+  
+  template : "templates/schema_xml.egl"  
+  target : document.name + "/template_schema.xml"
+}
+
+rule SchemaXsdGeneration 
+  transform document : SABRE!document {
+  
+  parameters {
+    var params : new Map;
+    params.put("document", document);
+    return params;
+  }
+  
+  template : "templates/schema_xsd.egl"  
+  target : document.name + "/attachment/parameter_validator.xsd"
+}
+
+rule SchemaXjbGeneration 
+  transform document : SABRE!document {
+  
+  parameters {
+    var params : new Map;
+    params.put("document", document);
+    return params;
+  }
+  
+  template : "templates/schema_xjb.egl"  
+  target : document.name + "/attachment/binding.xjb"
+}

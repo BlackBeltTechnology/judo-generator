@@ -1,0 +1,14 @@
+import "../../operations/_importAll.eol";
+
+rule Model
+	transform s : Model
+	to        t : SABRE!sabre {
+	
+	guard : (s.name = modelName)
+	
+	sabreModel = t;
+	sabreModel.println("sabreModel ==> ");
+
+	s.fullyQualifiedPath().println("On MODEL :: ");
+	"".println("RULE::Model");
+}
