@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/odata/src" modelPluginID="odata" modelName="Edmx"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.xsd.ecore.importer"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="edm.genmodel#//edm"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>edmx.xsd</foreignModel>
+  <genPackages prefix="Edmx" basePackage="org.open.oasis.docs.odata.ns" resource="XML"
+      disposableProviderFactory="true" ecorePackage="edmx.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="edmx.ecore#//TVersion">
+      <genEnumLiterals ecoreEnumLiteral="edmx.ecore#//TVersion/_40"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="edmx.ecore#//TVersionObject"/>
+    <genClasses ecoreClass="edmx.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute edmx.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edmx.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edmx.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edmx.ecore#//DocumentRoot/edmx"/>
+    </genClasses>
+    <genClasses ecoreClass="edmx.ecore#//Edmx">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edmx.ecore#//Edmx/Reference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edmx.ecore#//Edmx/DataServices"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edmx.ecore#//Edmx/version"/>
+    </genClasses>
+    <genClasses ecoreClass="edmx.ecore#//TDataServices">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edmx.ecore#//TDataServices/schema"/>
+    </genClasses>
+    <genClasses ecoreClass="edmx.ecore#//TInclude">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edmx.ecore#//TInclude/alias"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edmx.ecore#//TInclude/namespace"/>
+    </genClasses>
+    <genClasses ecoreClass="edmx.ecore#//TIncludeAnnotations">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edmx.ecore#//TIncludeAnnotations/qualifier"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edmx.ecore#//TIncludeAnnotations/targetNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edmx.ecore#//TIncludeAnnotations/termNamespace"/>
+    </genClasses>
+    <genClasses ecoreClass="edmx.ecore#//TReference">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edmx.ecore#//TReference/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edmx.ecore#//TReference/include"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edmx.ecore#//TReference/includeAnnotations"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edmx.ecore#//TReference/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edmx.ecore#//TReference/uri"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
