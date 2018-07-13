@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/odata/src" modelPluginID="odata" modelName="Edm"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.xsd.ecore.importer"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>edm.xsd</foreignModel>
+  <genPackages prefix="Edm" basePackage="org.open.oasis.docs.odata.ns" resource="XML"
+      disposableProviderFactory="true" loadInitialization="true" literalsInterface="false"
+      ecorePackage="edm.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="edm.ecore#//TAbstractType">
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/EdmComplexType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/EdmEntityType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/EdmPrimitiveType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/EdmGeography"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/EdmGeometry"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/EdmAnnotationPath"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/EdmNavigationPropertyPath"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/EdmPropertyPath"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/CollectionEdmComplexType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/CollectionEdmEntityType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/CollectionEdmPrimitiveType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/CollectionEdmGeography"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/CollectionEdmGeometry"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/CollectionEdmAnnotationPath"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/CollectionEdmNavigationPropertyPath"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAbstractType/CollectionEdmPropertyPath"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="edm.ecore#//TAppliesToItem">
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Action"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/ActionImport"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Annotation"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Apply"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Cast"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/ComplexType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/EntityContainer"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/EntitySet"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/EntityType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/EnumType"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Function"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/FunctionImport"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/If"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/IsOf"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/LabeledElement"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Member"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/NavigationProperty"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Null"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/OnDelete"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Parameter"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Property"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/PropertyValue"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Record"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Reference"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/ReferentialConstraint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Schema"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Singleton"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/Term"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/TypeDefinition"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TAppliesToItem/UrlRef"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="edm.ecore#//TClientFunctionMember1">
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TClientFunctionMember1/odataConcat"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TClientFunctionMember1/odataFillUriTemplate"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TClientFunctionMember1/odataUriEncode"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="edm.ecore#//TMax">
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TMax/max"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="edm.ecore#//TOnDeleteAction">
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TOnDeleteAction/Cascade"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TOnDeleteAction/None"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TOnDeleteAction/SetDefault"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TOnDeleteAction/SetNull"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="edm.ecore#//TPrimitiveTypeMember0">
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmBinary"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmBoolean"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmByte"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmDate"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmDateTimeOffset"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmDuration"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmTimeOfDay"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmDecimal"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmDouble"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmSingle"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeographyPoint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeographyLineString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeographyPolygon"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeographyMultiPoint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeographyMultiLineString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeographyMultiPolygon"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeographyCollection"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeometryPoint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeometryLineString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeometryPolygon"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeometryMultiPoint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeometryMultiLineString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeometryMultiPolygon"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGeometryCollection"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmGuid"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmInt16"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmInt32"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmInt64"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/EdmSByte"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmBinary"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmBoolean"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmByte"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmDate"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmDateTimeOffset"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmDuration"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmTimeOfDay"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmDecimal"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmDouble"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmSingle"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeographyPoint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeographyLineString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeographyPolygon"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeographyMultiPoint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeographyMultiLineString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeographyMultiPolygon"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeographyCollection"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeometryPoint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeometryLineString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeometryPolygon"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeometryMultiPoint"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeometryMultiLineString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeometryMultiPolygon"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGeometryCollection"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmGuid"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmInt16"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmInt32"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmInt64"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmString"/>
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TPrimitiveTypeMember0/CollectionEdmSByte"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="edm.ecore#//TVariable">
+      <genEnumLiterals ecoreEnumLiteral="edm.ecore#//TVariable/variable"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="edm.ecore#//Binary"/>
+    <genDataTypes ecoreDataType="edm.ecore#//Boolean"/>
+    <genDataTypes ecoreDataType="edm.ecore#//BooleanObject"/>
+    <genDataTypes ecoreDataType="edm.ecore#//Date"/>
+    <genDataTypes ecoreDataType="edm.ecore#//DateTimeStamp"/>
+    <genDataTypes ecoreDataType="edm.ecore#//DayTimeDuration"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TAbstractTypeObject"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TAppliesTo"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TAppliesToItemObject"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TClientFunction"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TClientFunctionMember1Object"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TEnumMemberList"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TGuidLiteral"/>
+    <genDataTypes ecoreDataType="edm.ecore#//Time"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TMaxLengthFacet"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TMaxObject"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TNamespaceName"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TOnDeleteActionObject"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TPath"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TPathWithTermSegments"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TPrecisionFacet"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TPrimitiveType"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TPrimitiveTypeMember0Object"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TPrimitiveTypeMember1"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TQualifiedName"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TScaleFacet"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TSimpleIdentifier"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TSridFacet"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TTypeName"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TTypeNameMember3"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TUnicodeFacet"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TUnicodeFacetObject"/>
+    <genDataTypes ecoreDataType="edm.ecore#//TVariableObject"/>
+    <genClasses ecoreClass="edm.ecore#//AnnotationType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/binary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/bool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/date"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/dateTimeOffset"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/decimal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/enumMember"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/float"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/guid"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/int"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/string"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/timeOfDay"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/annotationPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/apply"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/cast"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/collection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/if"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/eq"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/ne"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/ge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/gt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/le"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/lt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/and"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/or"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/not"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/isOf"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/labeledElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/labeledElementReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/null"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/navigationPropertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/propertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/record"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//AnnotationType/urlRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/annotationPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/binary1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/bool1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/date1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/dateTimeOffset1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/decimal1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/duration1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/enumMember1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/float1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/guid1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/int1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/navigationPropertyPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/path1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/propertyPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/qualifier"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/string1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/term"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/timeOfDay1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//AnnotationType/urlRef1"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//DocumentRoot/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//DocumentRoot/schema"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//SchemaType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//SchemaType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/complexType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/entityType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/typeDefinition"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/enumType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/action"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/function"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/term"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/annotations"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/entityContainer"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//SchemaType/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//SchemaType/alias"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//SchemaType/namespace"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TAction">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TAction/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TAction/parameter"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TAction/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TAction/returnType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TAction/entitySetPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TAction/isBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TAction/name"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TActionFunctionParameter">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TActionFunctionParameter/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionParameter/maxLength"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionParameter/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionParameter/nullable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionParameter/precision"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionParameter/scale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionParameter/sRID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionParameter/type"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TActionFunctionReturnType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionReturnType/maxLength"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionReturnType/nullable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionReturnType/precision"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionReturnType/scale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionReturnType/sRID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionFunctionReturnType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TActionImport">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TActionImport/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionImport/action"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionImport/entitySet"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionImport/includeInServiceDocument"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TActionImport/name"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TAnnotations">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TAnnotations/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TAnnotations/qualifier"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TAnnotations/target"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TApplyExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TApplyExpression/gExpression"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/binary"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/bool"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/date"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/dateTimeOffset"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/decimal"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TApplyExpression/enumMember"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/float"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/guid"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/int"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/string"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/timeOfDay"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/annotationPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/apply"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/cast"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/collection"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/if"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/eq"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/ne"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/ge"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/gt"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/le"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/lt"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/and"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/or"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/not"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/isOf"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/labeledElement"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/labeledElementReference"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/null"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/navigationPropertyPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/path"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/propertyPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/record"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TApplyExpression/urlRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TApplyExpression/function"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TBinaryConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TBinaryConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TBoolConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TBoolConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TCastOrIsOfExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/binary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/bool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/date"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/dateTimeOffset"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/decimal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TCastOrIsOfExpression/enumMember"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/float"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/guid"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/int"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/string"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/timeOfDay"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/annotationPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/apply"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/cast"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/collection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/if"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/eq"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/ne"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/ge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/gt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/le"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/lt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/and"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/or"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/not"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/isOf"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/labeledElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/labeledElementReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/null"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/navigationPropertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/propertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/record"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TCastOrIsOfExpression/urlRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TCastOrIsOfExpression/maxLength"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TCastOrIsOfExpression/precision"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TCastOrIsOfExpression/scale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TCastOrIsOfExpression/sRID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TCastOrIsOfExpression/type"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TCollectionExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TCollectionExpression/gExpression"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/binary"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/bool"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/date"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/dateTimeOffset"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/decimal"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TCollectionExpression/enumMember"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/float"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/guid"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/int"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/string"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/timeOfDay"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/annotationPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/apply"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/cast"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/collection"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/if"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/eq"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/ne"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/ge"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/gt"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/le"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/lt"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/and"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/or"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/not"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/isOf"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/labeledElement"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/labeledElementReference"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/null"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/navigationPropertyPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/path"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/propertyPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/record"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TCollectionExpression/urlRef"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TComplexType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TComplexType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TComplexType/property"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TComplexType/navigationProperty"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TComplexType/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TComplexType/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TComplexType/baseType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TComplexType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TComplexType/openType"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TDateConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TDateConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TDateTimeOffsetConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TDateTimeOffsetConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TDecimalConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TDecimalConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TDurationConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TDurationConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TEntityContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityContainer/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityContainer/entitySet"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityContainer/actionImport"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityContainer/functionImport"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityContainer/singleton"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityContainer/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityContainer/extends"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityContainer/name"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TEntityKeyElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TEntityKeyElement/propertyRef"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TEntitySet">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TEntitySet/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntitySet/navigationPropertyBinding"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntitySet/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntitySet/entityType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntitySet/includeInServiceDocument"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntitySet/name"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TEntityType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityType/key"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityType/property"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityType/navigationProperty"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEntityType/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityType/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityType/baseType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityType/hasStream"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEntityType/openType"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TEnumType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TEnumType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEnumType/member"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TEnumType/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEnumType/isFlags"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEnumType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEnumType/underlyingType"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TEnumTypeMember">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TEnumTypeMember/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEnumTypeMember/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TEnumTypeMember/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TFloatConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFloatConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TFunction">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TFunction/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TFunction/parameter"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TFunction/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TFunction/returnType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFunction/entitySetPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFunction/isBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFunction/isComposable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFunction/name"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TFunctionImport">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TFunctionImport/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFunctionImport/entitySet"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFunctionImport/function"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFunctionImport/includeInServiceDocument"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TFunctionImport/name"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TGuidConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TGuidConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TIfExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TIfExpression/gExpression"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/binary"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/bool"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/date"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/dateTimeOffset"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/decimal"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TIfExpression/enumMember"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/float"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/guid"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/int"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/string"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/timeOfDay"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/annotationPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/apply"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/cast"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/collection"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/if"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/eq"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/ne"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/ge"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/gt"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/le"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/lt"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/and"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/or"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/not"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/isOf"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/labeledElement"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/labeledElementReference"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/null"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/navigationPropertyPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/path"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/propertyPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/record"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TIfExpression/urlRef"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TIntConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TIntConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TLabeledElementExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/binary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/bool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/date"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/dateTimeOffset"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/decimal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/enumMember"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/float"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/guid"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/int"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/string"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/timeOfDay"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/annotationPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/apply"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/cast"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/collection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/if"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/eq"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/ne"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/ge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/gt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/le"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/lt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/and"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/or"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/not"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/isOf"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/labeledElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/labeledElementReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/null"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/navigationPropertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/propertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/record"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TLabeledElementExpression/urlRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/annotationPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/binary1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/bool1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/date1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/dateTimeOffset1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/decimal1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/duration1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/enumMember1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/float1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/guid1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/int1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/navigationPropertyPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/path1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/propertyPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/string1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/timeOfDay1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementExpression/urlRef1"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TLabeledElementReferenceExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TLabeledElementReferenceExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TNavigationProperty">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TNavigationProperty/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TNavigationProperty/referentialConstraint"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TNavigationProperty/onDelete"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TNavigationProperty/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TNavigationProperty/containsTarget"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TNavigationProperty/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TNavigationProperty/nullable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TNavigationProperty/partner"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TNavigationProperty/type"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TNavigationPropertyBinding">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TNavigationPropertyBinding/path"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TNavigationPropertyBinding/target"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TNullExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TNullExpression/annotation"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TOnDelete">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOnDelete/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TOnDelete/action"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TOneChildExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/binary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/bool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/date"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/dateTimeOffset"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/decimal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TOneChildExpression/enumMember"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/float"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/guid"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/int"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/string"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/timeOfDay"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/annotationPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/apply"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/cast"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/collection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/if"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/eq"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/ne"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/ge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/gt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/le"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/lt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/and"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/or"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/not"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/isOf"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/labeledElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/labeledElementReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/null"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/navigationPropertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/propertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/record"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TOneChildExpression/urlRef"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TPathExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPathExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TProperty">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TProperty/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/defaultValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/maxLength"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/nullable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/precision"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/scale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/sRID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TProperty/unicode"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TPropertyRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyRef/alias"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyRef/name"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TPropertyValue">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/binary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/bool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/date"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/dateTimeOffset"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/decimal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/enumMember"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/float"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/guid"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/int"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/string"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/timeOfDay"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/annotationPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/apply"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/cast"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/collection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/if"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/eq"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/ne"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/ge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/gt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/le"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/lt"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/and"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/or"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/not"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/isOf"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/labeledElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/labeledElementReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/null"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/navigationPropertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/propertyPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/record"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TPropertyValue/urlRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/annotationPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/binary1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/bool1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/date1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/dateTimeOffset1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/decimal1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/duration1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/enumMember1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/float1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/guid1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/int1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/navigationPropertyPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/path1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/property"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/propertyPath1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/string1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/timeOfDay1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TPropertyValue/urlRef1"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TRecordExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TRecordExpression/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TRecordExpression/propertyValue"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TRecordExpression/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TRecordExpression/type"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TReferentialConstraint">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TReferentialConstraint/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TReferentialConstraint/property"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TReferentialConstraint/referencedProperty"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TSingleton">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TSingleton/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TSingleton/navigationPropertyBinding"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TSingleton/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TSingleton/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TSingleton/type"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TStringConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TStringConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TTerm">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TTerm/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/appliesTo"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/baseTerm"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/defaultValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/maxLength"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/nullable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/precision"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/scale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/sRID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTerm/type"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TTimeOfDayConstantExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTimeOfDayConstantExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TTwoChildrenExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute edm.ecore#//TTwoChildrenExpression/gExpression"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/binary"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/bool"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/date"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/dateTimeOffset"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/decimal"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTwoChildrenExpression/enumMember"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/float"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/guid"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/int"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/string"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/timeOfDay"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/annotationPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/apply"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/cast"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/collection"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/if"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/eq"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/ne"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/ge"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/gt"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/le"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/lt"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/and"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/or"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/not"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/isOf"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/labeledElement"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/labeledElementReference"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/null"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/navigationPropertyPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/path"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/propertyPath"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/record"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference edm.ecore#//TTwoChildrenExpression/urlRef"/>
+    </genClasses>
+    <genClasses ecoreClass="edm.ecore#//TTypeDefinition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference edm.ecore#//TTypeDefinition/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTypeDefinition/maxLength"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTypeDefinition/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTypeDefinition/precision"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTypeDefinition/scale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTypeDefinition/sRID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTypeDefinition/underlyingType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute edm.ecore#//TTypeDefinition/unicode"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
