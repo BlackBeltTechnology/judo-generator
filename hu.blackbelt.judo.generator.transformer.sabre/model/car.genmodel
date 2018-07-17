@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/uml2/2.2.0/GenModel"
+    modelDirectory="/hu.blackbelt.judo.generator.transformer.sabre/src"
+    modelPluginID="hu.blackbelt.judo.generator.transformer.sabre" modelName="Car"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.uml2.uml.ecore.importer"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../org.eclipse.uml2.types/model/Types.genmodel#//types"
+    operationReflection="true" importOrganizing="true">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/importer/org.eclipse.uml2.uml.ecore.importer">
+    <details key="OPPOSITE_ROLE_NAMES" value="IGNORE"/>
+    <details key="DUPLICATE_FEATURES" value="DISCARD"/>
+    <details key="ANNOTATION_DETAILS" value="PROCESS"/>
+    <details key="PROPERTY_DEFAULT_EXPRESSIONS" value="IGNORE"/>
+    <details key="DUPLICATE_FEATURE_INHERITANCE" value="DISCARD"/>
+    <details key="COMMENTS" value="PROCESS"/>
+    <details key="DERIVED_FEATURES" value="PROCESS"/>
+    <details key="SUPER_CLASS_ORDER" value="PROCESS"/>
+    <details key="DUPLICATE_OPERATION_INHERITANCE" value="DISCARD"/>
+    <details key="REDEFINING_OPERATIONS" value="REPORT"/>
+    <details key="INVARIANT_CONSTRAINTS" value="PROCESS"/>
+    <details key="UNION_PROPERTIES" value="REPORT"/>
+    <details key="DUPLICATE_OPERATIONS" value="DISCARD"/>
+    <details key="NON_API_INVARIANTS" value="IGNORE"/>
+    <details key="CAMEL_CASE_NAMES" value="IGNORE"/>
+    <details key="SUBSETTING_PROPERTIES" value="REPORT"/>
+    <details key="OPERATION_BODIES" value="IGNORE"/>
+    <details key="ECORE_TAGGED_VALUES" value="PROCESS"/>
+    <details key="UNTYPED_PROPERTIES" value="REPORT"/>
+    <details key="REDEFINING_PROPERTIES" value="REPORT"/>
+    <details key="INVOCATION_DELEGATES" value="IGNORE"/>
+    <details key="VALIDATION_DELEGATES" value="IGNORE"/>
+  </genAnnotations>
+  <foreignModel>car.uml</foreignModel>
+  <genPackages xsi:type="genmodel:GenPackage" prefix="Model" disposableProviderFactory="true"
+      ecorePackage="Model.ecore#/">
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Judo" basePackage="Model"
+        disposableProviderFactory="true" ecorePackage="Model.ecore#//judo">
+      <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Example" basePackage="Model.judo"
+          disposableProviderFactory="true" ecorePackage="Model.ecore#//judo/example">
+        <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Car" basePackage="Model.judo.example"
+            disposableProviderFactory="true" ecorePackage="Model.ecore#//judo/example/car">
+          <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Domain" basePackage="Model.judo.example.car"
+              disposableProviderFactory="true" ecorePackage="Model.ecore#//judo/example/car/domain">
+            <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="Model.ecore#//judo/example/car/domain/EngineType">
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/EngineType/Diesel"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/EngineType/Gasoline"/>
+            </genEnums>
+            <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="Model.ecore#//judo/example/car/domain/WheelType">
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/WheelType/FrontLeft"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/WheelType/FrontRight"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/WheelType/RearLeft"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/WheelType/RearRight"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/WheelType/Extra"/>
+            </genEnums>
+            <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="Model.ecore#//judo/example/car/domain/FixedEnum1">
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/FixedEnum1/Valami"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/FixedEnum1/Barmi"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/FixedEnum1/AkarmiMas"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/FixedEnum1/Akarmi"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/FixedEnum1/valamiMas"/>
+            </genEnums>
+            <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="Model.ecore#//judo/example/car/domain/FixedEnum2">
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/FixedEnum2/Semmi"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/FixedEnum2/Minden"/>
+            </genEnums>
+            <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="Model.ecore#//judo/example/car/domain/Shape">
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/Shape/round"/>
+              <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="Model.ecore#//judo/example/car/domain/Shape/rectangle"/>
+            </genEnums>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Car">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Car/licensePlateDerived"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Car/licensePlate"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Car/wheelsDerived"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Car/wheels"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Car/extraWheel"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/hoppa"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Car/engine"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Car/punishments"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Car/person"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/color"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/lengthOfColorAttribute"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/numberOfWheels"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/regNumber"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/owner"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/teszt"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/concatattr"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/withDefValue"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Car/valid"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/xxxef">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/xxxef/diagnostics"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/xxxef/context"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/xxxabc">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/xxxabc/diagnostics"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/xxxabc/context"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/Size">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/Size/diagnostics"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/Size/context"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/CarNoWheelSize">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/CarNoWheelSize/diagnostics"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/CarNoWheelSize/context"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/carimplop"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/createWithFourWheels">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/createWithFourWheels/car"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/createWithFourWheels/wheelType"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/addWheel">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/addWheel/numberOfWheels"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/addWheel/wheelType"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/addFourWheels">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/addFourWheels/wheelType"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/testCustomWithMoreParameter">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/testCustomWithMoreParameter/wheels"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/testCustomWithMoreParameter/engine"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/testCustomWithMoreParameter/licensePlate"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/testCustomWithMoreParameter/color"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/addCustomWheels">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/addCustomWheels/wheels"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/Transition1"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/Transition2"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/Transition3"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/sumOfWheelsOnCarsByWheelType">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/sumOfWheelsOnCarsByWheelType/cars"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/sumOfWheelsOnCarsByWheelType/wheelType"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/findWheelOnCarByColorsEngineTypeAndWheelType">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/findWheelOnCarByColorsEngineTypeAndWheelType/wheelType"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/findWheelOnCarByColorsEngineTypeAndWheelType/colors"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/findWheelOnCarByColorsEngineTypeAndWheelType/engineType"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/justificationsByPersonWithValidDrivingLicence"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Car/drivingLicencesOfPersonWhoHasPunishmentOnCarWithEngineType">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Car/drivingLicencesOfPersonWhoHasPunishmentOnCarWithEngineType/engineType"/>
+              </genOperations>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="Model.ecore#//judo/example/car/domain/Vehicle">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Vehicle/maxSpeed"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Vehicle/Min">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Vehicle/Min/diagnostics"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Vehicle/Min/context"/>
+              </genOperations>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Vehicle/Max">
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Vehicle/Max/diagnostics"/>
+                <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="Model.ecore#//judo/example/car/domain/Vehicle/Max/context"/>
+              </genOperations>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/LicensePlate">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/LicensePlate/person"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+                  createChild="false" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/LicensePlate/car"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/LicensePlate/regNumber"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Person">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Person/drivingLicenses"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Person/name"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Person/email2"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Person/photo"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Person/memo"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Person/licensePlates"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/DrivingLicense">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DrivingLicense/regNumber"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="Readonly" createChild="false"
+                  ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DrivingLicense/valid"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+                  createChild="false" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/DrivingLicense/person"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Wheel">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Wheel/car"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Wheel/extraOfCar"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Wheel/diameter"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Wheel/width"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Wheel/wheelType"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Wheel/area"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Wheel/price"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Wheel/printResult"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Wheel/print"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Wheel/warningOpNoArg"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/Wheel/warningOp"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Engine">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Engine/volume"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Engine/enginetType"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+                  createChild="false" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Engine/car"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Punishment">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Punishment/subject"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Punishment/licensePlate"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Punishment/amount"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Punishment/justification"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Car_machine1"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Car_mysm"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/AllAttributes">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrBoolean"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrDate"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrFloat"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrInteger"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrString"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrEmail"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrDatetime"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrTime"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrDuration"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrPercentage"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrPhone"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrUrl"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrIpaddress"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrUuid"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrCurrency"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrNatural"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrCapitals"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/vfloat"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes/attrInterval"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/AllAttributes2">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes2/validation_test1"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/AllAttributes2/validation_test2"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Company">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Company/nonTenantMember"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Company/tenantMember2"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Company/tenantMember"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Company/tenantSingletonTest"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Company/level2Sub2"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Company/level1Sub2"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/NonTenantMember">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/NonTenantMember/tenantMember"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/NonTenantMember/name"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/NonTenantMember/companies"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/TenantMember">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/TenantMember/nonTenantMembers2"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/TenantMember/name"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+                  createChild="false" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/TenantMember/company"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/TenantMember/nonTenantMembers"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/NonTenantMember2">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/NonTenantMember2/tenantMembers2"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/NonTenantMember2/name"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/NonTenantMember2/tenantMeber"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/TenantMember2">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/TenantMember2/name"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+                  createChild="false" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/TenantMember2/company"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/TenantMember2/nonTenantMembers2"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/TenantSingletonTest">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+                  createChild="false" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/TenantSingletonTest/company"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Level2Sub2">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+                  createChild="false" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Level2Sub2/company"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Level1Sub1"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Master">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Master/valid"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Master/price"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Master/age"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/Master/name"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Level1Sub2">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+                  createChild="false" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/Level1Sub2/company"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Level2Sub1"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Level2Sub3"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Level2Sub4"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Level3Sub1"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/Level3Sub2"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/TenantPerson"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/FixedEnumTester">
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/FixedEnumTester/testFixedEnums"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/UniqueTest">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/UniqueTest/name"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/UniqueTest/secNumber"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/UniqueTest/taxNumber"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/ValidationCodeTest">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/ValidationCodeTest/mandRel"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/ValidationCodeTest/validatioTestOptionalRelation"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/ValidationCodeTest/validatioTestOptionalRelation2"/>
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/ValidationCodeTest/validationTestMandatoryRelation2"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/ValidationCodeTest/name"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/ValidationCodeTest/testCustomOpValidationCode"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/ValidationCodeTest/testCustomValidationCode"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/ValidationCodeTest/testContextMapperMissing"/>
+              <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="Model.ecore#//judo/example/car/domain/ValidationCodeTest/testMissingValidationCode"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/ValidationTestMandatoryRelation"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/ValidatioTestOptionalRelation">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/ValidatioTestOptionalRelation/optionalTest"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/ValidatioTestOptionalRelation2">
+              <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+                  propertySortChoices="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/domain/ValidatioTestOptionalRelation2/optionalTest2"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/ValidationTestMandatoryRelation2"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/domain/DefaultAttributeValueTest">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DefaultAttributeValueTest/name"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DefaultAttributeValueTest/width"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DefaultAttributeValueTest/valid"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DefaultAttributeValueTest/doubleWidth"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DefaultAttributeValueTest/length"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DefaultAttributeValueTest/shape"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/domain/DefaultAttributeValueTest/datum"/>
+            </genClasses>
+          </nestedGenPackages>
+          <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Ui" basePackage="Model.judo.example.car"
+              disposableProviderFactory="true" ecorePackage="Model.ecore#//judo/example/car/ui">
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/ui/Menu"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/ui/AllViews"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/ui/Customer"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/ui/Security"/>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/ui/DecisionModel"/>
+          </nestedGenPackages>
+          <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Doc" basePackage="Model.judo.example.car"
+              disposableProviderFactory="true" ecorePackage="Model.ecore#//judo/example/car/doc">
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/Wheel">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/Wheel/wheelType"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/Wheel/comments"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/Wheel/company"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Wheel/guid"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Wheel/width"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Wheel/diameter"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Wheel/area"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Wheel/price"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/WheelType">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/WheelType/code"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/Comment">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Comment/author"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Comment/text"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/Company">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/Company/employees"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/Company/address"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Company/code"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/Employee">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Employee/name"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/Address">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Address/city"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Address/country"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/LongName">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/LongName/firstAttribute"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/Engine">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/Engine/engineType"/>
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/Engine/engineLists"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Engine/regNumber"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Engine/color"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/Engine/owner"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/EngineType">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/EngineType/engineType"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/EngineList">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/EngineList/engineComments"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/EngineList/engineElem"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/EngineComment">
+              <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+                  createChild="true" ecoreFeature="ecore:EReference Model.ecore#//judo/example/car/doc/EngineComment/sorszamok"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/EngineComment/author"/>
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/EngineComment/text"/>
+            </genClasses>
+            <genClasses xsi:type="genmodel:GenClass" ecoreClass="Model.ecore#//judo/example/car/doc/CommentSorsz">
+              <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute Model.ecore#//judo/example/car/doc/CommentSorsz/sorsz"/>
+            </genClasses>
+          </nestedGenPackages>
+          <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Permission" basePackage="Model.judo.example.car"
+              disposableProviderFactory="true" ecorePackage="Model.ecore#//judo/example/car/permission"/>
+        </nestedGenPackages>
+      </nestedGenPackages>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="PIMTypes" basePackage="Model"
+        disposableProviderFactory="true" ecorePackage="Model.ecore#//PIMTypes">
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/cjszam"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/adoszam"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/ipaddress"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/currency"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/time"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/memo"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/phone"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/duration"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/percentage"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/text"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/natural"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/datetime"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/file"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/uuid"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/url"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/float"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/date"/>
+      <genDataTypes xsi:type="genmodel:GenDataType" ecoreDataType="Model.ecore#//PIMTypes/email"/>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="DerivedProperties" basePackage="Model"
+        disposableProviderFactory="true" ecorePackage="Model.ecore#//DerivedProperties"/>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="UMLStandardProfile"
+        basePackage="Model" disposableProviderFactory="true" ecorePackage="Model.ecore#//UMLStandardProfile"/>
+  </genPackages>
+</genmodel:GenModel>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sabre:document xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:sabre="http://blackbelt.hu/meta/sabre" xmi:id="_M5TakIEgEeibTLUjA1OkDA">
+  <primitive xmi:id="_M5UBoIEgEeibTLUjA1OkDA" mandatory="true" name="iratazonosito" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBoYEgEeibTLUjA1OkDA" mandatory="true" name="ragszam" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBooEgEeibTLUjA1OkDA" mandatory="true" name="iktatoszam" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBo4EgEeibTLUjA1OkDA" mandatory="true" name="indoklas" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBpIEgEeibTLUjA1OkDA" mandatory="true" name="targy" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBpYEgEeibTLUjA1OkDA" default="Kovacs Elemer" mandatory="true" name="ugyintezo" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBpoEgEeibTLUjA1OkDA" mandatory="true" name="beadasdatuma" path="" type="xs:date"/>
+  <primitive xmi:id="_M5UBp4EgEeibTLUjA1OkDA" mandatory="true" name="kelt" path="" type="xs:string"/>
+  <structure xmi:id="_M5UBqIEgEeibTLUjA1OkDA" mandatory="true" name="ugyfel">
+    <primitive xmi:id="_M5UBqYEgEeibTLUjA1OkDA" mandatory="true" name="azonosito" path="" type="xs:string"/>
+    <primitive xmi:id="_M5UBqoEgEeibTLUjA1OkDA" mandatory="true" name="nev" path="" type="xs:string"/>
+    <structure xmi:id="_M5UBq4EgEeibTLUjA1OkDA" mandatory="true" name="cim">
+      <primitive xmi:id="_M5UBrIEgEeibTLUjA1OkDA" mandatory="true" name="helyseg" path="" type="xs:string"/>
+      <primitive xmi:id="_M5UBrYEgEeibTLUjA1OkDA" mandatory="true" name="utcahazszam" path="" type="xs:string"/>
+      <primitive xmi:id="_M5UBroEgEeibTLUjA1OkDA" mandatory="true" name="irsz" path="" type="xs:string"/>
+      <list xmi:id="_VC-QYIEgEeibTLUjA1OkDA" name="sdfsadfsadf" path="">
+        <primitive xmi:id="_WanYwIEgEeibTLUjA1OkDA" name="qwrqwrqwr"/>
+      </list>
+    </structure>
+  </structure>
+  <primitive xmi:id="_M5UBr4EgEeibTLUjA1OkDA" mandatory="true" name="tanev" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBsIEgEeibTLUjA1OkDA" mandatory="true" name="idoszak" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBsYEgEeibTLUjA1OkDA" mandatory="true" name="osszeg" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBsoEgEeibTLUjA1OkDA" mandatory="true" name="osszegBetuvel" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBs4EgEeibTLUjA1OkDA" mandatory="true" name="elutOsszeg" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBtIEgEeibTLUjA1OkDA" mandatory="true" name="elutOsszegBetuvel" path="" type="xs:string"/>
+  <primitive xmi:id="_M5UBtYEgEeibTLUjA1OkDA" mandatory="true" name="igenyeltOsszeg" path="" type="xs:string"/>
+</sabre:document>
