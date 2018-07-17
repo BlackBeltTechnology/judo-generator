@@ -25,5 +25,7 @@ post {
 	//Impacts performance
 	
 	checkAllUuidsForDuplicateOrMissing();
+
+    checkForSqlNameIsNotEmpty();
 }
 

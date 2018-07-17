@@ -108,7 +108,7 @@
 											<expand>true</expand>
 										</model>
 									</models>
-									<xmlModels>
+									<plainXmlModels>
 										<model>
 											<artifact>${project.basedir}/src/script-definition.xml</artifact>
 											<name>SCRIPT</name>
@@ -118,7 +118,7 @@
 												<alias>SCRIPT</alias>
 											</aliases>											
 										</model>
-									</xmlModels>
+									</plainXmlModels>
 
 									<eolPrograms>
 										<Egx>

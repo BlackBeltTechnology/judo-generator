@@ -124,6 +124,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="rdbms.ecore#//RdbmsFieldOperation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rdbms.ecore#//RdbmsFieldOperation/field"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rdbms.ecore#//RdbmsFieldOperation/reviewRequired"/>
     </genClasses>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsCreateFieldOperation"/>
     <genClasses ecoreClass="rdbms.ecore#//RdbmsModifyFieldOperation">

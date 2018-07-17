@@ -82,6 +82,7 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
     		labelExpression.expression = expr.getLabelExpression().getText();
     		labelExpression.text = expr.getLabelExpression().getText();
     		labelExpression.uuid = generateUuid(attribute.uuid, expr.getLabelExpression().getText(), ".");
+    		labelExpression.sqlName = labelExpression.uuid;
     		vf.expressions.add(labelExpression);
     	} else if (expr.isExpressionRelationExpression()) {
 
