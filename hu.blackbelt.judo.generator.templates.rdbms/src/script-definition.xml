@@ -40,6 +40,7 @@
 	<sql name = "drop-table-full" scriptName="templates/sql/drop-table-full.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-full.sql"/>
 
 	<sql name = "create-table-incremental" scriptName="templates/sql/create-table-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-table-incremental.sql"/>
+	<sql name = "alter-table-incremental" scriptName="templates/sql/alter-table-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-incremental.sql"/>
 
 	<sql name = "end-version" scriptName="templates/sql/end-version.egl" out ="schema/sql/${currentVersion}/${dialect}/end-version.sql"/>
 
