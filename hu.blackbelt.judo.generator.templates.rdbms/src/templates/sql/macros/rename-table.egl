@@ -1,0 +1,9 @@
+[%
+  import "../../../operations/_importAll.eol";
+%]
+
+[% if (modifyTableOperation.nameChanged) {%]
+--changeset generator:RENAME_TABLE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= previousTable.name %] [%= previousTable.uuid %] TO [%= table.name %] [%= table.uuid %]
+ALTER TABLE [%= previousTable.sqlName %] RENAME TO [%= tssable.sqlName %];
+[% } %]

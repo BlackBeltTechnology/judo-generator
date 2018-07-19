@@ -122,7 +122,7 @@
 									</metaModels>
 									<models>
 										<model>
-											<artifact>${project.build.directory}/anakin-model-${test.model.version}.rdbmsPostgres.model</artifact>
+											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</artifact>
 											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
@@ -177,7 +177,7 @@
 									</metaModels>
 									<models>
 										<model>
-											<artifact>${project.build.directory}/anakin-model-${test.model.version}.rdbmsOracle.model</artifact>
+											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsOracle.model</artifact>
 											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
@@ -232,7 +232,7 @@
 									</metaModels>
 									<models>
 										<model>
-											<artifact>${project.build.directory}/anakin-model-${test.model.version}.rdbmsHsqldb.model</artifact>
+											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</artifact>
 											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
