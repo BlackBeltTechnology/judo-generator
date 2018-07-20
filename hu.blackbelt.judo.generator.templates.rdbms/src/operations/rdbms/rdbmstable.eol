@@ -45,33 +45,9 @@ operation RDBMS!RdbmsTable allSupertypes() : Collection {
 	return ret;
 }
 
+@cached
+operation RDBMS!RdbmsTable backupName() : String {
+   return  (self.sqlName.substring(2) + version().substring(0,14).replaceAll("\\.", "_").replaceAll("-", "_"));
+}
 
-/*
-    @property
-    def before_update(self):
-        for f in self.savefields:
-            if f.notupdate:
-                return True
 
-        return not self.general
-
-    @property
-    def after_update(self):
-        for f in self.savefields:
-            if f.watch:
-                return True
-
-        return False
-
-    @property
-    def before_insert(self):
-        return not self.general
-
-    @property
-    def after_insert(self):
-        return self.watch
-
-    @property
-    def after_delete(self):
-        return self.watch
-*/

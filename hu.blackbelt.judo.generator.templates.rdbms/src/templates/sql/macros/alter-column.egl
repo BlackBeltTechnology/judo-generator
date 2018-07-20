@@ -1,35 +1,10 @@
 [%
   import "../../../operations/_importAll.eol";
 %]
-[% if (hasFeature('SupportMultipleColumnModificationInOneStatement')) { %]
-[% if (modifyTableOperation.modifyFieldOperations.size > 0) { %]
---changeset generator:ALTER_TABLE_ALTER_COLUMN_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
--- [%= table.name %] [%= table.uuid %]
-ALTER TABLE [%= table.sqlName %] 
-		[% if (dialect() == 'Oracle') { %]
-			MODIFY (
-		[% } %]
-
-		[% for (field in modifyTableOperation.modifyFieldOperations.collect(o | o.field)) { %]
-			[% if (dialect() == 'Oracle') { %]
-				[%= field.sqlName %] [%= field.toFieldDefinition() %]
-			[% } else { %]
-				ALTER COLUMN [%= field.sqlName %] [%= field.toFieldDefinition() %]
-			[% } %]
-			[% if (hasMore) { out.print(","); } %]  -- [%= field.name %] [%= field.uuid %]
-		[% } %]
-		
-		[% if (dialect() == 'Oracle') { %]
-			)
-		[% } %]
-;[% out.println("\n"); %]
-[% } %]
-[% } else { %]
-		[%for (field in modifyTableOperation.modifyFieldOperations.collect(o | o.field)) { %]
---changeset generator:ALTER_TABLE_ADD_COLUMN_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+[%for (field in modifyTableOperation.modifyFieldOperations.select(m | m.fieldIsAltered()).collect(o | o.field)) { %]
+--changeset generator:ALTER_TABLE_ALTER_COLUMN_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= field.name %] [%= field.uuid %]
 ALTER TABLE [%= table.sqlName %] ALTER COLUMN [%= field.sqlName %] [%= field.toFieldDefinition() %];
 			[% out.println("\n"); %]
-		[% } %]
 [% } %]
 

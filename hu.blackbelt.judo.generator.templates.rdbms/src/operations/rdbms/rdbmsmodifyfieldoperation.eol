@@ -1,0 +1,4 @@
+@cached
+operation RDBMS!RdbmsModifyFieldOperation fieldIsAltered () : Boolean {
+	return self.typeChanged or self.sizeChanged or self.changedValueFieldToForeignKey or self.changedForeignKeyToValueField;
+}

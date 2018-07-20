@@ -4,10 +4,11 @@
 %]
 --liquibase formatted sql
 
-[% for (table in RDBMS!RdbmsTable.all) {
+[% for (deleteTableOperation in INCREMENTAL!RdbmsDeleteTableOperation.all) {
 		var inc : Template = TemplateFactory.load("templates/sql/macros/drop-table.egl");
-		inc.populate("table", table);
+		inc.populate("table", deleteTableOperation.table);
     	inc.populate("scriptName", scriptName);
     	inc.populate("failOnError",  failOnError);
 		out.println(inc.process());
 } %]
+

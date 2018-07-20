@@ -44,7 +44,9 @@
 	<sql name = "alter-table-add-column-incremental" scriptName="templates/sql/alter-table-add-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-add-column-incremental.sql"/>
 	<sql name = "alter-table-drop-column-incremental" scriptName="templates/sql/alter-table-drop-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sql"/>
 	<sql name = "alter-table-alter-column-incremental" scriptName="templates/sql/alter-table-alter-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-alter-column-incremental.sql"/>
-
+	<sql name = "drop-table-incremental" scriptName="templates/sql/drop-table-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-incremental.sql"/>
+	<sql name = "backup-table-deleted-incremental" scriptName="templates/sql/backup-table-delete-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/backup-table-delete-incremental.sql"/>
+	<sql name = "backup-table-modify-incremental" scriptName="templates/sql/backup-table-modify-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/backup-table-modify-incremental.sql"/>
 	<sql name = "end-version" scriptName="templates/sql/end-version.egl" out ="schema/sql/${currentVersion}/${dialect}/end-version.sql"/>
 
 	<changeset name = "start"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-start.xml" >
@@ -90,11 +92,14 @@
 
 	<!-- Run all incremental version between last installed version and current version -->
 	<changeset name = "changeset-incremental"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-incremental.xml" >
+		<change sql ="sql/${currentVersion}/${dialect}/backup-table-delete-incremental.sqL"/>
+		<change sql ="sql/${currentVersion}/${dialect}/backup-table-modify-incremental.sqL"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-table-incremental.sqL"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-column-incremental.sqL"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sqL"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-add-column-incremental.sqL"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-incremental.sqL"/>
+		<change sql ="sql/${currentVersion}/${dialect}/drop-table-incremental.sqL"/>
 	</changeset>
 
 	<changeset name = "changeset-after-incremental"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-after-incremental.xml" >
