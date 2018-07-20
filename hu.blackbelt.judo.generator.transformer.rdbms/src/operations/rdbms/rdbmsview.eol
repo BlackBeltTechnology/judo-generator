@@ -243,7 +243,7 @@ operation RDBMS!RdbmsView findOrAddAliasByClassPair(class : PSM!JClass, opposite
 		self.tables.add(currentAlias);
 		currentAlias.table = oppositeClass.equivalent("JClassToRdbmsTable");
 		currentAlias.uuid = generateUuid(self.uuid, relationName + "TableAlias", ".");
-		currentAlias.sqlName = 'REL_' + abbreviate(relationName.replaceAll("\\.", "").replaceAll("@", ""), 30).toUpperCase();
+		currentAlias.sqlName = 'REL_' + abbreviate(relationName.replaceAll("\\.", "").replaceAll("@", ""), 26).toUpperCase();
 		currentAlias.name = aliasName;
 	}
 	return currentAlias;
