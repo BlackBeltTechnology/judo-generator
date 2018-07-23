@@ -9,6 +9,8 @@
 		- previpusVersion - The previous version which is used to make delta model. The incremental version based on that.
 		- dialect - The sql dialects. All variants are executed on all script
 	-->
+
+
 	<sql name = "database-initialize" scriptName="templates/sql/database-initialize.egl" out ="schema/sql/${currentVersion}/${dialect}/database-initialize.sql"/>
 	<sql name = "start-version" scriptName="templates/sql/start-version.egl" out ="schema/sql/${currentVersion}/${dialect}/start-version.sql"/>
 	<sql name = "create-table-full" scriptName="templates/sql/create-table-full.egl" out ="schema/sql/${currentVersion}/${dialect}/create-table-full.sql"/>
@@ -43,7 +45,8 @@
 	<sql name = "alter-table-rename-column-incremental" scriptName="templates/sql/alter-table-rename-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-rename-column-incremental.sql"/>
 	<sql name = "alter-table-add-column-incremental" scriptName="templates/sql/alter-table-add-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-add-column-incremental.sql"/>
 	<sql name = "alter-table-drop-column-incremental" scriptName="templates/sql/alter-table-drop-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sql"/>
-	<sql name = "alter-table-alter-column-incremental" scriptName="templates/sql/alter-table-alter-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-alter-column-incremental.sql"/>
+	<sql name = "alter-table-alter-column-type-incremental" scriptName="templates/sql/alter-table-alter-column-type.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-alter-column-type-incremental.sql"/>
+	<sql name = "alter-table-alter-column-set-mandatoryincremental" scriptName="templates/sql/alter-table-alter-column-set-mandatory.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-alter-column-set-mandatory-incremental.sql"/>
 	<sql name = "drop-table-incremental" scriptName="templates/sql/drop-table-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-incremental.sql"/>
 	<sql name = "backup-table-deleted-incremental" scriptName="templates/sql/backup-table-delete-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/backup-table-delete-incremental.sql"/>
 	<sql name = "backup-table-modify-incremental" scriptName="templates/sql/backup-table-modify-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/backup-table-modify-incremental.sql"/>
@@ -98,7 +101,8 @@
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-column-incremental.sqL"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sqL"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-add-column-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-incremental.sqL"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-type-incremental.sqL"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-set-mandatory-incremental.sqL"/>
 		<change sql ="sql/${currentVersion}/${dialect}/drop-table-incremental.sqL"/>
 	</changeset>
 

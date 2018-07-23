@@ -4,10 +4,37 @@ operation RDBMS!RdbmsModifyFieldOperation fieldIsAltered () : Boolean {
 }
 
 @cached
+operation RDBMS!RdbmsModifyFieldOperation modifyTableOperation () : RDBMS!RdbmsModifyTableOperation {
+    return INCREMENTAL!RdbmsModifyTableOperation.all.selectOne(to | to.modifyFieldOperations.includes(self)); 
+}
+
+@cached
+operation RDBMS!RdbmsModifyFieldOperation scriptPrefix () : String {
+        var scriptPrefix;
+        if (self.fieldIsAltered()) {
+            scriptPrefix = "update-field-type-";
+		} else if (self.mandatoryChanged and self.field.mandatory) {
+            scriptPrefix = "update-for-set-mandatory-";
+		}
+		return scriptPrefix;
+}
+
+@cached
+operation RDBMS!RdbmsModifyFieldOperation exampleSql () : String {
+        var example;
+        if (self.fieldIsAltered()) {
+			example = "UPDATE " + self.modifyTableOperation().table.sqlName + " SET NEW_" + self.field.sqlName + " = " +  self.previousField.sqlName + ";";
+		} else if (self.mandatoryChanged and self.field.mandatory) {
+			example = "UPDATE " + self.modifyTableOperation().table.sqlName + " SET " + self.field.sqlName + " = <value> WHERE " +  self.previousField.sqlName + " IS NULL;";
+		}
+		return example;
+}
+
+@cached
 operation RDBMS!RdbmsModifyFieldOperation changeTypeAsString () : String {
     var ret = "";
     if (self.typeChanged) {
-       ret += " Type Changed";
+       ret += " Type Changed (" + self.previousField.toFieldDefinition() + " -> " + self.field.toFieldDefinition() +")";
     }
     if (self.sizeChanged) {
        ret += " Size Changed";
@@ -18,6 +45,12 @@ operation RDBMS!RdbmsModifyFieldOperation changeTypeAsString () : String {
 	if (self.changedForeignKeyToValueField) {
        ret += " Foreign Key to Value Field";
     }
+    if (self.mandatoryChanged and self.field.mandatory) {
+       ret += " Changed to mandatory (" + self.field.toFieldDefinition() + ")";
+    }
 	return ret;
 }
 
+operation RDBMS!RdbmsModifyFieldOperation scriptName () : String {
+	return "migration/" + previousVersion() + "/" + self.scriptPrefix() + self.modifyTableOperation().table.sqlName.toLowerCase() + "-" + self.field.sqlName.toLowerCase() + "-" + dialect() +".sql";
+}
