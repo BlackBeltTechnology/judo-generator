@@ -10,6 +10,14 @@ pre {
 	newModel.flattenTypes();
 }
 
+rule OperationModel 
+	transform s : NEW!RdbmsModel
+	to t : TARGET!RdbmsModel {
+	    t.version = previousModel.version + "_" + newModel.version;
+		"".println("Created operation model: ");
+}
+
+
 rule CreateOperationMeta 
 	transform s : NEW!RdbmsModel
 	to t : TARGET!RdbmsOperationMeta {
@@ -22,6 +30,7 @@ rule CreateNewTable
 	transform s : NEW!RdbmsTable
 	to t : TARGET!RdbmsCreateTableOperation {
 	guard : not previousModel.tableExists(s)
+	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Create " + s.name;
 	    t.uuid =  s.uuid + "-CreateTable";
 	    t.table = s;
@@ -32,6 +41,7 @@ rule DeletePreviousTable
 	transform s : PREVIOUS!RdbmsTable
 	to t : TARGET!RdbmsDeleteTableOperation {
 	guard : not newModel.tableExists(s)
+	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Delete " + s.name;
 	    t.uuid =  s.uuid + "-DeleteTable";
 	    t.table = s;
@@ -42,6 +52,7 @@ rule DeletePreviousTable
 rule ModifyTableOperationForExistingTable 
 	transform s : RDBMS!RdbmsTable
 	to t : TARGET!RdbmsModifyTableOperation {
+	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Modify " + s.name;
 	    t.uuid =  s.uuid + "-ModifyTable";
 	    t.table = s;
