@@ -2,3 +2,22 @@
 operation RDBMS!RdbmsModifyFieldOperation fieldIsAltered () : Boolean {
 	return self.typeChanged or self.sizeChanged or self.changedValueFieldToForeignKey or self.changedForeignKeyToValueField;
 }
+
+@cached
+operation RDBMS!RdbmsModifyFieldOperation changeTypeAsString () : String {
+    var ret = "";
+    if (self.typeChanged) {
+       ret += " Type Changed";
+    }
+    if (self.sizeChanged) {
+       ret += " Size Changed";
+    }
+	if (self.changedValueFieldToForeignKey) {
+       ret += " Value Field to Foreign Key";
+    }
+	if (self.changedForeignKeyToValueField) {
+       ret += " Foreign Key to Value Field";
+    }
+	return ret;
+}
+
