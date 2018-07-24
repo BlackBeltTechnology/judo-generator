@@ -15,7 +15,8 @@ operation transformJAttribute(uiClass : UI!UIClass, jAttribute : PSM!JAttribute,
 		for (interval in attribute.intervals) {
 			interval.uuid = generateUuid(generateUuid(uiClass.uuid, attribute.name, "."), attribute.intervals.indexOf(interval).asString(), "_");
 		}	
-	}		
+	}
+	attribute.~search = not jAttribute.uiNoSearch;		
 }
 
 operation transformJRole(uiClass : UI!UIClass, jRole : PSM!JRole, inherited : Boolean, emfTool) {
