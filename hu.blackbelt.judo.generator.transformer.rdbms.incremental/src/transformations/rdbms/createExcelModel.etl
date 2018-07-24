@@ -1,0 +1,145 @@
+import "../../operations/rdbms/excel.eol";
+
+pre {
+   var newModel = new NEW!RdbmsModel();
+   newModel.version = "2.0";
+   var originalModel = new ORIGINAL!RdbmsModel();
+   originalModel.version = "1.0";
+}
+//A
+rule transformOriginalTable
+	transform f : XLS!TablesOriginal
+	to t : ORIGINAL!RdbmsTable {
+		guard : f.uuid <> null
+		originalModel.rdbmsTables.add(t);
+		t.name = f.name;
+		t.uuid = f.uuid;
+		t.sqlName = f.sql_name;
+}
+
+rule transformOriginalValue
+	transform f : XLS!CasesOriginal
+	to t : ORIGINAL!RdbmsValueField  {
+		guard : f.type == "value"
+		t.name = f.name;
+		t.sqlName =f.sql_name;
+		t.uuid = f.uuid;
+		t.mandatory = f.mandatory.asBoolean();
+		t.rdbmsTypeName = f.type_name;
+		t.size = f.size.asInteger();
+		t.precision = f.precision.asInteger();
+		t.scale = f.scale.asInteger();
+		t.storageByte = f.storage_byte.asInteger();
+		t.table = XLS!TablesOriginal.allInstances.selectOne(table | table.uuid == f.table_uuid).equivalent("transformOriginalTable");	
+}
+
+rule transformOriginalId
+	transform f : XLS!CasesOriginal
+	to t : ORIGINAL!RdbmsIdentifierField {
+		guard : f.type == "id"
+		t.name = f.name;
+		t.sqlName = f.sql_name;
+		t.uuid = f.uuid;
+		t.mandatory = f.mandatory.asBoolean();
+		t.rdbmsTypeName = f.type_name;
+		t.size = f.size.asInteger();
+		t.precision = f.precision.asInteger();
+		t.scale = f.scale.asInteger();
+		t.storageByte = f.storage_byte.asInteger();
+		t.table = XLS!TablesOriginal.allInstances.selectOne(table | table.uuid == f.table_uuid).equivalent("transformOriginalTable");
+}
+
+rule transformOriginalForeignKey
+	transform f : XLS!CasesOriginal
+	to t : ORIGINAL!RdbmsForeignKey {
+		guard : f.type <> "value" and f.type <> "id"	
+		t.name = f.name;
+		t.sqlName = f.sql_name;
+		t.uuid = f.uuid;
+		t.mandatory = f.mandatory.asBoolean();
+		t.rdbmsTypeName = f.type_name;
+		t.size = f.size.asInteger();
+		t.precision = f.precision.asInteger();
+		t.scale = f.scale.asInteger();
+		t.storageByte = f.storage_byte.asInteger();
+		t.table = XLS!TablesOriginal.allInstances.selectOne(table | table.uuid == f.table_uuid).equivalent("transformOriginalTable");
+		t.referenceKey = XLS!CasesOriginal.allInstances.selectOne(field | field.uuid == f.type).equivalent("transformOriginalId");
+}
+	
+//B	
+	
+rule transformNewTable
+	transform f : XLS!TablesNew
+	to t : NEW!RdbmsTable {
+		guard : f.uuid <> null
+		newModel.rdbmsTables.add(t);
+		t.name = f.name;
+		t.uuid = f.uuid;
+		t.sqlName = f.sql_name;
+		t.name.println("NEW!RdbmsTable created: "+f.uuid+" ");
+}
+
+rule transformNewValue
+	transform f : XLS!CasesNew
+	to t : NEW!RdbmsValueField {
+		guard : f.type == "value"
+		t.name = f.name;
+		t.sqlName = f.sql_name;
+		t.uuid = f.uuid;
+		t.mandatory = f.mandatory.asBoolean();
+		t.rdbmsTypeName = f.type_name;
+		t.size = f.size.asInteger();
+		t.precision = f.precision.asInteger();
+		t.scale = f.scale.asInteger();
+		t.storageByte = f.storage_byte.asInteger();
+		t.table = XLS!TablesNew.allInstances.selectOne(table | table.uuid == f.table_uuid).equivalent("transformNewTable");
+}
+
+rule transformNewId
+	transform f : XLS!CasesNew
+	to t : NEW!RdbmsIdentifierField {
+		guard : f.type == "id"
+		t.name = f.name;
+		t.sqlName = f.sql_name;
+		t.uuid = f.uuid;
+		t.mandatory = f.mandatory.asBoolean();
+		t.rdbmsTypeName = f.type_name;
+		t.size = f.size.asInteger();
+		t.precision = f.precision.asInteger();
+		t.scale = f.scale.asInteger();
+		t.storageByte = f.storage_byte.asInteger();
+		t.table = XLS!TablesNew.allInstances.selectOne(table | table.uuid == f.table_uuid).equivalent("transformNewTable");
+}
+
+rule transformNewForeignKey
+	transform f : XLS!CasesNew
+	to t : NEW!RdbmsForeignKey {
+		guard : f.type <> "value" and f.type <> "id"	
+		t.name = f.name;
+		t.sqlName = f.sql_name;
+		t.uuid = f.uuid;
+		t.mandatory = f.mandatory.asBoolean();
+		t.rdbmsTypeName = f.type_name;
+		t.size = f.size.asInteger();
+		t.precision = f.precision.asInteger();
+		t.scale = f.scale.asInteger();
+		t.storageByte = f.storage_byte.asInteger();
+		t.table = XLS!TablesNew.allInstances.selectOne(table | table.uuid == f.table_uuid).equivalent("transformNewTable");
+		t.referenceKey = XLS!CasesNew.allInstances.selectOne(field | field.uuid == f.type).equivalent("transformNewId");
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

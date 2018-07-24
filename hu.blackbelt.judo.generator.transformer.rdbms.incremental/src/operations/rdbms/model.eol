@@ -3,7 +3,7 @@ operation RDBMS!RdbmsModel tableExists(table : RDBMS!RdbmsTable) : Boolean {
 }
 
 operation RDBMS!RdbmsModel tableOf(table : RDBMS!RdbmsTable) : RDBMS!RdbmsTable {
-	return self.rdbmsTables.select(t | t.uuid == table.uuid).first;
+	return self.rdbmsTables.selectOne(t | t.uuid == table.uuid);
 }
 
 operation RDBMS!RdbmsModel flattenTypes() {

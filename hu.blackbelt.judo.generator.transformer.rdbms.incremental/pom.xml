@@ -164,7 +164,6 @@
 									</eolPrograms>
 								</configuration>
 							</execution>
-
 							<execution>
 								<id>create-incremental-oracle</id>
 								<phase>generate-resources</phase>
@@ -274,7 +273,6 @@
 									</eolPrograms>
 								</configuration>
 							</execution>
-
 						</executions>
 					</plugin>
 
@@ -314,5 +312,385 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<profile>
+			<properties>
+				<test.model.type>model</test.model.type>
+			</properties>
+			<id>rdbms-excel-transform</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>epsilon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>excel-to-postgres</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									
+ 									<excelModels>
+										<excelModel>
+											<name>EXCEL</name>
+											<artifact>file:${basedir}/model/RdbmsIncrementalTests.xlsx</artifact>
+											<configurationArtifact>file:${basedir}/model/mapping.xml</configurationArtifact>
+											<aliases>
+												<alias>XLS</alias>
+											</aliases>
+
+										</excelModel>
+									</excelModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/test/A-Postgres.model</artifact>
+											<name>ORIGINAL_MODEL</name>
+											<aliases>
+												<alias>ORIGINAL</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<platformAlias>platform:/resource/${project.artifactId}/test/A-Postgres.model</platformAlias>	
+										</model>
+										
+										<model>
+											<artifact>${project.build.directory}/test/B-Postgres.model</artifact>
+											<name>NEW_MODEL</name>
+											<aliases>
+												<alias>NEW</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<platformAlias>platform:/resource/${project.artifactId}/test/B-Postgres.model</platformAlias>	
+										</model>									
+									</models>		
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createExcelModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+							<execution>
+								<id>excel-to-oracle</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									
+ 									<excelModels>
+										<excelModel>
+											<name>EXCEL</name>
+											<artifact>file:${basedir}/model/RdbmsIncrementalTests.xlsx</artifact>
+											<configurationArtifact>file:${basedir}/model/mapping.xml</configurationArtifact>
+											<aliases>
+												<alias>XLS</alias>
+											</aliases>
+
+										</excelModel>
+									</excelModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/test/A-Oracle.model</artifact>
+											<name>ORIGINAL_MODEL</name>
+											<aliases>
+												<alias>ORIGINAL</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<platformAlias>platform:/resource/${project.artifactId}/test/A-Oracle.model</platformAlias>	
+										</model>
+										
+										<model>
+											<artifact>${project.build.directory}/test/B-Oracle.model</artifact>
+											<name>NEW_MODEL</name>
+											<aliases>
+												<alias>NEW</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<platformAlias>platform:/resource/${project.artifactId}/test/B-Oracle.model</platformAlias>	
+										</model>									
+									</models>		
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createExcelModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+							<execution>
+								<id>excel-to-hsqldb</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									
+ 									<excelModels>
+										<excelModel>
+											<name>EXCEL</name>
+											<artifact>file:${basedir}/model/RdbmsIncrementalTests.xlsx</artifact>
+											<configurationArtifact>file:${basedir}/model/mapping.xml</configurationArtifact>
+											<aliases>
+												<alias>XLS</alias>
+											</aliases>
+
+										</excelModel>
+									</excelModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/test/A-Hsqldb.model</artifact>
+											<name>ORIGINAL_MODEL</name>
+											<aliases>
+												<alias>ORIGINAL</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<platformAlias>platform:/resource/${project.artifactId}/test/A-Hsqldb.model</platformAlias>	
+										</model>
+										
+										<model>
+											<artifact>${project.build.directory}/test/B-Hsqldb.model</artifact>
+											<name>NEW_MODEL</name>
+											<aliases>
+												<alias>NEW</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<platformAlias>platform:/resource/${project.artifactId}/test/B-Hsqldb.model</platformAlias>	
+										</model>									
+									</models>		
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createExcelModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<properties>
+				<test.model.type>model</test.model.type>
+			</properties>
+			<id>rdbms-test-transformer-incremental-development</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>epsilon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>create-incremental-postgres</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/test/B-Postgres.model</artifact>
+											<name>NEW</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+
+											<platformAlias>platform:/resource/${project.artifactId}/test/B-Postgres.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/test/A-Postgres.model</artifact>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/${project.artifactId}/test/A-Postgres.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/A-B-incremental-Postgres.model</artifact>
+											<name>TARGET</name>
+											<aliases>
+												<alias>TRG</alias>
+											</aliases>
+
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+										</model>
+									</models>
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createIncrementalOperationModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+							<execution>
+								<id>create-incremental-oracle</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/test/B-Oracle.model</artifact>
+											<name>NEW</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+
+											<platformAlias>platform:/resource/${project.artifactId}/test/B-Oracle.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/test/A-Oracle.model</artifact>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/${project.artifactId}/test/A-Oracle.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/A-B-incremental-Oracle.model</artifact>
+											<name>TARGET</name>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+										</model>
+									</models>
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createIncrementalOperationModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+
+							<execution>
+								<id>create-incremental-hsqldb</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/test/B-Hsqldb.model</artifact>
+											<name>NEW</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+
+											<platformAlias>platform:/resource/${project.artifactId}/test/B-Hsqldb.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/test/A-Hsqldb.model</artifact>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/${project.artifactId}/test/A-Hsqldb.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/A-B-incremental-Hsqldb.model</artifact>
+											<name>TARGET</name>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+										</model>
+									</models>
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createIncrementalOperationModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>		
 	</profiles>
 </project>

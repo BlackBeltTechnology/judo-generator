@@ -3,6 +3,5 @@ operation RDBMS!RdbmsTable fieldExists(field : RDBMS!RdbmsField) : Boolean {
 }
 
 operation RDBMS!RdbmsTable fieldOf(field : RDBMS!RdbmsField) : RDBMS!RdbmsField {
-	return self.fields.select(f | f.uuid == field.uuid).first;
+	return self.fields.selectOne(f | f.uuid == field.uuid);
 }
-
