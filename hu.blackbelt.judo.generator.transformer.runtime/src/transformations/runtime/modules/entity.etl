@@ -1,0 +1,80 @@
+import "../../../operations/psm/attribute.eol";
+import "../../../operations/psm/entityType.eol";
+
+rule CreateEntityClass
+	transform s : JUDOPSM!EntityType
+	to t : RUNTIME!EClass {
+		t.name = s.name;
+		s.getPackage().equivalent().eClassifiers.add(t);
+	}
+
+rule CreateSimpleAttribute
+	transform s : JUDOPSM!Attribute
+	to t : RUNTIME!EAttribute {
+		guard : s.dataType.isKindOf(JUDOPSM!Primitive)
+
+		t.name = s.name;
+		if (s.required) {
+			t.lowerBound = 1;
+		} else {
+			t.lowerBound = 0;
+		}
+		if (s.dataType.isKindOf(JUDOPSM!Primitive)) {
+			if (s.dataType.collection) {
+				t.upperBound = -1;
+			}
+		}
+
+		if (s.identifier) {
+			// unique constraint!!!
+		}
+
+		t.eType = s.dataType.getEcoreType();
+
+		var annotations = s.dataType.createRuntimeAnnotations();
+		if (not annotations.isEmpty()) {
+			var annotation = new RUNTIME!EAnnotation;
+			annotation.source = extendedMetadataURI;
+			annotation.details.addAll(annotations);
+			t.eAnnotations.add(annotation);
+		}
+
+		s.getEntityType().equivalent().eStructuralFeatures.add(t);
+	}
+
+rule CreateComplexAttribute
+	transform s : JUDOPSM!Attribute
+	to t : RUNTIME!EReference {
+		guard : s.dataType.isKindOf(JUDOPSM!Structure)
+
+		t.name = s.name;
+
+		if (s.required) {
+			t.lowerBound = 1;
+		} else {
+			t.lowerBound = 0;
+		}
+
+		t.eType = s.dataType.equivalent();
+		t.containment = true;
+
+		var annotation = new RUNTIME!EAnnotation;
+		annotation.source = extendedMetadataURI;
+		var aEmbedded = new RUNTIME!EStringToStringMapEntry;
+		aEmbedded.key = "embedded";
+		aEmbedded.value = "true";
+		annotation.details.add(aEmbedded);
+		t.eAnnotations.add(annotation);
+
+		s.getEntityType().equivalent().eStructuralFeatures.add(t);
+	}
+
+rule CreateEndpointReference
+	transform s : JUDOPSM!Endpoint
+	to t : RUNTIME!EReference
+	extends CreateSimpleAttribute {
+		// dataType must be a Reference
+		t.eType = s.dataType.target.name.getEntityTypeReference();
+		t.eOpposite = s.partner.equivalent();
+		t.containment = s.composition;
+	}

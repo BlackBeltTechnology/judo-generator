@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="types" nsURI="http://blackbelt.hu/judo/runtime/types" nsPrefix="types">
+  <eClassifiers xsi:type="ecore:EDataType" name="JDate" instanceClassName="java.time.LocalDate"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JTimestamp" instanceClassName="java.time.ZonedDateTime"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JInteger" instanceClassName="java.lang.Integer"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JLong" instanceClassName="java.lang.Long"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JBigInteger" instanceClassName="java.math.BigInteger"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JFloat" instanceClassName="java.lang.Float"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JDouble" instanceClassName="java.lang.Double"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JBigDecimal" instanceClassName="java.math.BigDecimal"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JString" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JBoolean" instanceClassName="java.lang.Boolean"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JByteArray" instanceClassName="byte[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="JObject" instanceClassName="java.lang.Object"/>
+</ecore:EPackage>

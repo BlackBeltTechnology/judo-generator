@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.blackbelt.judo.generator</groupId>
+        <artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+    </parent>
+
+    <artifactId>hu.blackbelt.judo.generator.transformer.runtime</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <src.dir>src</src.dir>
+        <test.model.groupId>hu.blackbelt.northwind</test.model.groupId>
+        <test.model.artifactId>northwind-model</test.model.artifactId>
+        <test.model.version>1.0.0-SNAPSHOT</test.model.version>
+
+        <judo-psm.version>1.0.0-2</judo-psm.version>
+    </properties>
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>runtime-transformer-development</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-psm-md5</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>${test.model.groupId}</groupId>
+                                            <artifactId>${test.model.artifactId}</artifactId>
+                                            <version>${test.model.version}</version>
+                                            <type>md5</type>
+                                            <classifier>psm</classifier>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                            <destFileName>psm.md5</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.gmaven</groupId>
+                        <artifactId>gmaven-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>read-psm-md5</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <properties>
+                                        <header_file>${project.build.directory}/psm.md5</header_file>
+                                    </properties>
+                                    <source>
+                                        def file = new File(project.properties.header_file)
+                                        project.properties.psmversion = file.getText()
+                                    </source>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>hu.blackbelt.judo.generator</groupId>
+                        <artifactId>epsilon-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>
+                                            mvn:hu.blackbelt.judo.meta:judo-meta-psm:model:psm:${judo-psm.version}
+                                        </metaModel>
+                                        <!--metaModel>mvn:hu.blackbelt.judo.generator:hu.blackbelt.judo.generator.meta.odata:ecore:odata-edm:${odata-psm.version}</metaModel>
+                                        <metaModel>mvn:hu.blackbelt.judo.generator:hu.blackbelt.judo.generator.meta.odata:ecore:odata-edmx:${odata-psm.version}</metaModel-->
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>
+                                                mvn:${test.model.groupId}:${test.model.artifactId}:model:psm:${test.model.version}
+                                            </artifact>
+                                            <name>SRC</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                        <model>
+                                            <artifact>${basedir}/model/types.ecore</artifact>
+                                            <name>TYPES</name>
+                                            <metaModelUris>
+                                                <param>http://www.eclipse.org/emf/2002/Ecore</param>
+                                            </metaModelUris>
+                                            <platformAlias>http://blackbelt.hu/judo/runtime/types</platformAlias>
+                                        </model>
+                                        <model>
+                                            <artifact>${project.build.directory}/runtime.model</artifact>
+                                            <name>RUNTIME</name>
+                                            <readOnLoad>false</readOnLoad>
+                                            <storeOnDisposal>true</storeOnDisposal>
+                                            <metaModelUris>
+                                                <param>http://www.eclipse.org/emf/2002/Ecore</param>
+                                            </metaModelUris>
+                                        </model>
+                                    </models>
+                                    <eolPrograms>
+                                        <Etl>
+                                            <source>src/transformations/runtime/psmToRuntime.etl</source>
+                                            <parameters>
+                                                <parameter>
+                                                    <name>modelName</name>
+                                                    <value>${project.name}</value>
+                                                </parameter>
+                                                <parameter>
+                                                    <name>nsURI</name>
+                                                    <value>http://blackbelt.hu/judo/meta/runtime</value>
+                                                </parameter>
+                                                <parameter>
+                                                    <name>nsPrefix</name>
+                                                    <value>rt</value>
+                                                </parameter>
+                                                <parameter>
+                                                    <name>extendedMetadataURI</name>
+                                                    <value>http://blackbelt.hu/judo/meta/ExtendedMetadata</value>
+                                                </parameter>
+                                            </parameters>
+                                        </Etl>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>add-resource</id>
+                                <goals>
+                                    <goal>add-resource</goal>
+                                </goals>
+
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>src</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+
+                            </execution>
+
+                            <execution>
+                                <id>attach-artifacts</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attach-artifact</goal>
+                                </goals>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>${project.build.directory}/runtime.model</file>
+                                            <type>model</type>
+                                            <classifier>runtime</classifier>
+                                        </artifact>
+                                    </artifacts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
+
+</project>

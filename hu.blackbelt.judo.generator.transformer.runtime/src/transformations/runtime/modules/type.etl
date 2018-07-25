@@ -1,0 +1,45 @@
+import "../../../operations/psm/dataType.eol";
+
+rule CreateEnumeration
+	transform s : JUDOPSM!Enumeration
+	to t : RUNTIME!EEnum {
+		t.name = s.name;
+		s.getPackage().equivalent().eClassifiers.add(t);
+		for (m in s.members) {
+			var l = new RUNTIME!EEnumLiteral;
+			// TODO: set (numeric) value
+			// l.value = m.id;
+			l.literal = m.name;
+			l.name = m.name;
+			t.eLiterals.add(l);
+		}
+	}
+
+rule CreateStructureClass
+	transform s : JUDOPSM!Structure
+	to t : RUNTIME!EClass {
+		t.name = s.name;
+		s.getPackage().equivalent().eClassifiers.add(t);
+		for (f in s.fields) {
+			var a = new RUNTIME!EAttribute;
+			a.name = f.name;
+
+			if (f.required) {
+				a.lowerBound = 1;
+			} else {
+				a.lowerBound = 0;
+			}
+
+			a.eType = f.dataType.getEcoreType();
+
+			var annotations = f.dataType.createRuntimeAnnotations();
+			if (not annotations.isEmpty()) {
+				var annotation = new RUNTIME!EAnnotation;
+				annotation.source = extendedMetadataURI;
+				annotation.details.addAll(annotations);
+				a.eAnnotations.add(annotation);
+			}
+
+			t.eStructuralFeatures.add(a);
+		}
+	}
