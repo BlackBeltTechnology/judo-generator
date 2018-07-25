@@ -6,6 +6,14 @@ rule CreateEntityClass
 	to t : RUNTIME!EClass {
 		t.name = s.name;
 		s.getPackage().equivalent().eClassifiers.add(t);
+
+		var annotation = new RUNTIME!EAnnotation;
+		annotation.source = extendedMetadataURI;
+		var aEntity = new RUNTIME!EStringToStringMapEntry;
+		aEntity.key = "entity";
+		aEntity.value = "true";
+		annotation.details.add(aEntity);
+		t.eAnnotations.add(annotation);
 	}
 
 rule CreateSimpleAttribute

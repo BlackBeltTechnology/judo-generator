@@ -7,8 +7,7 @@ rule CreateEnumeration
 		s.getPackage().equivalent().eClassifiers.add(t);
 		for (m in s.members) {
 			var l = new RUNTIME!EEnumLiteral;
-			// TODO: set (numeric) value
-			// l.value = m.id;
+			l.value = m.ordinal;
 			l.literal = m.name;
 			l.name = m.name;
 			t.eLiterals.add(l);
