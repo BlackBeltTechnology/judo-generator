@@ -688,9 +688,66 @@
 							</execution>
 						</executions>
 					</plugin>
-
 				</plugins>
 			</build>
-		</profile>		
+		</profile>	
+		
+		<profile>
+			<properties>
+				<test.model.type>model</test.model.type>
+			</properties>
+			<id>execute-transformer-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>epsilon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>excecute-test</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+									<excelModels>
+										<excelModel>
+											<name>EXCEL</name>
+											<artifact>file:${basedir}/model/RdbmsIncrementalTests.xlsx</artifact>
+											<configurationArtifact>file:${basedir}/model/mapping.xml</configurationArtifact>
+											<aliases>
+												<alias>XLS</alias>
+											</aliases>
+										</excelModel>
+									</excelModels>
+									<models>
+										<model>
+											<artifact>${project.build.directory}/A-B-incremental-Hsqldb.model</artifact>
+											<name>hsqldbDifference</name>
+											<aliases>
+												<alias>HSQLDB</alias>
+											</aliases>
+
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/${project.artifactId}/A-B-incremental-Hsqldb.model</platformAlias>
+										</model>
+									</models>
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/rdbms/createDifferenceModel.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>	
 	</profiles>
 </project>

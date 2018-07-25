@@ -1,5 +1,3 @@
-import "../../operations/rdbms/excel.eol";
-
 pre {
    var newModel = new NEW!RdbmsModel();
    newModel.version = "2.0";
@@ -52,10 +50,11 @@ rule transformOriginalId
 rule transformOriginalForeignKey
 	transform f : XLS!CasesOriginal
 	to t : ORIGINAL!RdbmsForeignKey {
-		guard : f.type <> "value" and f.type <> "id"	
+		guard : f.uuid.isDefined() and f.type <> "value" and f.type <> "id"	
 		t.name = f.name;
 		t.sqlName = f.sql_name;
 		t.uuid = f.uuid;
+		(f.uuid + " " + f.mandatory).println("Test: ");
 		t.mandatory = f.mandatory.asBoolean();
 		t.rdbmsTypeName = f.type_name;
 		t.size = f.size.asInteger();
@@ -114,7 +113,7 @@ rule transformNewId
 rule transformNewForeignKey
 	transform f : XLS!CasesNew
 	to t : NEW!RdbmsForeignKey {
-		guard : f.type <> "value" and f.type <> "id"	
+		guard : f.uuid.isDefined() and f.type <> "value" and f.type <> "id"	
 		t.name = f.name;
 		t.sqlName = f.sql_name;
 		t.uuid = f.uuid;
