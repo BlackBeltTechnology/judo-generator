@@ -51,6 +51,7 @@ operation JUDOPSM!DataType getEcoreType() {
 			case "Binary":
 				return "JByteArray".getJudoDataType();
 			default:
+				// TODO: set original type (name) in annotation
 				return "JObject".getJudoDataType();
 		}
 	}
