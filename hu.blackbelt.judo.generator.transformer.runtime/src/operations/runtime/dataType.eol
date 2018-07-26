@@ -13,8 +13,17 @@ operation JUDOPSM!DataType createRuntimeAnnotations() {
 			aMaxLength.value = self.maxLength.asString();
 			annotations.add(aMaxLength);
 		}
-	} else if (self.isKindOf(JUDOPSM!Numeric)) {
-		// TODO: add annotations: minValue, maxValue
+	} else if (self.isKindOf(JUDOPSM!Custom)) {
+		switch (self.name) {
+			case "Date":
+			case "Timestamp":
+			case "Binary":
+			default:
+				var aCustomType = new RUNTIME!EStringToStringMapEntry;
+				aCustomType.key = "customType";
+				aCustomType.value = self.name;
+				annotations.add(aCustomType);
+		}
 	}
 
 	return annotations;
