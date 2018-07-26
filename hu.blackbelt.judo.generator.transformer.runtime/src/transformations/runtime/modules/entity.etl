@@ -5,6 +5,10 @@ rule CreateEntityClass
 	transform s : JUDOPSM!EntityType
 	to t : RUNTIME!EClass {
 		t.name = s.name;
+		t.abstract = s.abstract;
+		for (super in s.superEntityTypes) {
+			t.eSuperTypes.add(super.equivalent());
+		}
 		s.getPackage().equivalent().eClassifiers.add(t);
 
 		var annotation = new RUNTIME!EAnnotation;
