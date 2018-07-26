@@ -38,14 +38,9 @@ rule CreateSimpleAttribute
 		} else {
 			t.lowerBound = 0;
 		}
-		if (s.dataType.isKindOf(JUDOPSM!Primitive)) {
-			if (s.dataType.collection) {
-				t.upperBound = -1;
-			}
-		}
 
 		if (s.identifier) {
-			// unique constraint!!!
+			t.iD = true;
 		}
 
 		t.eType = s.dataType.getEcoreType();
@@ -95,5 +90,10 @@ rule CreateEndpointReference
 		// dataType must be a Reference
 		t.eType = s.dataType.target.name.getEntityTypeReference();
 		t.eOpposite = s.partner.equivalent();
+
+		if (s.dataType.collection) {
+			t.upperBound = -1;
+		}
+
 		t.containment = s.composition;
 	}
