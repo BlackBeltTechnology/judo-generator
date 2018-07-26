@@ -1,4 +1,5 @@
 import "../../../operations/psm/dataType.eol";
+import "../../../operations/runtime/dataType.eol";
 
 rule CreateEnumeration
 	transform s : JUDOPSM!Enumeration
