@@ -65,7 +65,6 @@ rule CreateComplexAttribute
 		guard : s.dataType.isKindOf(JUDOPSM!Structure)
 
 		t.name = s.name;
-
 		if (s.required) {
 			t.lowerBound = 1;
 		} else {
@@ -90,20 +89,9 @@ rule CreateEndpointReference
 	transform s : JUDOPSM!Endpoint
 	to t : RUNTIME!EReference {
 		t.name = s.name;
-		
-		// TODO
-		/*if (s.isRequired()) {
-			t.lowerBound = 1;
-		} else {
-			t.lowerBound = 0;
-		}*/
-		if (s.collection) {
-			t.upperBound = -1;
-		}
 
-		/*if (s.identifier) {
-			t.iD = true;
-		}*/
+		t.lowerBound = s.lower;
+		t.upperBound = s.upper;
 
 		var annotations = s.reference.createRuntimeAnnotations();
 		if (not annotations.isEmpty()) {
