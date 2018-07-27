@@ -3,7 +3,7 @@ operation String getJudoDataType() {
 	return TYPES!EDataType.all.selectOne(dt | dt.name == self);
 }
 
-operation JUDOPSM!DataType createRuntimeAnnotations() {
+operation JUDOPSM!Type createRuntimeAnnotations() {
 	var annotations = Sequence{};
 
 	if (self.isKindOf(JUDOPSM!String)) {
@@ -30,7 +30,7 @@ operation JUDOPSM!DataType createRuntimeAnnotations() {
 }
 
 @cached
-operation JUDOPSM!DataType getEcoreType() {
+operation JUDOPSM!Primitive getEcoreType() {
 	if (self.isKindOf(JUDOPSM!String)) {
 		return "JString".getJudoDataType();
 	} else if (self.isKindOf(JUDOPSM!Numeric)) {
@@ -60,10 +60,9 @@ operation JUDOPSM!DataType getEcoreType() {
 			case "Binary":
 				return "JByteArray".getJudoDataType();
 			default:
-				// TODO: set original type (name) in annotation
 				return "JObject".getJudoDataType();
 		}
+	} else {
+		return "JObject".getJudoDataType();
 	}
-
-	return null;
 }

@@ -1,4 +1,5 @@
 import "../../../operations/psm/attribute.eol";
+import "../../../operations/psm/endpoint.eol";
 import "../../../operations/psm/entityType.eol";
 
 rule CreateEntityClass
@@ -10,13 +11,15 @@ rule CreateEntityClass
 			t.eSuperTypes.add(super.equivalent());
 		}
 		s.getPackage().equivalent().eClassifiers.add(t);
-
-		var id = new RUNTIME!EAttribute;
-		id.name = "id";
-		id.iD = true;
-		id.changeable = false;
-		id.eType = "JUUID".getJudoDataType();
-		t.eStructuralFeatures.add(id);
+		
+		if (s.superEntityTypes.isEmpty()) {
+			var id = new RUNTIME!EAttribute;
+			id.name = "id";
+			id.iD = true;
+			id.changeable = false;
+			id.eType = "JUUID".getJudoDataType();
+			t.eStructuralFeatures.add(id);
+		}
 
 		var annotation = new RUNTIME!EAnnotation;
 		annotation.source = extendedMetadataURI;
@@ -85,15 +88,35 @@ rule CreateComplexAttribute
 
 rule CreateEndpointReference
 	transform s : JUDOPSM!Endpoint
-	to t : RUNTIME!EReference
-	extends CreateSimpleAttribute {
-		// dataType must be a Reference
-		t.eType = s.dataType.target.name.getEntityTypeReference();
-		t.eOpposite = s.partner.equivalent();
-
-		if (s.dataType.collection) {
+	to t : RUNTIME!EReference {
+		t.name = s.name;
+		
+		// TODO
+		/*if (s.isRequired()) {
+			t.lowerBound = 1;
+		} else {
+			t.lowerBound = 0;
+		}*/
+		if (s.collection) {
 			t.upperBound = -1;
 		}
+
+		/*if (s.identifier) {
+			t.iD = true;
+		}*/
+
+		var annotations = s.reference.createRuntimeAnnotations();
+		if (not annotations.isEmpty()) {
+			var annotation = new RUNTIME!EAnnotation;
+			annotation.source = extendedMetadataURI;
+			annotation.details.addAll(annotations);
+			t.eAnnotations.add(annotation);
+		}
+
+		s.getEntityType().equivalent().eStructuralFeatures.add(t);	
+	
+		t.eType = s.reference.target.name.getEntityTypeReference();
+		t.eOpposite = s.partner.equivalent();
 
 		t.containment = s.composition;
 	}

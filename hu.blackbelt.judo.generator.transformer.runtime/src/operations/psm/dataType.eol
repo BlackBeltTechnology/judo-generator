@@ -1,4 +1,0 @@
-@cached
-operation JUDOPSM!DataType getPackage() {
-	return JUDOPSM!Namespace.all.selectOne(p | p.dataTypes.includes(self));
-}

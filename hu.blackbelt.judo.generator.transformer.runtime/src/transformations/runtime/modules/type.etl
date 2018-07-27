@@ -1,5 +1,5 @@
-import "../../../operations/psm/dataType.eol";
-import "../../../operations/runtime/dataType.eol";
+import "../../../operations/psm/type.eol";
+import "../../../operations/runtime/type.eol";
 
 rule CreateEnumeration
 	transform s : JUDOPSM!Enumeration
@@ -30,9 +30,9 @@ rule CreateStructureClass
 				a.lowerBound = 0;
 			}
 
-			a.eType = f.dataType.getEcoreType();
+			a.eType = f.type.getEcoreType();
 
-			var annotations = f.dataType.createRuntimeAnnotations();
+			var annotations = f.type.createRuntimeAnnotations();
 			if (not annotations.isEmpty()) {
 				var annotation = new RUNTIME!EAnnotation;
 				annotation.source = extendedMetadataURI;
