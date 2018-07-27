@@ -1,0 +1,4 @@
+@cached
+operation JUDOPSM!Attribute getEntityType() {
+	return JUDOPSM!EntityType.all.selectOne(et | et.attributes.includes(self));
+}
