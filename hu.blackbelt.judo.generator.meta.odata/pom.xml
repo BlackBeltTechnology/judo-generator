@@ -11,48 +11,10 @@
     </parent>
 
     <artifactId>hu.blackbelt.judo.generator.meta.odata</artifactId>
-    <packaging>jar</packaging>
-
-    <properties>
-        <src.dir>model</src.dir>
-    </properties>
+    <packaging>pom</packaging>
 
     <build>
-        <sourceDirectory>${src.dir}</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>${src.dir}</directory>
-            </resource>
-        </resources>
-
         <plugins>
-            <!-- Hack style.. But this is not balaton, it's another. Replacing stupid Eclipse reative path to a little bit more civilized (but also hack platform URI) -->
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.3</version>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <id>replace-target-model</id>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                        <configuration>
-                            <ignoreMissingFile>false</ignoreMissingFile>
-                            <file>${project.build.directory}/classes/edmx.ecore</file>
-                            <replacements>
-                                <replacement>
-                                    <token>edm.ecore</token>
-                                    <value>http://docs.oasis-open.org/odata/ns/edm</value>
-                                </replacement>
-                            </replacements>
-                        </configuration>
-                    </execution>
-
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -67,14 +29,9 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>${project.build.directory}/classes/edm.ecore</file>
+                                    <file>model/odata.ecore</file>
                                     <type>ecore</type>
-                                    <classifier>odata-edm</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>${project.build.directory}/classes/edmx.ecore</file>
-                                    <type>ecore</type>
-                                    <classifier>odata-edmx</classifier>
+                                    <classifier>odata</classifier>
                                 </artifact>
                             </artifacts>
                         </configuration>
