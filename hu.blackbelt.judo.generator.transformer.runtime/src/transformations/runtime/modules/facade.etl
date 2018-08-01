@@ -23,7 +23,7 @@ rule CreateViewClass
 		t.eAnnotations.add(annotation);
 	}
 
-rule CreateFacadeAttribute
+rule CreatePrimitiveFacadeAttribute
 	transform s : JUDOPSM!Property
 	to t : RUNTIME!EAttribute {
 		guard : s.dataType.isKindOf(JUDOPSM!Primitive)
@@ -44,7 +44,7 @@ rule CreateFacadeAttribute
 		s.getFacade().equivalent().eStructuralFeatures.add(t);
 	}
 
-rule CreateComplexAttribute
+rule CreateComplexFacadeAttribute
 	transform s : JUDOPSM!Property
 	to t : RUNTIME!EReference {
 		guard : s.dataType.isKindOf(JUDOPSM!Structure)
@@ -66,7 +66,7 @@ rule CreateComplexAttribute
 		s.getFacade().equivalent().eStructuralFeatures.add(t);
 	}
 
-rule CreateEndpointReference
+rule CreateLinkReference
 	transform s : JUDOPSM!Link
 	to t : RUNTIME!EReference {
 		t.name = s.name;
