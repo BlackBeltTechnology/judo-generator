@@ -202,6 +202,11 @@
                                             <type>model</type>
                                             <classifier>runtime</classifier>
                                         </artifact>
+                                        <artifact>
+                                            <file>${basedir}/model/types.ecore</file>
+                                            <type>model</type>
+                                            <classifier>types</classifier>
+                                        </artifact>
                                     </artifacts>
                                 </configuration>
                             </execution>
