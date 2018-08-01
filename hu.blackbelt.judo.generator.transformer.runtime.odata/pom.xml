@@ -46,8 +46,8 @@
                                 <configuration>
                                     <metaModels>
                                         <metaModel>mvn:hu.blackbelt.judo.generator:hu.blackbelt.judo.generator.meta.odata:ecore:odata:${project.version}</metaModel>
-                                        <!-- FIXME -->
-                                        <metaModel>${basedir}/../hu.blackbelt.judo.generator.transformer.runtime/model/types.ecore</metaModel>
+                                        <!-- TYPES model -->
+                                        <metaModel>mvn:${test.model.groupId}:${test.model.artifactId}:model:types:${test.model.version}</metaModel>
                                     </metaModels>
 
                                     <models>
