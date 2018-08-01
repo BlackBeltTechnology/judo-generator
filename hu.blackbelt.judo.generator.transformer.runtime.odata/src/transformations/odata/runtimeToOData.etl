@@ -1,12 +1,3 @@
-pre {
-    var root = new ODATA!Edmx;
-    root.Version = ODATA!TVersion#_40;
-    root.DataServices = new ODATA!TDataServices;
-    var domainModel = new ODATA!SchemaType;
-    domainModel.Namespace = domainModelName;
-    root.DataServices.Schema.add(domainModel);
-}
-
 operation SRC!EModelElement hasAnnotation(name : String) {
 	var annotations = self.eAnnotations.selectOne(a | a.source = extendedMetadataURI);
 	if (annotations.isDefined()) {
@@ -22,6 +13,18 @@ operation SRC!EModelElement hasAnnotation(name : String) {
 }
 
 @cached
+operation SRC!EPackage getFullName() {
+	var package = SRC!EPackage.all.selectOne(p | p.eSubPackages.contains(self));
+	var name = "";
+	while (package.isDefined()) {
+		name = package.name + "." + name;
+		package = SRC!EPackage.all.selectOne(p | p.eSubPackages.contains(package));
+	}
+
+	return name + self.name;
+}
+
+@cached
 operation SRC!EClass isEntity() {
 	return self.hasAnnotation("facade");
 }
@@ -29,6 +32,11 @@ operation SRC!EClass isEntity() {
 @cached
 operation SRC!EReference isEmbedded() {
 	return self.hasAnnotation("embedded");
+}
+
+@cached
+operation SRC!EClassifier getPackage() {
+	return SRC!EPackage.all.selectOne(p | p.eClassifiers.contains(self));
 }
 
 @cached
@@ -63,6 +71,14 @@ operation SRC!EAttribute getEdmType() {
 			return "Edm.String";
 	}
 }
+
+rule PackageToSchema
+	transform s : SRC!EPackage
+	to t : ODATA!SchemaType {
+		t.Namespace = s.getFullName();
+
+		root.DataServices.Schema.add(t);
+	}
 
 rule CreateEntity
 	transform s : SRC!EClass
@@ -103,7 +119,7 @@ rule CreateEntity
 				
 				var nprop = new ODATA!TNavigationProperty;
 				nprop.Name = r.Name;
-				var namespace = domainModel.Namespace;
+				var namespace = r.eType.getPackage().getFullName();
 				if (r.upperBound > 1 or r.upperBound == -1) {
 					nprop.Type = "Collection(" + namespace + "." + r.eType.equivalent().Name + ")";
 				} else {
@@ -118,5 +134,11 @@ rule CreateEntity
 			}
 		}
 		
-		domainModel.EntityType.add(t);
+		s.getPackage().equivalent().EntityType.add(t);
 	}
+
+pre {
+    var root = new ODATA!Edmx;
+    root.Version = ODATA!TVersion#_40;
+    root.DataServices = new ODATA!TDataServices;
+}
