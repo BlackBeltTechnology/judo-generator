@@ -40,9 +40,18 @@ operation checkAllUuidsForDuplicateOrMissing() {
 		}
 	}
 	
-	RDBMS!RdbmsElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	RDBMS!RdbmsElement.all.select(e | e.uuid.isUndefined()).collect(e | e.name) .println("UNDEFINED: ");
 	
 	if (duplicated) {
 		throw "Duplicated ID!";
+	}
+}
+
+
+operation String addWithDotTo(to : String) : String {
+	if (to.isDefined()) {
+		return to + "." + self;
+	} else {
+		return self;
 	}
 }
