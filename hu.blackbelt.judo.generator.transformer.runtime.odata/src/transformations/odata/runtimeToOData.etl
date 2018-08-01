@@ -23,7 +23,7 @@ operation SRC!EModelElement hasAnnotation(name : String) {
 
 @cached
 operation SRC!EClass isEntity() {
-	return self.hasAnnotation("entity");
+	return self.hasAnnotation("facade");
 }
 
 @cached
@@ -110,7 +110,9 @@ rule CreateEntity
 					nprop.Type = namespace + "." + r.eType.equivalent().Name;
 				}
 				
-				//TODO: nprop.Partner = 
+				if (r.eOpposite.isDefined()) {
+					nprop.Partner = r.eOpposite.name;
+				}
 				
 				t.NavigationProperty.add(nprop);
 			}
