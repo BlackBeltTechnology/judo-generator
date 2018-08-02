@@ -4,7 +4,7 @@ import "../../../operations/runtime/_importRuntime.eol";
 rule CreateEntity
 	transform s : SRC!EClass
 	to t : ODATA!TEntityType {
-		guard : s.isEntity()
+		guard : s.isFacade()
 		
 		s.name.println("Processing ENTITY: ");
 		
@@ -16,6 +16,9 @@ rule CreateEntity
 		} else if (s.eSuperTypes.size() > 1) {
 			s.name.println("Multiple superTypes is not supported yet!");
 		}
+
+		var key = new ODATA!TEntityKeyElement;
+		t.Key.add(key);
 		
 		for (a in s.eStructuralFeatures.select(sf | sf.isKindOf(SRC!EAttribute))) {
 			a.name.println("  - attribute: ");
@@ -26,6 +29,12 @@ rule CreateEntity
 			prop.Nullable = a.lowerBound == 0;
 			
 			t.Property.add(prop);
+
+			if (a.isID()) {
+				var propertyRef = new ODATA!TPropertyRef;
+				propertyRef.Name = a.name;
+				key.PropertyRef.add(propertyRef);
+			}
 		}
 		
 		for (r in s.eStructuralFeatures.select(sf | sf.isKindOf(SRC!EReference))) {
