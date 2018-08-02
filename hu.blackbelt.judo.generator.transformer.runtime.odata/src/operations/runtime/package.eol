@@ -1,0 +1,11 @@
+@cached
+operation SRC!EPackage getFullName() {
+	var package = SRC!EPackage.all.selectOne(p | p.eSubPackages.contains(self));
+	var name = "";
+	while (package.isDefined()) {
+		name = package.name + "." + name;
+		package = SRC!EPackage.all.selectOne(p | p.eSubPackages.contains(package));
+	}
+
+	return name + self.name;
+}
