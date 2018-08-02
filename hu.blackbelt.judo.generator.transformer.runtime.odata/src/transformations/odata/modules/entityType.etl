@@ -33,7 +33,13 @@ rule CreateEntity
 				// complex type!
 				r.name.println("  - embedded: ");
 				
-				// TODO: create complex type
+				var prop = new ODATA!TProperty;
+				prop.Name = r.name;
+				
+				var namespace = r.eType.getPackage().getFullName();
+				prop.Type = namespace + "." + r.eType.equivalent().Name;
+				
+				t.Property.add(prop);
 			} else {
 				// reference
 				r.name.println("  - reference: ");

@@ -1,0 +1,26 @@
+import "../../../operations/odata/_importOData.eol";
+import "../../../operations/runtime/_importRuntime.eol";
+
+rule CreateComplexType
+    transform s : SRC!EClass
+    to t : ODATA!TComplexType {
+    	guard : s.isStructure()
+    	
+    	s.name.println("Processing STRUCTURE: ");
+    	
+    	t.Name = s.name;
+    	t.Abstract = false;
+    	
+    	for (a in s.eStructuralFeatures.select(sf | sf.isKindOf(SRC!EAttribute))) {
+			a.name.println("  - attribute: ");
+		
+			var prop = new ODATA!TProperty;
+			prop.Name = a.name;
+			prop.Type = a.getEdmType();
+			prop.Nullable = a.lowerBound == 0;
+			
+			t.Property.add(prop);
+		}
+		
+		s.getPackage().equivalent().ComplexType.add(t);
+    }
