@@ -1,6 +1,4 @@
-import "../../../operations/psm/attribute.eol";
-import "../../../operations/psm/endpoint.eol";
-import "../../../operations/psm/entityType.eol";
+import "../../../operations/psm/data/_importData.eol";
 
 rule CreateEntityClass
 	transform s : JUDOPSM!EntityType

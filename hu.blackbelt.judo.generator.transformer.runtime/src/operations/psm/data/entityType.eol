@@ -1,0 +1,24 @@
+@cached
+operation JUDOPSM!EntityType hasCircularReference() {
+	return self.hasCircularReference(self.superEntityTypes);
+}
+
+operation JUDOPSM!EntityType hasCircularReference(visited : Collection) {
+    if (visited.includes(self)) {
+        return true;
+    } else if (visited.isEmpty()) {
+        return false;
+    }
+
+    return self.hasCircularReference(self.superEntityTypes.collect(s | s.superEntityTypes).flatten());
+}
+
+@cached
+operation String getEntityTypeReference() {
+	return JUDOPSM!EntityType.all.selectOne(et | et.name == self).equivalent();
+}
+
+@cached
+operation JUDOPSM!EntityType getPackage() {
+	return JUDOPSM!Namespace.all.selectOne(p | p.entityTypes.includes(self));
+}
