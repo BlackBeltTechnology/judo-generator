@@ -1,6 +1,4 @@
-import "../../../operations/psm/facade.eol";
-import "../../../operations/psm/link.eol";
-import "../../../operations/psm/property.eol";
+import "../../../operations/psm/facade/_importFacade.eol";
 
 @abstract
 rule CreateFacadeClass
