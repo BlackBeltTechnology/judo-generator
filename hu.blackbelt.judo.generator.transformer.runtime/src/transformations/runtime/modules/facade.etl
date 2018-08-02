@@ -6,6 +6,21 @@ rule CreateFacadeClass
 	to t : RUNTIME!EClass {
 		t.name = s.name;
 		s.getPackage().equivalent().eClassifiers.add(t);
+
+		var id = new RUNTIME!EAttribute;
+		id.name = "id";
+		id.iD = true;
+		id.changeable = false;
+		id.eType = "JString".getJudoDataType();
+		t.eStructuralFeatures.add(id);
+
+		var annotation = new RUNTIME!EAnnotation;
+		annotation.source = extendedMetadataURI;
+		var aEntity = new RUNTIME!EStringToStringMapEntry;
+		aEntity.key = "id";
+		aEntity.value = "true";
+		annotation.details.add(aEntity);
+		id.eAnnotations.add(annotation);
 	}
 
 rule CreateViewClass
