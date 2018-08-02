@@ -1,0 +1,11 @@
+import "modelElement.eol";
+
+@cached
+operation SRC!EClass isEntity() {
+	return self.hasAnnotation("facade");
+}
+
+@cached
+operation SRC!EClassifier getPackage() {
+	return SRC!EPackage.all.selectOne(p | p.eClassifiers.contains(self));
+}
