@@ -1,0 +1,74 @@
+import "../../../operations/odata/_importOData.eol";
+import "../../../operations/runtime/_importRuntime.eol";
+
+rule CreateEntity
+	transform s : SRC!EClass
+	to t : ODATA!TEntityType {
+		guard : s.isFacade()
+		
+		s.name.println("Processing ENTITY: ");
+		
+		t.Name = s.name;
+		t.Abstract = s.abstract;
+		
+		if (s.eSuperTypes.size() == 1) {
+			t.BaseType = s.eSuperTypes.first().name;
+		} else if (s.eSuperTypes.size() > 1) {
+			s.name.println("Multiple superTypes is not supported yet!");
+		}
+
+		var key = new ODATA!TEntityKeyElement;
+		t.Key.add(key);
+		
+		for (a in s.eStructuralFeatures.select(sf | sf.isKindOf(SRC!EAttribute))) {
+			a.name.println("  - attribute: ");
+		
+			var prop = new ODATA!TProperty;
+			prop.Name = a.name;
+			prop.Type = a.getEdmType();
+			prop.Nullable = a.lowerBound == 0;
+			
+			t.Property.add(prop);
+
+			if (a.isID()) {
+				var propertyRef = new ODATA!TPropertyRef;
+				propertyRef.Name = a.name;
+				key.PropertyRef.add(propertyRef);
+			}
+		}
+		
+		for (r in s.eStructuralFeatures.select(sf | sf.isKindOf(SRC!EReference))) {
+			if (r.isEmbedded()) {
+				// complex type!
+				r.name.println("  - embedded: ");
+				
+				var prop = new ODATA!TProperty;
+				prop.Name = r.name;
+				
+				var namespace = r.eType.getPackage().getFullName();
+				prop.Type = namespace + "." + r.eType.equivalent().Name;
+				
+				t.Property.add(prop);
+			} else {
+				// reference
+				r.name.println("  - reference: ");
+				
+				var nprop = new ODATA!TNavigationProperty;
+				nprop.Name = r.Name;
+				var namespace = r.eType.getPackage().getFullName();
+				if (r.upperBound > 1 or r.upperBound == -1) {
+					nprop.Type = "Collection(" + namespace + "." + r.eType.equivalent().Name + ")";
+				} else {
+					nprop.Type = namespace + "." + r.eType.equivalent().Name;
+				}
+				
+				if (r.eOpposite.isDefined()) {
+					nprop.Partner = r.eOpposite.name;
+				}
+				
+				t.NavigationProperty.add(nprop);
+			}
+		}
+		
+		s.getPackage().equivalent().EntityType.add(t);
+	}

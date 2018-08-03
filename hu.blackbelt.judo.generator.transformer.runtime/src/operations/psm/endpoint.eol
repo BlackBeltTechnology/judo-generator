@@ -1,4 +1,0 @@
-@cached
-operation JUDOPSM!Endpoint getEntityType() {
-	return JUDOPSM!EntityType.all.selectOne(et | et.endpoints.includes(self));
-}

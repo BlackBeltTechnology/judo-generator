@@ -1,0 +1,6 @@
+import "modelElement.eol";
+
+@cached
+operation RUNTIME!EReference isEmbedded() {
+	return self.hasAnnotation("embedded");
+}

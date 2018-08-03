@@ -1,0 +1,9 @@
+import "../../../operations/runtime/_importRuntime.eol";
+
+rule PackageToSchema
+	transform s : SRC!EPackage
+	to t : ODATA!SchemaType {
+		t.Namespace = s.getFullName();
+
+		root.DataServices.Schema.add(t);
+	}

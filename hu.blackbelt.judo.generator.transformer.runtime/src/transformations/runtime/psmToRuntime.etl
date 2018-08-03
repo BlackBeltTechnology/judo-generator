@@ -1,6 +1,7 @@
 import "modules/package.etl";
 import "modules/type.etl";
 import "modules/entity.etl";
+import "modules/facade.etl";
 
 pre {
 	var root = new RUNTIME!EPackage;
