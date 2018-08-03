@@ -1,9 +1,9 @@
 @cached
-operation JUDOPSM!Type getPackage() {
+operation JUDOPSM!Type getPackage() : JUDOPSM!Namespace {
 	return JUDOPSM!Namespace.all.selectOne(p | p.types.includes(self));
 }
 
-operation JUDOPSM!Type createRuntimeAnnotations() {
+operation JUDOPSM!Type createRuntimeAnnotations() : Sequence {
 	var annotations = Sequence{};
 
 	if (self.isKindOf(JUDOPSM!String)) {

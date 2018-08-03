@@ -1,9 +1,9 @@
 @cached
-operation JUDOPSM!EntityType hasCircularReference() {
+operation JUDOPSM!EntityType hasCircularReference() : Boolean {
 	return self.hasCircularReference(self.superEntityTypes);
 }
 
-operation JUDOPSM!EntityType hasCircularReference(visited : Collection) {
+operation JUDOPSM!EntityType hasCircularReference(visited : Collection) : Boolean {
     if (visited.includes(self)) {
         return true;
     } else if (visited.isEmpty()) {
@@ -14,11 +14,6 @@ operation JUDOPSM!EntityType hasCircularReference(visited : Collection) {
 }
 
 @cached
-operation String getEntityTypeReference() {
-	return JUDOPSM!EntityType.all.selectOne(et | et.name == self).equivalent();
-}
-
-@cached
-operation JUDOPSM!EntityType getPackage() {
+operation JUDOPSM!EntityType getPackage() : JUDOPSM!Namespace {
 	return JUDOPSM!Namespace.all.selectOne(p | p.entityTypes.includes(self));
 }

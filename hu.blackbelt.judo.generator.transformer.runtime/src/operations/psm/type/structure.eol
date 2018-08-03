@@ -1,14 +1,14 @@
 @cached
-operation JUDOPSM!Structure hasCircularReference() {
+operation JUDOPSM!Structure hasCircularReference() : Boolean {
 	return self.hasCircularReference(self.getSubStructures());
 }
 
 @cached
-operation JUDOPSM!Structure getSubStructures() {
+operation JUDOPSM!Structure getSubStructures() : JUDOPSM!Field {
 	return self.fields.select(f | f.type.isTypeOf(JUDOPSM!Structure)).collect(f | f.type);
 }
 
-operation JUDOPSM!Structure hasCircularReference(visited : Collection) {
+operation JUDOPSM!Structure hasCircularReference(visited : Collection) : Boolean {
     if (visited.includes(self)) {
         return true;
     } else if (visited.isEmpty()) {

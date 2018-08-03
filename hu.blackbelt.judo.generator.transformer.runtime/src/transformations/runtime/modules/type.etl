@@ -2,7 +2,7 @@ import "../../../operations/psm/type/_importType.eol";
 import "../../../operations/runtime/_importRuntime.eol";
 
 @cached
-operation JUDOPSM!Primitive getEcoreType() {
+operation JUDOPSM!Primitive getEcoreType() : TYPES!EDataType {
 	if (self.isKindOf(JUDOPSM!String)) {
 		return "JString".getJudoDataType();
 	} else if (self.isKindOf(JUDOPSM!Numeric)) {

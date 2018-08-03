@@ -1,9 +1,4 @@
 @cached
-operation String getFacadeReference() {
-	return JUDOPSM!Facade.all.selectOne(et | et.name == self).equivalent();
-}
-
-@cached
-operation JUDOPSM!Facade getPackage() {
+operation JUDOPSM!Facade getPackage() : JUDOPSM!Namespace {
 	return JUDOPSM!Namespace.all.selectOne(p | p.facades.includes(self));
 }

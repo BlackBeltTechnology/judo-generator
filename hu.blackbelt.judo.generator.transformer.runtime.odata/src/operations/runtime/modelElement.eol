@@ -1,4 +1,4 @@
-operation RUNTIME!EModelElement hasAnnotation(name : String) {
+operation RUNTIME!EModelElement hasAnnotation(name : String) : Boolean {
 	var annotations = self.eAnnotations.selectOne(a | a.source = extendedMetadataURI);
 	if (annotations.isDefined()) {
 		var d = annotations.details.selectOne(d | d.key = name);

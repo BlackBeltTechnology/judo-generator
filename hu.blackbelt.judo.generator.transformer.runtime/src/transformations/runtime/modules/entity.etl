@@ -1,5 +1,10 @@
 import "../../../operations/psm/data/_importData.eol";
 
+@cached
+operation String getEntityTypeReference() : RUNTIME!EClass {
+	return JUDOPSM!EntityType.all.selectOne(et | et.name == self).equivalent();
+}
+
 rule CreateEntityClass
 	transform s : JUDOPSM!EntityType
 	to t : RUNTIME!EClass {
