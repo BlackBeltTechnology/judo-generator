@@ -1,9 +1,5 @@
 import "../../../operations/psm/facade/_importFacade.eol";
-
-@cached
-operation String getFacadeReference() : RUNTIME!EClass {
-	return JUDOPSM!Facade.all.selectOne(et | et.name == self).equivalent();
-}
+import "../utils/_importUtils.eol";
 
 @abstract
 rule CreateFacadeClass

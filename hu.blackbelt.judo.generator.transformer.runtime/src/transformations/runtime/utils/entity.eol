@@ -1,0 +1,4 @@
+@cached
+operation String getEntityTypeReference() : RUNTIME!EClass {
+	return JUDOPSM!EntityType.all.selectOne(et | et.name == self).equivalent();
+}

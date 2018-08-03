@@ -2,29 +2,3 @@
 operation JUDOPSM!Type getPackage() : JUDOPSM!Namespace {
 	return JUDOPSM!Namespace.all.selectOne(p | p.types.includes(self));
 }
-
-operation JUDOPSM!Type createRuntimeAnnotations() : Sequence {
-	var annotations = Sequence{};
-
-	if (self.isKindOf(JUDOPSM!String)) {
-		if (self.maxLength.isDefined()) {
-			var aMaxLength = new RUNTIME!EStringToStringMapEntry;
-			aMaxLength.key = "maxLength";
-			aMaxLength.value = self.maxLength.asString();
-			annotations.add(aMaxLength);
-		}
-	} else if (self.isKindOf(JUDOPSM!Custom)) {
-		switch (self.name) {
-			case "Date":
-			case "Timestamp":
-			case "Binary":
-			default:
-				var aCustomType = new RUNTIME!EStringToStringMapEntry;
-				aCustomType.key = "customType";
-				aCustomType.value = self.name;
-				annotations.add(aCustomType);
-		}
-	}
-
-	return annotations;
-}
