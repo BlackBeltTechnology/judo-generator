@@ -37,3 +37,4 @@ operation RUNTIME!EClass isStructure() : Boolean {
 operation RUNTIME!EClass fqName() : String {
 	return self.getPackage().fqName() + "." + self.name;
 }
+

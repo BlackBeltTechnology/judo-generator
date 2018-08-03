@@ -1,0 +1,13 @@
+@Spec {
+	metamodel "http://blackbelt.hu/judo/meta/runtime/rdbms/mapping" {
+		nsUri: "http://blackbelt.hu/judo/meta/runtime/rdbms/mapping"
+	}
+}
+
+package  {
+	Mappings "Mappings1" {
+		mappings: Mapping "String" {
+			name: "String"
+		}
+	}
+}

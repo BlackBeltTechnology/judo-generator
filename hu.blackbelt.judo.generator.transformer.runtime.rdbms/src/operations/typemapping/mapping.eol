@@ -1,0 +1,4 @@
+@cached
+operation String findMapping() : Any {
+	return TYPEMAPPING!Mapping.all.selectOne(m | m.Judo == self);
+}

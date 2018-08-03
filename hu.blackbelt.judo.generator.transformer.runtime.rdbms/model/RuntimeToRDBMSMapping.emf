@@ -1,0 +1,17 @@
+@namespace(uri="http://blackbelt.hu/judo/meta/runtime/rdbms/mapping", prefix="runtimeToRdbms")
+package runtimeToRdbmsMapping;
+
+import "http://blackbelt.hu/judo/meta/psm/rdbms";
+import "http://blackbelt.hu/judo/runtime/types";
+import "http://www.eclipse.org/emf/2002/Ecore";
+
+class Mappings {
+  val Mapping[*] mappings;
+}
+
+class Mapping {
+  ref rdbms.RdbmsFieldType[1] rdbmsType;
+  ref ecore.EDataType[1] runtimeType;
+  attr String[1] name;
+}
+

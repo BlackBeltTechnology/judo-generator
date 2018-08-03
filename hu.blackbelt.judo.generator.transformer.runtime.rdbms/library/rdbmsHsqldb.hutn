@@ -1,0 +1,236 @@
+@Spec {
+	metamodel "http://blackbelt.hu/judo/meta/psm/rdbms" {
+		nsUri: "http://blackbelt.hu/judo/meta/psm/rdbms"
+	}
+}
+
+
+/*
+
+datatype JDate : java.time.LocalDate;
+
+datatype JTimestamp : java.time.ZonedDateTime;
+
+datatype JInteger : java.lang.Integer;
+
+datatype JLong : java.lang.Long;
+
+datatype JBigInteger : java.math.BigInteger;
+
+datatype JFloat : java.lang.Float;
+
+datatype JDouble : java.lang.Double;
+
+datatype JBigDecimal : java.math.BigDecimal;
+
+datatype JString : java.lang.String;
+
+datatype JBoolean : java.lang.Boolean;
+
+datatype JByteArray : "byte[]";
+
+datatype JObject : java.lang.Object;
+
+datatype JUUID : java.util.UUID;
+
+*/
+
+package  {
+	RdbmsModel "RdbmsModels" {
+		rdbmsFieldTypes:		
+			RdbmsFieldType "Date" {
+				name: "Date"
+				rdbmsTypeName: "date"
+				uuid: "rdbms-type-date-hsqldb"
+				description: "Date"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "DateTime" {
+				name: "DateTime"
+				rdbmsTypeName: "timestamp"
+				uuid: "rdbms-type-datetime-hsqldb"
+				description: "DateTime"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Integer" {
+				name: "Integer"
+				rdbmsTypeName: "int"
+				uuid: "rdbms-type-integer-hsqldb"
+				description: "Integer"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Integer" {
+				name: "Integer"
+				rdbmsTypeName: "int"
+				uuid: "rdbms-type-integer-hsqldb"
+				description: "Integer"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+
+
+
+
+
+
+
+
+
+			RdbmsFieldType "Memo" {
+				name: "Memo"
+				rdbmsTypeName: "text"
+				uuid: "rdbms-type-memo-hsqldb"
+				description: "Memo"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Boolean" {
+				name: "Boolean"
+				rdbmsTypeName: "char"
+				uuid: "rdbms-type-boolean-hsqldb"
+				description: "Boolean"
+				size: 1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "String" {
+				name: "String"
+				rdbmsTypeName: "varchar"
+				uuid: "rdbms-type-string-hsqldb"
+				description: "String"
+				size: 255
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Integer" {
+				name: "Integer"
+				rdbmsTypeName: "int"
+				uuid: "rdbms-type-integer-hsqldb"
+				description: "Integer"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Void" {
+				name: "Void"
+				rdbmsTypeName: "UNKNOWN"
+				uuid: "rdbms-type-void-hsqldb"
+				description: "Void"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Date" {
+				name: "Date"
+				rdbmsTypeName: "date"
+				uuid: "rdbms-type-date-hsqldb"
+				description: "Date"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "DateTime" {
+				name: "DateTime"
+				rdbmsTypeName: "timestamp"
+				uuid: "rdbms-type-datetime-hsqldb"
+				description: "DateTime"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Time" {
+				name: "Time"
+				rdbmsTypeName: "timestamp"
+				uuid: "rdbms-type-time-hsqldb"
+				description: "Time"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Text" {
+				name: "Text"
+				rdbmsTypeName: "varchar"
+				uuid: "rdbms-type-text-hsqldb"
+				description: "Text"
+				size: 4000
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Float" {
+				name: "Float"
+				rdbmsTypeName: "real"
+				uuid: "rdbms-type-float-hsqldb"
+				description: "Float"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Percentage" {
+				name: "Percentage"
+				rdbmsTypeName: "real"
+				uuid: "rdbms-type-percentage-hsqldb"
+				description: "Percentage"
+				size: -1
+				precision: -1
+				scale: -1
+			}, 
+			RdbmsFieldType "Currency" {
+				name: "Currency"
+				rdbmsTypeName: "numeric"
+				uuid: "rdbms-type-currency-hsqldb"
+				description: "Currency"
+				size: -1
+				precision: 19
+				scale: 2
+				storageByte: -1
+			}, 
+			RdbmsFieldType "Id" {
+				name: "Id"
+				rdbmsTypeName: "integer"
+				uuid: "rdbms-type-id-hsqldb"
+				description: "Id"
+				size: -1
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}, 
+			RdbmsFieldType "File" {
+				name: "File"
+				rdbmsTypeName: "varchar"
+				uuid: "rdbms-type-file-hsqldb"
+				description: "File"
+				size: 255
+				precision: -1
+				scale: -1
+				storageByte: -1
+			}
+		configuration: RdbmsConfiguration "RdbmsConfiguration1" {
+			dialect: "Hsqldb"
+			features: RdbmsFeature "CascadeDeleteOnSuperType" {
+				name: "CascadeDeleteOnSuperType"
+			}
+		}
+	}
+}

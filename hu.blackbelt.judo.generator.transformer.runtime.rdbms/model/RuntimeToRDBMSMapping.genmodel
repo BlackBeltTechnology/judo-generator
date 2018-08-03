@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.blackbelt.judo.generator.transformer.runtime.rdbms/src"
+    modelPluginID="hu.blackbelt.judo.generator.transformer.runtime.rdbms" modelName="RuntimeToRDBMSMapping"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>RuntimeToRDBMSMapping.ecore</foreignModel>
+  <genPackages prefix="RuntimeToRdbmsMapping" disposableProviderFactory="true" ecorePackage="RuntimeToRDBMSMapping.ecore#/">
+    <genClasses ecoreClass="RuntimeToRDBMSMapping.ecore#//Mappings">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RuntimeToRDBMSMapping.ecore#//Mappings/mappings"/>
+    </genClasses>
+    <genClasses ecoreClass="RuntimeToRDBMSMapping.ecore#//Mapping">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RuntimeToRDBMSMapping.ecore#//Mapping/rdbmsType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RuntimeToRDBMSMapping.ecore#//Mapping/runtimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RuntimeToRDBMSMapping.ecore#//Mapping/name"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Rdbms" ecorePackage="http://blackbelt.hu/judo/meta/psm/rdbms#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperationType">
+      <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperationType/CREATE"/>
+      <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperationType/DELETE"/>
+      <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperationType/MODIFY"/>
+      <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperationType/NONE"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement/uuid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement/shortName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement/fullName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement/sqlName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement/originalName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsElement/originalPackage"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTable/fields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTable/uniqueConstraints"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTable/primaryKey"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTable/indexes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTable/parent"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsField">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsField/table"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsField/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsField/mandatory"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsForeignKey">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsForeignKey/referenceKey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsForeignKey/inheritenceBased"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsForeignKey/foreignKeySqlName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsForeignKey/deleteOnCascade"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsForeignKey/deferred"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsForeignKey/readOnly"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsUniqueConstraint">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsUniqueConstraint/table"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsUniqueConstraint/fields"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsJunctionTable">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsJunctionTable/field1"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsJunctionTable/field2"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsIdentifierField">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsIdentifierField/foreignKeys"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsView">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsView/fields"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsView/primaryTable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsView/originUuid"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsView/relations"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsView/primaryIdentifierField"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsView/tables"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewField">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewField/view"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewField/inherited"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewValueField"/>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewExpressionField">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewExpressionField/expressions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewExpressionField/expression"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsExpression/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType/rdbmsTypeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType/uuid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType/size"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType/precision"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType/scale"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldType/storageByte"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModel/rdbmsFieldTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModel/rdbmsTables"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModel/rdbmsViews"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModel/configuration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModel/version"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModel/tableOperations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModel/viewRecords"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsValueField">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsValueField/technical"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewIdentifierField"/>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsConfiguration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsConfiguration/dialect"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsConfiguration/features"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFeature/name"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableAlias">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableAlias/table"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableAlias/view"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsLabelExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsLabelExpression/text"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsRelationExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsRelationExpression/field"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewAliasField">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewAliasField/alias"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperation/table"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperation/operationType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperation/createFieldOperations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperation/modifyFieldOperations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsTableOperation/deleteFieldOperations"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldOperation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsFieldOperation/field"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsCreateFieldOperation"/>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModifyFieldOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModifyFieldOperation/typeChanged"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsModifyFieldOperation/mandatoryChanged"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsDeleteFieldOperation"/>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRelation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRelation/fromAlias"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRelation/toAlias"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRelation/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRelation/fromField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRelation/toField"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewTableField">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewTableField/tableField"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewTableField/foreign"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewForeignIdentifierField">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewForeignIdentifierField/referenceIdentifier"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsIndex">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsIndex/table"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsIndex/fields"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsIndex/unique"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRecord">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRecord/values"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRecord/view"/>
+    </genClasses>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRecordValue">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRecordValue/value"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRecordValue/identifierField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/psm/rdbms#//RdbmsViewRecordValue/valueField"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

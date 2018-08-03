@@ -1,0 +1,83 @@
+@Spec {
+	metamodel "http://blackbelt.hu/judo/meta/psm/rdbms/mapping" {
+		nsUri: "http://blackbelt.hu/judo/meta/psm/rdbms/mapping"
+	}
+}
+
+package  {
+	Mappings "Mappings1" {
+		mappings: Mapping "memo" {
+			name: "memo"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_rVz-cNwbEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_sB5sAAJcEeePbOdRMfS3CA"
+		}, Mapping "boolean" {
+			name: "boolean"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_d7pC4NwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_OHrYYPzUEeaBFPkGdGK2hw"
+		}, Mapping "currency" {
+			name: "currency"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_UGmlgNweEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_2Dr6AAJcEeePbOdRMfS3CA"
+		}, Mapping "date" {
+			name: "date"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_TUC8oNwdEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Rls6AAJcEeePbOdRMfS3CA"
+		}, Mapping "datetime" {
+			name: "datetime"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_aMaioNwdEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_XciKgAJcEeePbOdRMfS3CA"
+		}, Mapping "file" {
+			name: "file"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_OEHTkC3sEei7E4IheeIQIg"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_QFfPAAJdEeePbOdRMfS3CA"
+		}, Mapping "float" {
+			name: "float"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_8nJ4gNwdEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_vALbAAJcEeePbOdRMfS3CA"
+		}, Mapping "gps" {
+			name: "gps"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ig8fgAJdEeePbOdRMfS3CA"
+		}, Mapping "integer" {
+			name: "integer"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_3jME0NwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Ts0b8PzUEeaBFPkGdGK2hw"
+		}, Mapping "percentage" {
+			name: "percentage"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_HnCGcNweEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_yU4tAAJcEeePbOdRMfS3CA"
+		}, Mapping "string" {
+			name: "string"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Rb7XYPzUEeaBFPkGdGK2hw"
+		}, Mapping "text" {
+			name: "text"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_t4zNsNwdEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_pN2QAAJcEeePbOdRMfS3CA"
+		}, Mapping "time" {
+			name: "time"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_lg-AENwdEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_amLcAAJcEeePbOdRMfS3CA"
+		}, Mapping "track" {
+			name: "track"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_MZ9_gAJdEeePbOdRMfS3CA"
+		}, Mapping "uuid" {
+			name: "uuid"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_TeZEgAJdEeePbOdRMfS3CA"
+		}, Mapping "ipAddress" {
+			name: "ipAddress"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_V7dkMOQHEeeiFLS-7unXRw"
+		}, Mapping "natural" {
+			name: "natural"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_3jME0NwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_Pf9gYOQHEeeiFLS-7unXRw"
+		}, Mapping "url" {
+			name: "url"
+			rdbmsFieldType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.rdbms/library/rdbmsTypesOracle.model#_qlGdwNwcEeeNA-CmHjdGOA"
+			psmType: UnknownType "platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model#_dE8IUOQHEeeiFLS-7unXRw"
+		}
+	}
+}

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>hu.blackbelt.judo.generator</groupId>
+		<artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+	</parent>
+
+	<artifactId>hu.blackbelt.judo.generator.transformer.runtime.rdbms</artifactId>
+	<packaging>jar</packaging>
+
+    <properties>
+        <src.dir>src</src.dir>
+        <test.model.groupId>hu.blackbelt.northwind</test.model.groupId>
+        <test.model.artifactId>northwind-model</test.model.artifactId>
+        <test.model.version>1.0.0-4</test.model.version>
+        <judo-psm.version>1.0.0-10</judo-psm.version>
+    </properties>
+
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
+    
+    <profiles>
+    	<profile>
+    		<id>runtime-rdbms-transformer-development</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>hu.blackbelt.judo.generator</groupId>
+						<artifactId>epsilon-maven-plugin</artifactId>
+						<dependencies>
+							<dependency>
+								<groupId>hu.blackbelt.judo.generator</groupId>
+								<artifactId>hu.blackbelt.judo.generator.parser.derived.expression.sql</artifactId>
+								<version>${project.version}</version>
+							</dependency>
+						</dependencies>
+						<executions>
+							<execution>
+								<id>transform-hsqldb</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+                                        <metaModel>mvn:hu.blackbelt.judo.meta:judo-meta-psm:model:psm:${judo-psm.version}</metaModel>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.runtime:model:types:${project.version}</metaModel>
+									</metaModels>
+                                    <excelModels>
+                                        <excelModel>
+                                            <name>TYPEMAPPING</name>
+                                            <artifact>${basedir}/model/RDBMS Data Types Hsqldb.xlsx</artifact>
+                                            <configurationArtifact>file:${basedir}/model/mapping.xml</configurationArtifact>
+                                            <aliases>
+                                                <alias>TYPEMAPPING</alias>
+                                            </aliases>
+                                        </excelModel>
+                                    </excelModels>		
+									<models>
+                                        <model>
+                                            <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.runtime:model:runtime:${project.version}</artifact>
+                                            <name>RUNTIME</name>
+                                            <metaModelUris>
+                                                <param>http://www.eclipse.org/emf/2002/Ecore</param>
+                                                <param>http://blackbelt.hu/judo/runtime/types</param>
+                                            </metaModelUris>
+                                        </model>
+
+										<model>
+											<artifact>${project.build.directory}/rdbmsHsqldb.model</artifact>
+											<name>RDBMS</name>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+										</model>
+									</models>
+									<eolPrograms>
+										<Etl>
+											<source>src/transformations/runtimeToRdbms.etl</source>
+											<parameters>
+												<parameter>
+													<name>runtimeVersion</name>
+													<value>${project.version}-${psmversion}</value>
+												</parameter>
+                                                <parameter>
+                                                    <name>extendedMetadataURI</name>
+                                                    <value>http://blackbelt.hu/judo/meta/ExtendedMetadata</value>
+                                                </parameter>
+											</parameters>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>add-resource</id>
+								<goals>
+									<goal>add-resource</goal>
+								</goals>
+								
+								<configuration>
+									<resources>
+										<resource>
+											<directory>src</directory>
+										</resource>
+									</resources>
+								</configuration>
+								
+							</execution>
+		
+							<execution>
+								<id>attach-artifacts</id>
+								<phase>package</phase>
+								<goals>
+									<goal>attach-artifact</goal>
+								</goals>
+								<configuration>
+									<artifacts>
+										<artifact>
+											<file>${project.build.directory}/rdbmsHsqldb.model</file>
+											<type>model</type>
+											<classifier>runtime-rdbmsHsqldb</classifier>
+										</artifact>
+										<artifact>
+											<file>${project.build.directory}/rdbmsPostgres.model</file>
+											<type>model</type>
+											<classifier>runtime-rdbmsPostgres</classifier>
+										</artifact>
+										<artifact>
+											<file>${project.build.directory}/rdbmsOracle.model</file>
+											<type>model</type>
+											<classifier>runtime-rdbmsOracle</classifier>
+										</artifact>
+									</artifacts>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+				</plugins>
+			</build>
+    	</profile>
+    </profiles>
+</project>

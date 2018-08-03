@@ -9,3 +9,8 @@ operation RUNTIME!EPackage getFullName() : String {
 
 	return name + self.name;
 }
+
+@cached
+operation RUNTIME!EPackage ownerPackage() : RUNTIME!EPackage {
+	return RUNTIME!EPackage.all.selectOne(p | p.eSubPackages.contains(self));
+}

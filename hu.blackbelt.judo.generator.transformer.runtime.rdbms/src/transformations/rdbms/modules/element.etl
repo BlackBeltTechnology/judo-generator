@@ -1,0 +1,21 @@
+import "../../../operations/runtime/_importRuntime.eol";
+
+@abstract
+rule ENamedElementToRdbmsElement 
+	transform s : RUNTIME!ENamedElement
+	to t : RDBMS!RdbmsElement {
+		if (s.name.isUndefined() or s.name.trim().isEmpty()) {
+			t.name = "WAS__EMPTY__";
+		} else {
+			t.name = s.name;
+		}
+		//t.uuid = s.getPackage().getFullName() + "." + s.name;
+		/*
+		t.uuid = s.uuid;
+		t.fullName = s.fullName;
+		t.description = s.description; */
+		if (s.hasAnnotation("shortName")) {
+			t.shortName = s.getAnnotationValue("shortName");
+		}
+		t.sqlName = s.sqlName();
+}

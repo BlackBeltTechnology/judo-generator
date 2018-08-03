@@ -1,0 +1,11 @@
+import "../../../operations/_importAll.eol";
+rule JModelToRdbmsModel 
+	transform s : PSM!JModel
+	to t : RDBMS!RdbmsModel {
+		guard : RDBMS!RdbmsModel.all.size == 0
+		t.version = psmVersion;
+		targetModel = t;
+		
+		addAllRdbmsFieldTypes();
+		addAllRdbmsConfiguration();
+	}

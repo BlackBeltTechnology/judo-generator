@@ -1,0 +1,79 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+@primary
+rule JRoleToRdbmsJunctionTable
+	transform s : PSM!JRelationship
+	to t : RDBMS!RdbmsJunctionTable, p : RDBMS!RdbmsIdentifierField, f1 : RDBMS!RdbmsForeignKey, f2 : RDBMS!RdbmsForeignKey, i1 : RDBMS!RdbmsIndex, i2 : RDBMS!RdbmsIndex, uq : RDBMS!RdbmsUniqueConstraint
+	extends JElementToRdbmsElement {
+	guard : s.isJunction()
+		t.sqlName = s.relationSqlTableName(); // junctionTableSqlName(s);
+
+		var primaryRole : PSM!JRole = s.primaryRole();
+		var secondaryRole : PSM!JRole = s.secondaryRole();
+	    t.name = primaryRole.ownerClass.package.fqName() + "." + primaryRole.ownerClass.name + " to " + secondaryRole.ownerClass.package.fqName() + "." + secondaryRole.ownerClass.name;
+
+
+		t.field1 = f1.fillFromRole(primaryRole);
+		t.field2 = f2.fillFromRole(secondaryRole);
+
+		t.field1.mandatory = true;
+		t.field2.mandatory = true;
+
+		i1.name = t.name + " " + primaryRole.name;
+		i1.uuid = generateUuid(t.uuid, "indexOne", "_");
+
+		/*var tempSqlName : String = ("IDX_" + generateUuid(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName(), ".").replaceAll("-",""));
+		if (tempSqlName.length > 30) {
+			i1.sqlName = tempSqlName.substring(0,30);
+		} else {
+			i1.sqlName = tempSqlName;
+		}*/
+		i1.sqlName = ("IDX_" + md5(generateUuid(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName(), ".").replaceAll("-","")));
+
+		i1.fields.add(t.field1);
+		i1.table = t;
+
+		i2.name = t.name + " " + secondaryRole.name;
+		i2.uuid = generateUuid(t.uuid, "indexTwo", "_");
+
+		/*tempSqlName = ("IDX_" + generateUuid(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName(), ".").replaceAll("-",""));
+		if (tempSqlName.length > 30) {
+			i2.sqlName = tempSqlName.substring(0,30);
+		} else {
+			i2.sqlName = tempSqlName;
+		}*/
+		i2.sqlName = ("IDX_" + md5(generateUuid(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName(), ".").replaceAll("-","")));
+
+		i2.fields.add(t.field2);
+		i2.table = t;
+
+		t.indexes.add(i1);
+		t.indexes.add(i2);
+
+		uq.name = t.name + " " + primaryRole.name + ", " + secondaryRole.name;
+		uq.uuid = generateUuid(t.uuid, "uniqueConstraint", "_");
+		// uq.sqlName = "UQ_" + s.relationSqlName();
+		uq.sqlName = ("UQ_" + md5(t.uuid.replaceAll("-","")));
+
+		uq.fields.add(t.field1);
+		uq.fields.add(t.field2);
+		uq.table = t;
+
+		t.uniqueConstraints.add(uq);
+
+		p.name = "id";
+		p.sqlName = "ID";
+		p.mandatory = true;
+		p.type = idType();
+		p.uuid =  generateUuid(t.uuid, "indentifierField", "_");
+
+		f1.deleteOnCascade = true;
+		f2.deleteOnCascade = true;
+
+		t.fields.add(f1);
+		t.fields.add(f2);
+		t.fields.add(p);
+
+		targetModel.rdbmsTables.add(t);
+	}

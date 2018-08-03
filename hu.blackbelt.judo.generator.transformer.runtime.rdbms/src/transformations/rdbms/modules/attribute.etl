@@ -1,0 +1,121 @@
+import "../../../operations/runtime/_importRuntime.eol";
+import "../../../operations/typemapping/_importTypeMapping.eol";
+
+import "element.etl";
+
+@abstract
+rule EAttributeToRdbmsField
+	transform s : RUNTIME!EAttribute
+	to t : RDBMS!RdbmsField 
+	extends ENamedElementToRdbmsElement { 
+		guard : s.getClass().isEntity()
+	    t.uuid = s.fqName();
+		t.table = s.ownerClass.equivalent("EClassToRdbmsTable");
+		t.type = s.type.rdbmsType();
+		t.sqlName = s.fieldSqlName();
+		
+		/*
+		t.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
+		t.description = s.ownerClass.name + "." + s.name;
+		
+		t.originalName = s.ownerClass.name + "." + s.name;
+		t.originalPackage = s.ownerClass.package.fqName();
+		
+		if (s.isPrimaryKey() or s.isGuid() or s.isXmiid()) {
+			t.mandatory = true;
+		} else {
+			t.mandatory = s.mandatory;
+		} */
+}
+
+
+rule EAttributeToTableIdField
+	transform s : RUNTIME!EAttribute
+	to t : RDBMS!RdbmsIdentifierField 
+	extends EAttributeToRdbmsField { 
+		guard : s.getClass().isEntity() and s.isPrimaryKey()
+		t.table.primaryKey = t;
+		t.sqlName = "ID";
+		t.type = "JUUID".findMapping();
+}
+
+rule EAttributeToTableValueField
+	transform s : RUNTIME!EAttribute
+	to t : RDBMS!RdbmsValueField
+	extends EAttributeToRdbmsField { 
+		guard : s.getClass().isEntity() and not s.isPrimaryKey() and not s.derived
+		t.technical = s.isTechnical();
+}
+
+/*
+@lazy
+rule EAttributeToViewIdFieldWithoutView
+	transform s : PSM!JAttribute
+	to v : RDBMS!RdbmsViewIdentifierField
+	extends ENamedElementToRdbmsElement { 
+		guard : s.getClass().isEntity() and s.isPrimaryKey()
+		v.name = s.getClass().fqName() + "#id";
+		v.sqlName = "ID";
+		v.tableField = s.equivalent("EAttributeToTableIdField");
+		v.uuid = generateUuid(v.tableField.uuid, "ViewField", "_");
+		v.view = s.ownerClass.equivalent("EClassToRdbmsView");
+}
+
+@lazy
+rule EAttributeToViewIdField
+	transform s : RUNTIME!EAttribute
+	to v : RDBMS!RdbmsViewIdentifierField 
+	extends EAttributeToViewIdFieldWithoutView {
+		guard : s.getClass().isEntity() and s.isPrimaryKey()
+		v.view = s.getClass.equivalent("EClassToRdbmsView");
+		v.`alias` = v.view.primaryTable;
+}
+
+@lazy
+rule EAttributeToViewValueFieldWithoutView
+	transform s : RUNTIME!EAttribute
+	to v : RDBMS!RdbmsViewValueField 
+	extends ENamedElementToRdbmsElement { 
+		guard : s.getClass().isEntity() and not s.isPrimaryKey()
+		v.tableField = s.equivalent("EAttributeToTableValueField");
+		v.sqlName  = v.tableField.sqlName;
+		v.uuid =  v.tableField.uuid + "_ViewField";
+}
+
+@lazy
+rule EAttributeToViewValueField
+	transform s : RUNTIME!EAttribute
+	to v : RDBMS!RdbmsViewValueField 
+	extends EAttributeToViewValueFieldWithoutView { 
+		guard : s.getClass().isEntity() and not s.isPrimaryKey()
+		v.name = s.fqName() + "#" + s.name;
+		v.view = s.ownerClass.equivalent("EClassToRdbmsView");
+		v.`alias` = v.view.primaryTable;
+}
+
+@lazy
+rule EAttributeToViewExpressionField
+	transform s : RUNTIME!EAttribute
+	to v : RDBMS!RdbmsViewExpressionField 
+	extends ENamedElementToRdbmsElement { 
+		guard : s.ownerClass().isEntity() and not s.isPrimaryKey()
+		v.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
+  		v.expression = s.value;
+		v.sqlName  = s.fieldSqlName();
+		v.description = s.ownerClass.name + "." + s.name;
+}
+*/
+
+rule EAttributeToUniqueKey
+	transform s : RUNTIME!EAttribute
+	to u : RDBMS!RdbmsUniqueConstraint 
+	extends ENamedElementToRdbmsElement { 
+		guard : s.getClass().isEntity() and s.ID and not s.isPrimaryKey() and not s.derived
+	    
+	    u.uuid = s.fqName() + "@uniqueConstraint";
+		u.table = s.getClass().equivalent("EClassToRdbmsTable");
+		u.sqlName = ("UQ_" + md5(u.uuid));
+		u.name = s.fqName(); 
+		u.fields.add(s.equivalent("EAttributeToTableValueField"));
+}
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdbms:RdbmsModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:rdbms="http://blackbelt.hu/judo/meta/psm/rdbms">
+  <rdbmsFieldTypes name="Memo" rdbmsTypeName="text" uuid="rdbms-type-memo-hsqldb"
+      description="Memo" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="Boolean" rdbmsTypeName="char" uuid="rdbms-type-boolean-hsqldb"
+      description="Boolean" size="1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="String" rdbmsTypeName="varchar" uuid="rdbms-type-string-hsqldb"
+      description="String" size="255" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="Integer" rdbmsTypeName="int" uuid="rdbms-type-integer-hsqldb"
+      description="Integer" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="Void" rdbmsTypeName="UNKNOWN" uuid="rdbms-type-void-hsqldb"
+      description="Void" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="Date" rdbmsTypeName="date" uuid="rdbms-type-date-hsqldb"
+      description="Date" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="DateTime" rdbmsTypeName="timestamp" uuid="rdbms-type-datetime-hsqldb"
+      description="DateTime" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="Time" rdbmsTypeName="timestamp" uuid="rdbms-type-time-hsqldb"
+      description="Time" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="Text" rdbmsTypeName="varchar" uuid="rdbms-type-text-hsqldb"
+      description="Text" size="4000" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="Float" rdbmsTypeName="real" uuid="rdbms-type-float-hsqldb"
+      description="Float" size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="Percentage" rdbmsTypeName="real" uuid="rdbms-type-percentage-hsqldb"
+      description="Percentage" size="-1" precision="-1" scale="-1"/>
+  <rdbmsFieldTypes name="Currency" rdbmsTypeName="numeric" uuid="rdbms-type-currency-hsqldb"
+      description="Currency" size="-1" precision="19" scale="2" storageByte="-1"/>
+  <rdbmsFieldTypes name="Id" rdbmsTypeName="integer" uuid="rdbms-type-id-hsqldb" description="Id"
+      size="-1" precision="-1" scale="-1" storageByte="-1"/>
+  <rdbmsFieldTypes name="File" rdbmsTypeName="varchar" uuid="rdbms-type-file-hsqldb"
+      description="File" size="255" precision="-1" scale="-1" storageByte="-1"/>
+  <configuration dialect="Hsqldb">
+    <features name="CascadeDeleteOnSuperType"/>
+  </configuration>
+</rdbms:RdbmsModel>

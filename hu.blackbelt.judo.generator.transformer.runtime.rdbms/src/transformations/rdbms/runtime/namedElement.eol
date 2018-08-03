@@ -1,0 +1,9 @@
+
+@cached
+operation RUNTIME!ENamedElement sqlName() : String {
+    if (self.hasAnnotation("shortName")) {
+	    return self.getAnnotationValue("shortName").toUpperSnakeCase();
+    } else {
+    	return abbreviate(self.name, 6).toUpperCase();
+	}
+}

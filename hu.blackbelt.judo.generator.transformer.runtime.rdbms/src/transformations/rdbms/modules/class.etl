@@ -1,0 +1,92 @@
+import "../../../operations/runtime/_importRuntime.eol";
+import "element.etl";
+
+rule EClassToRdbmsTable 
+	transform s : RUNTIME!EClass
+	to t : RDBMS!RdbmsTable
+	extends ENamedElementToRdbmsElement {
+	guard : s.isEntity()
+	    t.sqlName = s.tableSqlName();
+	    t.name = s.fqName();
+	    /*
+	    t.originalName = s.name;
+	    t.originalPackage = s.package.fqName();
+		*/
+		if (s.hasSupertype()) {
+			t.parent = s.getPrimarySupertype().equivalent("JClassToRdbmsTable");
+		}
+
+		// Adding foreign key for all descandences classes
+		t.fields.addAll(s.allDescandences().collect(c | s.createForeginKey(c)));
+
+        /* TODO: Later implement it, now ignored
+        for (c : PSM!JClass in s.allSupertypes()) {
+        	t.fields.add(s.createForeginKey(c));
+	    } */  
+	    targetModel.rdbmsTables.add(t);
+}
+
+/*
+rule JClassToRdbmsView 
+	transform s : PSM!JClass
+	to v : RDBMS!RdbmsView
+	extends JElementToRdbmsElement {
+	guard : s.participates(PSM!JLayer#PERSISTENCE)
+	    v.name = s.package.fqName() + "." + s.name;
+	    v.sqlName = s.viewSqlName();
+	    v.originUuid = s.uuid;
+		v.uuid = generateUuid(v.uuid, "View", "_");
+		
+	    // Base alias is a reference for base table    
+	    var baseAlias : RDBMS!RdbmsTableAlias = v.createBaseAlias(s);
+
+		// Add primary key
+	    for (a : PSM!JAttribute in s.attributes.select(a | a.isPrimaryKey())) {
+	   		v.addPrimaryKeyField(a);	   		
+	    }
+		
+		// Iterate all roles contained in base table and add as a field.
+		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
+			// r.name.println("Role (owned) found: ");
+			v.addOwnedRelationField(r);
+		}
+
+
+        // Convert attributes to be able to clone supertypes
+	    for (a : PSM!JAttribute in s.attributes.select(a | not a.isPrimaryKey() and not a.derived)) {
+	   		v.addValueField(a);	   		
+	    }
+
+	    // Inherited aliases and attributes
+	    if (s.supertype.isDefined()) {
+		   	var baseView : RDBMS!RdbmsView = s.supertype.equivalent("JClassToRdbmsView");
+			// Clone super types aliases
+			var superAlias : RDBMS!RdbmsTableAlias = v.addSupertypeAliases(baseView);
+			
+	    	// Create relation to super type
+	    	v.findOrAddRelation(v.primaryTable, superAlias, v.primaryIdentifierField.tableField, baseView.primaryIdentifierField.tableField);    	    	
+	    
+	    	// Copy fields from supertype
+			v.addSupertypeViewFields(baseView);
+
+			// Copy relations from supertype
+	    	v.addSupertypeRelations(baseView);
+			
+	    	// Remap primary ID
+	    	v.primaryIdentifierField = v.fields.select(f | f.name = baseView.primaryIdentifierField.name).first();
+	    } 
+
+		// Iterate all roles contained in the other table and add as a field.
+		for (r : PSM!JRole in s.roles.select(r | not r.isForeign() and not r.ownerRelationship.derived and not r.ownerRelationship.isJunction())) {
+			// ssr.name.println("Role (foreign owned) found: ");
+			v.addForeignRelationField(r);
+		}
+
+		// Adding derived fields last, becaause the referenced fields have to be exists.
+	    for (a : PSM!JAttribute in s.attributes.select(a | a.derived)) {
+	   		v.addExpressionField(a);	   		
+	    }
+
+        targetModel.rdbmsViews.add(v);
+} */
+

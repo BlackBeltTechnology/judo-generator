@@ -1,0 +1,40 @@
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
+}
+
+operation md5 (name : String) : String {
+	return MD5Utils.md5(name);
+}
+
+operation md5short(name : String) : String {
+	return MD5Utils.md5(name);
+}
+
+operation abbreviate(text : String, maxLength : Integer) : String {
+	return AbbreviateUtils.abbreviate(text, maxLength);
+}
+
+/*
+operation idType() : RDBMS!RdbmsFieldType {
+	return targetModel.rdbmsFieldTypes.select( p | p.name = "Id").first();
+}
+*/
+
+operation RDBMS!EObject clone() : RDBMS!EObject {
+	return EMFTool.ecoreUtil.copy(self);
+}
+
+
+operation String addWithDotTo(to : String) : String {
+	if (to.isDefined()) {
+		return to + "." + self;
+	} else {
+		return self;
+	}
+}
+
+operation String toUpperSnakeCase() : String {
+	return self.replaceAll("(.)([A-Z][a-z]+)","$1\\_$2")
+	    	.replaceAll("([a-z0-9])([A-Z])","$1\\_$2")
+	    	.toUpperCase();
+}

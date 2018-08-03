@@ -1,0 +1,95 @@
+import "../operations/runtime/_importRuntime.eol";
+import "../operations/typemapping/_importTypeMapping.eol";
+
+import "rdbms/util.eol";
+import "rdbms/runtime/namedElement.eol";
+import "rdbms/runtime/package.eol";
+import "rdbms/runtime/class.eol";
+import "rdbms/runtime/attribute.eol";
+
+import "rdbms/modules/class.etl";
+import "rdbms/modules/class.etl";
+import "rdbms/modules/attribute.etl";
+
+//import "modules/class.eol";
+
+pre {
+	var targetModel : RDBMS!RdbmsModel = new RDBMS!RdbmsModel();	
+}
+
+/*
+@cached
+operation RUNTIME!EAttribute getRdbmsType() : TYPEMAPPING!Mapping {
+	return MAPPING!Mapping.all().select(m | m.Judo == self.eType.name);
+}
+*/
+
+rule ClassToTable
+	transform s : RUNTIME!EClass
+	to t : RDBMS!RdbmsTable {
+		guard: s.isEntity()
+		s.name.println("Class:");
+		s.fqName().println("FQ name:");
+		s.hasSupertype().println("Has suprtype: ");
+		s.tableSqlName().println("Table name: ");
+		s.primaryKeyAttribute().name.println("Primary key: ");
+	}
+
+/*
+rule CreateEntity
+	transform s : RUNTIME!EClass
+	to t : ODATA!TEntityType {
+		guard : s.isEntity()
+		
+		s.name.println("Processing ENTITY: ");
+		
+		t.Name = s.name;
+		t.Abstract = s.abstract;
+		
+		if (s.eSuperTypes.size() == 1) {
+			t.BaseType = s.eSuperTypes.first().name;
+		} else if (s.eSuperTypes.size() > 1) {
+			s.name.println("Multiple superTypes is not supported yet!");
+		}
+		
+		for (a in s.eStructuralFeatures.select(sf | sf.isKindOf(RUNTIME!EAttribute))) {
+			a.name.println("  - attribute: ");
+		
+			var prop = new ODATA!TProperty;
+			prop.Name = a.name;
+			prop.Type = a.getEdmType();
+			prop.Nullable = a.lowerBound == 0;
+			
+			t.Property.add(prop);
+		}
+		
+		for (r in s.eStructuralFeatures.select(sf | sf.isKindOf(RUNTIME!EReference))) {
+			if (r.isEmbedded()) {
+				// complex type!
+				r.name.println("  - embedded: ");
+				
+				// TODO: create complex type
+			} else {
+				// reference
+				r.name.println("  - reference: ");
+				
+				var nprop = new ODATA!TNavigationProperty;
+				nprop.Name = r.Name;
+				var namespace = domainModel.Namespace;
+				if (r.upperBound > 1 or r.upperBound == -1) {
+					nprop.Type = "Collection(" + namespace + "." + r.eType.equivalent().Name + ")";
+				} else {
+					nprop.Type = namespace + "." + r.eType.equivalent().Name;
+				}
+				
+				if (r.eOpposite.isDefined()) {
+					nprop.Partner = r.eOpposite.name;
+				}
+				
+				t.NavigationProperty.add(nprop);
+			}
+		}
+		
+		domainModel.EntityType.add(t);
+	}
+*/

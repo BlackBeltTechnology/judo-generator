@@ -1,0 +1,62 @@
+import "../../../operations/_importAll.eol";
+import "element.etl";
+
+rule JRoleToRdbmsTableForeignKey 
+	transform s : PSM!JRole
+	to fk : RDBMS!RdbmsForeignKey {
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction()
+	    fk.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
+	    if (s.opposite().isUndefined()) {
+	    	throw "Could not find opposite: " + s.name;
+	    }
+	    fk.referenceKey = s.opposite().ownerClass.equivalent().primaryKey;
+	    fk.sqlName = s.roleIdSqlName();    
+	    fk.foreignKeySqlName = s.roleFkSqlName(); 
+		fk.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
+		fk.type = idType();
+		fk.description =  s.name + " (" + s.opposite().ownerClass.name + ")";
+		fk.uuid = s.uuid;
+		fk.mandatory = s.isMandatory();
+
+		var role1 : PSM!JRole = s;
+		var role2 : PSM!JRole = s.opposite();
+	
+		if (not s.ownerRelationship.derived) {
+			if (role1.upper = 1 and role2.upper = -1) {
+				fk.deleteOnCascade = (role2.kind == PSM!JAssociationKind#COMPOSITION or role2.kind == PSM!JAssociationKind#AGGREGATION);
+				fk.readOnly = (role2.kind == PSM!JAssociationKind#COMPOSITION);
+			} else if (role1.upper = 1 and role2.upper = 1) {
+				if (role2.kind = PSM!JAssociationKind#COMPOSITION or role2.kind = PSM!JAssociationKind#AGGREGATION or role1.lower = 1) {
+					fk.deleteOnCascade = (role2.kind == PSM!JAssociationKind#COMPOSITION or role2.kind == PSM!JAssociationKind#AGGREGATION);
+					fk.readOnly = (role2.kind == PSM!JAssociationKind#COMPOSITION);
+				} else if (role1.kind = PSM!JAssociationKind#ASSOCIATION and role2.kind = PSM!JAssociationKind#ASSOCIATION and role1.lower = 0 and role2.lower = 0 and role1.name < role2.name) {
+					fk.deleteOnCascade = false;
+					fk.readOnly = false;
+				}
+			}
+		}			
+	}
+
+rule JRoleToRdbmsuniqueConstraint 
+	transform s : PSM!JRole
+	to uq : RDBMS!RdbmsUniqueConstraint {
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction() and s.opposite().upper == 1
+		uq.name = s.equivalent("JRoleToRdbmsTableForeignKey").name;
+		uq.sqlName = s.roleUniqueSqlName();    
+		uq.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
+		uq.fields.add(s.equivalent("JRoleToRdbmsTableForeignKey"));
+	}
+
+rule JRoleToRdbmsuniqueConstraint 
+	transform s : PSM!JRole
+	to idx : RDBMS!RdbmsIndex {
+		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction() and s.opposite().upper <> 1
+		
+		idx.name = s.equivalent("JRoleToRdbmsTableForeignKey").name;
+		idx.sqlName = s.roleIndexSqlName();    
+		idx.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
+		idx.fields.add(s.equivalent("JRoleToRdbmsTableForeignKey"));
+		idx.uuid = generateUuid(s.uuid, "Index", "_");
+	
+	}
+	

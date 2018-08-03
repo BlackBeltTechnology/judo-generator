@@ -1,0 +1,16 @@
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/rdbms/mapping", prefix="psmToRdbms")
+package psmToRdbmsMapping;
+
+import "http://blackbelt.hu/judo/meta/psm/rdbms";
+import "http://blackbelt.hu/judo/meta/psm";
+
+class Mappings {
+  val Mapping[*] mappings;
+}
+
+class Mapping {
+  ref rdbms.RdbmsFieldType[1] rdbmsFieldType;
+  ref psm.JPrimitive psmType;
+  attr String[1] name;
+}
+

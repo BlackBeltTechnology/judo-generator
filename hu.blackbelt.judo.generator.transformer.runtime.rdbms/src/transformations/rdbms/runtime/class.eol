@@ -1,0 +1,114 @@
+@cached
+operation RUNTIME!EClass classSqlName() : String {
+    return self.getPackage().packageSqlName() + "_" + self.sqlName();
+}
+
+@cached
+operation RUNTIME!EClass tableSqlName() : String {
+    return "T_" + self.classSqlName();
+}
+
+@cached
+operation RUNTIME!EClass viewSqlName() : String {
+    return "V_" + self.classSqlName();
+}
+
+@cached
+operation RUNTIME!EClass primaryKeyAttribute() : RUNTIME!EAttribute {
+    return self.eAllAttributes.selectOne(a | a.isID());
+}
+
+@cached
+operation RUNTIME!EClass allSupertypesAttributes() : Collection {
+	return self.eAllAttributes.excludingAll(self.eAttributes);
+}
+
+@cached
+operation RUNTIME!EClass allDescandences() : Collection {
+	var ret : Sequence = new Sequence();
+	for (c : RUNTIME!EClass in RUNTIME!EClass.all.select( c | c.eSuperTypes.includes(self))) {
+		ret.add(c);
+		ret.addAll(c.allDescandences());
+	}
+	return ret;
+}
+
+/*
+@cached
+operation PSM!JClass allSupertypes() : Collection {
+	var ret : Sequence = new Sequence();
+	if (self.supertype.isDefined()) {
+		ret.add(self.supertype);
+		ret.addAll(self.supertype.allSupertypes());
+	}
+	return ret;
+}
+
+@cached
+operation PSM!JClass allRoles() : Collection {
+	var ret : Sequence = new Sequence();
+	ret.addAll(self.roles);
+	for (c : PSM!JClass in self.allSupertypes()) {
+		ret.addAll(c.roles);
+	}
+	return ret;
+}
+*/
+operation RUNTIME!EClass createForeginKey(otherClass : RUNTIME!EClass) : RDBMS!RdbmsForeignKey {
+	var created : RDBMS!RdbmsForeignKey = new RDBMS!RdbmsForeignKey();
+	created.name = otherClass.getPackage().fqName() + "." + otherClass.name;
+	created.uuid =  self.fqName() +"_" + otherClass.fqName() + "@foreignKey";   //generateUuid(generateUuid(self.uuid, otherTable.uuid, "_"), "foreignKey","_");
+	created.description = "Reference table: " + otherClass.name + " With ID: " + otherClass.primaryKeyAttribute().name;
+	created.sqlName = "C_" + otherClass.tableSqlName() + "_ID";
+	created.inheritenceBased = true;
+	created.type =  "JUUID".findMapping(); // MAPPING!Mapping.selectOne(")
+	
+	created.referenceKey = otherClass.primaryKeyAttribute().equivalent("EAttributeToTableIdField");
+	created.deleteOnCascade = true;
+	created.readOnly = true;
+	//created.foreignKeySqlName = ("FK_" + created.uuid.replaceAll("-", "")).substring(0,30);
+	created.foreignKeySqlName = "FK_" + md5(created.uuid);
+	return created;
+}
+/*
+@cached
+operation PSM!JClass id() : PSM!JAttribute {
+	return self.attributes.select(a | a.name = "id").first;
+}
+
+@cached
+operation PSM!JClass allAttributes() : Collection {
+	var ret : Sequence = new Sequence();
+	ret.addAll(self.attributes);
+	for (c : PSM!JClass in self.allSupertypes()) {
+		ret.addAll(c.attributes);
+	}
+	return ret;
+}
+
+@cached
+operation PSM!JClass fqName() : String {
+	var ret : String = ""; 
+	ret = ret + self.package.fqName() + "." + self.name;
+	return ret;	
+}
+*/
+/*
+@cached
+operation PSM!JClass serialize() : String {
+	var ret : String = ""; 
+	ret = ret + self.package.fqName() + "." + self.name;
+	if (self.supertype.isDefined()) {
+		ret = ret + "\nSuper: " + self.supertype.serialize();
+	}
+	
+	return ret;
+	
+}
+
+@cached
+operation PSM!JClass serializeWithAttributes() : String {
+	var ret : String = self.serialize();
+	return ret;
+}
+*/
