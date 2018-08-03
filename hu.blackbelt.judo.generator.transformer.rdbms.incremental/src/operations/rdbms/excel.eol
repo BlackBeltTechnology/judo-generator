@@ -1,0 +1,39 @@
+operation XLS!Differences exists() : Boolean {
+	return not(self.deleted.isDefined() or self.created.isDefined());
+}
+
+operation XLS!Differences recreated() : Boolean {
+	return self.deleted.isDefined() and self.created.isDefined();
+}
+
+operation XLS!Differences deleted() : Boolean {
+	return self.deleted.isDefined() and not self.created.isDefined();
+}
+
+operation XLS!Differences created() : Boolean {
+	return self.created.isDefined() and not self.deleted.isDefined();
+}
+
+operation XLS!Differences typeChanged() : Boolean {
+	return self.type_changed.isDefined();
+}
+
+operation XLS!Differences nameChanged() : Boolean {
+	return self.name_changed.isDefined();
+}
+
+operation XLS!Differences mandatoryChanged() : Boolean {
+	return self.mandatory_changed.isDefined();
+}
+
+operation XLS!Differences toValueField() : Boolean {
+	return self.to_value_field.isDefined();
+}
+
+operation XLS!Differences toForeignKey() : Boolean {
+	return self.to_foreing_key.isDefined();
+}
+
+operation String removeIndicator() : String {
+	return self.split("-").first();
+}

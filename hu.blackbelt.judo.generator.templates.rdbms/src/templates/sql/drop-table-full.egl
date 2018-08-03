@@ -4,9 +4,10 @@
 %]
 --liquibase formatted sql
 
-[% for (table in RDBMS!RdbmsTable.all) { %]
---changeset generator:DROP_TABLE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
--- [%= table.name %] [%= table.uuid %]
-DROP TABLE [%= table.sqlName %];
-[% out.println("\n"); %]
-[% } %]
+[% for (table in RDBMS!RdbmsTable.all) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/drop-table.egl");
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]

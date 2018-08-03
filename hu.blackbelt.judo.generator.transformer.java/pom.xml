@@ -14,6 +14,9 @@
 
 	<properties>
         <src.dir>src</src.dir>
+        <model.groupId>hu.blackbelt.anakin</model.groupId>
+		<model.artifactId>anakin-model</model.artifactId>
+		<model.version>1.4.2-SNAPSHOT</model.version>
     </properties>
 
     <build>
@@ -57,7 +60,7 @@
 										</model>
 		
 										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+											<artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:psm:${test.model.version}</artifact>
 											<name>PSM</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm</param>

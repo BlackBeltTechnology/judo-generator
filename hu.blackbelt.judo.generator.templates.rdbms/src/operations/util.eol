@@ -9,6 +9,8 @@ operation version() : String {
 
 @cached
 operation previousVersion() : String {
+	return INCREMENTAL!RdbmsOperationMeta.all.first().previousModel.version;
+
 	/*
 	if (previousVersion.isUndefined()) {
 		return "";

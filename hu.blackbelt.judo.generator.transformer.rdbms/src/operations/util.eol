@@ -53,5 +53,10 @@ operation String addWithDotTo(to : String) : String {
 		return to + "." + self;
 	} else {
 		return self;
+
+operation checkForSqlNameIsNotEmpty() {
+	if (RDBMS!RdbmsElement.all.select(e | e.sqlName.isUndefined()).size > 0) {
+        RDBMS!RdbmsElement.all.select(e | e.sqlName.isUndefined()).println("Missing SQL Name: ");
+		throw "SQL Name is empty";
 	}
 }
