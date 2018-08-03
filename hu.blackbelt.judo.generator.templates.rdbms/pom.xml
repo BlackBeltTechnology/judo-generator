@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>hu.blackbelt.judo.generator</groupId>
-		<artifactId>hu.blackbelt.judo.generator.parent</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
-		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.blackbelt.judo.generator</groupId>
+        <artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+    </parent>
 
-	<artifactId>hu.blackbelt.judo.generator.templates.rdbms</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>hu.blackbelt.judo.generator.templates.rdbmssss</artifactId>
+    <packaging>jar</packaging>
 
-	<properties>
+    <properties>
         <src.dir>src</src.dir>
     </properties>
 
@@ -23,191 +24,341 @@
                 <directory>${src.dir}</directory>
             </resource>
         </resources>
-    	<plugins>   	
-    		<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>attach-artifacts</id>
-						<phase>package</phase>
-						<goals>
-							<goal>attach-artifact</goal>
-						</goals>
-						<configuration>
-							<artifacts>
-								<artifact>
-									<file>src/script-definition.xml</file>
-									<type>xml</type>
-									<classifier>scriptDefinition</classifier>
-								</artifact>
-							</artifacts>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-    	</plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>src/script-definition.xml</file>
+                                    <type>xml</type>
+                                    <classifier>scriptDefinition</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
-    
-    
+
+
     <profiles>
-    	<profile>
-    		<id>rdbms-templates-development</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>hu.blackbelt.judo.generator</groupId>
-						<artifactId>epsilon-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>template-model-hsqldb</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>execute</goal>
-								</goals>
-								<configuration>
-									<metaModels>
-										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
-									</metaModels>
-		
-									<models>
-										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsHsqldb:${project.version}</artifact>
-											<name>RDBMS</name>
-											<metaModelUris>
-												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
-											</metaModelUris>
-										</model>
-									</models>
-									<xmlModels>
-										<model>
-											<artifact>${project.basedir}/src/script-definition.xml</artifact>
-											<name>SCRIPT</name>
-											<readOnLoad>true</readOnLoad>
-											<storeOnDisposal>false</storeOnDisposal>
-										</model>
-									</xmlModels>
+        <profile>
+            <id>rdbms-templates-development</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/rdbms/templates</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                        <resource>
+                                            <directory>test</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
 
-									<eolPrograms>
-										<Egx>
-											<source>src/main.egx</source>
-											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
-										</Egx>
-									</eolPrograms>
-								</configuration>
-							</execution>
-		
-							<execution>
-								<id>template-model-postgres</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>execute</goal>
-								</goals>
-								<configuration>
-									<metaModels>
-										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
-									</metaModels>
-		
-									<models>
-										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsPostgres:${project.version}</artifact>
-											<name>RDBMS</name>
-											<metaModelUris>
-												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
-											</metaModelUris>
-										</model>
-									</models>
-									<xmlModels>
-										<model>
-											<artifact>${project.basedir}/src/script-definition.xml</artifact>
-											<name>SCRIPT</name>
-											<readOnLoad>true</readOnLoad>
-											<storeOnDisposal>false</storeOnDisposal>
-										</model>
-									</xmlModels>
+                    <plugin>
+                        <groupId>hu.blackbelt.judo.generator</groupId>
+                        <artifactId>epsilon-maven-plugin</artifactId>
+                        <configuration>
+                            <sourceDirectory>${basedir}/target/rdbms/templates</sourceDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>template-model-hsqldb</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+                                    </metaModels>
 
-									<eolPrograms>
-										<Egx>
-											<source>src/main.egx</source>
-											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
-										</Egx>
-									</eolPrograms>
-								</configuration>
-							</execution>
-		
-							<execution>
-								<id>template-model-oracle</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>execute</goal>
-								</goals>
-								<configuration>
-									<metaModels>
-										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
-									</metaModels>
-		
-									<models>
-										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsOracle:${project.version}</artifact>
-											<name>RDBMS</name>
-											<metaModelUris>
-												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
-											</metaModelUris>
-										</model>
-									</models>
-									<xmlModels>
-										<model>
-											<artifact>${project.basedir}/src/script-definition.xml</artifact>
-											<name>SCRIPT</name>
-											<readOnLoad>true</readOnLoad>
-											<storeOnDisposal>false</storeOnDisposal>
-										</model>
-									</xmlModels>
+                                    <models>
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsHsqldb:${test.model.version}</artifact>
+                                            <name>RDBMS</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</platformAlias>
+                                            <aliases>
+                                                <alias>RDBMS</alias>
+                                            </aliases>
+                                        </model>
 
-									<eolPrograms>
-										<Egx>
-											<source>src/main.egx</source>
-											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
-										</Egx>
-									</eolPrograms>
-								</configuration>
-							</execution>
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>hu.blackbelt.judo.generator</groupId>
-								<artifactId>hu.blackbelt.judo.generator.formatter.sql</artifactId>
-								<version>${project.version}</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-		
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<version>3.0.0</version>
-						<executions>
-							<execution>
-								<id>add-resource</id>
-								<goals>
-									<goal>add-resource</goal>
-								</goals>
-								
-								<configuration>
-									<resources>
-										<resource>
-											<directory>src</directory>
-										</resource>
-									</resources>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-		
-				</plugins>
-			</build>
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsHsqldb:${test.model.previousVersion}</artifact>
+                                            <name>PREVIOUS</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</platformAlias>
+                                            <aliases>
+                                                <alias>PREVIOUS</alias>
+                                            </aliases>
+                                        </model>
 
-   		</profile>
+                                        <model>
+                                            <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms.incremental:model:rdbmsHsqldb-incremental-${test.model.previousVersion}_${test.model.version}:${project.version}</artifact>
+                                            <name>INCREMENTAL</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <aliases>
+                                                <alias>RDBMS</alias>
+                                            </aliases>
+                                            <expand>true</expand>
+                                        </model>
+                                    </models>
+                                    <plainXmlModels>
+                                        <model>
+                                            <artifact>${project.basedir}/src/script-definition.xml</artifact>
+                                            <name>SCRIPT</name>
+                                            <readOnLoad>true</readOnLoad>
+                                            <storeOnDisposal>false</storeOnDisposal>
+                                            <aliases>
+                                                <alias>SCRIPT</alias>
+                                            </aliases>
+                                        </model>
+                                    </plainXmlModels>
+
+                                    <eolPrograms>
+                                        <Eol>
+                                            <source>print-required-scripts.eol</source>
+                                        </Eol>
+                                        <Egx>
+                                            <source>main.egx</source>
+                                            <outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+                                        </Egx>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>template-model-oracle</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsOracle:${test.model.version}</artifact>
+                                            <name>RDBMS</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsOracle.model</platformAlias>
+                                            <aliases>
+                                                <alias>RDBMS</alias>
+                                            </aliases>
+                                        </model>
+
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsOracle:${test.model.previousVersion}</artifact>
+                                            <name>PREVIOUS</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsOracle.model</platformAlias>
+                                            <aliases>
+                                                <alias>PREVIOUS</alias>
+                                            </aliases>
+                                        </model>
+
+                                        <model>
+                                            <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms.incremental:model:rdbmsOracle-incremental-${test.model.previousVersion}_${test.model.version}:${project.version}</artifact>
+                                            <name>INCREMENTAL</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <aliases>
+                                                <alias>RDBMS</alias>
+                                            </aliases>
+                                            <expand>true</expand>
+                                        </model>
+                                    </models>
+                                    <plainXmlModels>
+                                        <model>
+                                            <artifact>${project.basedir}/src/script-definition.xml</artifact>
+                                            <name>SCRIPT</name>
+                                            <readOnLoad>true</readOnLoad>
+                                            <storeOnDisposal>false</storeOnDisposal>
+                                            <aliases>
+                                                <alias>SCRIPT</alias>
+                                            </aliases>
+                                        </model>
+                                    </plainXmlModels>
+
+                                    <eolPrograms>
+                                        <Eol>
+                                            <source>print-required-scripts.eol</source>
+                                        </Eol>
+                                        <Egx>
+                                            <source>main.egx</source>
+                                            <outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+                                        </Egx>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>template-model-postgres</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsPostgres:${test.model.version}</artifact>
+                                            <name>RDBMS</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</platformAlias>
+                                            <aliases>
+                                                <alias>RDBMS</alias>
+                                            </aliases>
+                                        </model>
+
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsPostgres:${test.model.previousVersion}</artifact>
+                                            <name>PREVIOUS</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsPostgres.model</platformAlias>
+                                            <aliases>
+                                                <alias>PREVIOUS</alias>
+                                            </aliases>
+                                        </model>
+
+                                        <model>
+                                            <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms.incremental:model:rdbmsPostgres-incremental-${test.model.previousVersion}_${test.model.version}:${project.version}</artifact>
+                                            <name>INCREMENTAL</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <aliases>
+                                                <alias>RDBMS</alias>
+                                            </aliases>
+                                            <expand>true</expand>
+                                        </model>
+                                    </models>
+                                    <plainXmlModels>
+                                        <model>
+                                            <artifact>${project.basedir}/src/script-definition.xml</artifact>
+                                            <name>SCRIPT</name>
+                                            <readOnLoad>true</readOnLoad>
+                                            <storeOnDisposal>false</storeOnDisposal>
+                                            <aliases>
+                                                <alias>SCRIPT</alias>
+                                            </aliases>
+                                        </model>
+                                    </plainXmlModels>
+
+                                    <eolPrograms>
+                                        <Eol>
+                                            <source>print-required-scripts.eol</source>
+                                        </Eol>
+                                        <Egx>
+                                            <source>main.egx</source>
+                                            <outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+                                        </Egx>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+
+                            <!-- <execution> <id>template-model-postgres</id> 
+                                <phase>generate-resources</phase> <goals> <goal>execute</goal> </goals> <configuration> 
+                                <metaModels> <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel> 
+                                </metaModels> <models> <model> <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsPostgres:${project.version}</artifact> 
+                                <name>RDBMS</name> <metaModelUris> <param>http://blackbelt.hu/judo/meta/psm/rdbms</param> 
+                                </metaModelUris> </model> </models> <xmlModels> <model> <artifact>${project.basedir}/src/script-definition.xml</artifact> 
+                                <name>SCRIPT</name> <readOnLoad>true</readOnLoad> <storeOnDisposal>false</storeOnDisposal> 
+                                </model> </xmlModels> <eolPrograms> <Egx> <source>src/main.egx</source> <outputRoot>${project.basedir}/target/generated-sources</outputRoot> 
+                                </Egx> </eolPrograms> </configuration> </execution> <execution> <id>template-model-oracle</id> 
+                                <phase>generate-resources</phase> <goals> <goal>execute</goal> </goals> <configuration> 
+                                <metaModels> <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel> 
+                                </metaModels> <models> <model> <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms:model:rdbmsOracle:${project.version}</artifact> 
+                                <name>RDBMS</name> <metaModelUris> <param>http://blackbelt.hu/judo/meta/psm/rdbms</param> 
+                                </metaModelUris> </model> </models> <xmlModels> <model> <artifact>${project.basedir}/src/script-definition.xml</artifact> 
+                                <name>SCRIPT</name> <readOnLoad>true</readOnLoad> <storeOnDisposal>false</storeOnDisposal> 
+                                </model> </xmlModels> <eolPrograms> <Egx> <source>src/main.egx</source> <outputRoot>${project.basedir}/target/generated-sources</outputRoot> 
+                                </Egx> </eolPrograms> </configuration> </execution> -->
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>hu.blackbelt.judo.generator</groupId>
+                                <artifactId>hu.blackbelt.judo.generator.formatter.sql</artifactId>
+                                <version>${project.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>add-resource</id>
+                                <goals>
+                                    <goal>add-resource</goal>
+                                </goals>
+
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>src</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
     </profiles>
 </project>

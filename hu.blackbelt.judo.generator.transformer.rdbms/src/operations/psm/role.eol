@@ -37,7 +37,7 @@ operation PSM!JRole roleFkSqlName() : String {
 	} else {
 		return  temp);
 	}*/
-	return ("FK_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","")));
+	return ("FK_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-",""))).substring(0,30);
 }
 
 @cached
@@ -48,7 +48,7 @@ operation PSM!JRole roleUniqueSqlName() : String {
 	} else {
 		return ("UQ_" + temp);
 	}*/
-	return ("UQ_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","")));
+	return ("UQ_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-",""))).substring(0,30);
 }
 
 @cached
@@ -59,7 +59,7 @@ operation PSM!JRole roleIndexSqlName() : String {
 	} else {
 		return ("IDX_" + temp);
 	}*/
-	return ("IDX_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","")));
+	return ("IDX_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-",""))).substring(0,30);
 }
 
 @cached

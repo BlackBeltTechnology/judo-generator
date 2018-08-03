@@ -4,12 +4,10 @@
 %]
 --liquibase formatted sql
 
-[% for (table in RDBMS!RdbmsTable.all) { %]
---changeset generator:CREATE_TABLE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
--- [%= table.name %] [%= table.uuid %]
-CREATE TABLE [%= table.sqlName %] (
-	[% for (field in table.fields) { %]
-		[%= field.sqlName %] [%= field.type.toString() %] [% if (field.isPrimary()) { %] NOT NULL PRIMARY KEY[% } %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %]
-	[% } %]
-);[% out.println("\n"); %]
-[% } %]
+[% for (table in RDBMS!RdbmsTable.all) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-table.egl");
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]

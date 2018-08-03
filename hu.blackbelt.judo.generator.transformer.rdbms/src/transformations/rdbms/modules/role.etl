@@ -13,7 +13,13 @@ rule JRoleToRdbmsTableForeignKey
 	    fk.sqlName = s.roleIdSqlName();    
 	    fk.foreignKeySqlName = s.roleFkSqlName(); 
 		fk.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
-		fk.type = idType();
+
+		fk.rdbmsTypeName = idType().rdbmsTypeName;
+		fk.size = idType().size;
+		fk.precision = idType().precision;
+		fk.scale = idType().scale;
+		fk.storageByte 	= idType().storageByte;
+				
 		fk.description =  s.name + " (" + s.opposite().ownerClass.name + ")";
 		fk.uuid = s.uuid;
 		fk.mandatory = s.isMandatory();

@@ -1,0 +1,167 @@
+import "../../operations/rdbms/excel.eol";
+
+pre {
+	var createdElements = new Map;
+	var modifiedElements = new Map;
+	var deletedElements = new Map;
+	
+	var root = HSQLDB!RdbmsModel.all().first();
+	
+	for (op in root.tableOperations) {
+	
+		if(op.instanceOf(HSQLDB!RdbmsModifyTableOperation)) {
+		
+			modifiedElements.put(op.uuid.removeIndicator(), op);
+			
+			for (field in op.createFieldOperations) {
+				createdElements.put(field.uuid.removeIndicator(), field);
+			}
+			
+			for (field in op.deleteFieldOperations) {
+				deletedElements.put(field.uuid.removeIndicator(), field);
+			}
+			
+			for (field in op.modifyFieldOperations) {
+				modifiedElements.put(field.uuid.removeIndicator(), field);
+			}
+		}
+		
+		if(op.instanceOf(HSQLDB!RdbmsCreateTableOperation)) {
+			createdElements.put(op.uuid.removeIndicator(), op);
+		}
+		
+		if(op.instanceOf(HSQLDB!RdbmsDeleteTableOperation)) {
+			deletedElements.put(op.uuid.removeIndicator(), op);
+		}
+		
+	}
+	"------TEST------".println();
+	var testOK = true;
+}
+
+post {
+	if(not createdElements.isEmpty()) {
+		testOK = false;
+		"Not listed elements were created: ".println();
+		for(key in createdElements.keySet()) {
+			key.println();
+		}
+	}
+	if(not deletedElements.isEmpty()) {
+		testOK = false;
+		"Not listed elements were deleted: ".println();
+		for(key in deletedElements.keySet()) {
+			key.println();
+		}
+	}
+	if(not modifiedElements.isEmpty()) {
+		testOK = false;
+		"Not listed elements were modified: ".println();
+		for(key in modifiedElements.keySet()) {
+			key.println();
+		}
+	}
+	
+	if(testOK) {
+		"----- TEST PASSED -----".println();
+	} else {
+		"----- TEST FAILED -----".println();
+		throw "Test failed";
+	}
+}
+
+rule processExistingElement
+	transform f : XLS!Differences
+	to t : XLS!Result {
+		guard : f.uuid.isDefined() and (f.exists() or f.recreated())
+		if(f.exists()) {
+			f.uuid.print("|-Exists ");
+		} else {
+			f.uuid.print("|-Recreated ");
+		}
+		
+		var obj = modifiedElements.get(f.uuid);
+		
+		if (obj.isDefined()) {
+			"".println();
+			if (f.nameChanged() == obj.nameChanged) {
+				"|----Type: OK".println();
+			} else {
+				"|----Type: ERROR".println();
+				testOK = false;
+			}
+			
+			if(obj.instanceOf(HSQLDB!RdbmsModifyFieldOperation)) {
+				if(f.typeChanged() == obj.typeChanged) {
+					"|----Name: OK".println();
+				} else {
+					"|----Name: ERROR".println();
+					testOK = false;
+				}
+				
+				if (f.mandatoryChanged() == obj.mandatoryChanged) {
+					"|----Mandatory: OK".println();
+				} else {
+					"|----Mandatory: ERROR".println();
+					testOK = false;
+				}
+				
+				if (f.toValueField() == obj.changedForeignKeyToValueField) {
+					"|----Foreign key changed to value field: OK".println();
+				} else {
+					"|----Foreign key changed to value field: ERROR".println();
+					testOK = false;
+				}
+				
+				if (f.toForeignKey() == obj.changedValueFieldToForeignKey) {
+					"|----Value field changed to foreign key: OK".println();
+				} else {
+					"|----Value field changed to foreign key: ERROR".println();
+					testOK = false;
+				}
+			}
+			modifiedElements.remove(f.uuid);
+		} else {
+			": NOT FOUND".println();
+			testOK = false;
+		}
+}
+
+rule processCreatedElement
+	transform f : XLS!Differences
+	to t : XLS!Result {
+		guard : f.uuid.isDefined() and f.created()
+		f.uuid.print("|-Created ");
+		if(createdElements.get(f.uuid).isDefined()) {
+			": OK".println();
+			createdElements.remove(f.uuid);
+		} else {
+			": ERROR".println();
+			testOK = false;
+		}
+}
+
+rule processDeletedElement
+	transform f : XLS!Differences
+	to t : XLS!Result {
+		guard : f.uuid.isDefined() and f.deleted()
+		f.uuid.print("|-Deleted ");
+		if(deletedElements.get(f.uuid).isDefined()) {
+			": OK".println();
+			deletedElements.remove(f.uuid);
+		} else {
+			": ERROR".println();
+			testOK = false;
+		}	
+}
+
+
+
+
+
+
+
+
+
+
+

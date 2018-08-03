@@ -1,34 +1,50 @@
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/rdbms", prefix="rdbms")
 package rdbms;
 
+import "http://www.eclipse.org/emf/2003/XMLType";
+
 abstract class RdbmsElement {
-  attr String name;
-  attr String uuid;
+  attr String[1] name;
+  !unique attr String[1] uuid;
   attr String shortName;
   attr String fullName;
   attr String description;
   attr String sqlName;
+  attr String originalName;
+  attr String originalPackage;
 }
 
 class RdbmsTable extends RdbmsElement {
   val RdbmsField[*]#table fields;
-  ref RdbmsUniqueKey[*]#table uniqueKeys;
+  val RdbmsUniqueConstraint[*]#table uniqueConstraints;
   ref RdbmsIdentifierField[1] primaryKey;
+  val RdbmsIndex[*]#table indexes;
+  ref RdbmsTable parent;
 }
 
 abstract class RdbmsField extends RdbmsElement {
   ref RdbmsTable[1]#fields table;
-  ref RdbmsFieldType[1] type;
+  ref RdbmsFieldType type;
   attr boolean[1] mandatory;
+  attr String rdbmsTypeName;
+  attr int size;
+  attr int precision;
+  attr int scale;
+  attr int storageByte;
 }
 
 class RdbmsForeignKey extends RdbmsIdentifierField {
   ref RdbmsIdentifierField[1]#foreignKeys referenceKey;
   attr boolean inheritenceBased = false;
+  attr String[1] foreignKeySqlName;
+  attr boolean deleteOnCascade = false;
+  attr boolean deferred = false;
+  attr boolean readOnly = false;
 }
 
-class RdbmsUniqueKey extends RdbmsElement {
-  ref RdbmsTable[1]#uniqueKeys table;
+class RdbmsUniqueConstraint extends RdbmsElement {
+  ref RdbmsTable[1]#uniqueConstraints table;
+  ref RdbmsField[+] fields;
 }
 
 class RdbmsJunctionTable extends RdbmsTable {
@@ -41,25 +57,29 @@ class RdbmsIdentifierField extends RdbmsField {
 }
 
 class RdbmsView extends RdbmsElement {
-  ref RdbmsTable baseTable;
   val RdbmsViewField[*]#view fields;
+  ref RdbmsTableAlias[1] primaryTable;
+  attr String originUuid;
+  val RdbmsViewRelation[*] relations;
+  ref RdbmsViewIdentifierField[1] primaryIdentifierField;
+  val RdbmsTableAlias[+]#view tables;
 }
 
 abstract class RdbmsViewField extends RdbmsElement {
   ref RdbmsView[1]#fields view;
+  attr boolean[1] inherited;
 }
 
-class RdbmsViewValueField extends RdbmsViewField {
-  ref RdbmsValueField[1] tableField;
+class RdbmsViewValueField extends RdbmsViewAliasField {
 }
 
 class RdbmsViewExpressionField extends RdbmsViewField {
-  ref RdbmsExpression[1] expression;
+  val RdbmsExpression[+] expressions;
+  attr String[1] expression;
 }
 
-class RdbmsExpression extends RdbmsElement {
+abstract class RdbmsExpression extends RdbmsElement {
   attr String expression;
-  ref RdbmsValueField[*] parts;
 }
 
 class RdbmsFieldType {
@@ -77,13 +97,120 @@ class RdbmsModel {
   val RdbmsFieldType[*] rdbmsFieldTypes;
   val RdbmsTable[*] rdbmsTables;
   val RdbmsView[*] rdbmsViews;
+  val RdbmsConfiguration[1] configuration;
+  attr String version;
+  val RdbmsTableOperation[*] tableOperations;
+  val RdbmsViewRecord[*] viewRecords;
 }
 
+@"http://www.obeo.fr/dsl/dnc/archetype"(archetype="MomentInterval")
 class RdbmsValueField extends RdbmsField {
   attr boolean technical = false;
 }
 
-class RdbmsViewIdentifierField extends RdbmsViewField {
-  ref RdbmsIdentifierField[1] tableField;
+class RdbmsViewIdentifierField extends RdbmsViewAliasField {
+}
+
+class RdbmsConfiguration {
+  attr String[1] dialect;
+  val RdbmsFeature[*] features;
+}
+
+class RdbmsFeature {
+  attr String[1] name;
+}
+
+class RdbmsTableAlias extends RdbmsElement {
+  ref RdbmsTable[1] table;
+  ref RdbmsView[1]#tables view;
+}
+
+class RdbmsLabelExpression extends RdbmsExpression {
+  attr String[1] text;
+}
+
+class RdbmsRelationExpression extends RdbmsExpression {
+  ref RdbmsViewAliasField[1] field;
+}
+
+abstract class RdbmsViewAliasField extends RdbmsViewTableField {
+  ref RdbmsTableAlias[1] alias;
+}
+
+class RdbmsModifyTableOperation extends RdbmsTableOperation {
+  val RdbmsCreateFieldOperation[*] createFieldOperations;
+  val RdbmsModifyFieldOperation[*] modifyFieldOperations;
+  val RdbmsDeleteFieldOperation[*] deleteFieldOperations;
+  ref RdbmsTable[1] previousTable;
+  attr type.Boolean nameChanged;
+}
+
+abstract class RdbmsFieldOperation extends RdbmsElement {
+  ref RdbmsField[1] field;
+}
+
+class RdbmsCreateFieldOperation extends RdbmsFieldOperation {
+}
+
+class RdbmsModifyFieldOperation extends RdbmsFieldOperation {
+  attr boolean typeChanged = false;
+  attr boolean mandatoryChanged = false;
+  ref RdbmsField[1] previousField;
+  attr type.Boolean sizeChanged;
+  attr type.Boolean nameChanged;
+  attr type.Boolean changedValueFieldToForeignKey;
+  attr type.Boolean changedForeignKeyToValueField;
+}
+
+class RdbmsDeleteFieldOperation extends RdbmsFieldOperation {
+}
+
+class RdbmsViewRelation {
+  ref RdbmsTableAlias[1] fromAlias;
+  ref RdbmsTableAlias[1] toAlias;
+  attr String[1] name;
+  ref RdbmsIdentifierField[1] fromField;
+  ref RdbmsIdentifierField[1] toField;
+}
+
+abstract class RdbmsViewTableField extends RdbmsViewField {
+  ref RdbmsField[1] tableField;
+  attr boolean[1] foreign = false;
+}
+
+class RdbmsViewForeignIdentifierField extends RdbmsViewTableField {
+  ref RdbmsViewIdentifierField[1] referenceIdentifier;
+}
+
+class RdbmsIndex extends RdbmsElement {
+  ref RdbmsTable[1]#indexes table;
+  ref RdbmsField[+] fields;
+  attr boolean[1] ~unique;
+}
+
+class RdbmsViewRecord {
+  val RdbmsViewRecordValue[*] values;
+  ref RdbmsView[1] view;
+}
+
+class RdbmsViewRecordValue {
+  attr String value;
+  ref RdbmsViewIdentifierField identifierField;
+  ref RdbmsViewValueField valueField;
+}
+
+abstract class RdbmsTableOperation extends RdbmsElement {
+  ref RdbmsTable[1] table;
+}
+
+class RdbmsCreateTableOperation extends RdbmsTableOperation {
+}
+
+class RdbmsDeleteTableOperation extends RdbmsTableOperation {
+}
+
+class RdbmsOperationMeta {
+  ref RdbmsModel[1] previousModel;
+  ref RdbmsModel[1] currentModel;
 }
 

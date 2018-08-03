@@ -13,10 +13,13 @@ rule JAttributeToRdbmsField
 	        t.uuid = s.uuid;
 	    }
 		t.table = s.ownerClass.equivalent("JClassToRdbmsTable");
-		/*s.ownerClass.println("OWNER CLASS: ");
-		s.name.println("ATTR NAME: ");
-		s.type.println("SOURCE TYPE: ");*/
-		t.type = s.type.rdbmsType();
+
+		t.rdbmsTypeName = s.type.rdbmsType().rdbmsTypeName;
+		t.size = s.type.rdbmsType().size;
+		t.precision = s.type.rdbmsType().precision;
+		t.scale = s.type.rdbmsType().scale;
+		t.storageByte = s.type.rdbmsType().storageByte;
+				
 		t.sqlName = s.fieldSqlName(); // fieldSqlName(s);
 		t.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
 		t.description = s.ownerClass.name + "." + s.name;

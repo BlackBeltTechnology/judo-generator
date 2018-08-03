@@ -89,7 +89,7 @@ operation PSM!JClass createForeginKey(otherTable : PSM!JClass) : RDBMS!RdbmsFore
 	created.deleteOnCascade = true;
 	created.readOnly = true;
 	//created.foreignKeySqlName = ("FK_" + created.uuid.replaceAll("-", "")).substring(0,30);
-	created.foreignKeySqlName = "FK_" + md5(created.uuid.replaceAll("-", ""));
+	created.foreignKeySqlName = "FK_" + md5(created.uuid.replaceAll("-", "")).substring(0,30);
 	return created;
 }
 
