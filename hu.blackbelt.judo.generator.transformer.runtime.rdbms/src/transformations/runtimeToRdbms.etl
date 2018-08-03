@@ -7,6 +7,8 @@ import "rdbms/runtime/package.eol";
 import "rdbms/runtime/class.eol";
 import "rdbms/runtime/attribute.eol";
 
+import "rdbms/rdbms/field.eol";
+
 import "rdbms/modules/class.etl";
 import "rdbms/modules/class.etl";
 import "rdbms/modules/attribute.etl";
@@ -23,7 +25,7 @@ operation RUNTIME!EAttribute getRdbmsType() : TYPEMAPPING!Mapping {
 	return MAPPING!Mapping.all().select(m | m.Judo == self.eType.name);
 }
 */
-
+/*
 rule ClassToTable
 	transform s : RUNTIME!EClass
 	to t : RDBMS!RdbmsTable {
@@ -35,7 +37,7 @@ rule ClassToTable
 		s.primaryKeyAttribute().name.println("Primary key: ");
 	}
 
-/*
+
 rule CreateEntity
 	transform s : RUNTIME!EClass
 	to t : ODATA!TEntityType {

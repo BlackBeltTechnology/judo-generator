@@ -61,8 +61,9 @@ operation RUNTIME!EClass createForeginKey(otherClass : RUNTIME!EClass) : RDBMS!R
 	created.description = "Reference table: " + otherClass.name + " With ID: " + otherClass.primaryKeyAttribute().name;
 	created.sqlName = "C_" + otherClass.tableSqlName() + "_ID";
 	created.inheritenceBased = true;
-	created.type =  "JUUID".findMapping(); // MAPPING!Mapping.selectOne(")
-	
+	// created.type =  "JUUID".findMapping(); // MAPPING!Mapping.selectOne(")
+
+    created.fillType("JUUID");
 	created.referenceKey = otherClass.primaryKeyAttribute().equivalent("EAttributeToTableIdField");
 	created.deleteOnCascade = true;
 	created.readOnly = true;

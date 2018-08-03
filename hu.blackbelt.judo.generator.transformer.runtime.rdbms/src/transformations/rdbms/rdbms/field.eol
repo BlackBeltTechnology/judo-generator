@@ -1,0 +1,20 @@
+operation RDBMS!RdbmsField fillType(type : String) {
+	self.rdbmsTypeName = type.findMapping().Type;
+	if (type.findMapping().Size.isDefined() and type.findMapping().Size.trim() <> "") {
+		self.size = new Integer(type.findMapping().Size);
+	} else {
+		self.size = -1;
+	}
+
+	if (type.findMapping().Precision.isDefined() and type.findMapping().Precision.trim() <> "") {
+		self.precision = new Integer(type.findMapping().Precision);
+	} else {
+		self.precision = -1;
+	}
+
+	if (type.findMapping().Scale.isDefined() and type.findMapping().Scale.trim() <> "") {
+		self.scale = new Integer(type.findMapping().Scale);
+	} else {
+		self.scale = -1;
+	}
+}

@@ -11,6 +11,6 @@ operation RUNTIME!EAttribute getClass() : RUNTIME!EClass {
 }
 
 @cached
-operation RUNTIME!EAttribute fqName() : RUNTIME!String {
-	return self.getClass().fqName + "#" + self.name;
+operation RUNTIME!EAttribute fqName() : String {
+	return self.getClass().fqName() + "#" + self.name;
 }

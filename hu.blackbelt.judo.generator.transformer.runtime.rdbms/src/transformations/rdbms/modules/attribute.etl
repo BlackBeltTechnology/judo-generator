@@ -10,8 +10,15 @@ rule EAttributeToRdbmsField
 	extends ENamedElementToRdbmsElement { 
 		guard : s.getClass().isEntity()
 	    t.uuid = s.fqName();
-		t.table = s.ownerClass.equivalent("EClassToRdbmsTable");
-		t.type = s.type.rdbmsType();
+		t.table = s.getClass().equivalent("EClassToRdbmsTable");
+		s.eType.println("Attribute type: ");
+		
+		if (s.eType.isKindOf(RUNTIME!EEnum)) {
+			// TODO: Make value constraints
+			t.fillType("JString");
+	    } else {
+			t.fillType(s.eType.name);
+		}
 		t.sqlName = s.fieldSqlName();
 		
 		/*
@@ -36,7 +43,7 @@ rule EAttributeToTableIdField
 		guard : s.getClass().isEntity() and s.isPrimaryKey()
 		t.table.primaryKey = t;
 		t.sqlName = "ID";
-		t.type = "JUUID".findMapping();
+		t.fillType("JUUID");
 }
 
 rule EAttributeToTableValueField
@@ -44,7 +51,7 @@ rule EAttributeToTableValueField
 	to t : RDBMS!RdbmsValueField
 	extends EAttributeToRdbmsField { 
 		guard : s.getClass().isEntity() and not s.isPrimaryKey() and not s.derived
-		t.technical = s.isTechnical();
+		//t.technical = s.isTechnical();
 }
 
 /*

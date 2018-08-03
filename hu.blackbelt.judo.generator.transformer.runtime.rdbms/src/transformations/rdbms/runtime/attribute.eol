@@ -2,3 +2,8 @@
 operation RUNTIME!EAttribute isPrimaryKey() : Boolean { 
 	return self == self.getClass().primaryKeyAttribute();
 }
+
+@cached
+operation RUNTIME!EAttribute fieldSqlName() : String { 
+	return "C_" + self.sqlName();
+}
