@@ -2,5 +2,5 @@ import "modelElement.eol";
 
 @cached
 operation RUNTIME!EAttribute isID() : Boolean {
-	return self.hasAnnotation("id");
+	return self.annotatedAsTrue("id");
 }

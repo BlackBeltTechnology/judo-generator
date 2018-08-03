@@ -1,13 +1,18 @@
 import "modelElement.eol";
 
 @cached
+operation RUNTIME!EClass hasSupertype() : Boolean {
+	return self.eSuperTypes.size > 0;
+}
+
+@cached
 operation RUNTIME!EClass isEntity() : Boolean {
-	return self.hasAnnotation("entity");
+	return self.annotatedAsTrue("entity");
 }
 
 @cached
 operation RUNTIME!EClass isFacade() : Boolean {
-	return self.hasAnnotation("facade");
+	return self.annotatedAsTrue("facade");
 }
 
 @cached

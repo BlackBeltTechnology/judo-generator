@@ -28,6 +28,46 @@
                 <directory>${src.dir}</directory>
             </resource>
         </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>add-resource</id>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+    
+                    <execution>
+                        <id>attach-types-model</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${basedir}/model/types.ecore</file>
+                                    <type>model</type>
+                                    <classifier>types</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>
@@ -190,7 +230,7 @@
                             </execution>
 
                             <execution>
-                                <id>attach-artifacts</id>
+                                <id>attach-runtime-model</id>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>attach-artifact</goal>
@@ -201,11 +241,6 @@
                                             <file>${project.build.directory}/runtime.model</file>
                                             <type>model</type>
                                             <classifier>runtime</classifier>
-                                        </artifact>
-                                        <artifact>
-                                            <file>${basedir}/model/types.ecore</file>
-                                            <type>model</type>
-                                            <classifier>types</classifier>
                                         </artifact>
                                     </artifacts>
                                 </configuration>
