@@ -8,12 +8,10 @@ rule EClassToRdbmsTable
 	guard : s.isEntity()
 	    t.sqlName = s.tableSqlName();
 	    t.name = s.fqName();
-	    /*
-	    t.originalName = s.name;
-	    t.originalPackage = s.package.fqName();
-		*/
 		if (s.hasSupertype()) {
 			t.parent = s.getPrimarySupertype().equivalent("JClassToRdbmsTable");
+			// t.fields.add(s.getPrimarySupertype().primaryKeyAttribute().equivalent("EAttributeToTableIdField").clone());
+			// t.addSuperPrimaryKey(s);
 		}
 
 		// Adding foreign key for all descandences classes
@@ -26,20 +24,43 @@ rule EClassToRdbmsTable
 	    targetModel.rdbmsTables.add(t);
 }
 
-/*
-rule JClassToRdbmsView 
-	transform s : PSM!JClass
+rule EClassToRdbmsView 
+	transform s : RUNTIME!EClass
 	to v : RDBMS!RdbmsView
-	extends JElementToRdbmsElement {
-	guard : s.participates(PSM!JLayer#PERSISTENCE)
-	    v.name = s.package.fqName() + "." + s.name;
+	extends ENamedElementToRdbmsElement {
+	guard : s.isEntity()
+	    v.name = s.fqName();
 	    v.sqlName = s.viewSqlName();
-	    v.originUuid = s.uuid;
-		v.uuid = generateUuid(v.uuid, "View", "_");
+		v.uuid = v.uuid + "@view";
 		
 	    // Base alias is a reference for base table    
 	    var baseAlias : RDBMS!RdbmsTableAlias = v.createBaseAlias(s);
 
+		/*
+		var tid : RDBMS!RdbmsField  = s.equivalent("EClassToRdbmsTable").primaryKey;
+		
+		var vid : RDBMS!RdbmsViewIdentifierField = new RDBMS!RdbmsViewIdentifierField();
+		vid.view = v;
+		v.add(vid);
+		
+		vid.name = tid.name;
+		vid.sqlName = tid.name;
+		vid.uuid = tid.uuid + "@view";		
+		v.`alias` = tid.table;
+
+		v.name = s.getClass().fqName() + "#id";
+		v.tableField = s.equivalent("EAttributeToTableIdField");
+		v.sqlName = v.tableField.sqlName;
+		v.uuid = v.tableField.uuid + "@viewField";
+		v.view = s.getClass().equivalent("EClassToRdbmsView");
+		*/
+		
+		
+		// v.addPrimaryKeyField();
+		
+		
+		
+		/*
 		// Add primary key
 	    for (a : PSM!JAttribute in s.attributes.select(a | a.isPrimaryKey())) {
 	   		v.addPrimaryKeyField(a);	   		
@@ -86,7 +107,8 @@ rule JClassToRdbmsView
 	    for (a : PSM!JAttribute in s.attributes.select(a | a.derived)) {
 	   		v.addExpressionField(a);	   		
 	    }
+		*/
 
         targetModel.rdbmsViews.add(v);
-} */
+}
 

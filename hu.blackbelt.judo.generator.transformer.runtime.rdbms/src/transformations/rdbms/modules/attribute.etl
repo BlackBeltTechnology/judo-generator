@@ -11,15 +11,20 @@ rule EAttributeToRdbmsField
 		guard : s.getClass().isEntity()
 	    t.uuid = s.fqName();
 		t.table = s.getClass().equivalent("EClassToRdbmsTable");
-		s.eType.println("Attribute type: ");
 		
 		if (s.eType.isKindOf(RUNTIME!EEnum)) {
 			// TODO: Make value constraints
 			t.fillType("JString");
 	    } else {
 			t.fillType(s.eType.name);
+			t.fillConstraintsFromAttribute(s);
 		}
 		t.sqlName = s.fieldSqlName();
+		if (s.isPrimaryKey()) {
+			t.mandatory = true;
+		} else {
+			t.mandatory = s.required;
+		}
 		
 		/*
 		t.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
@@ -35,12 +40,15 @@ rule EAttributeToRdbmsField
 		} */
 }
 
-
-rule EAttributeToTableIdField
-	transform s : RUNTIME!EAttribute
-	to t : RDBMS!RdbmsIdentifierField 
-	extends EAttributeToRdbmsField { 
-		guard : s.getClass().isEntity() and s.isPrimaryKey()
+/* Every table have an ID */
+rule EClassToTableIdField
+	transform s : RUNTIME!EClass
+	to t : RDBMS!RdbmsIdentifierField { 
+		guard : s.isEntity()
+		t.name = s.fqName() + "#id";
+	    t.uuid = s.fqName() + "#id";
+	    t.table = s.equivalent("EClassToRdbmsTable");
+	    t.table.fields.add(t);
 		t.table.primaryKey = t;
 		t.sqlName = "ID";
 		t.fillType("JUUID");
@@ -54,6 +62,7 @@ rule EAttributeToTableValueField
 		//t.technical = s.isTechnical();
 }
 
+
 /*
 @lazy
 rule EAttributeToViewIdFieldWithoutView
@@ -62,10 +71,10 @@ rule EAttributeToViewIdFieldWithoutView
 	extends ENamedElementToRdbmsElement { 
 		guard : s.getClass().isEntity() and s.isPrimaryKey()
 		v.name = s.getClass().fqName() + "#id";
-		v.sqlName = "ID";
 		v.tableField = s.equivalent("EAttributeToTableIdField");
-		v.uuid = generateUuid(v.tableField.uuid, "ViewField", "_");
-		v.view = s.ownerClass.equivalent("EClassToRdbmsView");
+		v.sqlName = v.tableField.sqlName;
+		v.uuid = v.tableField.uuid + "@viewField";
+		v.view = s.getClass().equivalent("EClassToRdbmsView");
 }
 
 @lazy
@@ -77,7 +86,8 @@ rule EAttributeToViewIdField
 		v.view = s.getClass.equivalent("EClassToRdbmsView");
 		v.`alias` = v.view.primaryTable;
 }
-
+*/
+/*
 @lazy
 rule EAttributeToViewValueFieldWithoutView
 	transform s : RUNTIME!EAttribute

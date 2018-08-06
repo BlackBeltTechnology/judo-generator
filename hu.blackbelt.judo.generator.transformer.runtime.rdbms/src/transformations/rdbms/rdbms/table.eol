@@ -1,0 +1,5 @@
+operation RDBMS!RdbmsTable addSuperPrimaryKey(class : RUNTIME!EClass) {
+	var f : RDBMS!RdbmsField = class.primaryKeyAttribute().equivalent("EAttributeToTableIdField").clone();
+	self.fields.add(f);	 
+	self.primaryKey = f;
+} 

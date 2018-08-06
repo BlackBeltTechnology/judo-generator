@@ -1,0 +1,320 @@
+
+operation RDBMS!RdbmsView createBaseAlias(class : RUNTIME!EClass) : RDBMS!RdbmsTableAlias {
+    var baseAlias : RDBMS!RdbmsTableAlias = new RDBMS!RdbmsTableAlias();
+    baseAlias.table = class.equivalent("EClassToRdbmsTable");
+    baseAlias.name = baseAlias.table.name;
+    baseAlias.description = "Base " + baseAlias.table.name;
+    baseAlias.sqlName = "BASE_" + baseAlias.table.sqlName;
+	baseAlias.uuid = class.fqName() + "@baseTableAlias";
+
+    self.tables.add(baseAlias);
+    self.primaryTable = baseAlias;
+    return baseAlias;
+}
+
+operation RDBMS!RdbmsView addPrimaryKeyField(attribute : RUNTIME!EAttribute) {
+    var f : RDBMS!RdbmsViewField;
+	f = attribute.equivalent("EAttributeToViewIdField");
+	f.`alias` = self.primaryTable;
+	// f.name.println("Addig primary key field: ");
+  	self.fields.add(f);	
+  	self.primaryIdentifierField = f;
+}
+
+
+/*
+// Base alias is a reference for base table
+operation RDBMS!RdbmsView createBaseAlias(class : PSM!JClass) : RDBMS!RdbmsTableAlias {
+    var baseAlias : RDBMS!RdbmsTableAlias = new RDBMS!RdbmsTableAlias();
+    baseAlias.table = class.equivalent("JClassToRdbmsTable");
+    baseAlias.name = baseAlias.table.name;
+    baseAlias.description = "Base " + baseAlias.table.name;
+    baseAlias.sqlName = "BASE_" + baseAlias.table.sqlName;
+	baseAlias.uuid = generateUuid(self.uuid, "TableAlias", "_");
+
+    self.tables.add(baseAlias);
+    self.primaryTable = baseAlias;
+    return baseAlias;
+}
+
+operation RDBMS!RdbmsView addPrimaryKeyField(attribute : PSM!JAttribute) {
+    var f : RDBMS!RdbmsViewField;
+	f = attribute.equivalent("JAttributeToViewIdField");
+	f.`alias` = self.primaryTable;
+	// f.name.println("Addig primary key field: ");
+  	self.fields.add(f);	
+  	self.primaryIdentifierField = f;
+}
+
+operation RDBMS!RdbmsView addValueField(attribute : PSM!JAttribute) : RDBMS!RdbmsViewField {
+    var f : RDBMS!RdbmsViewField;
+	f = attribute.equivalent("JAttributeToViewValueField");
+	f.`alias` = self.primaryTable;
+	// f.name.println("Addig value field: ");
+  	self.fields.add(f);
+  	return f;
+}
+
+operation RDBMS!RdbmsView createRoleReferenceField(role : PSM!JRole) : RDBMS!RdbmsViewIdentifierField {
+	var vi : RDBMS!RdbmsViewIdentifierField = new RDBMS!RdbmsViewIdentifierField();
+	vi.name = role.roleAliasName(); 
+	vi.sqlName = role.roleIdSqlName();
+	vi.description =  role.opposite().name + " (" + role.opposite().ownerClass.name + ")";
+	vi.uuid = generateUuid(role.uuid, "ViewField", "_");
+	return vi;
+}
+
+// Create reference field when the ID is owned in the base table
+operation RDBMS!RdbmsView addOwnedRelationField(role : PSM!JRole) {
+	var vi : RDBMS!RdbmsViewIdentifierField = self.createRoleReferenceField(role);
+	vi.description += " Owned Relation";
+	vi.tableField = role.equivalent("JRoleToRdbmsTableForeignKey");
+	vi.`alias` = self.primaryTable;
+	self.fields.add(vi);
+}
+
+
+// Create reference field when the ID field is on the foreign table
+operation RDBMS!RdbmsView addForeignRelationField(role : PSM!JRole) {
+	var vi : RDBMS!RdbmsViewForeignIdentifierField = new RDBMS!RdbmsViewForeignIdentifierField();
+	vi.name = role.roleAliasName(); 
+	vi.sqlName = 'INV_' + role.roleIdSqlName();
+	vi.description =  role.opposite().name + " (" + role.opposite().ownerClass.name + ")";
+	vi.uuid = generateUuid(role.uuid, self.name, ".");
+	vi.description += " Foreign Relation";
+	vi.tableField = role.opposite().equivalent("JRoleToRdbmsTableForeignKey");
+	vi.referenceIdentifier = self.primaryIdentifierField;
+	self.fields.add(vi);
+}
+
+// When the given attribute's owner is a superclass, have to care about the relations and alias.
+// If it does not exists have to create.
+operation RDBMS!RdbmsView addOrCreateSuperRelation(_baseAliasName : String,  _class : PSM!JClass, _attrClass : PSM!JClass, _aliasName : String,  _alias : RDBMS!RdbmsTableAlias) : RDBMS!RdbmsTableAlias {
+	if (_attrClass <> _class) {
+		// (_class.fqName() + " " + _attrClass.fqName()).println("The used attribute is an inherited attribute: ");
+		// Adding alias for superclass if does not exists.
+		var relationSuperAlias = self.findOrAddAliasByClassPair(_class, _attrClass, 
+				_baseAliasName +  "." + _aliasName + " Descendant Of " + _attrClass.fqName(), 
+				_aliasName + "@" + _attrClass.fqName());					
+
+		// Add relation.
+		self.findOrAddRelation(_alias, relationSuperAlias, _alias.table.primaryKey, relationSuperAlias.table.primaryKey);
+		return relationSuperAlias;
+	}
+	return _alias;
+}
+
+operation RDBMS!RdbmsViewField traverseExpressionMap(expr : Map, aliasName : String, _alias : RDBMS!RdbmsTableAlias, currentRelationExpression : RDBMS!RdbmsRelationExpression, attribute : PSM!JAttribute) {
+    var currentAliasName : String = expr.get("__name").addWithDotTo(aliasName);
+    var baseAliasName = attribute.ownerClass.equivalent("JClassToRdbmsTable").name;
+
+	if (expr.get("__type") == "relation") {
+
+   		// Find or create alias for the relation
+		// var currentAlias : RDBMS!RdbmsTableAlias = currentAlias;
+		var currentRole : PSM!JRole = expr.get("__role");
+		var currentAlias = self.view.findOrAddAlias(currentRole, currentAliasName);					
+					
+		// Add relation.
+		if (currentRole.isForeign()) {
+			var joinAlias = self.view.addOrCreateSuperRelation(baseAliasName, expr.get("__class"), currentRole.ownerClass, currentAliasName, _alias);
+			self.view.findOrAddRelation(joinAlias, currentAlias, currentRole.equivalent("JRoleToRdbmsTableForeignKey"), currentAlias.table.primaryKey);
+		} else {
+			self.view.findOrAddRelation(_alias, currentAlias, _alias.table.primaryKey, currentRole.opposite().equivalent("JRoleToRdbmsTableForeignKey"));
+		}
+		self.traverseExpressionMap(expr.get("__child"), currentAliasName, currentAlias, currentRelationExpression, attribute);
+	} else if (expr.get("__type") == "attribute") {
+		var relAttr : PSM!JAttribute = expr.get("__attribute");
+	    currentRelationExpression.expression = expr.get("__name");
+	    
+		// The attribute exists in the base table or inherited attribute of the base table
+		if (attribute.ownerClass == relAttr.ownerClass or attribute.ownerClass.allSupertypes().contains(relAttr.ownerClass)) {
+			if (relAttr.name <> "id")  {
+				currentRelationExpression.field =  relAttr.equivalent("JAttributeToViewValueField");
+			} else {
+				currentRelationExpression.field =  self.view.primaryIdentifierField;
+			}
+		// Foreign referenced field
+		} else {
+			var fieldName = _alias.name + "." + relAttr.name;
+			var foreignField : RDBMS!RdbmsViewField = self.view.fields.selectOne(s | s.name == fieldName);
+		
+		    if (foreignField.isUndefined()) {
+				if (relAttr.name <> "id")  {
+					foreignField = new RDBMS!RdbmsViewValueField(); 
+				} else {
+					foreignField = new RDBMS!RdbmsViewIdentifierField(); 
+				}
+				self.view.fields.add(foreignField);
+				foreignField.foreign = true;
+				foreignField.view = self.view;
+				foreignField.name = fieldName;								
+				foreignField.sqlName = _alias.sqlName + "_" + relAttr.ownerClass.classSqlName() + "_" + relAttr.sqlName();
+				foreignField.uuid = generateUuid(relAttr.ownerClass.uuid, expr.get("__name") + "_" + _alias.name, ".");
+				foreignField.description = baseAliasName + "." + currentAliasName + "." + relAttr.name;
+				if (relAttr.name <> "id")  {
+					foreignField.tableField = relAttr.equivalent("JAttributeToTableValueField");
+				} else {
+					foreignField.tableField = relAttr.equivalent("JAttributeToTableIdField");
+				}
+
+				foreignField.`alias` = self.view.addOrCreateSuperRelation(baseAliasName, expr.get("__class"), relAttr.ownerClass, currentAliasName, _alias);
+	    	}
+	    	currentRelationExpression.field = foreignField;
+		}
+		currentRelationExpression.sqlName = currentRelationExpression.field.sqlName;
+		currentRelationExpression.name = currentRelationExpression.field.name;																	
+		currentRelationExpression.shortName = currentRelationExpression.field.shortName;																	
+		currentRelationExpression.fullName = currentRelationExpression.field.fullName;																	
+		currentRelationExpression.uuid = generateUuid(currentRelationExpression.field.uuid, baseAliasName + "." + currentAliasName + " @ " + relAttr.ownerClass.fqName(), ".");
+		currentRelationExpression.description = baseAliasName + "." + currentAliasName + "." + relAttr.name;
+		
+		self.view.fields.add(currentRelationExpression.field);		
+	}
+}
+
+
+operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
+    var vf : RDBMS!RdbmsViewField;
+	
+	vf = attribute.equivalent("JAttributeToViewExpressionField");
+
+	self.fields.add(vf);
+	
+	vf.uuid = generateUuid(attribute.uuid, self.name, ".");
+   	vf.view = self;  		 
+    var labelExpressionCount:Integer = 0;	   	
+   	for (e in  attribute.processExpressions()) {
+   		if (e.isTypeOf(String)) {
+   	  		var labelExpression : RDBMS!RdbmsLabelExpression = new RDBMS!RdbmsLabelExpression();
+    		labelExpression.expression = e;
+    		labelExpression.text = e;
+    		labelExpressionCount++;
+			labelExpression.uuid = generateUuid(attribute.uuid, labelExpressionCount.toString(), ".");
+    		vf.expressions.add(labelExpression);	
+   		} else if (e.isTypeOf(Map)) {
+   			var currentRelationExpression = new RDBMS!RdbmsRelationExpression();
+			vf.expressions.add(currentRelationExpression);   		
+   		    vf.traverseExpressionMap(e, null,  self.primaryTable, currentRelationExpression, attribute);   	
+   		}   	
+   	}
+}
+
+operation RDBMS!RdbmsView findOrAddAliasByClassPair(class : PSM!JClass, oppositeClass : PSM!JClass, aliasName : String, relationName : String) : RDBMS!RdbmsTableAlias {
+	var currentAlias : RDBMS!RdbmsTableAlias = self.tables.select(e | e.name = aliasName).first;
+
+	// Creaate alias
+	if (currentAlias.isUndefined()) {
+		currentAlias = new RDBMS!RdbmsTableAlias();
+		self.tables.add(currentAlias);
+		currentAlias.table = oppositeClass.equivalent("JClassToRdbmsTable");
+		currentAlias.uuid = generateUuid(self.uuid, relationName + "TableAlias", ".");
+		currentAlias.sqlName = 'REL_' + abbreviate(relationName.replaceAll("\\.", "").replaceAll("@", ""), 30).toUpperCase();
+		currentAlias.name = aliasName;
+	}
+	return currentAlias;
+}
+
+
+operation RDBMS!RdbmsView findOrAddAlias(role : PSM!JRole, relationName : String) : RDBMS!RdbmsTableAlias {
+	// Find alias
+	var aliasName : String = role.ownerClass.package.fqName() +  "." + role.ownerClass.name;
+	if (relationName.isDefined() and relationName <> "") {
+		aliasName += "." + relationName;
+	}
+    return self.findOrAddAliasByClassPair(role.ownerClass, role.opposite().ownerClass, aliasName, relationName);
+}
+
+operation RDBMS!RdbmsView findOrAddRelation(fromAlias : RDBMS!RdbmsTableAlias, toAlias : RDBMS!RdbmsTableAlias, fromField : RDBMS!RdbmsIdentifierField, toField : RDBMS!RdbmsIdentifierField) : RDBMS!RdbmsViewRelation {
+	// Find relation
+	var relationName =  fromAlias.name + " to " + toAlias.name;
+	
+	var currentRelation : RDBMS!RdbmsViewRelation = self.relations.select(s | s.name = relationName).first;
+
+	// Creaate relation
+	if (currentRelation.isUndefined()) {
+		currentRelation = new RDBMS!RdbmsViewRelation();
+		self.relations.add(currentRelation);
+		currentRelation.name = relationName;
+		currentRelation.fromAlias = fromAlias;
+		currentRelation.toAlias = toAlias;
+		currentRelation.fromField = fromField;
+		currentRelation.toField = toField;
+	} 
+	return currentRelation;
+}
+*/
+
+/* 
+	Clone view fields
+	Two phases: 
+		- first all fields which is not expression based
+		- second the expression which can reference to other fields
+*/
+/*
+operation RDBMS!RdbmsView addSupertypeViewFields(baseView : RDBMS!RdbmsView) : RDBMS!RdbmsView {
+	for (a : RDBMS!RdbmsViewField in baseView.fields.select(f | not f.isKindOf(RDBMS!RdbmsViewExpressionField))) {
+		self.addSupertypeViewField(a);
+	}
+	for (a : RDBMS!RdbmsViewField in baseView.fields.select(f | f.isKindOf(RDBMS!RdbmsViewExpressionField))) {
+		self.addSupertypeViewField(a);
+	}
+	return self;
+}
+
+operation RDBMS!RdbmsView addSupertypeViewField(original : RDBMS!RdbmsViewField) : RDBMS!RdbmsViewField  {
+
+	var created : RDBMS!RdbmsViewField = original.clone();
+	self.fields.add(created);
+	created.uuid = generateUuid(original.uuid, self.name, ".");
+	created.inherited = true;
+	created.view = self;
+
+	// Set alias instance link to cloned alias
+	if (created.isKindOf(RDBMS!RdbmsViewAliasField)) {
+	    if (created.tableField = created.tableField.table.primaryKey and created.isTypeOf(RDBMS!RdbmsViewIdentifierField)) {
+	    	created.sqlName = "C_" + created.`alias`.table.sqlName + "_ID";
+	    }	    		    
+		created.`alias` = self.tables.select(e | e.name == created.`alias`.name).first();
+	} else if (created.isKindOf(RDBMS!RdbmsViewForeignIdentifierField)) {
+		created.referenceIdentifier = self.fields.select(f | f.name == original.referenceIdentifier.name).first();
+	} else if (created.isKindOf(RDBMS!RdbmsViewExpressionField)) {
+		for (exp : RDBMS!RdbmsExpression in created.expressions) {
+			if (exp.isKindOf(RDBMS!RdbmsRelationExpression)) {
+				exp.field = self.fields.select(f | f.name == exp.field.name).first();
+			}
+		}
+	}
+	
+	return created;
+}
+
+operation RDBMS!RdbmsView addSupertypeRelations(baseView : RDBMS!RdbmsView) : RDBMS!RdbmsView {
+	// Clone relations
+	for (r : RDBMS!RdbmsViewRelation in baseView.relations) {
+		var created : RDBMS!RdbmsViewRelation = r.clone();
+		self.relations.add(created);
+		created.fromAlias = self.tables.select(f | f.name == r.fromAlias.name).first(); 
+		created.toAlias = self.tables.select(f | f.name == r.toAlias.name).first(); 
+	}
+	return self;
+}
+
+operation RDBMS!RdbmsView addSupertypeAliases(baseView : RDBMS!RdbmsView) : RDBMS!RdbmsTableAlias {
+	var superAlias : RDBMS!RdbmsTableAlias;
+	for (f : RDBMS!RdbmsTableAlias in baseView.tables.clone()) {
+
+		var created : RDBMS!RdbmsTableAlias = f.clone();
+		self.tables.add(created);
+		created.uuid = generateUuid(f.uuid, self.name, ".");
+		created.description = "Super " + f.table.name;
+		created.sqlName = "SUP_" + f.table.sqlName;
+
+		if (baseView.primaryTable == f) {
+			superAlias = created;
+		}
+		// created.println("Created: ");
+	}
+	return superAlias;
+}
+*/
