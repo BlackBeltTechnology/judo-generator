@@ -10,6 +10,7 @@ rule EAttributeToRdbmsField
 	extends ENamedElementToRdbmsElement { 
 		guard : s.getClass().isEntity()
 	    t.uuid = s.fqName();
+	    // t.name = s.fqName();
 		t.table = s.getClass().equivalent("EClassToRdbmsTable");
 		
 		if (s.eType.isKindOf(RUNTIME!EEnum)) {
@@ -40,20 +41,6 @@ rule EAttributeToRdbmsField
 		} */
 }
 
-/* Every table have an ID */
-rule EClassToTableIdField
-	transform s : RUNTIME!EClass
-	to t : RDBMS!RdbmsIdentifierField { 
-		guard : s.isEntity()
-		t.name = s.fqName() + "#id";
-	    t.uuid = s.fqName() + "#id";
-	    t.table = s.equivalent("EClassToRdbmsTable");
-	    t.table.fields.add(t);
-		t.table.primaryKey = t;
-		t.sqlName = "ID";
-		t.fillType("JUUID");
-}
-
 rule EAttributeToTableValueField
 	transform s : RUNTIME!EAttribute
 	to t : RDBMS!RdbmsValueField
@@ -63,20 +50,21 @@ rule EAttributeToTableValueField
 }
 
 
-/*
-@lazy
-rule EAttributeToViewIdFieldWithoutView
-	transform s : PSM!JAttribute
+rule EAttributeToViewIdField
+	transform s : RUNTIME!EAttribute
 	to v : RDBMS!RdbmsViewIdentifierField
 	extends ENamedElementToRdbmsElement { 
 		guard : s.getClass().isEntity() and s.isPrimaryKey()
 		v.name = s.getClass().fqName() + "#id";
-		v.tableField = s.equivalent("EAttributeToTableIdField");
+		v.tableField = s.getClass().equivalent("EClassToTableIdField");
 		v.sqlName = v.tableField.sqlName;
-		v.uuid = v.tableField.uuid + "@viewField";
+		v.uuid = v.tableField.uuid + "@viewIdentifierField";
 		v.view = s.getClass().equivalent("EClassToRdbmsView");
+		v.view.primaryIdentifierField = v;
+		v.`alias` = v.view.primaryTable;
 }
 
+/*
 @lazy
 rule EAttributeToViewIdField
 	transform s : RUNTIME!EAttribute
@@ -98,18 +86,26 @@ rule EAttributeToViewValueFieldWithoutView
 		v.sqlName  = v.tableField.sqlName;
 		v.uuid =  v.tableField.uuid + "_ViewField";
 }
+*/
 
-@lazy
 rule EAttributeToViewValueField
 	transform s : RUNTIME!EAttribute
 	to v : RDBMS!RdbmsViewValueField 
-	extends EAttributeToViewValueFieldWithoutView { 
+	extends ENamedElementToRdbmsElement { 
 		guard : s.getClass().isEntity() and not s.isPrimaryKey()
-		v.name = s.fqName() + "#" + s.name;
+		/*
+		v.name = s.fqName(); // + "#" + s.name;
 		v.view = s.ownerClass.equivalent("EClassToRdbmsView");
+		v.`alias` = v.view.primaryTable;
+		*/
+		v.tableField = s.equivalent("EAttributeToTableValueField");
+		v.sqlName = v.tableField.sqlName;
+		v.uuid = v.tableField.uuid + "@viewValueField";
+		v.view = s.getClass().equivalent("EClassToRdbmsView");
 		v.`alias` = v.view.primaryTable;
 }
 
+/*
 @lazy
 rule EAttributeToViewExpressionField
 	transform s : RUNTIME!EAttribute

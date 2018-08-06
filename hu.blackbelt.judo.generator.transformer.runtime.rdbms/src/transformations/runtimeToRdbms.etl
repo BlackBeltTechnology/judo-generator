@@ -6,6 +6,7 @@ import "rdbms/runtime/namedElement.eol";
 import "rdbms/runtime/package.eol";
 import "rdbms/runtime/class.eol";
 import "rdbms/runtime/attribute.eol";
+import "rdbms/runtime/reference.eol";
 
 import "rdbms/rdbms/field.eol";
 import "rdbms/rdbms/table.eol";
@@ -13,6 +14,7 @@ import "rdbms/rdbms/view.eol";
 
 import "rdbms/modules/class.etl";
 import "rdbms/modules/attribute.etl";
+import "rdbms/modules/reference.etl";
 
 //import "modules/class.eol";
 

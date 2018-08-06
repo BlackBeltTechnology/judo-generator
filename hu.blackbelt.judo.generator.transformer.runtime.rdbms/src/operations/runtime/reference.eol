@@ -4,3 +4,53 @@ import "modelElement.eol";
 operation RUNTIME!EReference isEmbedded() : Boolean {
 	return self.annotatedAsTrue("embedded");
 }
+
+@cached
+operation RUNTIME!EReference isManyToMany() : Boolean {
+	var ref1 : RUNTIME!EReference = self;
+	var ref2 : RUNTIME!EReference = self.eOpposite;
+	if (ref2.isDefined() and ref1.upperBound = -1 and ref2.upperBound = -1) {
+		return true;
+	}
+	return false;
+}
+
+@cached
+operation RUNTIME!EReference ownerReference() : RUNTIME!EReference {
+	var ref1 : RUNTIME!EReference = self;
+	var ref2 : RUNTIME!EReference = self.eOpposite;
+
+	if (ref2.isUndefined()) {
+		return ref1;
+	}
+
+	if (ref1.upperBound == 1 and ref2.upperBound == -1) {
+		return ref1;
+	} else if (ref1.upperBound == 1 and ref2.upperBound == 1) {
+		if (ref2.containment or ref1.lowerBound == 1) {
+			return ref1;
+		} else if (ref1.containment and ref1.lowerBound = 0 and ref2.lowerBound = 0 and ref1.name < ref2.name) {
+			return ref1;
+		}
+	} else if (self.isManyToMany()) {
+		return null;
+	}
+
+    return ref2;	
+}
+
+@cached
+operation RUNTIME!EReference isForeign() : Boolean {
+	return self.ownerReference() == self;
+}
+
+@cached
+operation RUNTIME!EReference fqName() : String {
+	return self.eContainingClass.fqName() + "#" + self.name;
+}
+
+@cached
+operation RUNTIME!EReference isMandatory() : Boolean {
+	return self.lowerBound == 1;
+}
+

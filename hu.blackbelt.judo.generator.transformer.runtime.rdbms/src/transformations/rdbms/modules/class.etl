@@ -1,6 +1,20 @@
 import "../../../operations/runtime/_importRuntime.eol";
 import "element.etl";
 
+/* Every table have an ID */
+rule EClassToTableIdField
+	transform s : RUNTIME!EClass
+	to t : RDBMS!RdbmsIdentifierField { 
+		guard : s.isEntity()
+		t.name = s.fqName() + "#id";
+	    t.uuid = s.fqName() + "#id";
+	    t.table = s.equivalent("EClassToRdbmsTable");
+	    t.table.fields.add(t);
+		t.table.primaryKey = t;
+		t.sqlName = "ID";
+		t.fillType("JUUID");
+}
+
 rule EClassToRdbmsTable 
 	transform s : RUNTIME!EClass
 	to t : RDBMS!RdbmsTable

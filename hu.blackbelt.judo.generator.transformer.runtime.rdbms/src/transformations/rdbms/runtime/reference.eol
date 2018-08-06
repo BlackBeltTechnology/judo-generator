@@ -1,0 +1,16 @@
+@cached
+operation RUNTIME!EReference referenceIdentifierSqlName() : String {
+    return "C_" +  self.sqlName() + "_ID";
+}
+
+@cached
+operation RUNTIME!EReference roleFkSqlName() : String {
+	// return "FK_" + md5(self.fqName()).replaceAll("-","").substring(0,27);
+	return "FK_" + self.eContainingClass.classSqlName() + "_" + self.sqlName();
+}
+
+@cached
+operation PSM!JRole roleSqlName() : String {
+    return self.eContainingClass.classSqlName() + "_" + self.sqlName() + "_" + self.eReferenceType.classSqlName();
+}
+
