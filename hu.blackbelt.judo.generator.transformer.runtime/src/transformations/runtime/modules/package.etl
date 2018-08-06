@@ -15,7 +15,6 @@ rule NamespaceToPackage
 		} else {
             t.nsURI = nsURI + "/" + s.name;
             t.nsPrefix = nsPrefix + s.name.firstToUpperCase();
-            root.eSubpackages.add(t);
 		}
 	}
 
