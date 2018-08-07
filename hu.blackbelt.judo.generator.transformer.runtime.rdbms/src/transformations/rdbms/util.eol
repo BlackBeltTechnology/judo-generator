@@ -38,3 +38,4 @@ operation String toUpperSnakeCase() : String {
 	    	.replaceAll("([a-z0-9])([A-Z])","$1\\_$2")
 	    	.toUpperCase();
 }
+

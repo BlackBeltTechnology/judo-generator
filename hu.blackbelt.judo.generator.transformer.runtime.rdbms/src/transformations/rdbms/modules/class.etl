@@ -5,7 +5,7 @@ import "element.etl";
 rule EClassToTableIdField
 	transform s : RUNTIME!EClass
 	to t : RDBMS!RdbmsIdentifierField { 
-		guard : s.isEntity()
+		guard : s.isEntity() or s.isStructure()
 		t.name = s.fqName() + "#id";
 	    t.uuid = s.fqName() + "#id";
 	    t.table = s.equivalent("EClassToRdbmsTable");
@@ -19,24 +19,30 @@ rule EClassToRdbmsTable
 	transform s : RUNTIME!EClass
 	to t : RDBMS!RdbmsTable
 	extends ENamedElementToRdbmsElement {
-	guard : s.isEntity()
+	guard : s.isEntity() or s.isStructure()
+	    targetModel.rdbmsTables.add(t);
 	    t.sqlName = s.tableSqlName();
 	    t.name = s.fqName();
 		if (s.hasSupertype()) {
-			t.parent = s.getPrimarySupertype().equivalent("JClassToRdbmsTable");
-			// t.fields.add(s.getPrimarySupertype().primaryKeyAttribute().equivalent("EAttributeToTableIdField").clone());
-			// t.addSuperPrimaryKey(s);
+			t.parent = s.getPrimarySupertype().equivalent("EClassToRdbmsTable");
 		}
 
 		// Adding foreign key for all descandences classes
 		t.fields.addAll(s.allDescandences().collect(c | s.createForeginKey(c)));
-
-        /* TODO: Later implement it, now ignored
-        for (c : PSM!JClass in s.allSupertypes()) {
-        	t.fields.add(s.createForeginKey(c));
-	    } */  
-	    targetModel.rdbmsTables.add(t);
 }
+
+/*
+rule EClassToRdbmsStructureIdentifier 
+	transform s : RUNTIME!EClass
+	to t : RDBMS!RdbmsIdentifierField
+	extends ENamedElementToRdbmsElement {
+	guard : s.getClass().isStructure()
+		t.table = s.getClass().equivalent("EClassToRdbmsTable");
+		t.table.primaryKey = t;
+		t.name = s.fqName() + "#id";
+	    t.uuid = s.fqName() + "#id";
+}
+*/
 
 rule EClassToRdbmsView 
 	transform s : RUNTIME!EClass

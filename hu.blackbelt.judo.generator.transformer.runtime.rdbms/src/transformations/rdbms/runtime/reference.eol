@@ -4,13 +4,34 @@ operation RUNTIME!EReference referenceIdentifierSqlName() : String {
 }
 
 @cached
-operation RUNTIME!EReference roleFkSqlName() : String {
+operation RUNTIME!EReference referenceInverseIdentifierSqlName() : String {
+    return "C_" +  self.eContainingClass.classSqlName() + "_" + self.sqlName() + "_ID";
+}
+
+@cached
+operation RUNTIME!EReference referenceFkSqlName() : String {
 	// return "FK_" + md5(self.fqName()).replaceAll("-","").substring(0,27);
 	return "FK_" + self.eContainingClass.classSqlName() + "_" + self.sqlName();
 }
 
 @cached
-operation PSM!JRole roleSqlName() : String {
-    return self.eContainingClass.classSqlName() + "_" + self.sqlName() + "_" + self.eReferenceType.classSqlName();
+operation RUNTIME!EReference referenceInvFkSqlName() : String {
+	// return "FK_" + md5(self.fqName()).replaceAll("-","").substring(0,27);
+	return "FK_INV_" + self.eContainingClass.classSqlName() + "_" + self.sqlName();
 }
+
+
+@cached
+operation RUNTIME!EReference referenceManyToManyTableSqlName() : String {
+	// return "FK_" + md5(self.fqName()).replaceAll("-","").substring(0,27);
+	// return "FK_INV_" + self.eReferenceType.classSqlName() + "_" + self.eContainingClass.classSqlName();
+	var f1 = self;
+	var f2 = self.eOpposite;
+	/*if (f1.name > f2.name) {
+		f1 = f2;
+		f2 = self;
+	} */
+	return "T_" + abbreviate(f1.eReferenceType.classSqlName() + "_" + f2.sqlName() + "_" + f2.eReferenceType.classSqlName() + "_" + f1.sqlName(), 28).toUpperCase();
+}
+
 

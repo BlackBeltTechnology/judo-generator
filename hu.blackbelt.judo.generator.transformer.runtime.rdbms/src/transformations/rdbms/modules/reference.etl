@@ -1,9 +1,50 @@
 import "element.etl";
 
+rule EReferenceToPrint 
+	transform s : RUNTIME!EReference
+	to t : Map {
+	guard:  (s.eReferenceType.isEntity() or s.eReferenceType.isStructure() and s.eContainingClass.isEntity())
+	("Name: " + s.eContainingClass.name + "#" + s.name + " ReferenceType: " + s.eReferenceType.name + " Lower: " + s.lowerBound + " Upper: " + s.upperBound + " Container: " + s.container + " Containment: " + s.containment).println("Reference: ");
+}
+
+/*
+[INFO] Reference: Name: products ReferenceType: Product Containing class: Category Lower: 0 Upper: -1 Container: false Containment: false
+[INFO] Reference: Name: category ReferenceType: Category Containing class: Product Lower: 0 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: supplier ReferenceType: Supplier Containing class: Product Lower: 0 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: address ReferenceType: Address Containing class: Company Lower: 0 Upper: 1 Container: false Containment: true
+[INFO] Reference: Name: orders ReferenceType: Order Containing class: Customer Lower: 0 Upper: -1 Container: false Containment: false
+[INFO] Reference: Name: shipAddress ReferenceType: Address Containing class: Order Lower: 0 Upper: 1 Container: false Containment: true
+[INFO] Reference: Name: customer ReferenceType: Customer Containing class: Order Lower: 0 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: orderDetails ReferenceType: OrderDetail Containing class: Order Lower: 0 Upper: -1 Container: false Containment: true
+[INFO] Reference: Name: shipper ReferenceType: Shipper Containing class: Order Lower: 0 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: employee ReferenceType: Employee Containing class: Order Lower: 0 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: order ReferenceType: Order Containing class: OrderDetail Lower: 1 Upper: 1 Container: true Containment: false
+[INFO] Reference: Name: product ReferenceType: Product Containing class: OrderDetail Lower: 1 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: products ReferenceType: Product Containing class: Supplier Lower: 0 Upper: -1 Container: false Containment: false
+[INFO] Reference: Name: orders ReferenceType: Order Containing class: Shipper Lower: 0 Upper: -1 Container: false Containment: false
+[INFO] Reference: Name: address ReferenceType: Address Containing class: Employee Lower: 0 Upper: 1 Container: false Containment: true
+[INFO] Reference: Name: orders ReferenceType: Order Containing class: Employee Lower: 0 Upper: -1 Container: false Containment: false
+[INFO] Reference: Name: reportsTo ReferenceType: Employee Containing class: Employee Lower: 0 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: employees ReferenceType: Employee Containing class: Employee Lower: 0 Upper: -1 Container: false Containment: false
+[INFO] Reference: Name: territories ReferenceType: Territory Containing class: Employee Lower: 0 Upper: -1 Container: false Containment: false
+[INFO] Reference: Name: employees ReferenceType: Employee Containing class: Territory Lower: 0 Upper: -1 Container: false Containment: false
+[INFO] Reference: Name: region ReferenceType: Region Containing class: Territory Lower: 1 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: territory ReferenceType: Territory Containing class: Region Lower: 0 Upper: 1 Container: false Containment: false
+[INFO] Reference: Name: orders ReferenceType: Order Containing class: Package Lower: 0 Upper: -1 Container: false Containment: false
+
+*/
+
 rule EReferenceToRdbmsTableForeignKey 
 	transform s : RUNTIME!EReference
 	to fk : RDBMS!RdbmsForeignKey {
-	    guard:  s.eReferenceType.isEntity() and s.isForeign() and not s.isManyToMany()
+	    guard:  (s.eReferenceType.isEntity() or s.eReferenceType.isStructure() and s.eContainingClass.isEntity())
+	    
+                 
+
+	    		//s.isForeign() and 
+	    		//not s.isManyToMany() and 
+	    		//s.upperBound <> -1
+
     	s.eContainingClass.equivalent("EClassToRdbmsTable").fields.add(fk);
     	fk.name = s.name;
     	fk.uuid = s.fqName();
@@ -11,7 +52,7 @@ rule EReferenceToRdbmsTableForeignKey
 		fk.fillType("JUUID");
 		fk.mandatory = s.isMandatory();
 		fk.sqlName = s.referenceIdentifierSqlName();
-	    fk.foreignKeySqlName = s.roleFkSqlName(); 
+	    fk.foreignKeySqlName = s.referenceFkSqlName(); 
 
 		if (s.container) {
 			fk.readOnly = true;
@@ -22,15 +63,109 @@ rule EReferenceToRdbmsTableForeignKey
 		}
 }
 
+rule EReferenceToRdbmsTableInverseForeignKey 
+	transform s : RUNTIME!EReference
+	to fk : RDBMS!RdbmsForeignKey {
+	    guard:  s.eReferenceType.isEntity() and s.isForeign() and not s.isManyToMany() and s.upperBound == -1
+    	s.eReferenceType.equivalent("EClassToRdbmsTable").fields.add(fk);
 
+    	fk.name = s.eContainingClass.name.firstToLowerCase() + s.name.firstToUpperCase();
+    	fk.uuid = s.invFqName();
+    	
+    	fk.referenceKey = s.eContainingClass.equivalent("EClassToRdbmsTable").primaryKey;
+		fk.fillType("JUUID");
+		fk.mandatory = s.isMandatory();
+		fk.sqlName = s.referenceInverseIdentifierSqlName();
+	    fk.foreignKeySqlName = s.referenceInvFkSqlName(); 
+
+		fk.readOnly = false;
+		fk.deleteOnCascade = false;			
+}
+
+/*
+rule EReferenceToRdbmsTableForeignKey 
+	transform s : RUNTIME!EReference
+	to fk : RDBMS!RdbmsForeignKey {
+	    guard:  s.isEmbedded() // and s.isForeign() and not s.isManyToMany() and s.upperBound <> -1
+    	s.eContainingClass.equivalent("EClassToRdbmsTable").fields.add(fk);
+    	fk.name = s.name;
+    	fk.uuid = s.fqName();
+    	fk.referenceKey = s.eReferenceType.equivalent("EClassToRdbmsTable").primaryKey;
+		fk.fillType("JUUID");
+		fk.mandatory = s.isMandatory();
+		fk.sqlName = s.referenceIdentifierSqlName();
+	    fk.foreignKeySqlName = s.referenceFkSqlName(); 
+
+		if (s.container) {
+			fk.readOnly = true;
+			fk.deleteOnCascade = true;			
+		} else {
+			fk.readOnly = false;
+			fk.deleteOnCascade = false;						
+		} 
+}
+*/
+
+rule EReferenceToRdbmsJunctionTable
+	transform s : RUNTIME!EReference
+	to t : RDBMS!RdbmsJunctionTable {
+	guard : s.eReferenceType.isEntity() and s.isManyToMany() and s.name.compareTo(s.eOpposite.name) < 0
+	    targetModel.rdbmsTables.add(t);
+		t.sqlName = s.referenceManyToManyTableSqlName();
+	    t.name = s.fqName() + " to " + s.eOpposite.fqName();
+	    t.uuid = s.fqName() + "_" + s.eOpposite.fqName();
+}
+
+rule EReferenceToRdbmsJunctionTablePrimaryKey
+	transform s : RUNTIME!EReference
+	to p : RDBMS!RdbmsIdentifierField {
+	guard : s.eReferenceType.isEntity() and s.isManyToMany() and s.name.compareTo(s.eOpposite.name) < 0
+		p.table = s.equivalent("EReferenceToRdbmsJunctionTable");
+		p.table.primaryKey = p;
+	    p.name = p.table.name + "#id";
+	    p.uuid = p.table.uuid + "#id";
+		p.sqlName = "ID";
+		p.fillType("JUUID");
+}
+
+rule EReferenceToRdbmsJunctionTableForeignKey
+	transform s : RUNTIME!EReference
+	to fk : RDBMS!RdbmsForeignKey {
+	guard : s.eReferenceType.isEntity() and s.isManyToMany()
+	    var mainReference;
+	    if (s.name.compareTo(s.eOpposite.name) < 0) {
+	    	mainReference = s;
+			mainReference.equivalent("EReferenceToRdbmsJunctionTable").field1 = fk;
+	    } else {
+	    	mainReference = s.eOpposite;	    
+			mainReference.equivalent("EReferenceToRdbmsJunctionTable").field2 = fk;
+	    }
+	    mainReference.equivalent("EReferenceToRdbmsJunctionTable").fields.add(fk);
+        // 		
+    	fk.name = s.name;
+    	fk.uuid = s.fqName();
+    	fk.referenceKey = s.eReferenceType.equivalent("EClassToRdbmsTable").primaryKey;
+		fk.fillType("JUUID");
+		fk.mandatory = s.isMandatory();
+		fk.sqlName = s.referenceIdentifierSqlName();
+	    fk.foreignKeySqlName = s.referenceFkSqlName(); 
+
+		fk.readOnly = true;
+		fk.deleteOnCascade = true;			
+}
+
+
+/*
 rule EReferenceToRdbmsJunctionTable
 	transform s : RUNTIME!EReference
 	to t : RDBMS!RdbmsJunctionTable, p : RDBMS!RdbmsIdentifierField, f1 : RDBMS!RdbmsForeignKey, f2 : RDBMS!RdbmsForeignKey, i1 : RDBMS!RdbmsIndex, i2 : RDBMS!RdbmsIndex, uq : RDBMS!RdbmsUniqueConstraint {
 	guard : s.eReferenceType.isEntity() and s.isManyToMany()
 		t.sqlName = s.relationSqlTableName(); // junctionTableSqlName(s);
 
+		
 		// var primaryRole : PSM!JRole = s.primaryRole();
 		// var secondaryRole : PSM!JRole = s.secondaryRole();
+		
 	    t.name = primaryRole.ownerClass.package.fqName() + "." + primaryRole.ownerClass.name + " to " + secondaryRole.ownerClass.package.fqName() + "." + secondaryRole.ownerClass.name;
 
 
@@ -43,12 +178,12 @@ rule EReferenceToRdbmsJunctionTable
 		i1.name = t.name + " " + primaryRole.name;
 		i1.uuid = generateUuid(t.uuid, "indexOne", "_");
 
-		/*var tempSqlName : String = ("IDX_" + generateUuid(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName(), ".").replaceAll("-",""));
+		-/-*var tempSqlName : String = ("IDX_" + generateUuid(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName(), ".").replaceAll("-",""));
 		if (tempSqlName.length > 30) {
 			i1.sqlName = tempSqlName.substring(0,30);
 		} else {
 			i1.sqlName = tempSqlName;
-		}*/
+		}-*-/
 		i1.sqlName = ("IDX_" + md5(generateUuid(s.uuid, s.relationSqlName() + "_" + primaryRole.sqlName(), ".").replaceAll("-","")));
 
 		i1.fields.add(t.field1);
@@ -57,12 +192,12 @@ rule EReferenceToRdbmsJunctionTable
 		i2.name = t.name + " " + secondaryRole.name;
 		i2.uuid = generateUuid(t.uuid, "indexTwo", "_");
 
-		/*tempSqlName = ("IDX_" + generateUuid(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName(), ".").replaceAll("-",""));
+		-/=*tempSqlName = ("IDX_" + generateUuid(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName(), ".").replaceAll("-",""));
 		if (tempSqlName.length > 30) {
 			i2.sqlName = tempSqlName.substring(0,30);
 		} else {
 			i2.sqlName = tempSqlName;
-		}*/
+		}-*-/
 		i2.sqlName = ("IDX_" + md5(generateUuid(s.uuid, s.relationSqlName() + "_" + secondaryRole.sqlName(), ".").replaceAll("-","")));
 
 		i2.fields.add(t.field2);
@@ -97,7 +232,7 @@ rule EReferenceToRdbmsJunctionTable
 
 		targetModel.rdbmsTables.add(t);
 	}
-
+*/
 
 /*
 rule JRoleToRdbmsTableForeignKey 

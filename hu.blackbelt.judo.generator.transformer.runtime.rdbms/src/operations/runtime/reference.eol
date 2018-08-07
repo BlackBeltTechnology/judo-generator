@@ -29,7 +29,7 @@ operation RUNTIME!EReference ownerReference() : RUNTIME!EReference {
 	} else if (ref1.upperBound == 1 and ref2.upperBound == 1) {
 		if (ref2.containment or ref1.lowerBound == 1) {
 			return ref1;
-		} else if (ref1.containment and ref1.lowerBound = 0 and ref2.lowerBound = 0 and ref1.name < ref2.name) {
+		} else if (ref1.containment and ref1.lowerBound = 0 and ref2.lowerBound = 0 and ref1.name.compareTo(ref2.name)) {
 			return ref1;
 		}
 	} else if (self.isManyToMany()) {
@@ -47,6 +47,11 @@ operation RUNTIME!EReference isForeign() : Boolean {
 @cached
 operation RUNTIME!EReference fqName() : String {
 	return self.eContainingClass.fqName() + "#" + self.name;
+}
+
+@cached
+operation RUNTIME!EReference invFqName() : String {
+	return self.eReferenceType.fqName() + "#" + self.name;
 }
 
 @cached

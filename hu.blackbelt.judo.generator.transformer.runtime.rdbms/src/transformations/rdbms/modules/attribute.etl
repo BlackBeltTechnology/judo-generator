@@ -8,7 +8,7 @@ rule EAttributeToRdbmsField
 	transform s : RUNTIME!EAttribute
 	to t : RDBMS!RdbmsField 
 	extends ENamedElementToRdbmsElement { 
-		guard : s.getClass().isEntity()
+		guard : s.getClass().isEntity() or s.getClass().isStructure()
 	    t.uuid = s.fqName();
 	    // t.name = s.fqName();
 		t.table = s.getClass().equivalent("EClassToRdbmsTable");
@@ -45,7 +45,7 @@ rule EAttributeToTableValueField
 	transform s : RUNTIME!EAttribute
 	to t : RDBMS!RdbmsValueField
 	extends EAttributeToRdbmsField { 
-		guard : s.getClass().isEntity() and not s.isPrimaryKey() and not s.derived
+		guard : (s.getClass().isEntity() or s.getClass().isStructure()) and not s.isPrimaryKey() and not s.derived
 		//t.technical = s.isTechnical();
 }
 
@@ -54,7 +54,7 @@ rule EAttributeToViewIdField
 	transform s : RUNTIME!EAttribute
 	to v : RDBMS!RdbmsViewIdentifierField
 	extends ENamedElementToRdbmsElement { 
-		guard : s.getClass().isEntity() and s.isPrimaryKey()
+		guard : (s.getClass().isEntity() or s.isStructure()) and s.isPrimaryKey()
 		v.name = s.getClass().fqName() + "#id";
 		v.tableField = s.getClass().equivalent("EClassToTableIdField");
 		v.sqlName = v.tableField.sqlName;
@@ -63,6 +63,21 @@ rule EAttributeToViewIdField
 		v.view.primaryIdentifierField = v;
 		v.`alias` = v.view.primaryTable;
 }
+
+rule EAttributeToViewIdField
+	transform s : RUNTIME!EAttribute
+	to v : RDBMS!RdbmsViewIdentifierField
+	extends ENamedElementToRdbmsElement { 
+		guard : s.getClass().isStructure() and s.isPrimaryKey()
+		v.name = s.getClass().fqName() + "#id";
+		v.tableField = s.getClass().equivalent("EClassToTableIdField");
+		v.sqlName = v.tableField.sqlName;
+		v.uuid = v.tableField.uuid + "@viewIdentifierField";
+		v.view = s.getClass().equivalent("EClassToRdbmsView");
+		v.view.primaryIdentifierField = v;
+		v.`alias` = v.view.primaryTable;
+}
+
 
 /*
 @lazy
