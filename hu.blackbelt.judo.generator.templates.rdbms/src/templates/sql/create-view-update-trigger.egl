@@ -45,6 +45,16 @@ CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
 				[% } %]
 		        WHERE ID = :OLD.ID;
 			[% } %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (:NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (:OLD.[%= foreignKey.sqlName %] IS NULL OR :NEW.[%= foreignKey.sqlName %] <> :OLD.[%= foreignKey.sqlName %]) THEN		
+				[% if (foreignKey.mandatory) { %]
+		        	raise_application_error(-202000, 'Not null constraint violation for "[%= foreignKey.sqlName %]" in view "[%= view.name %]"');
+		        [% } else { %]
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+		        [% } %]
+				END IF;
+	    	[% } %]        							
 		[% } %]        
     END;
 /
@@ -86,6 +96,16 @@ CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
 				[% } %]
 		        WHERE ID = OLD.ID;
 			[% } %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (OLD.[%= foreignKey.sqlName %] IS NULL OR NEW.[%= foreignKey.sqlName %] <> OLD.[%= foreignKey.sqlName %]) THEN		
+				[% if (foreignKey.mandatory) { %]
+		        	SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Not null constraint violation for "[%= foreignKey.sqlName %]" in view "[%= view.name %]"';
+		        [% } else { %]
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+		        [% } %]
+				END IF;
+	    	[% } %]        							
 		[% } %]        
     END;
 [% } %]
@@ -118,6 +138,16 @@ CREATE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlNa
 				[% } %]
 		        WHERE ID = OLD.ID;
 			[% } %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (OLD.[%= foreignKey.sqlName %] IS NULL OR NEW.[%= foreignKey.sqlName %] <> OLD.[%= foreignKey.sqlName %]) THEN		
+				[% if (foreignKey.mandatory) { %]
+		        	RAISE EXCEPTION 'Not null constraint violation for "[%= foreignKey.sqlName %]" in view "[%= view.name %]"';
+		        [% } else { %]
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+		        [% } %]
+				END IF;
+	    	[% } %]
 		[% } %]        
 
         RETURN NEW;

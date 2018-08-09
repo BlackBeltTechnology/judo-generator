@@ -43,7 +43,7 @@ rule JRoleToRdbmsTableForeignKey
 		}			
 	}
 
-rule JRoleToRdbmsuniqueConstraint 
+rule JRoleToRdbmsUniqueConstraint 
 	transform s : PSM!JRole
 	to uq : RDBMS!RdbmsUniqueConstraint {
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction() and s.opposite().upper == 1
@@ -51,9 +51,10 @@ rule JRoleToRdbmsuniqueConstraint
 		uq.sqlName = s.roleUniqueSqlName();    
 		uq.table =  s.ownerClass.equivalent("JClassToRdbmsTable");
 		uq.fields.add(s.equivalent("JRoleToRdbmsTableForeignKey"));
+		uq.uuid = generateUuid(s.uuid, "Unique", "_");
 	}
 
-rule JRoleToRdbmsuniqueConstraint 
+rule JRoleToRdbmsIndex 
 	transform s : PSM!JRole
 	to idx : RDBMS!RdbmsIndex {
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isForeign() and not s.ownerRelationship.isJunction() and s.opposite().upper <> 1

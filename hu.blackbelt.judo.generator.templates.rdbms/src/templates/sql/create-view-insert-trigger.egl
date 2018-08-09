@@ -48,10 +48,27 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
 			[% } %]
 			);
 		[% } %]
+
+		
+		
 		[% for (tableAlias in view.updatableParentAliases()) { %]
+			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 			[% if (tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
 	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
 	        [% } %]
+    	[% } %]        	
+
+		[% for (tableAlias in view.updateableAliases()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+  			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+            IF (:NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN
+				[% if (foreignKey.mandatory) { %]
+		        	raise_application_error(-202000, 'Not null constraint violation for "[%= foreignKey.sqlName %]" in view "[%= view.name %]"');
+		        [% } else { %]
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+		        [% } %]
+		    END IF;
+	    	[% } %]
     	[% } %]        	
     END;
 /
@@ -107,10 +124,24 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
 			);
 		[% } %]
 		[% for (tableAlias in view.updatableParentAliases()) { %]
+			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 			[% if (tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
 	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
 	    	[% } %]		
     	[% } %]        	
+
+		[% for (tableAlias in view.updateableAliases()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+   			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+   			IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN   			
+				[% if (foreignKey.mandatory) { %]
+		        	SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Not null constraint violation for "[%= foreignKey.sqlName %]" in view "[%= view.name %]"';
+		        [% } else { %]
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+		        [% } %]
+		    END IF;
+	    	[% } %]        				
+    	[% } %]
     END;
 [% } %]
 
@@ -162,7 +193,18 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
 	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
 	    	[% } %]        	
     	[% } %]        	
-
+		[% for (tableAlias in view.updateableAliases()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+    		-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+    		IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN    		
+				[% if (foreignKey.mandatory) { %]
+		        	RAISE EXCEPTION 'Not null constraint violation for "[%= foreignKey.sqlName %]" in view "[%= view.name %]"';
+		        [% } else { %]
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+		        [% } %]
+		    END IF;
+	    	[% } %]        				
+    	[% } %]
         RETURN NEW;
     END;
 $INS_[%= view.sqlName %]$ LANGUAGE plpgsql;

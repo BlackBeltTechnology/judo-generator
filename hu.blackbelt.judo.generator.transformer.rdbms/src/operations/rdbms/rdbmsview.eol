@@ -166,6 +166,7 @@ operation RDBMS!RdbmsView addExpressionField(attribute : PSM!JAttribute) {
    	  		var labelExpression : RDBMS!RdbmsLabelExpression = new RDBMS!RdbmsLabelExpression();
     		labelExpression.expression = e;
     		labelExpression.text = e;
+    		labelExpression.sqlName = "LABEL_" + labelExpressionCount.toString();
     		labelExpressionCount++;
 			labelExpression.uuid = generateUuid(attribute.uuid, labelExpressionCount.toString(), ".");
     		vf.expressions.add(labelExpression);	
