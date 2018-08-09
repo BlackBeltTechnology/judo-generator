@@ -34,4 +34,18 @@ operation RUNTIME!EReference referenceManyToManyTableSqlName() : String {
 	return "T_" + abbreviate(f1.eReferenceType.classSqlName() + "_" + f2.sqlName() + "_" + f2.eReferenceType.classSqlName() + "_" + f1.sqlName(), 28).toUpperCase();
 }
 
+@cached
+operation RUNTIME!EReference isFirst() : Boolean {
+	var ref1 : RUNTIME!EReference = self;
+	var ref2 : RUNTIME!EReference = self.eOpposite;
+
+	if (ref2.isUndefined()) {
+		return true;
+	}
+
+   if (ref1.name.compareTo(ref2.name) < 0) {
+		return true;
+   }
+   return false;
+}
 

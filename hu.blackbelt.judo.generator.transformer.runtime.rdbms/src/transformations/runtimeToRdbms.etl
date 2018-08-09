@@ -20,6 +20,8 @@ import "rdbms/modules/reference.etl";
 
 pre {
 	var targetModel : RDBMS!RdbmsModel = new RDBMS!RdbmsModel();	
+	var first : Boolean = true;
+
 }
 
 /*

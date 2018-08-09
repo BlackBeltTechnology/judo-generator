@@ -1,39 +1,31 @@
 import "element.etl";
 
+
 rule EReferenceToPrint 
 	transform s : RUNTIME!EReference
 	to t : Map {
 	guard:  (s.eReferenceType.isEntity() or s.eReferenceType.isStructure() and s.eContainingClass.isEntity())
-	("Name: " + s.eContainingClass.name + "#" + s.name + " ReferenceType: " + s.eReferenceType.name + " Lower: " + s.lowerBound + " Upper: " + s.upperBound + " Container: " + s.container + " Containment: " + s.containment).println("Reference: ");
+
+	if (first) {
+		first = false;
+		"Owner;RelationName;OppositeOwner;OppositeRelationName;Structure;Lower;Upper;Container;Containment;Opposite;OppositeLower;OppositeUpper;OppositeContainer;OppositeContainment;First".println(";");
+	}
+
+	var ref = s.eContainingClass.name + ";" + s.name + ";";
+	if (s.eOpposite.isDefined()) {
+		ref += s.eOpposite.eContainingClass.name + ";" + s.eOpposite.name + ";";
+	} else {
+		ref += ";;";
+	}
+	ref += s.eReferenceType.isStructure() + ";" + s.lowerBound + ";" + s.upperBound + ";" + s.container + ";" + s.containment + ";" + s.eOpposite.isDefined();
+	if (s.eOpposite.isDefined()) {
+		ref += ";" + s.eOpposite.lowerBound + ";" + s.eOpposite.upperBound + ";" + s.eOpposite.container + ";" + s.eOpposite.containment + ";";
+	} else {
+		ref += ";;;;;";	
+	}
+	ref += ";" + s.isFirst();
+	ref.println(";");
 }
-
-/*
-[INFO] Reference: Name: products ReferenceType: Product Containing class: Category Lower: 0 Upper: -1 Container: false Containment: false
-[INFO] Reference: Name: category ReferenceType: Category Containing class: Product Lower: 0 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: supplier ReferenceType: Supplier Containing class: Product Lower: 0 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: address ReferenceType: Address Containing class: Company Lower: 0 Upper: 1 Container: false Containment: true
-[INFO] Reference: Name: orders ReferenceType: Order Containing class: Customer Lower: 0 Upper: -1 Container: false Containment: false
-[INFO] Reference: Name: shipAddress ReferenceType: Address Containing class: Order Lower: 0 Upper: 1 Container: false Containment: true
-[INFO] Reference: Name: customer ReferenceType: Customer Containing class: Order Lower: 0 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: orderDetails ReferenceType: OrderDetail Containing class: Order Lower: 0 Upper: -1 Container: false Containment: true
-[INFO] Reference: Name: shipper ReferenceType: Shipper Containing class: Order Lower: 0 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: employee ReferenceType: Employee Containing class: Order Lower: 0 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: order ReferenceType: Order Containing class: OrderDetail Lower: 1 Upper: 1 Container: true Containment: false
-[INFO] Reference: Name: product ReferenceType: Product Containing class: OrderDetail Lower: 1 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: products ReferenceType: Product Containing class: Supplier Lower: 0 Upper: -1 Container: false Containment: false
-[INFO] Reference: Name: orders ReferenceType: Order Containing class: Shipper Lower: 0 Upper: -1 Container: false Containment: false
-[INFO] Reference: Name: address ReferenceType: Address Containing class: Employee Lower: 0 Upper: 1 Container: false Containment: true
-[INFO] Reference: Name: orders ReferenceType: Order Containing class: Employee Lower: 0 Upper: -1 Container: false Containment: false
-[INFO] Reference: Name: reportsTo ReferenceType: Employee Containing class: Employee Lower: 0 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: employees ReferenceType: Employee Containing class: Employee Lower: 0 Upper: -1 Container: false Containment: false
-[INFO] Reference: Name: territories ReferenceType: Territory Containing class: Employee Lower: 0 Upper: -1 Container: false Containment: false
-[INFO] Reference: Name: employees ReferenceType: Employee Containing class: Territory Lower: 0 Upper: -1 Container: false Containment: false
-[INFO] Reference: Name: region ReferenceType: Region Containing class: Territory Lower: 1 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: territory ReferenceType: Territory Containing class: Region Lower: 0 Upper: 1 Container: false Containment: false
-[INFO] Reference: Name: orders ReferenceType: Order Containing class: Package Lower: 0 Upper: -1 Container: false Containment: false
-
-*/
-
 rule EReferenceToRdbmsTableForeignKey 
 	transform s : RUNTIME!EReference
 	to fk : RDBMS!RdbmsForeignKey {
