@@ -1,16 +1,21 @@
 @cached
 operation JUDOPSM!EntityType hasCircularReference() : Boolean {
-	return self.hasCircularReference(self.superEntityTypes);
+	return self.hasCircularReference(new Set);
 }
 
 operation JUDOPSM!EntityType hasCircularReference(visited : Collection) : Boolean {
     if (visited.includes(self)) {
         return true;
-    } else if (visited.isEmpty()) {
-        return false;
     }
 
-    return self.hasCircularReference(self.superEntityTypes.collect(s | s.superEntityTypes).flatten());
+    var circularReferenceFound = false;
+    for (set in self.superEntityTypes) {
+        if (set.hasCircularReference(visited.including(self))) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 @cached

@@ -1,5 +1,9 @@
 @cached
 operation SRC!EAttribute getEdmType() {
+	if (not self.eType.isDefined()) {
+		return "Edm.String";
+	}
+
 	switch (self.eType.name) {
 		case "JBinary":
 			return "Edm.Binary";

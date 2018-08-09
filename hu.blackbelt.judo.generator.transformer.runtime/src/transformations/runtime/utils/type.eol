@@ -61,3 +61,7 @@ operation JUDOPSM!Primitive getEcoreType() : TYPES!EDataType {
 		return "JObject".getJudoDataType();
 	}
 }
+
+operation JUDOPSM!Reference getEcoreType() : RUNTIME!EClass {
+	return self.target.equivalent();
+}
