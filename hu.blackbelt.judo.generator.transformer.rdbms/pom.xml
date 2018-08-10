@@ -146,6 +146,10 @@
 										<model>
 											<artifact>${project.build.directory}/rdbmsHsqldb.model</artifact>
 											<name>RDBMS</name>
+											<aliases>
+												<alias>CURRENT</alias>
+												<alias>SOURCE</alias>
+											</aliases>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -233,6 +237,10 @@
 										<model>
 											<artifact>${project.build.directory}/rdbmsPostgres.model</artifact>
 											<name>RDBMS</name>
+											<aliases>
+												<alias>CURRENT</alias>
+												<alias>SOURCE</alias>
+											</aliases>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -310,6 +318,10 @@
 										<model>
 											<artifact>${project.build.directory}/rdbmsOracle.model</artifact>
 											<name>RDBMS</name>
+											<aliases>
+												<alias>CURRENT</alias>
+												<alias>SOURCE</alias>
+											</aliases>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>

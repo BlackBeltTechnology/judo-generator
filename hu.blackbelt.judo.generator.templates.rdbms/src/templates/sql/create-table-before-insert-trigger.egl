@@ -4,7 +4,7 @@
 %]
 --liquibase formatted sql
 
-[% for (table in RDBMS!RdbmsTable.all.select(t | t.parent.isUndefined() and not t.isKindOf(RDBMS!RdbmsJunctionTable))) { %]
+[% for (table in CURRENT!RdbmsTable.all.select(t | t.parent.isUndefined() and not t.isKindOf(RDBMS!RdbmsJunctionTable))) { %]
 
 [* ------------------------------------- *]
 [* ORACLE                                *]

@@ -105,37 +105,40 @@
                                     <models>
                                         <model>
                                             <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsHsqldb:${test.model.version}</artifact>
-                                            <name>RDBMS</name>
+											<name>CURRENT</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
                                             <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</platformAlias>
-                                            <aliases>
-                                                <alias>RDBMS</alias>
-                                            </aliases>
                                         </model>
 
                                         <model>
                                             <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsHsqldb:${test.model.previousVersion}</artifact>
-                                            <name>PREVIOUS</name>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
                                             <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</platformAlias>
-                                            <aliases>
-                                                <alias>PREVIOUS</alias>
-                                            </aliases>
                                         </model>
 
                                         <model>
                                             <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms.incremental:model:rdbmsHsqldb-incremental-${test.model.previousVersion}_${test.model.version}:${project.version}</artifact>
-                                            <name>INCREMENTAL</name>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>TARGET</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
-                                            <aliases>
-                                                <alias>RDBMS</alias>
-                                            </aliases>
                                             <expand>true</expand>
                                         </model>
                                     </models>
@@ -177,37 +180,40 @@
                                     <models>
                                         <model>
                                             <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsOracle:${test.model.version}</artifact>
-                                            <name>RDBMS</name>
+											<name>CURRENT</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
                                             <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsOracle.model</platformAlias>
-                                            <aliases>
-                                                <alias>RDBMS</alias>
-                                            </aliases>
                                         </model>
 
                                         <model>
                                             <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsOracle:${test.model.previousVersion}</artifact>
-                                            <name>PREVIOUS</name>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
                                             <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsOracle.model</platformAlias>
-                                            <aliases>
-                                                <alias>PREVIOUS</alias>
-                                            </aliases>
                                         </model>
 
                                         <model>
                                             <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms.incremental:model:rdbmsOracle-incremental-${test.model.previousVersion}_${test.model.version}:${project.version}</artifact>
-                                            <name>INCREMENTAL</name>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>TARGET</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
-                                            <aliases>
-                                                <alias>RDBMS</alias>
-                                            </aliases>
                                             <expand>true</expand>
                                         </model>
                                     </models>
@@ -249,37 +255,40 @@
                                     <models>
                                         <model>
                                             <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsPostgres:${test.model.version}</artifact>
-                                            <name>RDBMS</name>
+											<name>CURRENT</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
                                             <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</platformAlias>
-                                            <aliases>
-                                                <alias>RDBMS</alias>
-                                            </aliases>
                                         </model>
 
                                         <model>
                                             <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsPostgres:${test.model.previousVersion}</artifact>
-                                            <name>PREVIOUS</name>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
                                             <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsPostgres.model</platformAlias>
-                                            <aliases>
-                                                <alias>PREVIOUS</alias>
-                                            </aliases>
                                         </model>
 
                                         <model>
                                             <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms.incremental:model:rdbmsPostgres-incremental-${test.model.previousVersion}_${test.model.version}:${project.version}</artifact>
-                                            <name>INCREMENTAL</name>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>TARGET</alias>
+												<alias>RDBMS</alias>
+											</aliases>
                                             <metaModelUris>
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
-                                            <aliases>
-                                                <alias>RDBMS</alias>
-                                            </aliases>
                                             <expand>true</expand>
                                         </model>
                                     </models>

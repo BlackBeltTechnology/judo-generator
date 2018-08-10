@@ -123,10 +123,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</artifact>
-											<name>NEW</name>
+											<name>RDBMS</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>RDBMS</alias>
+												<alias>CURRENT</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -149,7 +149,10 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsPostgres.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>RDBMS</alias>
+											</aliases>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -177,10 +180,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsOracle.model</artifact>
-											<name>NEW</name>
+											<name>RDBMS</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>RDBMS</alias>
+												<alias>CURRENT</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -203,7 +206,10 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsOracle.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>RDBMS</alias>
+											</aliases>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -232,10 +238,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</artifact>
-											<name>NEW</name>
+											<name>RDBMS</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>RDBMS</alias>
+												<alias>CURRENT</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -258,7 +264,10 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsHsqldb.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>RDBMS</alias>
+											</aliases>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -532,10 +541,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/test/B-Postgres.model</artifact>
-											<name>NEW</name>
+											<name>RDBMS</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>RDBMS</alias>
+												<alias>CURRENT</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -558,11 +567,10 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Postgres.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
 											<aliases>
-												<alias>TRG</alias>
+												<alias>RDBMS</alias>
 											</aliases>
-
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -590,10 +598,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/test/B-Oracle.model</artifact>
-											<name>NEW</name>
+											<name>RDBMS</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>RDBMS</alias>
+												<alias>CURRENT</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -616,7 +624,10 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Oracle.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>RDBMS</alias>
+											</aliases>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -645,10 +656,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/test/B-Hsqldb.model</artifact>
-											<name>NEW</name>
+											<name>RDBMS</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>RDBMS</alias>
+												<alias>CURRENT</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -671,7 +682,10 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Hsqldb.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>RDBMS</alias>
+											</aliases>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>

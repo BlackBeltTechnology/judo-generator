@@ -7,7 +7,7 @@
 [* TODO: *]
 [*   - Handling identifier types - lookup select generation *]
 [*   - Type casting *]
-[% for (record in RDBMS!RdbmsViewRecord.all) { %]
+[% for (record in CURRENT!RdbmsViewRecord.all) { %]
 
 --changeset generator:INSERT_VIEW_RECORD_#[%= record.getValueFieldBySqlName("C_GUID").value %] logicalFilePath:[%= scriptName%]
 INSERT INTO [%= record.view.sqlName %] (

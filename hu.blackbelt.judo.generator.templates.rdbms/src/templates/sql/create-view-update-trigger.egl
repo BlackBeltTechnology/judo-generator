@@ -14,7 +14,7 @@ TODO: Implement:
             {%- endif %}
         END IF;
 *]      
-[% for (view in RDBMS!RdbmsView.all) { %]
+[% for (view in CURRENT!RdbmsView.all) { %]
 [* ------------------------------------- *]
 [* ORACLE                                *]
 [* ------------------------------------- *]

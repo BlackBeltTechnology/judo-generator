@@ -4,7 +4,7 @@
 %]
 --liquibase formatted sql
 
-[% for (table in RDBMS!RdbmsTable.all) { %]
+[% for (table in CURRENT!RdbmsTable.all) { %]
 	[% if (hasFeature('SupportMultipleColumnModificationInOneStatement') and table.fields.exists(f | f.mandatory and not f.isPrimary())) { %]
 --changeset generator:CREATE_NOT_NULL_CONSTRAINT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= table.name %] [%= table.uuid %]
