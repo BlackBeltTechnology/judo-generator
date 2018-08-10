@@ -12,6 +12,20 @@
 	<artifactId>hu.blackbelt.judo.generator.transformer.rdbms.incremental</artifactId>
 	<packaging>jar</packaging>
 
+
+    <properties>
+        <src.dir>src</src.dir>
+    </properties>
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
+
 	<profiles>
 		<profile>
 			<properties>

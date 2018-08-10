@@ -4,7 +4,7 @@ operation hasFeature(feature : String) : Boolean {
 
 @cached
 operation version() : String {
-	return RDBMS!RdbmsModel.all.first().version;
+	return INCREMENTAL!RdbmsOperationMeta.all.first().currentModel.version;
 }
 
 @cached

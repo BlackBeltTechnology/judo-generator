@@ -8,7 +8,7 @@ rule VersionGeneration
   
   parameters {
     var params : new Map;
-    (dialect() + "Previous version inffo").println("Processing: ");
+    (dialect() + "Previous version info").println("Processing: ");
     return params;
   }
   
