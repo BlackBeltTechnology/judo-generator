@@ -5,6 +5,7 @@ import "operations/_importAll.eol";
 -- The schema builder plgin will use that for validation.
 rule VersionGeneration 
   transform scr : SCRIPT!t_scriptDefinition {
+  guard: version() <> previousVersion()
   
   parameters {
     var params : new Map;
