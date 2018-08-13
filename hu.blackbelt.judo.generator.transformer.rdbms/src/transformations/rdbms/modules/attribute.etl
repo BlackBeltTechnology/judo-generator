@@ -19,7 +19,7 @@ rule JAttributeToRdbmsField
 		t.precision = s.type.rdbmsType().precision;
 		t.scale = s.type.rdbmsType().scale;
 		t.storageByte = s.type.rdbmsType().storageByte;
-				
+		
 		t.sqlName = s.fieldSqlName(); // fieldSqlName(s);
 		t.name = s.ownerClass.package.fqName() + "." + s.ownerClass.name + "." + s.name;
 		t.description = s.ownerClass.name + "." + s.name;
@@ -44,7 +44,12 @@ rule JAttributeToTableIdField
 		guard : s.ownerClass.participates(PSM!JLayer#PERSISTENCE) and s.isPrimaryKey()
 		t.table.primaryKey = t;
 		t.sqlName = "ID";
-		t.type = idType();
+		t.rdbmsTypeName = idType().rdbmsTypeName;
+		t.size = idType().size;
+		t.precision = idType().precision;
+		t.scale = idType().scale;
+		t.storageByte = idType().storageByte;
+
 }
 
 rule JAttributeToTableValueField

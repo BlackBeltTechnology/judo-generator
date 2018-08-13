@@ -144,7 +144,7 @@ CREATE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlNa
 				[% if (foreignKey.mandatory) { %]
 		        	RAISE EXCEPTION 'Not null constraint violation for "[%= foreignKey.sqlName %]" in view "[%= view.name %]"';
 		        [% } else { %]
-			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
 		        [% } %]
 				END IF;
 	    	[% } %]
