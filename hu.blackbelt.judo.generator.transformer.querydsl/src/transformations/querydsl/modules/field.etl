@@ -34,6 +34,7 @@ rule RdbmsViewExpressionFieldToQueryDslField
     to t : QUERYDSL!QueryDslValueField
     extends QueryDslFieldGeneric {
     	t.javaAttribute = transformExpressionAttributeField(s);
+    	t.typeFqName = t.javaAttribute.typeFqName;    	
     }
     
 rule RdbmsViewValueFieldToQueryDslField
@@ -42,6 +43,7 @@ rule RdbmsViewValueFieldToQueryDslField
     extends QueryDslFieldGenericWithTypeName {
     guard : not s.foreign
     	t.javaAttribute = transformAttributeField(s);
+   		t.typeFqName = t.javaAttribute.typeFqName;
     }
 
 rule RdbmsViewIdentifierFieldToQueryDslField
@@ -50,6 +52,7 @@ rule RdbmsViewIdentifierFieldToQueryDslField
     extends QueryDslFieldGenericWithTypeName {
     guard : s.tableField.isTypeOf(RDBMS!RdbmsIdentifierField) and s.tableField.table.primaryKey <> s.tableField
     	t.javaAttribute = transformAttributeField(s);
+   		t.typeFqName = t.javaAttribute.typeFqName;
     }
 
 rule RdbmsViewRelationIdentifierFieldToQueryDslField
@@ -58,6 +61,7 @@ rule RdbmsViewRelationIdentifierFieldToQueryDslField
     extends QueryDslFieldGenericWithTypeName {
     guard : s.tableField.isTypeOf(RDBMS!RdbmsForeignKey)
        	t.javaReference = transformReferenceField(s);
+       	t.typeFqName = t.javaReference.typeFqName;
        	t.foreignKeyName = "$" + t.name + "Id";
     }
     
@@ -66,4 +70,5 @@ rule RdbmsViewInverseRelationIdentifierFieldToQueryDslField
     to t : QUERYDSL!QueryDslInverseRelationIdentifierField
     extends QueryDslFieldGenericWithTypeName {
     	t.javaReference = transformInverseReferenceField(s);
+   		t.typeFqName = t.javaReference.typeFqName;
     }
