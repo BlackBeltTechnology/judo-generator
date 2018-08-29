@@ -20,7 +20,6 @@ operation collectJUDOStereotypeInstances() : Map {
 	// calculated Property				TODO			COLL
 	// call Dependency					POSTPONE		COLL
 	// decimals Constraint				TODO			COLL
-	// derived Association (!!Property)	TODO			COLL
 	// derivedDescription Constraint	TODO			COLL
 	// derivedExpression Constraint		TODO			COLL
 	// detach Dependency				POSTPONE		COLL
@@ -61,8 +60,6 @@ operation collectJUDOStereotypeInstances() : Map {
 	// to Class							POSTPONE		COLL
 	// ui Package						POSTPONE		COLL
 	// validation Constraint			POSTPONE		COLL
-	// watch Class						POSTPONE		COLL
-	// watch Property					POSTPONE		COLL
 	// processData Class				POSTPONE		COLL
 
 	// <<rest>>
@@ -106,7 +103,6 @@ operation collectJUDOStereotypeInstances() : Map {
 	//JUDOStereotypeInstances.put("attr_write",		inpPIM!attr_write	.allInstances()->collect(c | c.base_Dependency).asSet());
 	//JUDOStereotypeInstances.put("call",				inpPIM!call			.allInstances()->collect(c | c.base_Dependency).asSet());
 	//JUDOStereotypeInstances.put("detach",			inpPIM!detach		.allInstances()->collect(c | c.base_Dependency).asSet());
-	JUDOStereotypeInstances.put("derived", 			inpPIM!derived		.allInstances()->collect(c | c.base_Property).asSet());
 	JUDOStereotypeInstances.put("implementation",	inpPIM!implementation.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("menuitem",			inpPIM!menuitem		.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("menuroot",			inpPIM!menuroot		.allInstances()->collect(c | c.base_Class).asSet());
@@ -131,10 +127,6 @@ operation collectJUDOStereotypeInstances() : Map {
 	JUDOStereotypeInstances.put("singleton", 		inpPIM!singleton	.allInstances()->collect(c | c.base_Class).asSet());
 	JUDOStereotypeInstances.put("packages", 		inpPIM!package		.allInstances()->collect(p | p.base_Package).asSet());
 	JUDOStereotypeInstances.put("fixedEnum", 		inpPIM!fixed		.allInstances()->collect(p | p.base_Enumeration).asSet());
-	JUDOStereotypeInstances.put("watchProperties", 		
-								inpPIM!watch.allInstances()->select(c | c.base_Property.isDefined())->collect(c | c.base_Property).asSet());
-	JUDOStereotypeInstances.put("watchClasses",		
-								inpPIM!watch.allInstances()->select(c | c.base_Class.isDefined())->collect(c | c.base_Class).asSet());
 	
 	JUDOStereotypeInstances.put("calculated", inpPIM!calculated.allInstances()->collect(p | p.base_Property).asSet());
 			
@@ -166,8 +158,6 @@ operation collectJUDOStereotypeInstances() : Map {
 operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	"DUMP >> JUDOStereotypeInstances".println();
 	
-	dumpSetAt( JUDOStereotypeInstances, "watchProperties");
-	dumpSetAt( JUDOStereotypeInstances, "watchClasses");
 	dumpSetAt( JUDOStereotypeInstances, "boPackages");
 	dumpSetAt( JUDOStereotypeInstances, "boClasses");
 	dumpSetAt( JUDOStereotypeInstances, "documentPackages");
@@ -183,7 +173,6 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	//dumpSetAt( JUDOStereotypeInstances, "attr_write");
 	//dumpSetAt( JUDOStereotypeInstances, "call");
 	//dumpSetAt( JUDOStereotypeInstances, "detach");
-	dumpSetAt( JUDOStereotypeInstances, "derived");
 	dumpSetAt( JUDOStereotypeInstances, "implementation");
 	dumpSetAt( JUDOStereotypeInstances, "menuitem");
 	dumpSetAt( JUDOStereotypeInstances, "menuroot");

@@ -32,7 +32,7 @@ rule Relationship
 		}
 	}
 
-	t.derived = s.memberEnd->exists(p | stereotypeApplications.get("derived").includes(p));
+	t.derived = s.memberEnd.exists(me | me.isDerived);
 	
 	if (t.derived) {
 		t.println("Rule::Relationship - Association has at least one member, flagged as <<derived>> ");
