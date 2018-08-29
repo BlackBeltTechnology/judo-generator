@@ -16,15 +16,15 @@
         <framework.model.version>1.4.0-1</framework.model.version>
         <src.dir>src</src.dir>
 
-        <!-- src.model>car</src.model>
+        <src.model>car</src.model>
         <target.model>car</target.model>
         <model>Model</model>
-        <transformDomain>false</transformDomain-->
+        <transformDomain>false</transformDomain>
         
-        <src.model>anakin</src.model>
+        <!-- src.model>anakin</src.model>
         <target.model>anakin</target.model>
         <model>Anakin</model>
-        <transformDomain>false</transformDomain>
+        <transformDomain>false</transformDomain-->
         
         <!-- src.model>opm_pim_-_Modelio_import</src.model>
         <target.model>opm</target.model>
@@ -97,10 +97,11 @@
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfileWf:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:CarWfProfile:${project.version}</metaModel>
                                     </metaModels>
                                     <models>
                                         <model>
-                                            <artifact>mvn:hu.blackbelt.judo:hu.blackbelt.judo.framework.domain:uml:model:${framework.model.version}</artifact>
+                                            <artifact>file:/home/gyturi/carExport/JUDO_Car.uml</artifact>
                                             <name>inpPIM</name>
                                             <metaModelUris>
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
@@ -111,6 +112,7 @@
                                                 <param>http:///schemas/DSLCustomization/_E8xpMDGdEei6IdEFC9bfxw/0</param>
                                                 <param>http://www.blackbelt.hu/metamodel/pim/v1.0</param>
                                                 <param>http:///schemas/JudoProfileForWf/_BXRFIGiSEeif9NN75tdasg/0</param>
+                                                <param>http:///schemas/CarWfProfile/_PgA5MKoUEei_hoBuGAHsFA/0</param>
                                             </metaModelUris>
                                             <expand>true</expand>
                                         </model>
