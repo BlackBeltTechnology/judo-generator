@@ -20,7 +20,7 @@ rule ClassProperty
 	t.unique = s.isID;
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.uiNoSearch = stereotypeApplications.get("nosearch").includes(s);
-	t.derived = s.isDerived or stereotypeApplications.get("derived").includes(s);
+	t.derived = s.isDerived;
 	
 	if (s.defaultValue.isKindOf(Expression)) {
 		t.value = escapeJavaLiteral(s.defaultValue.symbol);
@@ -73,10 +73,6 @@ rule ClassProperty
 		s.owner.isTypeOf(Class)) {
 		s.owner.equivalent("Class").representation = t;
 		t.println("RULE::ClassProperty - ADD this property to Class " + s.owner.equivalent("Class").name + "::representation ~~> ");
-	}
-	
-	if ( stereotypeApplications.get("watchProperties").includes(s)) {
-		 t.watched = true;
 	}
 	
 	"".println("RULE::ClassProperty");

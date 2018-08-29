@@ -112,10 +112,6 @@ rule Class
 		 t.participates.add( tgtPSM!JLayer#PERMISSION);
 	}
 	
-	if ( stereotypeApplications.get("watchClasses").includes(s)) {
-		 t.watched = true;
-	}
-	
 	if ( stereotypeApplications.get("processData").includes(s)) {
 		if (transformDomain.asBoolean()) {
 			t.supertype = inpPIM!Class.allInstances()->select(c | c.name = "ProcessData" and c.package.name = "framework").first().equivalent("Class");
