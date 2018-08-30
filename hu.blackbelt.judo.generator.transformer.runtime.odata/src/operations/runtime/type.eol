@@ -1,0 +1,4 @@
+@cached
+operation String getJudoDataType() : TYPES!EDataType {
+	return TYPES!EDataType.all.selectOne(dt | dt.name == self);
+}

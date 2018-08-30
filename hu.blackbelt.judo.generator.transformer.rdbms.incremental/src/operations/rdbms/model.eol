@@ -1,0 +1,22 @@
+operation RDBMS!RdbmsModel tableExists(table : RDBMS!RdbmsTable) : Boolean {
+	return self.tableOf(table).isDefined();
+}
+
+operation RDBMS!RdbmsModel tableOf(table : RDBMS!RdbmsTable) : RDBMS!RdbmsTable {
+	return self.rdbmsTables.selectOne(t | t.uuid == table.uuid);
+}
+
+operation RDBMS!RdbmsModel flattenTypes() {
+	for (t : RDBMS!RdbmsTable in self.rdbmsTables) {
+		for (f : RDBMS!RdbmsField in t.fields) {
+			if (f.type.isDefined() and f.rdbmsTypeName.isUndefined()) {
+				f.rdbmsTypeName = f.type.rdbmsTypeName;
+				f.size = f.type.size;
+				f.precision = f.type.precision;
+				f.scale = f.type.scale;
+				f.storageByte = f.type.storageByte;
+			}
+		}
+	}
+	
+}

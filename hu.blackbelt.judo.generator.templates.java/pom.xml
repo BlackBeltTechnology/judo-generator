@@ -62,7 +62,7 @@
 											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
 										</model>
 										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.java:model:java:${project.version}</artifact>
+											<artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:java:${test.model.version}</artifact>
 											<name>JAVA</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/java</param>
@@ -76,12 +76,24 @@
 											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
                                             <parameters>
                                                 <parameter>
+                                                    <name>projectVersion</name>
+                                                    <value>${project.version}</value>
+                                                </parameter>
+                                                <parameter>
+                                                    <name>commitId</name>
+                                                    <value>gitCommitId</value>
+                                                </parameter>
+                                                <parameter>
                                                     <name>transformDomain</name>
                                                     <value>false</value>
                                                 </parameter>
                                                 <parameter>
                                                 	<name>queryDslPeristencePid</name>
-                                                	<value>hu.blackbelt.judo.querydsl.persistence</value>
+                                                	<value>${test.model.groupId}.${test.model.artifactId}.queryDslPersistence</value>
+                                                </parameter>
+                                                <parameter>
+                                                    <name>transactionManagerProviderPid</name>
+                                                    <value>${test.model.groupId}.${test.model.artifactId}.transactionManagerProvider</value>
                                                 </parameter>
                                             </parameters>
 										</Egl>

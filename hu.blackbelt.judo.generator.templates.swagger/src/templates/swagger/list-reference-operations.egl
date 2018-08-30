@@ -1,0 +1,186 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+[% for (ref in dto.origin.allReferences().select(r | r.navigable and not r.isSingle())) { %]
+  /rest/[%= dto.origin.swaggerUri() %]/{id}/[%= ref.swaggerName()%]:
+    get:
+      tags:
+        - "[%= dto.origin.swaggerTag() %]"
+      operationId: |
+        list attached [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
+      summary: |
+        List attached [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
+      description: |
+        List attached [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]. It can be fitered, paged and sorted. Support projection of the result.
+      parameters:
+      - $ref: '#/parameters/identifier'
+      - $ref: '#/parameters/projection'
+      - $ref: '#/parameters/filter'
+      - $ref: '#/parameters/pageSize'
+      - $ref: '#/parameters/pageNumber'
+      - $ref: '#/parameters/sort'
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            List of [%= ref.swaggerClassName() %] is OK.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/[%= ref.swaggerClassName() %]'
+          headers:
+            X-Total-Count:
+              type: integer
+              description: The total records of query.
+            X-Page-Size:
+              type: integer
+              description: The current page size of query            
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    options:
+      tags:
+        - "[%= dto.origin.swaggerTag() %]"
+      operationId: |
+        get available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to specified instance.
+      summary: |
+        Get available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to specified instance.
+      description: |
+        Get available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to specified instance. It can be fitered, paged and sorted. Support projection of the result.
+      parameters:
+      - $ref: '#/parameters/identifier'
+      - $ref: '#/parameters/projection'
+      - $ref: '#/parameters/filter'
+      - $ref: '#/parameters/pageSize'
+      - $ref: '#/parameters/pageNumber'
+      - $ref: '#/parameters/sort'
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            List of [%= ref.swaggerClassName() %] is OK.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/[%= ref.swaggerClassName() %]'
+          headers:
+            X-Total-Count:
+              type: integer
+              description: The total records of query.
+            X-Page-Size:
+              type: integer
+              description: The current page size of query            
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    put:
+      tags:
+        - "[%= dto.origin.swaggerTag() %]"
+      operationId: |
+        attach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
+      summary: |
+        Attach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
+      description: |
+        Attach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %].
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/identifier'
+        - in: body
+          name: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            [%=dto.origin.name%] attached
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+    delete:
+      tags:
+        - "[%= dto.origin.swaggerTag() %]"
+      operationId: |
+        detach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
+      summary: |
+        Detach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %]
+      description: |
+        Detach [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %].
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/identifier'
+        - in: body
+          name: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: |
+            [%=dto.origin.name%] detached
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/[%= dto.origin.swaggerName() %]'
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+[%}%]

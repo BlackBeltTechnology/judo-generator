@@ -73,6 +73,7 @@ for (key in COORDINATE_TO_TEMPLATE.keySet()) {
 }
 
 genJavaForAbstractCrudService();
+genTransactionManagerProvider();
 
 operation Template genJavaFor(coordinate : Any) : Any {
 	for (coordinated in filterBy(coordinate)) {
@@ -116,5 +117,21 @@ operation genJavaForAbstractCrudService() {
 	crudTemplate.generate("ABSTRACT_FRAMEWORK_CRUD_SERVICE/hu/blackbelt/judo/framework/api/service/AbstractFrameworkCrudService.java");
 	crudTemplate.reset();
 }
+
+operation genTransactionManagerProvider() {
+    //TODO: there should only be one java model and that should be used
+    var javaModel = JAVA!JvmModel.all.selectOne(m | not m.framework);
+    var appPrefix = javaModel.applicationTop.name.firstToUpperCase();
+    var topPackage = javaModel.applicationTop.fqName() + ".transaction";
+	var t = TemplateFactory.load("templates/java/transactionmanagerprovider.egl");
+	t.populate("className", appPrefix + "TransactionManagerProvider");
+	t.populate("topPackageName", topPackage);
+
+	t.generate("TRANSACTION_MANAGER_PROVIDER/" +  topPackage.replaceAll("\\.", "/") + "/" + appPrefix + "TransactionManagerProvider.java");
+	t.reset();
+}
+
+
+
 
 %]

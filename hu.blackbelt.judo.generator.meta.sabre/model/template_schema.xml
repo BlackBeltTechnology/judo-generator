@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ASCII"?>
+<document xmlns="http://blackbelt.hu/meta/sabre">
+	    <primitive name="iratazonosito" type="xs:string" path="" mandatory="true" />
+	    <primitive name="ragszam" type="xs:string" path="" mandatory="true" />
+	    <primitive name="iktatoszam" type="xs:string" path="" mandatory="true" />
+	    <primitive name="indoklas" type="xs:string" path="" mandatory="true" />
+	    <primitive name="targy" type="xs:string" path="" mandatory="true" />
+	    <primitive name="ugyintezo" type="xs:string" path="" mandatory="true" default="Kovacs Elemer"/>
+	    <primitive name="beadasdatuma" type="xs:date" path="" mandatory="true" />
+	    <primitive name="kelt" type="xs:string" path="" mandatory="true" />
+	
+	    <structure name="ugyfel" mandatory="true">
+	        <primitive name="azonosito" type="xs:string" path="" mandatory="true" />
+	        <primitive name="nev" type="xs:string" path="" mandatory="true" />
+	        <structure name="cim" mandatory="true">
+	            <primitive name="helyseg" type="xs:string" path="" mandatory="true"/>
+	            <primitive name="utcahazszam" type="xs:string" path="" mandatory="true" />
+	            <primitive name="irsz" type="xs:string" path="" mandatory="true" />
+	        </structure>
+	    </structure>
+	
+	    <primitive name="tanev" type="xs:string" path="" mandatory="true" />
+	    <primitive name="idoszak" type="xs:string" path="" mandatory="true" />
+	    <primitive name="osszeg" type="xs:string" path="" mandatory="true" />
+	    <primitive name="osszegBetuvel" type="xs:string" path="" mandatory="true" />
+	    <primitive name="elutOsszeg" type="xs:string" path="" mandatory="true" />
+	    <primitive name="elutOsszegBetuvel" type="xs:string" path="" mandatory="true" />
+	    <primitive name="igenyeltOsszeg" type="xs:string" path="" mandatory="true" />
+</document>

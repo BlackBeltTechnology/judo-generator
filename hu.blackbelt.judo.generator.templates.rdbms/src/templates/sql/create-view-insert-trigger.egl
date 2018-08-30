@@ -4,8 +4,7 @@
 %]
 --liquibase formatted sql
 
-[% for (view in RDBMS!RdbmsView.all) { %]
-
+[% for (view in CURRENT!RdbmsView.all) { %]
 [* ------------------------------------- *]
 [* ORACLE                                *]
 [* ------------------------------------- *]
@@ -25,8 +24,20 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
             raise_application_error(-202000, 'Field "C_XMIID" in view "[%= view.name %]" is not allowed to set');
         END IF;
 
+        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+		[% for (tableAlias in view.updateableAliases()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+	  			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+	            IF (:NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+			    END IF;
+	    	[% } %]
+    	[% } %]        	
+
         SELECT serial.NEXTVAL INTO SERIAL_ID FROM dual;
         
+        -- Inserting all fields over inheritance. 
+        -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
 		[% for (tableAlias in view.updateableAliases()) { %]
 			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 			INSERT INTO [%= tableAlias.table.sqlName %] (
@@ -49,9 +60,15 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
 			[% } %]
 			);
 		[% } %]
+		
+		-- Update reference in all ascendance for that ID - it have to do here because the foreign keys can be mandatory and have to fill it with value.
 		[% for (tableAlias in view.updatableParentAliases()) { %]
+			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
+			[% if (tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
 	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+	        [% } %]
     	[% } %]        	
+
     END;
 /
 
@@ -81,8 +98,20 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
             SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to set';
         END IF;
 
+        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+		[% for (tableAlias in view.updateableAliases()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+	   			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+	   			IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN   			
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+			    END IF;
+	    	[% } %]        				
+    	[% } %]
+
         SET SERIAL_ID = nextval('serial');
 
+        -- Inserting all fields over inheritance. 
+        -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
 		[% for (tableAlias in view.updateableAliases()) { %]
 			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 			INSERT INTO [%= tableAlias.table.sqlName %] (
@@ -106,7 +135,10 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
 			);
 		[% } %]
 		[% for (tableAlias in view.updatableParentAliases()) { %]
+			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
+			[% if (tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
 	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+	    	[% } %]		
     	[% } %]        	
     END;
 [% } %]
@@ -132,6 +164,19 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
         SERIAL_ID = nextval('serial');
         NEW.ID = SERIAL_ID;
 
+
+        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+		[% for (tableAlias in view.updateableAliases()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+	   			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+	   			IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN   			
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+			    END IF;
+	    	[% } %]        				
+    	[% } %]
+
+        -- Inserting all fields over inheritance. 
+        -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
 		[% for (tableAlias in view.updateableAliases()) { %]
 			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 			INSERT INTO [%= tableAlias.table.sqlName %] (
@@ -154,10 +199,13 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
 			[% } %]
 			);
 		[% } %]
-		[% for (tableAlias in view.updatableParentAliases()) { %]
-	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
-    	[% } %]        	
 
+		-- Update reference in all ascendance for that ID - it have to do here because the foreign keys can be mandatory and have to fill it with value.
+		[% for (tableAlias in view.updatableParentAliases()) { %]
+	        [% if (tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
+	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+	    	[% } %]        	
+    	[% } %]        	
         RETURN NEW;
     END;
 $INS_[%= view.sqlName %]$ LANGUAGE plpgsql;

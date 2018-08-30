@@ -1,0 +1,29 @@
+import "modelElement.eol";
+
+@cached
+operation RUNTIME!EClass hasSupertype() : Boolean {
+	return self.eSuperTypes.size > 0;
+}
+
+@cached
+operation RUNTIME!EClass isEntity() : Boolean {
+	return self.annotatedAsTrue("entity");
+}
+
+@cached
+operation RUNTIME!EClass isFacade() : Boolean {
+	return self.annotatedAsTrue("facade");
+}
+
+@cached
+operation RUNTIME!EClassifier getPackage() : RUNTIME!EPackage {
+	return RUNTIME!EPackage.all.selectOne(p | p.eClassifiers.contains(self));
+}
+
+// structure is a class that is referenced by an entity/facade but has no entity/facade annotation
+@cached
+operation RUNTIME!EClass isStructure() : Boolean {
+	return not self.isEntity() and
+		not self.isFacade() and
+		RUNTIME!EClass.all.select(c | (c.isEntity() or c.isFacade()) and c.eStructuralFeatures.select(r | r.isTypeOf(RUNTIME!EReference) and r.eType == self).size() > 0).size() > 0;
+}

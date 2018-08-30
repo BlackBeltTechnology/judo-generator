@@ -59,14 +59,21 @@ operation checkAllUuidsForDuplicateOrMissing() {
 	var all = QUERYDSL!QueryDslElement.all.collect(e | e.uuid);
 	var set = all.asSet();
 
+	var duplicated : Boolean = false;
+
 	set.size.println("SET: ");
 	all.size.println("ALL: ");
 
 	for (uuid in set) {
 		if (all.count(uuid) > 1) {
+			duplicated = true;
 			uuid.println("DUPLICATE: ");
 		}
 	}
 	
 	QUERYDSL!QueryDslElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	
+	if (duplicated) {
+		throw "Duplicated ID!";
+	}
 }

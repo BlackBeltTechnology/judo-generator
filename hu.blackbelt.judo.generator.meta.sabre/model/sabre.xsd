@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema 
+    xmlns="http://blackbelt.hu/meta/sabre" 
+    xmlns:sabre="http://blackbelt.hu/meta/sabre" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+	targetNamespace="http://blackbelt.hu/meta/sabre"
+	elementFormDefault="unqualified" 
+	attributeFormDefault="unqualified"
+	ecore:name="sabre"
+	ecore:package="sabre">
+  
+  <xs:element name="document" type="sabre:document" ecore:ignore="true">
+	<xs:unique name="UniqueNamesIndocument">
+      <xs:selector xpath="./*"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+  </xs:element>
+
+
+
+  <xs:complexType name="Sabre" ecore:name="sabre" mixed="false" >
+    <xs:sequence minOccurs="0" maxOccurs="unbounded" ecore:featureMap="">
+       <xs:element name="document" type="sabre:document"/>
+	</xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="document" ecore:name="document" mixed="false">
+   <xs:sequence minOccurs="0" maxOccurs="unbounded">
+     <xs:choice maxOccurs="1" minOccurs="1" ecore:featureMap="">
+       <xs:element name="primitive" type="sabre:Primitive"/>
+       <xs:element name="list" type="sabre:List"/>
+       <xs:element name="structure"  type="sabre:Structure">
+		    <xs:unique name="documentUniqueNamesInStructure">
+		      <xs:selector xpath="./*"/>
+		      <xs:field xpath="@name"/>
+		    </xs:unique>
+       </xs:element>
+       <xs:element name="template" type="sabre:Template" />
+     </xs:choice>
+   </xs:sequence>
+   <xs:attribute name="name" type="xs:string" use="optional"/>
+   <xs:attribute name="domain" type="xs:string" use="optional"/>
+   <xs:attribute name="application" type="xs:string" use="optional"/>
+ </xs:complexType>
+ 
+  <xs:complexType name="List" ecore:name="list" mixed="false">
+    <xs:choice maxOccurs="1" minOccurs="1" ecore:featureMap="">
+      <xs:element name="structure" type="sabre:Structure">
+		    <xs:unique name="ListTypeUniqueNamesInStructure">
+		      <xs:selector xpath="./*"/>
+		      <xs:field xpath="@name"/>
+		    </xs:unique>
+      </xs:element>
+      <xs:element name="primitive" type="sabre:Primitive"/>
+    </xs:choice>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="path" type="xs:string" use="optional"/>
+    <xs:attribute name="mandatory" type="xs:boolean" use="optional" default="false"/>
+  </xs:complexType>
+
+  <xs:complexType name="Structure" ecore:name="structure" mixed="false">
+    <xs:sequence maxOccurs="unbounded" minOccurs="0" >
+      <xs:choice maxOccurs="1" minOccurs="1" ecore:featureMap="">
+        <xs:element name="primitive" type="sabre:Primitive"/>
+        <xs:element name="list" type="sabre:List"/>
+        <xs:element name="structure" type="sabre:Structure">
+		    <xs:unique name="StructureTypeUniqueNamesInStructure">
+		      <xs:selector xpath="./*"/>
+		      <xs:field xpath="@name"/>
+		    </xs:unique>
+        </xs:element>
+        <xs:element name="template" type="sabre:Template"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="mandatory" type="xs:boolean" use="optional" default="false"/>
+  </xs:complexType>
+
+  <xs:complexType name="Primitive" ecore:name="primitive" mixed="false">
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="type" type="sabre:data-type" use="required"/>
+      <xs:attribute name="path" type="xs:string" use="optional"/>
+      <xs:attribute name="mandatory" type="xs:boolean" use="optional" default="false"/>
+      <xs:attribute name="default" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="Template" ecore:name="template" mixed="false">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- enumeration for data types -->
+  <xs:simpleType name="data-type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="xs:string"/>
+      <xs:enumeration value="xs:int"/>
+      <xs:enumeration value="xs:float"/>
+      <xs:enumeration value="xs:date"/>
+      <xs:enumeration value="xs:dateTime"/>
+      <xs:enumeration value="xs:boolean"/>
+      <xs:enumeration value="xs:time"/>
+      <xs:enumeration value="xs:integer"/>
+      <xs:enumeration value="xs:decimal"/>
+      <xs:enumeration value="xs:long"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

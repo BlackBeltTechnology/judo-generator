@@ -1,0 +1,9 @@
+[%
+  import "../../../operations/_importAll.eol";
+%]
+[%for (field in modifyTableOperation.modifyFieldOperations.select(o | o.nameChanged).collect(o | o.field)) { %]
+--changeset generator:ALTER_TABLE_RENAME_COLUMN_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= field.name %] [%= field.uuid %]
+ALTER TABLE [%= table.sqlName %] RENANE COLUMN [%= field.sqlName %] [%= field.toFieldDefinition() %];
+[% out.println("\n"); %]
+[% } %]

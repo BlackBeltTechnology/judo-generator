@@ -15,21 +15,22 @@ operation QUERYDSL!QueryDslField pathGeneric () : String {
 
 operation getFieldProperty(field : QUERYDSL!QueryDslField, propertyName : String) : String {
     var fieldTypeMapping = Map{
-        "Date"       = Map{"PATH_TYPE" = "DatePath<LocalDateTime>",          "PATH_FACTORY" = "createDate",     "PATH_GENERIC" = "LocalDateTime.class" },
-        "DateTime"   = Map{"PATH_TYPE" = "DateTimePath<LocalDateTime>",      "PATH_FACTORY" = "createDateTime", "PATH_GENERIC" = "LocalDateTime.class" },
-        "Time"       = Map{"PATH_TYPE" = "TimePath<LocalTime>",              "PATH_FACTORY" = "createTime",     "PATH_GENERIC" = "LocalTime.class" },
-        "Boolean"    = Map{"PATH_TYPE" = "BooleanPath",                      "PATH_FACTORY" = "createBoolean",  "PATH_GENERIC" = "" },
-        "Integer"    = Map{"PATH_TYPE" = "NumberPath<Integer>",              "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Integer.class" },    
-        "String"     = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
-        "Text"       = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
-        "Memo"       = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
-        "Float"      = Map{"PATH_TYPE" = "NumberPath<Float>",                "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Float.class" },
-        "Percentage" = Map{"PATH_TYPE" = "NumberPath<Float>",                "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Float.class" },
-        "Currency"   = Map{"PATH_TYPE" = "NumberPath<java.math.BigDecimal>", "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "java.math.BigDecimal.class" },
-        "File"       = Map{"PATH_TYPE" = "SimplePath<URL>",                  "PATH_FACTORY" = "createSimple",   "PATH_GENERIC" = "URL.class" },
-        "Id"         = Map{"PATH_TYPE" = "NumberPath<Long>",                 "PATH_FACTORY" = "createNumber",     "PATH_GENERIC" = "Long.class" }
+        "org.joda.time.LocalDate"        = Map{"PATH_TYPE" = "DatePath<org.joda.time.LocalDateTime>",          "PATH_FACTORY" = "createDate",     "PATH_GENERIC" = "org.joda.time.LocalDate.class" },
+        "org.joda.time.LocalDateTime"    = Map{"PATH_TYPE" = "DateTimePath<org.joda.time.LocalDateTime>",      "PATH_FACTORY" = "createDateTime", "PATH_GENERIC" = "org.joda.time.LocalDateTime.class" },
+        "org.joda.time.LocalTime"        = Map{"PATH_TYPE" = "TimePath<org.joda.time.LocalTime>",              "PATH_FACTORY" = "createTime",     "PATH_GENERIC" = "org.joda.time.LocalTime.class" },
+        "java.lang.Boolean"              = Map{"PATH_TYPE" = "BooleanPath",                      "PATH_FACTORY" = "createBoolean",  "PATH_GENERIC" = "" },
+        "java.lang.Integer"              = Map{"PATH_TYPE" = "NumberPath<Integer>",              "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Integer.class" },    
+        "java.lang.Long"                 = Map{"PATH_TYPE" = "NumberPath<Long>",                 "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Long.class" },
+        "java.lang.String"               = Map{"PATH_TYPE" = "StringPath",                       "PATH_FACTORY" = "createString",   "PATH_GENERIC" = "" },
+        "java.lang.Float"                = Map{"PATH_TYPE" = "NumberPath<Float>",                "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "Float.class" },
+        "java.math.BigDecimal"           = Map{"PATH_TYPE" = "NumberPath<java.math.BigDecimal>", "PATH_FACTORY" = "createNumber",   "PATH_GENERIC" = "java.math.BigDecimal.class" },
+        "java.net.URL"                   = Map{"PATH_TYPE" = "SimplePath<URL>",                  "PATH_FACTORY" = "createSimple",   "PATH_GENERIC" = "java.net.URL.class" }
     };
-    return fieldTypeMapping.get(field.typeName).get(propertyName);
+	var fieldMap : Map = fieldTypeMapping.get(field.typeFqName);
+	if (fieldMap.isUndefined()) {
+		fieldMap = fieldTypeMapping.get("java.lang.String");
+	}
+    return fieldMap.get(propertyName);
 }
 
 operation QUERYDSL!QueryDslReferenceField getOppositeOwnerClass() : QUERYDSL!QueryDslClass {

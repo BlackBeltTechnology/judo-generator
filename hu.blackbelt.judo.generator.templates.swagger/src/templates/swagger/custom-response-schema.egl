@@ -1,0 +1,38 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+
+          schema:
+          [% if (method.type.isDefined() and not method.type.isCollection() and method.type.isPrimitive()) { %]
+              [%= method.type.swaggerTypeName() %]
+              [%= method.type.swaggerTypeFormat() %]
+          [% } %]
+          [% if (method.type.isDefined() and method.type.isCollection() and method.type.isPrimitive()) { %]
+              type: array
+              items:
+                [%= method.type.componentType.swaggerTypeName() %]
+                [%= method.type.componentType.swaggerTypeFormat() %]
+          [% } %]
+          [% if (method.type.isDefined() and not method.type.isCollection() and not method.type.isPrimitive()) { %]
+            $ref: '#/definitions/[%= method.type.swaggerName() %]'
+          [% } %]
+          [% if (method.type.isDefined() and method.type.isCollection() and not method.type.isPrimitive() and not method.type.isListofLists()) { %]
+              type: array
+              items:
+                $ref: '#/definitions/[%= method.type.componentType.swaggerName() %]'
+          [% } %]
+          [% if (method.type.isDefined() and method.type.isCollection() and method.type.isListofLists()) { %]
+              type: array
+              items:
+                type: array
+                items:
+                [% if (method.type.componentType.isPrimitive()) { %]
+                  [%= method.type.componentType.componentType.swaggerTypeName() %]
+                  [%= method.type.componentType.componentType.swaggerTypeFormat() %]
+                [% } %]
+                [% if (not method.type.componentType.isPrimitive()) { %]
+                  $ref: '#/definitions/[%= method.type.componentType.componentType.swaggerName() %]'
+                [% } %]
+
+          [% } %]
+          

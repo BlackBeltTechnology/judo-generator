@@ -1,0 +1,117 @@
+import "../../../operations/psm/data/_importData.eol";
+import "../utils/_importUtils.eol";
+
+rule CreateEntityClass
+	transform s : JUDOPSM!EntityType
+	to t : RUNTIME!EClass {
+		t.name = s.name;
+		t.abstract = s.abstract;
+		for (super in s.superEntityTypes) {
+			t.eSuperTypes.add(super.equivalent());
+		}
+		s.getPackage().equivalent().eClassifiers.add(t);
+		
+		if (s.superEntityTypes.isEmpty()) {
+			var id = new RUNTIME!EAttribute;
+			id.name = "id";
+			id.iD = true;
+			id.changeable = false;
+			id.eType = "JUUID".getJudoDataType();
+			t.eStructuralFeatures.add(id);
+
+			var annotation = new RUNTIME!EAnnotation;
+			annotation.source = extendedMetadataURI;
+			var aEntity = new RUNTIME!EStringToStringMapEntry;
+			aEntity.key = "id";
+			aEntity.value = "true";
+			annotation.details.add(aEntity);
+			id.eAnnotations.add(annotation);
+		}
+
+		var annotation = new RUNTIME!EAnnotation;
+		annotation.source = extendedMetadataURI;
+		var aEntity = new RUNTIME!EStringToStringMapEntry;
+		aEntity.key = "entity";
+		aEntity.value = "true";
+		annotation.details.add(aEntity);
+		t.eAnnotations.add(annotation);
+	}
+
+rule CreateSimpleAttribute
+	transform s : JUDOPSM!Attribute
+	to t : RUNTIME!EAttribute {
+		guard : s.dataType.isKindOf(JUDOPSM!Primitive)
+
+		t.name = s.name;
+		if (s.required) {
+			t.lowerBound = 1;
+		} else {
+			t.lowerBound = 0;
+		}
+
+		if (s.identifier) {
+			t.iD = true;
+		}
+
+		t.eType = s.dataType.getEcoreType();
+
+		var annotations = s.dataType.createRuntimeAnnotations();
+		if (not annotations.isEmpty()) {
+			var annotation = new RUNTIME!EAnnotation;
+			annotation.source = extendedMetadataURI;
+			annotation.details.addAll(annotations);
+			t.eAnnotations.add(annotation);
+		}
+
+		s.getEntityType().equivalent().eStructuralFeatures.add(t);
+	}
+
+rule CreateComplexAttribute
+	transform s : JUDOPSM!Attribute
+	to t : RUNTIME!EReference {
+		guard : s.dataType.isKindOf(JUDOPSM!Structure)
+
+		t.name = s.name;
+		if (s.required) {
+			t.lowerBound = 1;
+		} else {
+			t.lowerBound = 0;
+		}
+
+		t.eType = s.dataType.equivalent();
+		t.containment = true;
+
+		var annotation = new RUNTIME!EAnnotation;
+		annotation.source = extendedMetadataURI;
+		var aEmbedded = new RUNTIME!EStringToStringMapEntry;
+		aEmbedded.key = "embedded";
+		aEmbedded.value = "true";
+		annotation.details.add(aEmbedded);
+		t.eAnnotations.add(annotation);
+
+		s.getEntityType().equivalent().eStructuralFeatures.add(t);
+	}
+
+rule CreateEndpointReference
+	transform s : JUDOPSM!Endpoint
+	to t : RUNTIME!EReference {
+		t.name = s.name;
+
+		t.lowerBound = s.lower;
+		t.upperBound = s.upper;
+
+		var annotations = s.reference.createRuntimeAnnotations();
+		if (not annotations.isEmpty()) {
+			var annotation = new RUNTIME!EAnnotation;
+			annotation.source = extendedMetadataURI;
+			annotation.details.addAll(annotations);
+			t.eAnnotations.add(annotation);
+		}
+
+		s.getEntityType().equivalent().eStructuralFeatures.add(t);	
+	
+		t.eType = s.reference.target.name.getEntityTypeReference();
+		t.eOpposite = s.partner.equivalent();
+
+		t.containment = s.composition;
+	}

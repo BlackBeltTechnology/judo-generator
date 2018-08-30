@@ -1,0 +1,12 @@
+@cached
+operation JAVA!JvmInterface methods () : Collection {
+	return self.methods.sortBy(m | m.name);
+}
+
+operation JAVA!JvmInterface methods (kinds : Collection) : Collection {
+    return self.methods.select(m | kinds.includes(m.kind)).sortBy(m | m.name);
+}
+
+operation JAVA!JvmInterface methods (kind : Any) : Collection {
+    return self.methods.select(m | m.kind = kind).sortBy(m | m.name);
+}

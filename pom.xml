@@ -15,19 +15,26 @@
         <module>hu.blackbelt.judo.generator.meta.ui</module>
         <module>hu.blackbelt.judo.generator.meta.permission</module>
         <module>hu.blackbelt.judo.generator.meta.querydsl</module>
+        <module>hu.blackbelt.judo.generator.meta.odata</module>
+        <module>hu.blackbelt.judo.generator.meta.sabre</module>
         <module>hu.blackbelt.judo.generator.pim.extension</module>
         <module>hu.blackbelt.judo.generator.transformer.psm</module>
         <module>hu.blackbelt.judo.generator.transformer.rdbms</module>
         <module>hu.blackbelt.judo.generator.transformer.querydsl</module>
-        <module>hu.blackbelt.judo.generator.merger.rdbms</module>
+        <module>hu.blackbelt.judo.generator.transformer.rdbms.incremental</module>
         <module>hu.blackbelt.judo.generator.transformer.ui</module>
         <module>hu.blackbelt.judo.generator.transformer.java</module>
+        <module>hu.blackbelt.judo.generator.transformer.sabre</module>
+        <module>hu.blackbelt.judo.generator.transformer.runtime</module>
         <module>hu.blackbelt.judo.generator.formatter.sql</module>
         <module>hu.blackbelt.judo.generator.transformer.permission</module>
+        <module>hu.blackbelt.judo.generator.transformer.runtime.odata</module>
         <module>hu.blackbelt.judo.generator.templates.rdbms</module>
         <module>hu.blackbelt.judo.generator.templates.java</module>
+        <module>hu.blackbelt.judo.generator.templates.swagger</module>
         <module>hu.blackbelt.judo.generator.templates.ui</module>
         <module>hu.blackbelt.judo.generator.templates.permission</module>
         <module>hu.blackbelt.judo.generator.templates.querydsl</module>
+        <module>hu.blackbelt.judo.generator.templates.sabre</module>
     </modules>
 </project>

@@ -14,10 +14,6 @@
 
 	<properties>
         <src.dir>src</src.dir>
-        <src.model>car</src.model>
-        <!--  src.model>JUDO_Car</src.model-->
-        <target.model>car</target.model>
-        <model>Model</model>
     </properties>
 
     <build>
@@ -39,43 +35,43 @@
 						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>copy-psm-model</id>
-								<phase>initialize</phase>
+								<id>copy-psm-md5</id>
+								<phase>generate-resources</phase>
 								<goals>
 									<goal>copy</goal>
 								</goals>
 								<configuration>
 									<artifactItems>
 										<artifactItem>
-											<groupId>hu.blackbelt.judo.generator</groupId>
-											<artifactId>hu.blackbelt.judo.generator.transformer.psm</artifactId>
-											<version>${project.version}</version>
+											<groupId>${test.model.groupId}</groupId>
+											<artifactId>${test.model.artifactId}</artifactId>
+											<version>${test.model.version}</version>
 											<type>md5</type>
 											<classifier>psm</classifier>
 											<overWrite>false</overWrite>
 											<outputDirectory>${project.build.directory}</outputDirectory>
-											<destFileName>${target.model}.model</destFileName>
+											<destFileName>psm.md5</destFileName>
 										</artifactItem>
 									</artifactItems>
 								</configuration>
 							</execution>
 						</executions>
 					</plugin>
-		
+
 					<plugin>
 						<groupId>org.codehaus.gmaven</groupId>
 						<artifactId>gmaven-plugin</artifactId>
 						<version>1.4</version>
 						<executions>
 							<execution>
-								<id>read-psm</id>
+								<id>read-psm-md5</id>
 								<phase>generate-resources</phase>
 								<goals>
 									<goal>execute</goal>
 								</goals>
 								<configuration>
 									<properties>
-										<header_file>${project.build.directory}/car.model</header_file>
+										<header_file>${project.build.directory}/psm.md5</header_file>
 									</properties>
 									<source>
 										def file = new File(project.properties.header_file)
@@ -111,13 +107,14 @@
 										</model>
 		
 										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+											<artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:psm:${test.model.version}</artifact>
 											<name>PSM</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm</param>
 											</metaModelUris>
 											<expand>true</expand>
 										</model>
+
 										<!-- Target -->
 										<model>
 											<artifact>${project.build.directory}/permission.model</artifact>

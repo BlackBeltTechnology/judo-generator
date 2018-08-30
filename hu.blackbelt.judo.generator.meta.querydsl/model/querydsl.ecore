@@ -75,6 +75,8 @@
         eOpposite="#//QueryDslView/fields"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rdbmsTypeName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeFqName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="QueryDslSqlElement" abstract="true"
       eSuperTypes="#//QueryDslElement">

@@ -28,14 +28,37 @@ operation checkAllUuidsForDuplicateOrMissing() {
 	var all = RDBMS!RdbmsElement.all.collect(e | e.uuid);
 	var set = all.asSet();
 
+	var duplicated : Boolean = false;
+
 	set.size.println("SET: ");
 	all.size.println("ALL: ");
 
 	for (uuid in set) {
 		if (all.count(uuid) > 1) {
+			duplicated = true;
 			uuid.println("DUPLICATE: ");
 		}
 	}
 	
-	RDBMS!RdbmsElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	RDBMS!RdbmsElement.all.select(e | e.uuid.isUndefined()).collect(e | e.name) .println("UNDEFINED: ");
+	
+	if (duplicated) {
+		throw "Duplicated ID!";
+	}
+}
+
+
+operation String addWithDotTo(to : String) : String {
+	if (to.isDefined()) {
+		return to + "." + self;
+	} else {
+		return self;
+	}
+}
+
+operation checkForSqlNameIsNotEmpty() {
+	if (RDBMS!RdbmsElement.all.select(e | e.sqlName.isUndefined()).size > 0) {
+        RDBMS!RdbmsElement.all.select(e | e.sqlName.isUndefined()).collect(e | e.uuid).println("Missing SQL Name: ");
+		throw "SQL Name is empty";
+	}
 }

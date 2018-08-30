@@ -1,0 +1,53 @@
+import "../../../operations/psm/type/_importType.eol";
+import "../../../operations/runtime/_importRuntime.eol";
+import "../utils/_importUtils.eol";
+
+rule CreateEnumeration
+	transform s : JUDOPSM!Enumeration
+	to t : RUNTIME!EEnum {
+		t.name = s.name;
+		s.getPackage().equivalent().eClassifiers.add(t);
+		for (m in s.members) {
+			var l = new RUNTIME!EEnumLiteral;
+			l.value = m.ordinal;
+			l.literal = m.name;
+			l.name = m.name;
+			t.eLiterals.add(l);
+		}
+	}
+
+rule CreateStructureClass
+	transform s : JUDOPSM!Structure
+	to t : RUNTIME!EClass {
+		t.name = s.name;
+		s.getPackage().equivalent().eClassifiers.add(t);
+		for (f in s.fields) {
+			var type = f.type.getEcoreType();
+
+			var a = new RUNTIME!EAttribute;
+			a.name = f.name;
+
+			if (f.required) {
+				a.lowerBound = 1;
+			} else {
+				a.lowerBound = 0;
+			}
+
+			if (type.isTypeOf(RUNTIME!EDataType)) {
+				a.eType = f.type.getEcoreType();
+			} else if (f.type.isKindOf(JUDOPSM!Reference)) {
+				f.type.name.println("Reference in structure: ");
+				a.eType = "JUUID".getJudoDataType();
+			}
+
+			var annotations = f.type.createRuntimeAnnotations();
+			if (not annotations.isEmpty()) {
+				var annotation = new RUNTIME!EAnnotation;
+				annotation.source = extendedMetadataURI;
+				annotation.details.addAll(annotations);
+				a.eAnnotations.add(annotation);
+			}
+
+			t.eStructuralFeatures.add(a);
+		}
+	}

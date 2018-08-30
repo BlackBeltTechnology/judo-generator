@@ -1,0 +1,36 @@
+@cached
+operation SRC!EAttribute getEdmType() {
+	if (not self.eType.isDefined()) {
+		return "Edm.String";
+	}
+
+	switch (self.eType.name) {
+		case "JBinary":
+			return "Edm.Binary";
+		case "JBoolean":
+			return "Edm.Boolean";
+		case "JFloat":
+			return "Edm.Single";
+		case "JDouble":
+			return "Edm.Double";
+		case "JBigDecimal":
+			return "Edm.Decimal";
+		case "JBigInteger":
+			return "Edm.Decimal";
+		case "JString":
+			return "Edm.String";
+		case "JInteger":
+			return "Edm.Int32";
+		case "JLong":
+			return "Edm.Int64";
+		case "JDate":
+			return "Edm.Date";
+		case "JTimestamp":
+			return "Edm.DateTime";
+		case "JUUID":
+			return "Edm.Guid";
+		default:
+			// String is the default type
+			return "Edm.String";
+	}
+}

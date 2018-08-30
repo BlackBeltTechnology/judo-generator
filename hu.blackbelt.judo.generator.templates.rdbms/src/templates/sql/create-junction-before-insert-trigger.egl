@@ -5,7 +5,7 @@
 --liquibase formatted sql
 
 
-[%for (table in RDBMS!RdbmsJunctionTable.all) {%]
+[%for (table in CURRENT!RdbmsJunctionTable.all) {%]
 
 [* ------------------------------------- *]
 [* ORACLE                                *]

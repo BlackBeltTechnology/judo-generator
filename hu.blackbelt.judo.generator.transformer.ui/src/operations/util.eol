@@ -18,12 +18,18 @@ operation checkAllUuidsForDuplicateOrMissing() {
 	set.size.println("SET: ");
 	all.size.println("ALL: ");
 
+	var duplicated : Boolean = false;
+
 	for (uuid in set) {
 		if (all.count(uuid) > 1) {
-			uuid.println();
+			duplicated = true;
+			uuid.println("DUPLICATE: ");
 		}
 	}
 	
-	
 	UI!Identifiable.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
+	
+	if (duplicated) {
+		throw "Duplicated ID!";
+	}
 }

@@ -1,0 +1,16 @@
+import "modules/complexType.etl";
+import "modules/entityType.etl";
+import "modules/package.etl";
+
+pre {
+    var root = new ODATA!Edmx;
+    root.Version = ODATA!TVersion#_40;
+    root.DataServices = new ODATA!TDataServices;
+}
+
+post {
+	var emptySchemas = ODATA!SchemaType.all.select(s | s.EntityType.isEmpty() and s.ComplexType.isEmpty());
+	for (s in emptySchemas) {
+		delete s;
+	}
+}

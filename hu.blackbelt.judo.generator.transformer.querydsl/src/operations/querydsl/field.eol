@@ -1,12 +1,10 @@
 import "../util.eol";
 
-@cached
 operation transformAttributeField(s : RDBMS!RdbmsViewAliasField) : QUERYDSL!QueryDslAttribute {
 	var jvmAttr = JAVA!JvmAttribute.all.selectOne(attr | attr.baseUUID() = s.tableField.uuid);
     return transformJvmAttribute(jvmAttr, s);
 }
 
-@cached
 operation transformExpressionAttributeField(s : RDBMS!RdbmsViewField) : QUERYDSL!QueryDslAttribute {
 	var jvmAttrName : String = s.name.split("\\.").last();
 	var jvmAttr = JAVA!JvmClass.all.selectOne(c | c.fqBaseName() = s.view.name).allAttributes().selectOne(a | a.name = jvmAttrName);
@@ -32,13 +30,11 @@ operation transformJvmAttribute(jvmAttr : JAVA!JvmAttribute, s : RDBMS!RdbmsView
    	return javaAttribute;
 }
 
-@cached
 operation transformReferenceField(s : RDBMS!RdbmsViewTableField) : QUERYDSL!QueryDslReference {
 	var jvmReference = JAVA!JvmReference.all.selectOne(ref | ref.baseUUID() = s.tableField.uuid);
 	return transformJvmReference(jvmReference, s);
 }
 
-@cached
 operation transformInverseReferenceField(s : RDBMS!RdbmsViewTableField) : QUERYDSL!QueryDslReference {
 	var jvmReference = JAVA!JvmReference.all.selectOne(ref | ref.baseUUID() = s.tableField.uuid).opposite;
 	return transformJvmReference(jvmReference, s);

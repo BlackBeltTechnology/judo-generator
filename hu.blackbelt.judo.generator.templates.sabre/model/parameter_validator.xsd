@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="document">
+    <xs:complexType>
+      <xs:all>
+        <xs:element maxOccurs="1" type="xs:string" name="guid" minOccurs="1"/>
+        <xs:element maxOccurs="1" type="xs:string" name="width" minOccurs="1"/>
+        <xs:element maxOccurs="1" type="xs:string" name="diameter" minOccurs="1"/>
+        <xs:element maxOccurs="1" type="xs:string" name="area" minOccurs="1"/>
+        <xs:element maxOccurs="1" type="xs:string" name="price" minOccurs="1"/>
+        <xs:element name="wheelType" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:all>
+              <xs:element maxOccurs="1" type="xs:string" name="code" minOccurs="1"/>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="company" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:all>
+              <xs:element maxOccurs="1" type="xs:string" name="code" minOccurs="1"/>
+              <xs:element name="address" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element maxOccurs="1" type="xs:string" name="city" minOccurs="1"/>
+                    <xs:element maxOccurs="1" type="xs:string" name="country" minOccurs="1"/>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="employees" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                    <xs:element name="employee" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element maxOccurs="1" type="xs:string" name="name" minOccurs="1"/>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="comments" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+              <xs:element name="comment" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element maxOccurs="1" type="xs:string" name="author" minOccurs="1"/>
+                    <xs:element maxOccurs="1" type="xs:string" name="text" minOccurs="1"/>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,27 @@
+@cached
+operation JAVA!JvmCollection fqName () : String {
+	if (self.componentType.uuid == voidType().uuid) {
+		return "void";
+	}
+	return self.package.fqName() + "." + self.name + "<" + self.componentType.fqName() + ">";
+}
+
+@cached
+operation JAVA!JvmCollection bare () : JAVA!JvmType {
+	if (self.isListofLists()) {
+		return self.componentType.componentType;
+	} else {
+		return self.componentType;
+	}
+	
+}
+
+@cached
+operation JAVA!JvmCollection isPrimitive () : Boolean {
+    return not self.isListofLists() and self.componentType.isPrimitive();
+}
+
+@cached
+operation JAVA!JvmCollection isListofLists () : Boolean {
+    return self.componentType.isKindOf(JAVA!JvmCollection);
+}

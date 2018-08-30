@@ -14,7 +14,7 @@ TODO: Implement:
             {%- endif %}
         END IF;
 *]      
-[% for (view in RDBMS!RdbmsView.all) { %]
+[% for (view in CURRENT!RdbmsView.all) { %]
 [* ------------------------------------- *]
 [* ORACLE                                *]
 [* ------------------------------------- *]
@@ -37,6 +37,15 @@ CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
         END IF;
 
         [% for (tableAlias in view.updateableAliases()) { %]
+	        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (:NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (:OLD.[%= foreignKey.sqlName %] IS NULL OR :NEW.[%= foreignKey.sqlName %] <> :OLD.[%= foreignKey.sqlName %]) THEN		
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+				END IF;
+	    	[% } %]
+
+            -- Update all fields
 			[% if (view.updatableAliasFieldsWithoutPrimaryKeys(tableAlias).size() > 0) { %]
 				-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 				UPDATE [%= tableAlias.table.sqlName %] SET
@@ -78,6 +87,15 @@ CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
         END IF;
 
         [% for (tableAlias in view.updateableAliases()) { %]
+	        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)ss
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (OLD.[%= foreignKey.sqlName %] IS NULL OR NEW.[%= foreignKey.sqlName %] <> OLD.[%= foreignKey.sqlName %]) THEN		
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+				END IF;
+	    	[% } %]        							
+
+            -- Update all fields
 			[% if (view.updatableAliasFieldsWithoutPrimaryKeys(tableAlias).size() > 0) { %]
 				-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 				UPDATE [%= tableAlias.table.sqlName %] SET
@@ -110,6 +128,15 @@ CREATE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlNa
         END IF;
 
         [% for (tableAlias in view.updateableAliases()) { %]
+	        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (OLD.[%= foreignKey.sqlName %] IS NULL OR NEW.[%= foreignKey.sqlName %] <> OLD.[%= foreignKey.sqlName %]) THEN		
+			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+				END IF;
+	    	[% } %]
+
+            -- Update all fields
 			[% if (view.updatableAliasFieldsWithoutPrimaryKeys(tableAlias).size() > 0) { %]
 				-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
 				UPDATE [%= tableAlias.table.sqlName %] SET

@@ -1,0 +1,92 @@
+import "../../../operations/psm/facade/_importFacade.eol";
+import "../utils/_importUtils.eol";
+
+@abstract
+rule CreateFacadeClass
+	transform s : JUDOPSM!Facade
+	to t : RUNTIME!EClass {
+		t.name = s.name;
+		s.getPackage().equivalent().eClassifiers.add(t);
+
+		var id = new RUNTIME!EAttribute;
+		id.name = "id";
+		id.iD = true;
+		id.changeable = false;
+		id.eType = "JString".getJudoDataType();
+		t.eStructuralFeatures.add(id);
+
+		var annotation = new RUNTIME!EAnnotation;
+		annotation.source = extendedMetadataURI;
+		var aEntity = new RUNTIME!EStringToStringMapEntry;
+		aEntity.key = "id";
+		aEntity.value = "true";
+		annotation.details.add(aEntity);
+		id.eAnnotations.add(annotation);
+	}
+
+rule CreateViewClass
+	transform s : JUDOPSM!View
+	to t : RUNTIME!EClass
+	extends CreateFacadeClass {
+		var annotation = new RUNTIME!EAnnotation;
+		annotation.source = extendedMetadataURI;
+		var aEntity = new RUNTIME!EStringToStringMapEntry;
+		aEntity.key = "facade";
+		aEntity.value = "true";
+		annotation.details.add(aEntity);
+		t.eAnnotations.add(annotation);
+	}
+
+rule CreatePrimitiveFacadeAttribute
+	transform s : JUDOPSM!Property
+	to t : RUNTIME!EAttribute {
+		guard : s.dataType.isKindOf(JUDOPSM!Primitive)
+
+		t.name = s.name;
+
+		// TODO: set lowerBound and upperBound attributes
+		t.eType = s.dataType.getEcoreType();
+
+		var annotations = s.dataType.createRuntimeAnnotations();
+		if (not annotations.isEmpty()) {
+			var annotation = new RUNTIME!EAnnotation;
+			annotation.source = extendedMetadataURI;
+			annotation.details.addAll(annotations);
+			t.eAnnotations.add(annotation);
+		}
+
+		s.getFacade().equivalent().eStructuralFeatures.add(t);
+	}
+
+rule CreateComplexFacadeAttribute
+	transform s : JUDOPSM!Property
+	to t : RUNTIME!EReference {
+		guard : s.dataType.isKindOf(JUDOPSM!Structure)
+
+		t.name = s.name;
+
+		// TODO: set lowerBound and upperBound attributes
+		t.eType = s.dataType.equivalent();
+		t.containment = true;
+
+		var annotation = new RUNTIME!EAnnotation;
+		annotation.source = extendedMetadataURI;
+		var aEmbedded = new RUNTIME!EStringToStringMapEntry;
+		aEmbedded.key = "embedded";
+		aEmbedded.value = "true";
+		annotation.details.add(aEmbedded);
+		t.eAnnotations.add(annotation);
+
+		s.getFacade().equivalent().eStructuralFeatures.add(t);
+	}
+
+rule CreateLinkReference
+	transform s : JUDOPSM!Link
+	to t : RUNTIME!EReference {
+		t.name = s.name;
+
+		// TODO: set lowerBound and upperBound attributes
+		t.eType = s.target.name.getFacadeReference();
+
+		s.getFacade().equivalent().eStructuralFeatures.add(t);
+	}

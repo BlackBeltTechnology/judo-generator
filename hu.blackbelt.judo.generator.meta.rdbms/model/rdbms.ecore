@@ -13,9 +13,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalPackage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsTable" eSuperTypes="#//RdbmsElement">
-    <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
-      <details key="archetype" value="MomentInterval"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
         eType="#//RdbmsField" containment="true" eOpposite="#//RdbmsField/table"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueConstraints" upperBound="-1"
@@ -27,14 +24,16 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//RdbmsTable"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsField" abstract="true" eSuperTypes="#//RdbmsElement">
-    <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
-      <details key="archetype" value="MomentInterval"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"
         eOpposite="#//RdbmsTable/fields"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//RdbmsFieldType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//RdbmsFieldType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rdbmsTypeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="storageByte" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsForeignKey" eSuperTypes="#//RdbmsIdentifierField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="referenceKey" lowerBound="1"
@@ -63,9 +62,6 @@
         eType="#//RdbmsForeignKey"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsIdentifierField" eSuperTypes="#//RdbmsField">
-    <eAnnotations source="http://www.obeo.fr/dsl/dnc/archetype">
-      <details key="archetype" value="MomentInterval"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="foreignKeys" upperBound="-1"
         eType="#//RdbmsForeignKey" eOpposite="#//RdbmsForeignKey/referenceKey"/>
   </eClassifiers>
@@ -155,26 +151,22 @@
       eSuperTypes="#//RdbmsViewTableField">
     <eStructuralFeatures xsi:type="ecore:EReference" name="alias" lowerBound="1" eType="#//RdbmsTableAlias"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RdbmsTableOperation" eSuperTypes="#//RdbmsElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operationType" lowerBound="1"
-        eType="#//RdbmsTableOperationType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsModifyTableOperation" eSuperTypes="#//RdbmsTableOperation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="createFieldOperations"
         upperBound="-1" eType="#//RdbmsCreateFieldOperation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="modifyFieldOperations"
         upperBound="-1" eType="#//RdbmsModifyFieldOperation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteFieldOperations"
         upperBound="-1" eType="#//RdbmsDeleteFieldOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="previousTable" lowerBound="1"
+        eType="#//RdbmsTable"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nameChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsFieldOperation" abstract="true"
       eSuperTypes="#//RdbmsElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="field" lowerBound="1" eType="#//RdbmsField"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="RdbmsTableOperationType">
-    <eLiterals name="CREATE" value="1"/>
-    <eLiterals name="DELETE" value="2" literal="DELETE"/>
-    <eLiterals name="MODIFY" value="3"/>
-    <eLiterals name="NONE"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="reviewRequired" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsCreateFieldOperation" eSuperTypes="#//RdbmsFieldOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsModifyFieldOperation" eSuperTypes="#//RdbmsFieldOperation">
@@ -182,6 +174,14 @@
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatoryChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="previousField" lowerBound="1"
+        eType="#//RdbmsField"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sizeChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nameChanged" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="changedValueFieldToForeignKey"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="changedForeignKeyToValueField"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsDeleteFieldOperation" eSuperTypes="#//RdbmsFieldOperation"/>
   <eClassifiers xsi:type="ecore:EClass" name="RdbmsViewRelation">
@@ -223,5 +223,17 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="identifierField" eType="#//RdbmsViewIdentifierField"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="valueField" eType="#//RdbmsViewValueField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsTableOperation" abstract="true"
+      eSuperTypes="#//RdbmsElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="table" lowerBound="1" eType="#//RdbmsTable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsCreateTableOperation" eSuperTypes="#//RdbmsTableOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsDeleteTableOperation" eSuperTypes="#//RdbmsTableOperation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RdbmsOperationMeta">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="previousModel" lowerBound="1"
+        eType="#//RdbmsModel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="currentModel" lowerBound="1"
+        eType="#//RdbmsModel"/>
   </eClassifiers>
 </ecore:EPackage>

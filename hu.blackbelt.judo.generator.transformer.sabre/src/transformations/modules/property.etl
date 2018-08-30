@@ -1,0 +1,22 @@
+import "../../operations/_importAll.eol";
+
+@lazy
+rule SabrePropertyPrimitive
+	transform s : Property
+	to        t : SABRE!primitive {
+
+	s.name.println("LAZY RULE :: SabrePropertyPrimitive: ");	
+	t.name = s.name.decapitalize();	
+	t.mandatory = s.lowerValue.isDefined() and s.lowerValue.value > 0;	
+}
+
+@lazy
+rule SabrePropertyList
+	transform s : Property
+	to        t : SABRE!list {
+
+	s.name.println("LAZY RULE :: SabrePropertyList: ");
+	t.name = s.name.decapitalize();
+	t.structure = s.association.compositedClass().equivalent("SabreClassStructure");
+}
+

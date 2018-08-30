@@ -1,0 +1,11 @@
+operation JAVA!JvmReference swaggerName () : String {
+	return self.name.toLowerCase();
+}
+
+operation JAVA!JvmReference swaggerClassName () : String {
+	return self.opposite.ownerClass.swaggerName();
+}
+
+operation JAVA!JvmReference isSingle () : Boolean {
+	return self.upper == 1;
+}

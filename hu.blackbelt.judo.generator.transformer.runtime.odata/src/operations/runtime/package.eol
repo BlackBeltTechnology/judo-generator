@@ -1,0 +1,11 @@
+@cached
+operation RUNTIME!EPackage getFullName() : String {
+	var package = RUNTIME!EPackage.all.selectOne(p | p.eSubPackages.contains(self));
+	var name = "";
+	while (package.isDefined()) {
+		name = package.name + "." + name;
+		package = RUNTIME!EPackage.all.selectOne(p | p.eSubPackages.contains(package));
+	}
+
+	return name + self.name;
+}

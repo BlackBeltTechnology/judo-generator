@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.blackbelt.judo.generator</groupId>
+        <artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+    </parent>
+
+    <artifactId>hu.blackbelt.judo.generator.transformer.runtime.odata</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <src.dir>src</src.dir>
+
+        <test.model.groupId>${project.groupId}</test.model.groupId>
+        <test.model.artifactId>hu.blackbelt.judo.generator.transformer.runtime</test.model.artifactId>
+        <test.model.version>${project.version}</test.model.version>
+    </properties>
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>odata-runtime-transformer-development</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>hu.blackbelt.judo.generator</groupId>
+                        <artifactId>epsilon-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>mvn:hu.blackbelt.judo.generator:hu.blackbelt.judo.generator.meta.odata:ecore:odata:${project.version}</metaModel>
+                                        <!-- TYPES model -->
+                                        <metaModel>mvn:${test.model.groupId}:${test.model.artifactId}:model:types:${test.model.version}</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>
+                                                mvn:${test.model.groupId}:${test.model.artifactId}:model:runtime:${test.model.version}
+                                            </artifact>
+                                            <name>SRC</name>
+                                            <aliases>
+                                                <alias>RUNTIME</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://www.eclipse.org/emf/2002/Ecore</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                        <model>
+                                            <artifact>${project.build.directory}/odata-runtime.model</artifact>
+                                            <name>ODATA</name>
+                                            <readOnLoad>false</readOnLoad>
+                                            <storeOnDisposal>true</storeOnDisposal>
+                                            <metaModelUris>
+                                                <param>http://docs.oasis-open.org/odata/ns/edm</param>
+                                                <param>http://docs.oasis-open.org/odata/ns/edmx</param>
+                                            </metaModelUris>
+                                        </model>
+                                    </models>
+                                    <eolPrograms>
+                                        <Etl>
+                                            <source>src/transformations/odata/runtimeToOData.etl</source>
+                                            <parameters>
+                                                <parameter>
+                                                    <name>domainModelName</name>
+                                                    <value>NorthwindDomain</value>
+                                                </parameter>
+                                                <parameter>
+                                                    <name>extendedMetadataURI</name>
+                                                    <value>http://blackbelt.hu/judo/meta/ExtendedMetadata</value>
+                                                </parameter>
+                                            </parameters>
+                                        </Etl>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>add-resource</id>
+                                <goals>
+                                    <goal>add-resource</goal>
+                                </goals>
+
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>src</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+
+                            </execution>
+
+                            <execution>
+                                <id>attach-artifacts</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attach-artifact</goal>
+                                </goals>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>${project.build.directory}/odata-runtime.model</file>
+                                            <type>model</type>
+                                            <classifier>odata-runtime</classifier>
+                                        </artifact>
+                                    </artifacts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
+
+</project>
+
+

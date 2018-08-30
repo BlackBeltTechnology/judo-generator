@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.blackbelt.judo.generator</groupId>
+        <artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+    </parent>
+
+    <artifactId>hu.blackbelt.judo.generator.transformer.sabre</artifactId>
+    <packaging>jar</packaging>
+
+	<properties>
+       <src.dir>src</src.dir>
+        <target.model>sabre</target.model>
+        <model>Model</model>
+
+        <!-- src.model>car</src.model>
+        <target.model>car</target.model>
+        <model>Model</model>
+        <transformDomain>false</transformDomain-->
+
+        <!--
+        <src.model>anakin</src.model>
+        <target.model>anakin</target.model>
+        <model>Anakin</model>
+        <transformDomain>false</transformDomain>
+        -->
+        <!-- src.model>opm_pim_-_Modelio_import</src.model>
+        <target.model>opm</target.model>
+        <model>opm pim</model>
+        <transformDomain>false</transformDomain-->
+        
+    </properties>
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
+    
+    <profiles>
+        <profile>
+            <id>sabre-transformer-development</id>
+            <build>
+                <plugins>
+        
+                    <plugin>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>epsilon-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>transform-from-pim</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.sabre:ecore:sabre:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
+        
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfileWf:${project.version}</metaModel>
+                                    </metaModels>
+                                    <models>
+                                        <model>
+                                            <!-- <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:uml:model:${framework.model.version}</artifact> -->
+                                            <artifact>${basedir}/model/car.uml</artifact> -->
+                                            
+                                            <name>inpPIM</name>
+                                            <metaModelUris>
+                                                <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
+                                                <param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
+                                                <param>http://www.omg.org/spec/UML/20131001/MagicDrawProfile</param>
+                                                <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
+                                                <param>http:///schemas/ValidationProfile/_E8DQcDGdEei6IdEFC9bfxw/0</param>
+                                                <param>http:///schemas/DSLCustomization/_E8xpMDGdEei6IdEFC9bfxw/0</param>
+                                                <param>http://www.blackbelt.hu/metamodel/pim/v1.0</param>
+                                                <param>http:///schemas/JudoProfileForWf/_BXRFIGiSEeif9NN75tdasg/0</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                        <model>
+                                            <artifact>${project.build.directory}/${target.model}.model</artifact>
+                                            <name>SABRE</name>
+                                            <readOnLoad>false</readOnLoad>
+                                            <storeOnDisposal>true</storeOnDisposal>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/meta/sabre</param>
+                                            </metaModelUris>
+                                        </model>
+                                    </models>
+                                    <eolPrograms>
+                                        <Etl>
+                                            <source>src/transformations/pimToSabre.etl</source>
+                                            <parameters>
+                                            	<parameter>
+                                            	    <name>modelName</name>
+                                                    <value>${model}</value>
+                                            	</parameter>
+                                            	<parameter>
+                                            	    <name>packagePrefix</name>
+                                                    <value>hu.blackbelt</value>
+                                            	</parameter>
+
+                                            </parameters>
+                                        </Etl>                                      
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                            
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-artifacts</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attach-artifact</goal>
+                                </goals>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>${project.build.directory}/${target.model}.model</file>
+                                            <type>model</type>
+                                            <classifier>sabre</classifier>
+                                        </artifact>
+                                    </artifacts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+        
+                </plugins>
+            </build>
+            </profile>
+    </profiles>
+</project>

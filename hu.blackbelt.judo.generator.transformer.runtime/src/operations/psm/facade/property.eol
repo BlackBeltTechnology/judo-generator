@@ -1,0 +1,4 @@
+@cached
+operation JUDOPSM!Property getFacade() : JUDOPSM!Facade {
+	return JUDOPSM!Facade.all.selectOne(et | et.properties.includes(self));
+}

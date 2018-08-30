@@ -4,7 +4,7 @@
 %]
 --liquibase formatted sql
 
-[% for (constraint in RDBMS!RdbmsUniqueConstraint.all) { %]
+[% for (constraint in CURRENT!RdbmsUniqueConstraint.all) { %]
 --changeset generator:CREATE_UNIQUE_CONSTRAINT_[%= constraint.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
 -- [%= constraint.name %] [%= constraint.uuid %]
 ALTER TABLE [%= constraint.table.sqlName %] ADD CONSTRAINT [%= constraint.sqlName %] UNIQUE (

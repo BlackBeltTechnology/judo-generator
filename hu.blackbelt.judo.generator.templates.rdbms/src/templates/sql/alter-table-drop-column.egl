@@ -1,0 +1,15 @@
+[%
+  import "../../operations/_importAll.eol";
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[% for (modifyTableOperation in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/drop-column.egl");
+		inc.populate("modifyTableOperation", modifyTableOperation);
+		inc.populate("table", modifyTableOperation.table);
+		inc.populate("previousTable", modifyTableOperation.previousTable);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]

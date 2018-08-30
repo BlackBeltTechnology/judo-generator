@@ -1,0 +1,24 @@
+@cached
+operation JUDOPSM!Endpoint getOpposites() : JUDOPSM!Endpoint {
+	return self.dataType.target.endpoints.select(e | e.dataType.target = self.getEntityType());
+}
+
+@cached
+operation JUDOPSM!Endpoint displayName() : String {
+	return self.getEntityType().name + "." + self.name;
+}
+
+@cached
+operation JUDOPSM!Endpoint getEntityType() : JUDOPSM!EntityType {
+	return JUDOPSM!EntityType.all.selectOne(et | et.endpoints.includes(self));
+}
+
+@cached
+operation JUDOPSM!Endpoint isRequired() : Boolean {
+	return self.lower > 0;
+}
+
+@cached
+operation JUDOPSM!Endpoint isCollection() : Boolean {
+	return self.upper > 1 or self.upper == -1;
+}

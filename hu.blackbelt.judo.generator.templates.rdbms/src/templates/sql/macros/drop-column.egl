@@ -1,0 +1,34 @@
+[%
+  import "../../../operations/_importAll.eol";
+%]
+[% if (hasFeature('SupportMultipleColumnModificationInOneStatement')) { %]
+[% if (modifyTableOperation.deleteFieldOperations.size > 0) { %]
+--changeset generator:ALTER_TABLE_DROP_COLUMN_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= table.name %] [%= table.uuid %]
+ALTER TABLE [%= table.sqlName %] 
+		[% if (dialect() == 'Oracle') { %]
+			DROP (
+		[% } %]
+
+		[% for (field in modifyTableOperation.deleteFieldOperations.collect(o | o.field)) { %]
+			[% if (dialect() == 'Oracle') { %]
+				[%= field.sqlName %] [%= field.toFieldDefinition() %]
+			[% } else { %]
+				DROP COLUMN [%= field.sqlName %] [%= field.toFieldDefinition() %]
+			[% } %]
+			[% if (hasMore) { out.print(","); } %]  -- [%= field.name %] [%= field.uuid %]
+		[% } %]
+		
+		[% if (dialect() == 'Oracle') { %]
+			)
+		[% } %]
+;[% out.println("\n"); %]
+[% } %]
+[% } else { %]
+		[% for (field in modifyTableOperation.deleteFieldOperations.collect(o | o.field)) { %]
+--changeset generator:ALTER_TABLE_DROP_COLUMN_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= field.name %] [%= field.uuid %]
+ALTER TABLE [%= table.sqlName %] DROP COLUMN [%= field.sqlName %] [%= field.toFieldDefinition() %];
+			[% out.println("\n"); %]
+		[% } %]
+[% } %]

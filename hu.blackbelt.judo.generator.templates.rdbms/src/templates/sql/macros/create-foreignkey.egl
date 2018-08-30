@@ -1,0 +1,16 @@
+[%
+  import "../../../operations/_importAll.eol";
+%]
+
+--changeset generator:CREATE_FOREIGN_KEY_[%= foreignKey.table.sqlName %]_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
+-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+ALTER TABLE [%= foreignKey.table.sqlName %] 
+ADD CONSTRAINT [%= foreignKey.foreignKeySqlName %]
+FOREIGN KEY ([%= foreignKey.sqlName %])
+REFERENCES [%= foreignKey.referenceKey.table.sqlName %] (ID)
+		[% if (foreignKey.deleteOnCascade) { %]
+			ON DELETE CASCADE
+		[% } else if (not foreignKey.mandatory) { %]
+			ON DELETE SET NULL
+		[% } %]
+;[% out.println("\n"); %]

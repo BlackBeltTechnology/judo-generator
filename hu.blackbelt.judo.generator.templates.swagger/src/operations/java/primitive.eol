@@ -1,0 +1,28 @@
+@cached
+operation JAVA!JvmPrimitive swaggerTypeName () : String {
+	if (self.name == "Integer" or self.name == "Long" or self.name == "Float" or self.name == "BigDecimal") {
+		return "type: integer";
+	} else if (self.name == "Float" or self.name == "BigDecimal") {
+		return "type: number";
+	} else {
+		return "type: string";
+	}  
+}
+
+@cached
+operation JAVA!JvmPrimitive swaggerTypeFormat () : String {
+	if (self.name == "Integer") {
+		return "format: int32";
+	} else if (self.name == "Long") {
+		return "format: int64";
+	} else if (self.name == "Float") {
+		return "format: float";
+	} else {
+		return "";
+	}  
+}
+
+@cached
+operation JAVA!JvmPrimitive isPrimitive () : Boolean {
+    return true;
+}

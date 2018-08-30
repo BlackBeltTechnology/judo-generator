@@ -1,0 +1,4 @@
+@cached
+operation String getFacadeReference() : RUNTIME!EClass {
+	return JUDOPSM!Facade.all.selectOne(et | et.name == self).equivalent();
+}

@@ -56,27 +56,17 @@
 			                            <param>http://blackbelt.hu/judo/meta/psm</param>
 			                        </metaModelUris>
 			                        <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
-			                    </model>
-			                    <model>
-			                        <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm.domain:model:psm:${project.version}</artifact>
-			                        <name>DOMAINPSM</name>
-			                        <readOnLoad>true</readOnLoad>
-			                        <storeOnDisposal>false</storeOnDisposal>
-			                        <metaModelUris>
-			                            <param>http://blackbelt.hu/judo/meta/psm</param>
-			                        </metaModelUris>
-			                        <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.psm.domain/target/domainPsm.model</platformAlias>
-			                    </model>
-			                    
-			                    
-			                   <model>
-									<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.psm:model:psm:${project.version}</artifact>
+			                    </model>			                    
+	                    
+								<model>
+									<artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:psm:${test.model.version}</artifact>
 									<name>PSM</name>
 									<metaModelUris>
 										<param>http://blackbelt.hu/judo/meta/psm</param>
 									</metaModelUris>
 									<expand>true</expand>
-								</model> 
+								</model>
+
 			
 			                    <model>
 			                        <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.ui:model:uiTypes:${project.version}</artifact>

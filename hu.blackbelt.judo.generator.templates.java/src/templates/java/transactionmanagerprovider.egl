@@ -1,0 +1,41 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  out.setContentType("Java");
+%]
+
+package [%=topPackageName%];
+
+import lombok.Getter;
+import hu.blackbelt.judo.common.transaction.api.TransactionManager;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.ConfigurationPolicy;
+import org.apache.felix.scr.annotations.Properties;
+import org.apache.felix.scr.annotations.Property;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
+
+
+/**
+* This component provides transaction manager which used by the aplication. 
+*/
+@Getter
+@Component(name = "[%=transactionManagerProviderPid%]", immediate = true, metatype=true, policy = ConfigurationPolicy.REQUIRE)
+@Service([%=className%].class)
+@Properties(value = {
+@Property(name = [%=className%].TRANSACTION_MANAGER + ".target",
+          value = "(transactionManager.name=" + [%=className%].DEFAULT_TRNSACTION_MANAGER_NAME + ")")
+})
+
+@SuppressWarnings("checkstyle:missingctor")
+public class [%=className%] {
+
+    public static final String DEFAULT_TRNSACTION_MANAGER_NAME = "[%=topPackageName%]";
+    public static final String TRANSACTION_MANAGER = "transactionManager";
+    
+    public [%=className%]() {
+    }
+
+    @Reference(name = [%=className%].TRANSACTION_MANAGER)
+    private TransactionManager transactionManager;
+}

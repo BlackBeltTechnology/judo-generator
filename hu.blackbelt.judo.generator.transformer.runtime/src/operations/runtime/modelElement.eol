@@ -1,0 +1,36 @@
+operation RUNTIME!EModelElement getAnnotationValue(name : String) : String {
+	var annotations = self.eAnnotations.selectOne(a | a.source = extendedMetadataURI);
+	if (annotations.isDefined()) {
+		var d = annotations.details.selectOne(d | d.key = name);
+		if (d.isDefined() and d.value.isDefined()) {
+			return d.value;
+		} else {
+			return d;
+		}
+	} else {
+		throw "No annotation " + name + " found on element: " + element.name;
+	}
+}
+
+operation RUNTIME!EModelElement hasAnnotation(name : String) : Boolean {
+	var annotations = self.eAnnotations.selectOne(a | a.source = extendedMetadataURI);
+	if (annotations.isDefined()) {
+		var d = annotations.details.selectOne(d | d.key = name);
+		return d.isDefined();
+	}
+	return false;
+}
+
+operation RUNTIME!EModelElement annotatedAsTrue(name : String) : Boolean {
+	var annotations = self.eAnnotations.selectOne(a | a.source = extendedMetadataURI);
+	if (annotations.isDefined()) {
+		var d = annotations.details.selectOne(d | d.key = name);
+		if (d.isDefined() and d.value.isDefined()) {
+			return d.value.asBoolean();
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}

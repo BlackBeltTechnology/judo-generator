@@ -1,0 +1,29 @@
+@namespace(uri="http://blackbelt.hu/judo/runtime/types", prefix="types")
+package types;
+
+datatype JDate : java.time.LocalDate;
+
+datatype JTimestamp : java.time.ZonedDateTime;
+
+datatype JInteger : java.lang.Integer;
+
+datatype JLong : java.lang.Long;
+
+datatype JBigInteger : java.math.BigInteger;
+
+datatype JFloat : java.lang.Float;
+
+datatype JDouble : java.lang.Double;
+
+datatype JBigDecimal : java.math.BigDecimal;
+
+datatype JString : java.lang.String;
+
+datatype JBoolean : java.lang.Boolean;
+
+datatype JByteArray : "byte[]";
+
+datatype JObject : java.lang.Object;
+
+datatype JUUID : java.util.UUID;
+

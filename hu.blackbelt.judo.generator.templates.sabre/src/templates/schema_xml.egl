@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document application="[%= document.application %]" domain="[%= document.domain %]" xmlns:sabre="http://blackbelt.hu/meta/sabre" xmlns="http://blackbelt.hu/meta/sabre">
+[%
+  var sb := new Native("java.lang.StringBuilder");
+  document.primitive.includingAll(document.structure).includingAll(document.list).includingAll(document.template).collect(p | p.render(sb, "  "));
+%][%=sb.toString()%]
+</document>
+
+
+[%
+  operation primitive render (sb, indent : String) : Boolean {
+     sb.append(indent + "<primitive name=\"" + self.name + "\" mandatory=\"" + self.mandatory + "\" type=\"" + self.type + "\" path=\"" + self.path + "\"/>\n");
+     return true;
+  }
+
+  operation structure render(sb, indent : String) : Boolean {
+     sb.append(indent + "<structure name=\"" + self.name + "\" mandatory=\"" + self.mandatory + "\">\n");
+     self.primitive.includingAll(self.structure).includingAll(self.list).includingAll(self.template).collect(p | p.render(sb, indent + "  "));
+     sb.append(indent + "</structure>\n");
+     return true;
+  }
+ 
+  operation list render(sb, indent : String) : Boolean {
+     sb.append(indent + "<list name=\"" + self.name + "\" mandatory=\"" + self.mandatory + "\" path=\"" + self.path + "\">\n");
+     if (self.structure.isDefined()) {
+        self.structure.render(sb, indent + "  ");
+     } else {
+        self.primitive.render(sb, indent + "  ");
+     }
+     sb.append(indent + "</list>\n");
+     return true;
+  }
+
+  operation template render(sb, indent : String) : Boolean {
+     sb.append(indent + "<template name=\"" + self.name + "\"  value=\"" + self.value + "\"/>\n");
+     return true;
+  }  
+%]

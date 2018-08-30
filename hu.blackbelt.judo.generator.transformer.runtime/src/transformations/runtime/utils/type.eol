@@ -1,0 +1,67 @@
+operation JUDOPSM!Type createRuntimeAnnotations() : Sequence {
+	var annotations = Sequence{};
+
+	if (self.isKindOf(JUDOPSM!String)) {
+		if (self.maxLength.isDefined()) {
+			var aMaxLength = new RUNTIME!EStringToStringMapEntry;
+			aMaxLength.key = "maxLength";
+			aMaxLength.value = self.maxLength.asString();
+			annotations.add(aMaxLength);
+		}
+	} else if (self.isKindOf(JUDOPSM!Custom)) {
+		switch (self.name) {
+			case "Date":
+			case "Timestamp":
+			case "Binary":
+			default:
+				var aCustomType = new RUNTIME!EStringToStringMapEntry;
+				aCustomType.key = "customType";
+				aCustomType.value = self.name;
+				annotations.add(aCustomType);
+		}
+	}
+
+	return annotations;
+}
+
+@cached
+operation JUDOPSM!Primitive getEcoreType() : TYPES!EDataType {
+	if (self.isKindOf(JUDOPSM!String)) {
+		return "JString".getJudoDataType();
+	} else if (self.isKindOf(JUDOPSM!Numeric)) {
+		if (self.precision == 0 and self.scale <= 9) {
+			return "JInteger".getJudoDataType();
+		} else if (self.precision == 0 and self.scale > 9 and self.scale <= 18) {
+			return "JLong".getJudoDataType();
+		} else if (self.precision == 0 and self.scale > 18) {
+			return "JBigInteger".getJudoDataType();
+		} else if (self.precision > 0 and self.scale <= 7) {
+			return "JFloat".getJudoDataType();
+		} else if (self.precision > 0 and self.scale > 7 and self.scale <= 15) {
+			return "JDouble".getJudoDataType();
+		} else if (self.precision > 0 and self.scale > 15) {
+			return "JBigDecimal".getJudoDataType();
+		}
+	} else if (self.isKindOf(JUDOPSM!Boolean)) {
+		return "JBoolean".getJudoDataType();
+	} else if (self.isKindOf(JUDOPSM!Enumeration)) {
+		return self.equivalent();
+	} else if (self.isKindOf(JUDOPSM!Custom)) {
+		switch (self.name) {
+			case "Date":
+				return "JDate".getJudoDataType();
+			case "Timestamp":
+				return "JTimestamp".getJudoDataType();
+			case "Binary":
+				return "JByteArray".getJudoDataType();
+			default:
+				return "JObject".getJudoDataType();
+		}
+	} else {
+		return "JObject".getJudoDataType();
+	}
+}
+
+operation JUDOPSM!Reference getEcoreType() : RUNTIME!EClass {
+	return self.target.equivalent();
+}

@@ -1,0 +1,6 @@
+import "modelElement.eol";
+
+@cached
+operation RUNTIME!EAttribute isID() : Boolean {
+	return self.annotatedAsTrue("id");
+}

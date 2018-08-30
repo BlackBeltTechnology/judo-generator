@@ -1,0 +1,73 @@
+@cached
+operation Association compositedClass() : Class {
+	return self.memberEnd.at(0).type;
+}
+
+@cached
+operation Class properties() : Collection {
+	return Property.all.select(p | p.owner == self);
+}
+
+@cached
+operation Class primitiveProperties() : Collection {
+	return self.properties().select(s | not s.association.isDefined() and not s.type.isTypeOf(Class) and not s.type.isTypeOf(Enumeration));
+}
+
+@cached
+operation Class classProperties() : Collection {
+	return self.properties().select(s | s.association.isDefined() and not s.type.isTypeOf(Enumeration) and s.upperValue.isDefined() and (s.upperValue.value > -1 and s.upperValue.value <= 1));
+}
+
+@cached
+operation Class classListProperties() : Collection {
+	return self.properties().select(s | s.association.isDefined() and s.upperValue.isDefined() and (s.upperValue.value <= -1 or s.upperValue.value > 1));
+}
+
+@cached
+operation NamedElement name() : String {
+	var name : String;
+
+	if (self.name.isDefined() and self.name.size > 0) {
+		name = self.name;
+	} else {
+		name = "<<UNNAMED>>";
+	}
+	
+	return name;
+}
+
+operation String decapitalize() : String {
+
+    if (self.isUndefined() or self.length() == 0) {
+        return self;
+    }
+    return self.characterAt(0).toLowerCase() + self.substring(1);
+}
+
+operation String capitalize() : String {
+
+    if (self.isUndefined() or self.length() == 0) {
+        return self;
+    }
+    return self.characterAt(0).toUpperCase() + self.substring(1);
+}
+
+operation String toSnake() : String {
+    return self.decapitalize().replaceAll("([A-Z]+)","\\_$1").toLowerCase();
+}
+
+operation Class isDocument() : Boolean {
+    return stereotypeApplications.get("documentClasses").includes(self);
+}
+
+@cached
+operation Any fullyQualifiedPath() : String {
+
+	if (self.isKindOf(NamedElement)) {
+		if (self.owner.isUndefined()) {
+			return ""; //self.name();
+		} else {
+			return self.owner.fullyQualifiedPath().concat(".").concat(self.name());
+		}
+	}
+}

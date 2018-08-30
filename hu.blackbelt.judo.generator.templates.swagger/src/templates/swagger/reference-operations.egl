@@ -1,0 +1,53 @@
+[%
+  import "../../operations/_importAll.eol";
+%]
+[% for (ref in dto.origin.allReferences().select(r | r.navigable and not r.isSingle())) { %]
+  /rest/[%= dto.origin.swaggerUri() %]/[%= ref.swaggerName()%]:
+    options:
+      tags:
+        - "[%= dto.origin.swaggerTag() %]"
+      operationId: |
+        get all available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to a new instance.
+      summary: |
+        Get all available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to a new instance.
+      description: |
+        Get all available [%= ref.swaggerClassName() %] on [%= dto.origin.name %] over [%= ref.swaggerName() %] for attach to new instance. It can be fitered, paged and sorted. Support projection of the result.
+      parameters:
+      - $ref: '#/parameters/projection'
+      - $ref: '#/parameters/filter'
+      - $ref: '#/parameters/pageSize'
+      - $ref: '#/parameters/pageNumber'
+      - $ref: '#/parameters/sort'
+      produces:
+        - application/json
+      responses:
+        '200':        
+          description: |
+            List of [%= ref.swaggerClassName() %] is OK.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/[%= ref.swaggerClassName() %]'
+          headers:
+            X-Total-Count:
+              type: integer
+              description: The total records of query.
+            X-Page-Size:
+              type: integer
+              description: The current page size of query            
+        '204':
+          $ref: '#/responses/noContent'            
+        '400':
+          $ref: '#/responses/badRequest'
+        '404':
+          $ref: '#/responses/notFound'
+        '500':
+          $ref: '#/responses/internalError'
+        '401':
+          $ref: '#/responses/unauthorized'
+        '403':
+          $ref: '#/responses/forbidden'
+        '459':
+          $ref: '#/responses/passwordMustChange'
+
+[%}%]

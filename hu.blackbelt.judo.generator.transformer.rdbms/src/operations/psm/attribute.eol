@@ -38,3 +38,160 @@ operation PSM!JAttribute fieldSqlName() : String {
 	}
 }
 
+// Iterates over relations and it have to make recursive to be able to handle
+// derived exprssions in derived expression
+@cached
+operation PSM!JAttribute processExpressions() : List {
+
+	var ret : List = new List();
+	var current = ret;
+	var relationStack : List = new List();
+
+    (self.ownerClass.name + " " + self.name + " " + self.value).println("Processing expression: ");
+
+    var expressionCount:Integer = 1;	
+   	for (expr in parseDerivedExpression(self.value)) {
+      	if (expr.isExpressionLabelExpression()) {
+	 		ret.add(expr.getLabelExpression().getText());
+  			expressionCount++;
+		} else if (expr.isExpressionRelationExpression()) {
+			var current : Map = new Map();			
+			ret.add(current);
+			
+			var currentExpressionRoot : Map = current;
+			
+			// The root always is the base class
+			var currentClass : PSM!JClass = self.ownerClass;
+	
+			var currentParsedRelationExpression = expr.getRelationExpression();
+			
+			// Parsing the chain of the expressions
+		    while (currentParsedRelationExpression.isDefined()) {
+				//current.put("__relationExpression",  currentParsedRelationExpression);
+				current.put("__class", currentClass);
+				current.put("__name", currentParsedRelationExpression.getRelationName());
+		
+		    	if (currentParsedRelationExpression.hasChild()) {
+		            current.put("__type", "relation");
+								
+					var currentRole : PSM!JRole = currentClass.roles.selectOne(sr | sr.name == currentParsedRelationExpression.getRelationName());
+			
+					var superClass : PSM!JClass = currentClass.supertype;
+					while (currentRole.isUndefined() and superClass.isDefined()) {
+						currentRole = superClass.roles.selectOne(sr | sr.name == currentParsedRelationExpression.getRelationName());
+						superClass = superClass.supertype;
+					}
+		
+					if (currentRole.isUndefined()) {
+						throw "Role " + currentParsedRelationExpression.getRelationName() +" not found on class: " + currentClass.name; 
+					}			  	
+		
+					current.put("__role", currentRole);
+		
+					// For the next round the base class will be the relation's class on the orher side
+					currentClass = currentRole.opposite().ownerClass;
+							
+					currentParsedRelationExpression = currentParsedRelationExpression.getRelationExpression();
+					
+					// Add new entry for next iteration
+					var n = new Map();
+					// n.put("parent", current);
+					current.put("__child", n);
+					current = n;			
+		
+				} else {
+					var relAttr : PSM!JAttribute = currentClass.allAttributes().selectOne(sa | sa.name == currentParsedRelationExpression.getRelationName());
+		
+					if (relAttr.isUndefined()) {
+						var role : PSM!JRole = currentClass.allRoles().selectOne(sr | sr.name == currentParsedRelationExpression.getRelationName());
+						
+						if (role.isUndefined()) {
+							throw "No attribute or role is undefined on relation: " + currentClass.name + " " + currentParsedRelationExpression.getRelationName();
+						} else {
+						    // When role have to add new layer of MAP.
+				            current.put("__type", "relation");
+							current.put("__role", role);
+
+							// Adding new map for attributel
+							var n = new Map();
+							// n.put("parent", current);
+							current.put("__child", n);
+							relationStack.add(current);
+							current = n;			
+						    
+							// role.name.println("Role: ");
+							// TODO: Check if role have a representation. If yes, have to use that one.
+							// Recursively have to traverse. 
+							// Now fast solution we put ID on normal role as representation, for Enum using Code.
+							if (role.opposite().ownerClass.representsEnum) {									
+								"- ENUM Value".println();
+							}
+							relAttr = role.opposite().ownerClass.allAttributes().selectOne(sa | sa.name == "code");
+							
+							// Trying to find representation
+							if (relAttr.isUndefined()) {
+								relAttr = role.opposite().ownerClass.representation; ///.allAttributes().select(a | a.representsId).collect(a | a.name).println(" REPRESENTATION: ");
+								if (relAttr.isDefined()) {
+									(role.opposite().ownerClass.name + " RERESENTED BY: " + relAttr.name).println("Representation: ");
+								}
+							}
+
+							// Set the identifier if there is no representation or code field							
+							if (relAttr.isUndefined()) {
+								relAttr = role.opposite().ownerClass.allAttributes().selectOne(sa | sa.name == "id");
+								if (relAttr.isDefined()) {
+									(role.opposite().ownerClass.name + " RERESENTED BY: " + relAttr.name).println("Representation: ");
+								}
+							}
+						}
+					} 
+										
+					if (relAttr.isUndefined()) {
+						throw "No attribute or role is undefined on relation: " + currentClass.name + " " + currentParsedRelationExpression.getRelationName();					
+					}
+					
+					// Derived attribute have to include in the tree
+					if (relAttr.derived) {
+					    (relAttr.name + " " + relAttr.value).println("Derived in derived: ");
+					    // Remove the current root from return structure. We have to reconstruct it.
+					    ret.remove(currentExpressionRoot);	
+
+					    // Adding all relations came from 
+					    for (e in relAttr.processExpressions()) {
+					   		if (e.isTypeOf(String)) {
+						 		ret.add(e);
+					  			expressionCount++;					   		
+					   		} else if (e.isTypeOf(Map)) {
+					   		    var cl : Map = new Map();
+
+					   		    // Cloning all from the root.
+					   		    var cm : Map = currentExpressionRoot;
+					   		    while (cm.get("__type") == "relation") {
+					   		        cl.put("__type", "relation");
+                                    cl.put("__class", cm.get("__class"));
+                                    cl.put("__name", cm.get("__name"));
+                                    cl.put("__role", cm.get("__role"));
+					   		        cm  = cm.get("__child");
+					   		        if (cm.get("__type") == "relation") {
+						   		        var n : Map = new Map();
+						   		        cl.put("__child", n);
+						   		        cl = n;
+					   		        } else {
+							   		    cl.put("__child", e);
+					   		        }
+					   		    }
+					   		    ret.add(cl);
+					   		}   	
+					    }
+					} else {					
+						current.put("__type", "attribute");
+						current.put("__attribute", relAttr);
+						current.put("__name", relAttr.name);
+					}
+					currentParsedRelationExpression = null;			
+				}
+		    }
+	    }
+    }
+	return ret;
+}

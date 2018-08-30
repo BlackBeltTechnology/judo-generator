@@ -1,9 +1,0 @@
-[* Hsql *]
-
-CREATE TABLE [%=tableOperation.table.sqlName%] (
-	ID INTEGER NOT NULL,
-	[%for (field in tableOperation.table.fields) {%]
-	[%=field.sqlName%] [%=field.type.name%] [% if (field.mandatory) { out.print("NOT NULL"); }%],	
-	[%}%]
-	PRIMARY KEY (ID)
-	);[% out.println("");%]

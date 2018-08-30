@@ -1,0 +1,9 @@
+@cached
+operation JUDOPSM!Attribute displayName() : String {
+	return self.getEntityType().name + "." + self.name;
+}
+
+@cached
+operation JUDOPSM!Attribute getEntityType() : JUDOPSM!EntityType {
+	return JUDOPSM!EntityType.all.selectOne(et | et.attributes.includes(self));
+}

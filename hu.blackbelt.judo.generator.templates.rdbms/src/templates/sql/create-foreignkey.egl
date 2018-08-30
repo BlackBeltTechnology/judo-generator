@@ -6,17 +6,10 @@
 
 [* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
 
-[% for (foreignKey in RDBMS!RdbmsForeignKey.all) { %]
---changeset generator:CREATE_FOREIGN_KEY_[%= foreignKey.table.sqlName %]_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
--- [%= foreignKey.name %] [%= foreignKey.uuid %]
-ALTER TABLE [%= foreignKey.table.sqlName %] 
-ADD CONSTRAINT [%= foreignKey.foreignKeySqlName %]
-FOREIGN KEY ([%= foreignKey.sqlName %])
-REFERENCES [%= foreignKey.referenceKey.table.sqlName %] (ID)
-		[% if (foreignKey.deleteOnCascade) { %]
-			ON DELETE CASCADE
-		[% } else if (not foreignKey.mandatory) { %]
-			ON DELETE SET NULL
-		[% } %]
-;[% out.println("\n"); %]
-[% } %]
+[% for (foreignKey in CURRENT!RdbmsForeignKey.all) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-foreignkey.egl");
+		inc.populate("foreignKey", foreignKey);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]

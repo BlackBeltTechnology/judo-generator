@@ -4,7 +4,7 @@
 %]
 --liquibase formatted sql
 
-[% for (table in RDBMS!RdbmsTable.all.select(t | not t.isKindOf(RDBMS!RdbmsJunctionTable) and (t.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly).size() > 0 or t.parent.isUndefined()))) {%]
+[% for (table in CURRENT!RdbmsTable.all.select(t | not t.isKindOf(RDBMS!RdbmsJunctionTable) and (t.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly).size() > 0 or t.parent.isUndefined()))) {%]
 [* ------------------------------------- *]
 [* ORACLE                                *]
 [* ------------------------------------- *]

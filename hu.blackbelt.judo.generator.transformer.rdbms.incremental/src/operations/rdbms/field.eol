@@ -1,0 +1,35 @@
+operation RDBMS!RdbmsField isSqlNameChanged(field : RDBMS!RdbmsField) : Boolean {
+	return self.sqlName <> field.sqlName;
+}
+
+operation RDBMS!RdbmsField isMandatoryChanged(field : RDBMS!RdbmsField) : Boolean {
+	return self.mandatory <> field.mandatory;
+}
+
+operation RDBMS!RdbmsField isSqlTypeChanged(field : RDBMS!RdbmsField) : Boolean {
+	return self.rdbmsTypeName <> field.rdbmsTypeName;
+}
+
+operation RDBMS!RdbmsField isSizeChanged(field : RDBMS!RdbmsField) : Boolean {
+	return self.size <> field.size;
+}
+operation RDBMS!RdbmsField isPrecisionChanged(field : RDBMS!RdbmsField) : Boolean {
+	return self.precision <> field.precision;
+}
+
+operation RDBMS!RdbmsField isScaleChanged(field : RDBMS!RdbmsField) : Boolean {
+	return self.scale <> field.scale;
+}
+
+operation RDBMS!RdbmsField isStorageByteChanged(field : RDBMS!RdbmsField) : Boolean {
+	return self.storageByte <> field.storageByte;
+}
+
+operation RDBMS!RdbmsField isAnyChanged(field : RDBMS!RdbmsField) : Boolean {
+	return self.isSqlNameChanged(field) or self.isMandatoryChanged(field) or self.isSqlTypeChanged(field) or self.isSizeChanged(field) or self.isPrecisionChanged(field) or self.isScaleChanged(field) or self.isStorageByteChanged(field);
+}
+
+operation RDBMS!RdbmsField isSameFieldType(field : RDBMS!RdbmsField) : Boolean {
+	return (self.isTypeOf(RDBMS!RdbmsIdentifierField) and field.isTypeOf(RDBMS!RdbmsIdentifierField)) or (self.isTypeOf(RDBMS!RdbmsValueField) and field.isTypeOf(RDBMS!RdbmsValueField));
+}
+
