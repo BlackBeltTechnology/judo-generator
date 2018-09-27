@@ -70,8 +70,8 @@ public class [%=className%] [%if (class.hasSuper()) {%] extends [%=class.superty
 		[%if (attr.unique) { %]
 			@hu.blackbelt.judo.business.validator.api.CustomValidator(hu.blackbelt.judo.business.validator.api.UniqueValidator.class)
 		[%} %]
-		[%if (attr.regexpForValidation.isDefined()) {%]
-			@javax.validation.constraints.Pattern(regexp = "[%=attr.regexpForValidation%]")
+		[%if (attr.regexp.isDefined()) {%]
+			@javax.validation.constraints.Pattern(regexp = "[%=attr.regexp%]")
 		[%} %]
 		[%if (attr.calculationScript.isDefined()) {%]
 			@hu.blackbelt.judo.business.bo.api.CalculatedAttribute(script = "[%=attr.calculationScript%]")
