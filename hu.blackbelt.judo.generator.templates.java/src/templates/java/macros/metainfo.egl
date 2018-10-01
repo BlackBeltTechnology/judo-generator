@@ -28,12 +28,8 @@
                         unique = [%=attr.unique%],
                         calculated = [%=attr.calculationScript.isDefined()%],
                         derived = [%=attr.derived%],
-                        [% if (attr.regexp.isDefined()) {%]
-                        regexp = "[%=attr.regexp.replace("\\\\","\\\\\\\\")%]",
-                        [%} else {%]
-                        regexp = "",
-                        [% } %]
-                        value = "[% if (attr.calculationScript.isDefined()) {%][%=attr.calculationScript%][%}else{%][%=attr.defaultValueExpression%][%}%]"
+                        regexp = "[%=escapeJavaLiteral(attr.regexp)%]",
+                        value = "[% if (attr.calculationScript.isDefined()) {%][%=escapeJavaLiteral(attr.calculationScript)%][%}else{%][%=escapeJavaLiteral(attr.defaultValueExpression)%][%}%]"
                 )[%if (hasMore) {%][%=","%][%}%]
         [%}%]
         },
@@ -68,10 +64,10 @@
                                 maximum = [%=multiplicity.get(ref.opposite.upper)%],
                                 navigable = [%=ref.opposite.navigable%],
                                 script = "[% if (ref.opposite.derived) {%][%=ref.opposite.virtualExpressionScript%][%}%]",
-                                description = "[%if (ref.opposite.derivedDescription.isDefined()) {%][%=ref.opposite.derivedDescription%][%}%]",
+                                description = "[%=escapeJavaLiteral(ref.opposite.derivedDescription)%]",
                                 derived = [%=ref.opposite.derived%],
-                                options = "[% if (ref.opposite.optionScript.isDefined()) {%][%=ref.opposite.optionScript%][%}%]",
-                                value = "[% if (ref.opposite.defaultValueExpression.isDefined()) {%][%=ref.opposite.defaultValueExpression%][%}%]",
+                                options = "[%=escapeJavaLiteral(ref.opposite.optionScript)%]",
+                                value = "[%=escapeJavaLiteral(ref.opposite.defaultValueExpression)%]",
                                 calculated = false
                         )
                 )[%if (hasMore) {%][%=","%][%}%]
@@ -90,11 +86,11 @@
                                 minimum = [%=multiplicity.get(ref.lower)%],
                                 maximum = [%=multiplicity.get(ref.upper)%],
                                 navigable = [%=ref.navigable%],
-                                script = "[% if (ref.derived) {%][%=ref.virtualExpressionScript%][%}%]",
-                                description = "[%if (ref.derivedDescription.isDefined()) {%][%=ref.derivedDescription%][%}%]",
+                                script = "[% if (ref.derived) {%][%=escapeJavaLiteral(ref.virtualExpressionScript)%][%}%]",
+                                description = "[%=escapeJavaLiteral(ref.derivedDescription)%]",
                                 derived = [%=ref.derived%],
-                                options = "[% if (ref.optionScript.isDefined()) {%][%=ref.optionScript%][%}%]",
-                                value = "[% if (ref.defaultValueExpression.isDefined()) {%][%=ref.defaultValueExpression%][%}%]",
+                                options = "[%=escapeJavaLiteral(ref.optionScript)%]",
+                                value = "[%=escapeJavaLiteral(ref.defaultValueExpression)%]",
                                 calculated = false
                         ),
                         otherEnd = @RelationEnd(
@@ -106,11 +102,11 @@
                                 minimum = [%=multiplicity.get(ref.opposite.lower)%],
                                 maximum = [%=multiplicity.get(ref.opposite.upper)%],
                                 navigable = [%=ref.opposite.navigable%],
-                                script = "[% if (ref.opposite.derived) {%][%=ref.opposite.virtualExpressionScript%][%}%]",
-                                description = "[%if (ref.opposite.derivedDescription.isDefined()) {%][%=ref.opposite.derivedDescription%][%}%]",
+                                script = "[% if (ref.opposite.derived) {%][%=escapeJavaLiteral(ref.opposite.virtualExpressionScript)%][%}%]",
+                                description = "[%if (ref.opposite.derivedDescription.isDefined()) {%][%=escapeJavaLiteral(ref.opposite.derivedDescription)%][%}%]",
                                 derived = [%=ref.opposite.derived%],
-                                options = "[% if (ref.opposite.optionScript.isDefined()) {%][%=ref.opposite.optionScript%][%}%]",
-                                value = "[% if (ref.opposite.defaultValueExpression.isDefined()) {%][%=ref.opposite.defaultValueExpression%][%}%]",
+                                options = "[% if (ref.opposite.optionScript.isDefined()) {%][%=escapeJavaLiteral(ref.opposite.optionScript)%][%}%]",
+                                value = "[% if (ref.opposite.defaultValueExpression.isDefined()) {%][%=escapeJavaLiteral(ref.opposite.defaultValueExpression)%][%}%]",
                                 calculated = false
                         )
                 )[%if (hasMore) {%][%=","%][%}%]

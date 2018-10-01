@@ -23,9 +23,9 @@ rule ClassProperty
 	t.derived = s.isDerived;
 	
 	if (s.defaultValue.isKindOf(Expression)) {
-		t.value = escapeJavaLiteral(s.defaultValue.symbol);
+		t.value = s.defaultValue.symbol;
 	} else {
-		t.value = escapeJavaLiteral(s.`default`);
+		t.value = s.`default`;
 	}
 	
 	t.mandatory = s.lowerValue.isDefined() and s.lowerValue.value > 0;
@@ -97,7 +97,7 @@ rule ClassPropertyRole
 	s.type.equivalent().println("RULE::ClassPropertyRole - Property TYPE EQUIV: ");
 	
 	if ( stereotypeApplications.get("derivedDescription").containsKey(s) ) {
-		t.derivedDescription = escapeJavaLiteral(stereotypeApplications.get("derivedDescription").get(s));
+		t.derivedDescription = stereotypeApplications.get("derivedDescription").get(s);
 	} else {
 		if (stereotypeApplications.get("derivedDescription").get(s.otherEnd).isDefined() or 
 		stereotypeApplications.get("derivedExpression").get(s.otherEnd).isDefined()) {
@@ -133,9 +133,9 @@ rule ClassPropertyRole
 	t.ownerClass ::= s.owner;
 	
 	if (s.defaultValue.isKindOf(Expression)) {
-		t.value = escapeJavaLiteral(s.defaultValue.symbol);
+		t.value = s.defaultValue.symbol;
 	} else {
-		t.value = escapeJavaLiteral(s.`default`);
+		t.value = s.`default`;
 	}
 	
 	
@@ -188,9 +188,9 @@ rule ClassPropertyRoleEnum
 	r1.lower = s.computeLower();
 	
 	if (s.defaultValue.isKindOf(Expression)) {
-		r1.value = escapeJavaLiteral(s.defaultValue.symbol);
+		r1.value = s.defaultValue.symbol;
 	} else {
-		r1.value = escapeJavaLiteral(s.`default`);
+		r1.value = s.`default`;
 	}
 	
 	r2.name = s.owner.name.firstToLowerCase() + s.name.firstToUpperCase() + "Inverse";
@@ -234,13 +234,13 @@ rule RelationProperty
 	t.ownerClass ::= s.type;
 	
 	if (s.defaultValue.isKindOf(Expression)) {
-		t.value = escapeJavaLiteral(s.defaultValue.symbol);
+		t.value = s.defaultValue.symbol;
 	} else {
-		t.value = escapeJavaLiteral(s.`default`);
+		t.value = s.`default`;
 	}
 	
 	if ( stereotypeApplications.get("derivedDescription").containsKey(s) ) {
-		t.derivedDescription = escapeJavaLiteral(stereotypeApplications.get("derivedDescription").get(s));
+		t.derivedDescription = stereotypeApplications.get("derivedDescription").get(s);
 	} else {
 		if (stereotypeApplications.get("derivedDescription").get(s.otherEnd).isDefined() or 
 		stereotypeApplications.get("derivedExpression").get(s.otherEnd).isDefined()) {

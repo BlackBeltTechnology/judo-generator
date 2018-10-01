@@ -49,3 +49,11 @@ operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
 	}
 	return ret;
 }
+
+operation escapeJavaLiteral(s : String) : String {
+	if (s.isDefined()) {
+		return s.replaceAll("\\\\", "\\\\\\\\").replaceAll("\n", " ");
+	} else {
+		return "";
+	}
+}

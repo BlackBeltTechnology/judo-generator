@@ -71,13 +71,13 @@ public class [%=className%] [%if (class.hasSuper()) {%] extends [%=class.superty
 			@hu.blackbelt.judo.business.validator.api.CustomValidator(hu.blackbelt.judo.business.validator.api.UniqueValidator.class)
 		[%} %]
 		[%if (attr.regexp.isDefined()) {%]
-			@javax.validation.constraints.Pattern(regexp = "[%=attr.regexp%]")
+			@javax.validation.constraints.Pattern(regexp = "[%=escapeJavaLiteral(attr.regexp)%]")
 		[%} %]
 		[%if (attr.calculationScript.isDefined()) {%]
-			@hu.blackbelt.judo.business.bo.api.CalculatedAttribute(script = "[%=attr.calculationScript%]")
+			@hu.blackbelt.judo.business.bo.api.CalculatedAttribute(script = "[%=escapeJavaLiteral(attr.calculationScript)%]")
 		[%} %]
 		[%if (attr.defaultValueExpression.isDefined()) {%]
-			@hu.blackbelt.judo.business.bo.api.AttributeDefaultValue(expression = "[%=attr.defaultValueExpression%]")
+			@hu.blackbelt.judo.business.bo.api.AttributeDefaultValue(expression = "[%=escapeJavaLiteral(attr.defaultValueExpression)%]")
 		[%} %]
 		@hu.blackbelt.judo.business.bo.api.XmiId("[%=attr.originUUID()%]")
 		private [%=attr.type.fqName()%] [%=attr.name%];
@@ -85,10 +85,10 @@ public class [%=className%] [%if (class.hasSuper()) {%] extends [%=class.superty
 	
 	[%for (ref in class.references()) {%]
 		[%if (ref.optionScript.isDefined()) {%]
-			@hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationExpression(script = "[%=ref.optionScript%]")
+			@hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationExpression(script = "[%=escapeJavaLiteral(ref.optionScript)%]")
 		[% } %]
 		[%if (ref.derived) {%]
-			@hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationVirtualExpression(script = "[%=ref.virtualExpressionScript%]", description="[%=ref.derivedDescription%]")
+			@hu.blackbelt.judo.business.bo.api.base.association.annotation.AssociationVirtualExpression(script = "[%=escapeJavaLiteral(ref.virtualExpressionScript)%]", description="[%=escapeJavaLiteral(ref.derivedDescription)%]")
 		[% } %]
 		[%if (ref.defaultValueExpression.isDefined()) {%]
 			@hu.blackbelt.judo.business.bo.api.AttributeDefaultValue(expression = "[%=ref.defaultValueExpression%]")
