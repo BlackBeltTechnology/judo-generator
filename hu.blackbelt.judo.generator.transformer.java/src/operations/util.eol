@@ -40,24 +40,30 @@ operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
 }
 
 operation checkAllUuidsForDuplicateOrMissing() {
-	var all = JAVA!JvmElement.all.collect(e | e.uuid);
-	var set = all.asSet();
+	var duplicated :Boolean = false;
+	var undefined :Boolean = false;
+	
+	var agg : Map = new Map;
 
-	var duplicated : Boolean = false;
-
-	set.size.println("SET: ");
-	all.size.println("ALL: ");
-
-	for (uuid in set) {
-		if (all.count(uuid) > 1) {
-			duplicated = true;
-			uuid.println("DUPLICATE: ");
+	for (uuid in JAVA!JvmElement.all.collect(e | e.uuid)) {
+		if (uuid.isUndefined()) {
+			"UNDEFINED UUID FOUND".println();
+			undefined = true;
+		} else {
+			if (agg.containsKey(uuid)) {
+				uuid.println("DUPLICATE: ");
+				duplicated = true;
+			} else {
+				agg.put(uuid, 1);
+			}
 		}
 	}
 	
-	JAVA!JvmElement.all.select(e | e.uuid.isUndefined()).println("UNDEFINED: ");
-	
 	if (duplicated) {
-		throw "Duplicated ID!";
+		throw "DUPLICATED UUID!";
+	}
+	
+	if (undefined) {
+		throw "UNDEFINED UUID!";
 	}
 }

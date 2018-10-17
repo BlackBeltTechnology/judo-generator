@@ -77,3 +77,32 @@ operation checkAllUuidsForDuplicateOrMissing() {
 		throw "Duplicated ID!";
 	}
 }
+
+operation checkAllUuidsForDuplicateOrMissing() {
+	var duplicated :Boolean = false;
+	var undefined :Boolean = false;
+	
+	var agg : Map = new Map;
+
+	for (uuid in QUERYDSL!QueryDslElement.all.collect(e | e.uuid)) {
+		if (uuid.isUndefined()) {
+			"UNDEFINED UUID FOUND".println();
+			undefined = true;
+		} else {
+			if (agg.containsKey(uuid)) {
+				uuid.println("DUPLICATE: ");
+				duplicated = true;
+			} else {
+				agg.put(uuid, 1);
+			}
+		}
+	}
+	
+	if (duplicated) {
+		throw "DUPLICATED UUID!";
+	}
+	
+	if (undefined) {
+		throw "UNDEFINED UUID!";
+	}
+}

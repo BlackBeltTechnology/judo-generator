@@ -15,15 +15,15 @@
 	<properties>
         <src.dir>src</src.dir>
 
-        <src.model>car</src.model>
+        <!-- src.model>car</src.model>
         <target.model>car</target.model>
         <model>Model</model>
-        <transformDomain>false</transformDomain>
+        <transformDomain>false</transformDomain-->
         
-        <!-- src.model>anakin</src.model>
+        <src.model>anakin</src.model>
         <target.model>anakin</target.model>
         <model>Anakin</model>
-        <transformDomain>false</transformDomain-->
+        <transformDomain>false</transformDomain>
         
         <!-- src.model>opm_pim_-_Modelio_import</src.model>
         <target.model>opm</target.model>
@@ -62,9 +62,9 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>hu.blackbelt.judo.generator</groupId>
-                                    <artifactId>hu.blackbelt.judo.generator.transformer.psm.domain</artifactId>
-                                    <version>${project.version}</version>
+                                    <groupId>hu.blackbelt.judo</groupId>
+                                    <artifactId>hu.blackbelt.judo.framework.domain</artifactId>
+                                    <version>${framework.domain.version}</version>
                                     <type>model</type>
                                     <classifier>psm</classifier>
                                     <overWrite>true</overWrite>
