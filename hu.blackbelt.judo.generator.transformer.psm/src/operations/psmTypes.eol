@@ -28,6 +28,7 @@ operation getPSMPrimitiveType(name : String) : psmTypes!JPrimitive {
 		case "NATURAL" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Natural").first();
 		case "IPADDRESS" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "Ipaddress").first();
 		case "URL" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
+		case "ADOSZAM" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.name = "String").first();
 		case "ID" : jType = psmTypes!JPrimitive.allInstances()->select(t | t.useForIdType).first();
 		default:		name.println("TYPE IS NOT HANDLED: ");
 	}
