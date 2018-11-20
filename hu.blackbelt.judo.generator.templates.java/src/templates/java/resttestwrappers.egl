@@ -30,9 +30,6 @@ import hu.blackbelt.judo.example.common.rest.test.*;
 import hu.blackbelt.judo.common.context.api.*;
 import hu.blackbelt.judo.business.validator.api.codes.*;
 
-[% for (type in class.allReferenceRestTestClientTypes()) { %]
-    import [%=type.fqName()%];
-[%}%]
 import [%=class.restTestClient().fqName()%];
 
 import static java.util.Arrays.asList;

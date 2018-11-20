@@ -28,9 +28,6 @@ import hu.blackbelt.judo.example.common.rest.test.*;
 import hu.blackbelt.judo.common.context.api.*;
 import hu.blackbelt.judo.business.validator.api.codes.*;
 
-[% for (ref in class.allReferences()) { %]
-    import [%=ref.type.bare().restTestClient().fqName()%];
-[%}%]
 import [%=class.restTestClient().fqName()%];
 import hu.blackbelt.judo.example.common.rest.test.RestTestWrapper;
 
