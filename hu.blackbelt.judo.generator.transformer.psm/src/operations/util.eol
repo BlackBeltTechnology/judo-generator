@@ -7,6 +7,9 @@ operation inpPIM!Element getUuid() : String {
 }
 
 operation inpPIM!Property computeLower() : Integer {
+	if (self.isDerived) {
+		return 0;
+	}
 	if (self.lowerValue.isDefined()) {
 		return self.lowerValue.value;
 	} else {
