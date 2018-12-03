@@ -211,13 +211,16 @@ operation RDBMS!RdbmsView findOrAddRelation(fromAlias : RDBMS!RdbmsTableAlias, t
 
 	// Creaate relation
 	if (currentRelation.isUndefined()) {
-		currentRelation = new RDBMS!RdbmsViewRelation();
-		self.relations.add(currentRelation);
-		currentRelation.name = relationName;
-		currentRelation.fromAlias = fromAlias;
-		currentRelation.toAlias = toAlias;
-		currentRelation.fromField = fromField;
-		currentRelation.toField = toField;
+	    // Search for toAlias.If there is matching, do not join again
+		if (self.relations.select(s | s.toAlias = toAlias).first.isUndefined()) {	
+			currentRelation = new RDBMS!RdbmsViewRelation();
+			self.relations.add(currentRelation);
+			currentRelation.name = relationName;
+			currentRelation.fromAlias = fromAlias;
+			currentRelation.toAlias = toAlias;
+			currentRelation.fromField = fromField;
+			currentRelation.toField = toField;
+		}
 	} 
 	return currentRelation;
 }
