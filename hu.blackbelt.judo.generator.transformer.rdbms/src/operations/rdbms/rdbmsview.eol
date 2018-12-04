@@ -211,8 +211,9 @@ operation RDBMS!RdbmsView findOrAddRelation(fromAlias : RDBMS!RdbmsTableAlias, t
 
 	// Creaate relation
 	if (currentRelation.isUndefined()) {
-	    // Search for toAlias.If there is matching, do not join again
-		if (self.relations.select(s | s.toAlias = toAlias).first.isUndefined()) {	
+	    // Search for toAlias. Maybe expression already If there is matching, do not join again. 
+	    currentRelation = self.relations.select(s | s.toAlias = toAlias).first;
+		if (currentRelation.isUndefined()) {	
 			currentRelation = new RDBMS!RdbmsViewRelation();
 			self.relations.add(currentRelation);
 			currentRelation.name = relationName;
@@ -283,14 +284,17 @@ operation RDBMS!RdbmsView addSupertypeAliases(baseView : RDBMS!RdbmsView) : RDBM
 	var superAlias : RDBMS!RdbmsTableAlias;
 	for (f : RDBMS!RdbmsTableAlias in baseView.tables.clone()) {
 
-		var created : RDBMS!RdbmsTableAlias = f.clone();
-		self.tables.add(created);
-		created.uuid = generateUuid(f.uuid, self.name, ".");
-		created.description = "Super " + f.table.name;
-		created.sqlName = "SUP_" + f.table.sqlName;
-
-		if (baseView.primaryTable == f) {
-			superAlias = created;
+		// Maybe expression make the inherited supertype alias created, skip it if exists
+		var existingAlias :RDBMS!RdbmsTableAlias = self.tables.select(s | s.sqlName = "SUP_" + f.table.sqlName).first;
+		if (existingAlias.isUndefined()) {
+			var created : RDBMS!RdbmsTableAlias = f.clone();
+			self.tables.add(created);
+			created.uuid = generateUuid(f.uuid, self.name, ".");
+			created.description = "Super " + f.table.name;
+			created.sqlName = "SUP_" + f.table.sqlName;
+			if (baseView.primaryTable == f) {
+				superAlias = created;
+			}
 		}
 		// created.println("Created: ");
 	}
