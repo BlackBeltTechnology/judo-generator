@@ -1,22 +1,20 @@
 @cached
-operation RDBMS!RdbmsView updatableParentAliases (): Collection {
-	return self.tables.select(t | t.table.parent.isUndefined() and t <> self.primaryTable and t.table.allInheritedIdentifier().size() > 0);
+operation RDBMS!RdbmsView updatableParentTables (): Collection {
+	return self.tables.select(t | t.table.parent.isUndefined() and t <> self.primaryTable and t.table.allInheritedIdentifier().size() > 0).collect(t | t.table).asSet();
 }
 
-@cached
-operation RDBMS!RdbmsView updatableAliasFields (tableAlias : RDBMS!RdbmsTableAlias) : Collection {
-	return self.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias` == tableAlias);
+operation RDBMS!RdbmsView updatableTableFields (table : RDBMS!RdbmsTable) : Collection {
+	return self.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias`.table == table);
 }
 
-@cached
-operation RDBMS!RdbmsView updatableAliasFieldsWithoutPrimaryKeys (tableAlias : RDBMS!RdbmsTableAlias) : Collection {
-	return self.updatableAliasFields(tableAlias).select(f | not f.tableField.isPrimary());
+operation RDBMS!RdbmsView updatableTableFieldsWithoutPrimaryKeys (table : RDBMS!RdbmsTable) : Collection {
+	return self.updatableTableFields(table).select(f | not f.tableField.isPrimary());
 }
 
 
 @cached
-operation RDBMS!RdbmsView updateableAliases () : Collection {
-	return self.tables.select(t | (t = self.primaryTable or self.primaryTable.table.allSupertypes().selectOne(t2 | t.table == t2).isDefined()) and self.updatableAliasFields(t).size() > 0).sortBy(t | t.table.parent.isDefined());
+operation RDBMS!RdbmsView updateableTables () : Collection {
+	return self.tables.select(t | (t = self.primaryTable or self.primaryTable.table.allSupertypes().selectOne(t2 | t.table == t2).isDefined()) and self.updatableTableFields(t.table).size() > 0).sortBy(t | t.table.parent.isDefined()).collect(t | t.table).asSet();
 }
 
 /*

@@ -25,11 +25,11 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
         END IF;
 
         -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
-		[% for (tableAlias in view.updateableAliases()) { %]
-			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+		[% for (table in view.updateableTables()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]		
 	  			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
 	            IF (:NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN
-			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
 			    END IF;
 	    	[% } %]
     	[% } %]        	
@@ -38,18 +38,14 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
         
         -- Inserting all fields over inheritance. 
         -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
-		[% for (tableAlias in view.updateableAliases()) { %]
-			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
-			INSERT INTO [%= tableAlias.table.sqlName %] (
-			[% for (field in view.updatableAliasFields(tableAlias)) { %]
-        		[% if (field.tableField.isPrimary()) { %] 
-        			[%= field.tableField.sqlName%] [% if (hasMore) { out.print(","); } %] 
-        		[% } else { %] 
-        			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
-        		[% } %]
+		[% for (table in view.updateableTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			INSERT INTO [%= table.sqlName %] (
+			[% for (field in view.updatableTableFields(table)) { %]
+    			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
 			[% } %]
 			) VALUES (
-			[% for (field in view.updatableAliasFields(tableAlias)) { %]
+			[% for (field in view.updatableTableFields(table)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			SERIAL_ID [% if (hasMore) { out.print(","); } %]
         		[% } else if (field.sqlName == "C_XMIID") { %] 
@@ -62,10 +58,10 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
 		[% } %]
 		
 		-- Update reference in all ascendance for that ID - it have to do here because the foreign keys can be mandatory and have to fill it with value.
-		[% for (tableAlias in view.updatableParentAliases()) { %]
-			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
-			[% if (tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
-	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+		[% for (table in view.updatableParentTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			[% if (table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
+	        UPDATE [%= table.sqlName %] SET [%= table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
 	        [% } %]
     	[% } %]        	
 
@@ -99,11 +95,11 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
         END IF;
 
         -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
-		[% for (tableAlias in view.updateableAliases()) { %]
-			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+		[% for (table in view.updateableTables()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]		
 	   			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
 	   			IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN   			
-			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
 			    END IF;
 	    	[% } %]        				
     	[% } %]
@@ -112,18 +108,14 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
 
         -- Inserting all fields over inheritance. 
         -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
-		[% for (tableAlias in view.updateableAliases()) { %]
-			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
-			INSERT INTO [%= tableAlias.table.sqlName %] (
-			[% for (field in view.updatableAliasFields(tableAlias)) { %]
-        		[% if (field.tableField.isPrimary()) { %] 
-        			[%= field.tableField.sqlName%] [% if (hasMore) { out.print(","); } %] 
-        		[% } else { %] 
-        			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
-        		[% } %]
+		[% for (table in view.updateableTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			INSERT INTO [%= table.sqlName %] (
+			[% for (field in view.updatableTableFields(table)) { %]
+    			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
 			[% } %]
 			) VALUES (
-			[% for (field in view.updatableAliasFields(tableAlias)) { %]
+			[% for (field in view.updatableTableFields(table)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			SERIAL_ID [% if (hasMore) { out.print(","); } %]
         		[% } else if (field.sqlName == "C_XMIID") { %] 
@@ -134,10 +126,10 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
 			[% } %]
 			);
 		[% } %]
-		[% for (tableAlias in view.updatableParentAliases()) { %]
-			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
-			[% if (tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
-	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+		[% for (table in view.updatableParentTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			[% if (table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
+	        UPDATE [%= table.sqlName %] SET [%= table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
 	    	[% } %]		
     	[% } %]        	
     END;
@@ -166,29 +158,25 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
 
 
         -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
-		[% for (tableAlias in view.updateableAliases()) { %]
-			[% for (foreignKey : RDBMS!RdbmsForeignKey in tableAlias.table.uniqueForeignKeys()) { %]		
+		[% for (table in view.updateableTables()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]		
 	   			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
 	   			IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN   			
-			        UPDATE [%= tableAlias.table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
 			    END IF;
 	    	[% } %]        				
     	[% } %]
 
         -- Inserting all fields over inheritance. 
         -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
-		[% for (tableAlias in view.updateableAliases()) { %]
-			-- [%= tableAlias.table.name %] [%= tableAlias.table.uuid %]
-			INSERT INTO [%= tableAlias.table.sqlName %] (
-			[% for (field in view.updatableAliasFields(tableAlias)) { %]
-        		[% if (field.tableField.isPrimary()) { %] 
-        			[%= field.tableField.sqlName%] [% if (hasMore) { out.print(","); } %] 
-        		[% } else { %] 
-        			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
-        		[% } %]
+		[% for (table in view.updateableTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			INSERT INTO [%= table.sqlName %] (
+			[% for (field in view.updatableTableFields(table)) { %]
+    			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
 			[% } %]
 			) VALUES (
-			[% for (field in view.updatableAliasFields(tableAlias)) { %]
+			[% for (field in view.updatableTableFields(table)) { %]
         		[% if (field.tableField.isPrimary()) { %] 
         			SERIAL_ID [% if (hasMore) { out.print(","); } %]
         		[% } else if (field.sqlName == "C_XMIID") { %] 
@@ -201,9 +189,9 @@ CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlNa
 		[% } %]
 
 		-- Update reference in all ascendance for that ID - it have to do here because the foreign keys can be mandatory and have to fill it with value.
-		[% for (tableAlias in view.updatableParentAliases()) { %]
-	        [% if (tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
-	        UPDATE [%= tableAlias.table.sqlName %] SET [%= tableAlias.table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+		[% for (table in view.updatableParentTables()) { %]
+	        [% if (table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
+	        UPDATE [%= table.sqlName %] SET [%= table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
 	    	[% } %]        	
     	[% } %]        	
         RETURN NEW;

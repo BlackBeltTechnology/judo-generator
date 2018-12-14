@@ -4,7 +4,7 @@
 %]
 --liquibase formatted sql
 
-[% for (view in CURRENT!RdbmsView.all) { %]
+[% for (view in CURRENT!RdbmsView.all) { view.name.println("Create View: "); %]
 --changeset generator:CREATE_VIEW_[%= view.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
 -- [%= view.name %] [%= view.uuid %]
 CREATE VIEW [%= view.sqlName %]  AS SELECT
