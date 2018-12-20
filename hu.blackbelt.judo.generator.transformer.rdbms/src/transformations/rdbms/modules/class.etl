@@ -39,53 +39,36 @@ rule JClassToRdbmsView
 	    // Base alias is a reference for base table    
 	    var baseAlias : RDBMS!RdbmsTableAlias = v.createBaseAlias(s);
 
-		// Add primary key
-	    for (a : PSM!JAttribute in s.attributes.select(a | a.isPrimaryKey())) {
-	   		v.addPrimaryKeyField(a);	   		
-	    }
-		
-		// Iterate all roles contained in base table and add as a field.
-		for (r : PSM!JRole in s.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
-			// r.name.println("Role (owned) found: ");
-			v.addOwnedRelationField(r);
+		// Add this and all ancestor
+		var superClass : PSM!JClass = s;
+		while (superClass.isDefined()) {
+
+			// Add primary key
+		    for (a : PSM!JAttribute in superClass.attributes.select(a | a.isPrimaryKey())) {
+		   		v.addPrimaryKeyField(s, a);	   		
+		    }
+
+			// Iterate all roles contained in base table and add as a field.
+			for (r : PSM!JRole in superClass.roles.select(r | r.isForeign() and not r.ownerRelationship.isJunction())) {
+				v.addOwnedRelationField(s, r);
+			}
+	
+		    // Iterate all roles contained in the other table and add as a field.
+			for (r : PSM!JRole in superClass.roles.select(r | not r.isForeign() and not r.ownerRelationship.derived and not r.ownerRelationship.isJunction())) {
+				v.addForeignRelationField(s, r);
+			}
+
+	        // Convert attributes to be able to clone supertypes
+		    for (a : PSM!JAttribute in superClass.attributes.select(a | not a.isPrimaryKey() and not a.derived)) {
+		   		v.addValueField(s, a);	   		
+		    }
+
+			// Adding derived fields last, because the referenced fields have to be exists.
+		    for (a : PSM!JAttribute in superClass.attributes.select(a | a.derived)) {
+		   		v.addExpressionField(s, a);	   		
+		    }
+			superClass = superClass.supertype;
 		}
-
-
-        // Convert attributes to be able to clone supertypes
-	    for (a : PSM!JAttribute in s.attributes.select(a | not a.isPrimaryKey() and not a.derived)) {
-	   		v.addValueField(a);	   		
-	    }
-
-	    // Inherited aliases and attributes
-	    if (s.supertype.isDefined()) {
-		   	var baseView : RDBMS!RdbmsView = s.supertype.equivalent("JClassToRdbmsView");
-			// Clone super types aliases
-			var superAlias : RDBMS!RdbmsTableAlias = v.addSupertypeAliases(baseView);
-			
-	    	// Create relation to super type
-	    	v.findOrAddRelation(v.primaryTable, superAlias, v.primaryIdentifierField.tableField, baseView.primaryIdentifierField.tableField);    	    	
-	    
-	    	// Copy fields from supertype
-			v.addSupertypeViewFields(baseView);
-
-			// Copy relations from supertype
-	    	v.addSupertypeRelations(baseView);
-			
-	    	// Remap primary ID
-	    	v.primaryIdentifierField = v.fields.select(f | f.name = baseView.primaryIdentifierField.name).first();
-	    } 
-
-		// Iterate all roles contained in the other table and add as a field.
-		for (r : PSM!JRole in s.roles.select(r | not r.isForeign() and not r.ownerRelationship.derived and not r.ownerRelationship.isJunction())) {
-			// ssr.name.println("Role (foreign owned) found: ");
-			v.addForeignRelationField(r);
-		}
-
-		// Adding derived fields last, becaause the referenced fields have to be exists.
-	    for (a : PSM!JAttribute in s.attributes.select(a | a.derived)) {
-	   		v.addExpressionField(a);	   		
-	    }
-
         targetModel.rdbmsViews.add(v);
 }
 
