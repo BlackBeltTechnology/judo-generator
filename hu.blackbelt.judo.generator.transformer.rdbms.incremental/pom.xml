@@ -120,9 +120,8 @@
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>${project.groupId}</groupId>
+                        <groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
-						<version>${epsilon.maven.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>create-incremental-postgres</id>
@@ -345,7 +344,7 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>hu.blackbelt.judo.generator</groupId>
+                        <groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<executions>
 							<execution>
@@ -539,7 +538,7 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>hu.blackbelt.judo.generator</groupId>
+                        <groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<executions>
 							<execution>
@@ -728,7 +727,7 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>hu.blackbelt.judo.generator</groupId>
+                        <groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<executions>
 							<execution>

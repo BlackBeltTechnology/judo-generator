@@ -76,12 +76,12 @@
                     </plugin>
         
                     <plugin>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>hu.blackbelt.epsilon</groupId>
                         <artifactId>epsilon-maven-plugin</artifactId>
                         <executions>
                             <execution>
                                 <id>transform-from-pim</id>
-                                <phase>generate-resources</phase>
+                                <phase>compile</phase>
                                 <goals>
                                     <goal>execute</goal>
                                 </goals>
@@ -90,7 +90,6 @@
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
-        
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
@@ -98,13 +97,12 @@
                                     </metaModels>
                                     <models>
                                         <model>
-                                            <artifact>mvn:hu.blackbelt.judo:hu.blackbelt.judo.framework.domain:uml:model:${framework.model.version}</artifact>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:uml:pim:${test.model.version}</artifact>
                                             <name>inpPIM</name>
                                             <metaModelUris>
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
                                                 <param>http://www.omg.org/spec/UML/20131001/MagicDrawProfile</param>
-                                                <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
                                                 <param>http:///schemas/ValidationProfile/_E8DQcDGdEei6IdEFC9bfxw/0</param>
                                                 <param>http:///schemas/DSLCustomization/_E8xpMDGdEei6IdEFC9bfxw/0</param>
                                                 <param>http://www.blackbelt.hu/metamodel/pim/1.1</param>
@@ -129,6 +127,13 @@
                                             </metaModelUris>
                                         </model>
                                     </models>
+                                    <excelModels>
+                                        <excelModel>
+                                            <name>JTypeMapping</name>
+                                            <artifact>${project.build.directory}/classes/model/PIM2PSM.xlsx</artifact>
+                                            <configurationArtifact>${project.build.directory}/classes/model/typemapping.xml</configurationArtifact>
+                                        </excelModel>
+                                    </excelModels>
                                     <eolPrograms>
                                         <Etl>
                                             <source>src/transformations/pimToJUDOPsm.etl</source>

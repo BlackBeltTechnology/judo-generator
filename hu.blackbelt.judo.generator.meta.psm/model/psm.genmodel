@@ -54,6 +54,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/framework"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/participates"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JElement/visibility"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JElement/annotations"/>
     </genClasses>
     <genClasses image="false" ecoreClass="psm.ecore#//JType"/>
     <genClasses image="false" ecoreClass="psm.ecore#//JTypedElement">
@@ -108,11 +109,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/uiNoSearch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/watched"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/representsId"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/unique"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/ordered"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/value"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/derived"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/calculated"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JOperation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/classBased"/>
@@ -127,10 +123,6 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JParameter/ownerOperation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/input"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JParameter/interval"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/ordered"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/unique"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/lower"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/upper"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JRelationship">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JRelationship/package"/>
@@ -222,6 +214,10 @@
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JSubmodel">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JSubmodel/version"/>
+    </genClasses>
+    <genClasses ecoreClass="psm.ecore#//JAnnotation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAnnotation/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAnnotation/value"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Ecore" ecorePackage="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#/">

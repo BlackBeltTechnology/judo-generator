@@ -1,0 +1,8 @@
+@cached
+operation tgtPSM!JPackage fullyQualifiedPath() : String {
+	if (self.parent.isUndefined()) {
+		return self.name;
+	} else {
+		return self.parent.fullyQualifiedPath().concat("::").concat(self.name);
+	}
+}

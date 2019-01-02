@@ -12,6 +12,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="participates" upperBound="-1"
         eType="#//JLayer"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" eType="#//JVisibility"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" upperBound="-1"
+        eType="#//JAnnotation" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JType" abstract="true" eSuperTypes="#//JElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="JTypedElement" abstract="true" eSuperTypes="#//JElement">
@@ -282,5 +284,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JSubmodel" eSuperTypes="#//JElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JAnnotation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -80,9 +80,8 @@
                     </plugin>
                     
                     <plugin>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>hu.blackbelt.epsilon</groupId>
                         <artifactId>epsilon-maven-plugin</artifactId>
-                        <version>${project.version}</version>
                         <executions>
                             <execution>
                                 <id>extend-pim</id>
