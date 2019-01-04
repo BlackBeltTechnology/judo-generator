@@ -14,6 +14,13 @@
 	}
 %]
 
+[% operation UI!UIAnnotation generateJson() { %]
+{
+   "name" : [%=self.name%],
+   "value" : [%=self.value%],   
+}
+[% } %]
+
 [% operation UI!UIClass generateJson() { %]
 {
 	"singleton" : [%=self.singleton%],
@@ -223,7 +230,15 @@
 		[%}%]
 	[% } %]
 	],
-	
+
+	[% if(not self.annotations.isEmpty())  { %]	
+	"annotations" : [
+		[%for (annotation in self.annotations) { %]
+			[%annotation.generateJson();%] [% if (hasMore) { out.println(","); } %]
+		[%}%]
+	],
+	[% } %]
+
 	"id" : "[%=self.id%]",
 	"readonly" : [%=self.readonly%],
 	"inherited" : [%=self.inherited%],
