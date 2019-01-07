@@ -16,8 +16,7 @@
 
 [% operation UI!UIAnnotation generateJson() { %]
 {
-   "name" : [%=self.name%],
-   "value" : [%=self.value%],   
+   "[%=self.name%]" : "[%=self.value%]"
 }
 [% } %]
 
