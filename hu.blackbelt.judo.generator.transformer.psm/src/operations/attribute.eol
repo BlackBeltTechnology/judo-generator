@@ -69,8 +69,7 @@ operation tgtPSM!JAttribute uuid(namespace : String) : tgtPSM!JAttribute {
 }
 
 operation tgtPSM!JAttribute type(type : tgtPSM!JType) : tgtPSM!JAttribute {
-	self.type(type, type.name);
-	return self;
+	return self.type(type, type.name);
 }
 
 operation tgtPSM!JAttribute type(type : tgtPSM!JType, originalType : String) : tgtPSM!JAttribute {
