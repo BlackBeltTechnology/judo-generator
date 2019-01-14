@@ -2,8 +2,8 @@
   import "../../../operations/_importAll.eol";
   import "../../../main.egl";
   
-  var multiplicity = Map{ -1 = "Meta.Multiplicity.Star", 0 = "Meta.Multiplicity.Zero", 1 = "Meta.Multiplicity.One"};
-  var kind = Map{ JvmReferenceKind#ASSOCIATION = "Meta.Kind.Association", JvmReferenceKind#AGGREGATION = "Meta.Kind.Aggregation", JvmReferenceKind#COMPOSITION = "Meta.Kind.Composition"};
+  var metaMultiplicity = Map{ -1 = "Meta.Multiplicity.Star", 0 = "Meta.Multiplicity.Zero", 1 = "Meta.Multiplicity.One"};
+  var metaKind = Map{ JvmReferenceKind#ASSOCIATION = "Meta.Kind.Association", JvmReferenceKind#AGGREGATION = "Meta.Kind.Aggregation", JvmReferenceKind#COMPOSITION = "Meta.Kind.Composition"};
 %]
 @Meta(
 		name = "[%=class.name%]",
@@ -43,9 +43,9 @@
                                 xmiid = "[%=class.origin.uuid%].[%=ref.name%]",
                                 collection = [%=ref.type.isCollection()%],
                                 type = [%if (ref.framework) {%][%=ref.type.bare().boInterface().fqName()%][%}else{%][%=ref.type.bare().bo().fqName()%][%}%].class,
-                                kind = [%=kind.get(ref.kind)%],
-                                minimum = [%=multiplicity.get(ref.lower)%],
-                                maximum = [%=multiplicity.get(ref.upper)%],
+                                kind = [%=metaKind.get(ref.kind)%],
+                                minimum = [%=metaMultiplicity.get(ref.lower)%],
+                                maximum = [%=metaMultiplicity.get(ref.upper)%],
                                 navigable = [%=ref.navigable%],
                                 script = "[% if (ref.derived) {%][%=ref.virtualExpressionScript%][%}%]",
                                 description = "[%if (ref.derivedDescription.isDefined()) {%][%=ref.derivedDescription%][%}%]",
@@ -59,9 +59,9 @@
                                 xmiid = "[%=ref.opposite.ownerClass.origin.uuid%].[%=ref.opposite.name%]",
                                 collection = [%=ref.opposite.type.isCollection()%],
                                 type = [%if (ref.framework) {%][%=ref.opposite.type.bare().boInterface().fqName()%][%}else{%][%=ref.opposite.type.bare().bo().fqName()%][%}%].class,
-                                kind = [%=kind.get(ref.opposite.kind)%],
-                                minimum = [%=multiplicity.get(ref.opposite.lower)%],
-                                maximum = [%=multiplicity.get(ref.opposite.upper)%],
+                                kind = [%=metaKind.get(ref.opposite.kind)%],
+                                minimum = [%=metaMultiplicity.get(ref.opposite.lower)%],
+                                maximum = [%=metaMultiplicity.get(ref.opposite.upper)%],
                                 navigable = [%=ref.opposite.navigable%],
                                 script = "[% if (ref.opposite.derived) {%][%=ref.opposite.virtualExpressionScript%][%}%]",
                                 description = "[%=escapeJavaLiteral(ref.opposite.derivedDescription)%]",
@@ -82,9 +82,9 @@
                                 xmiid = "[%=class.origin.uuid%].[%=ref.name%]",
                                 collection = [%=ref.type.isCollection()%],
                                 type = [%if (ref.framework) {%][%=ref.type.bare().boInterface().fqName()%][%}else{%][%=ref.type.bare().bo().fqName()%][%}%].class,
-                                kind = [%=kind.get(ref.kind)%],
-                                minimum = [%=multiplicity.get(ref.lower)%],
-                                maximum = [%=multiplicity.get(ref.upper)%],
+                                kind = [%=metaKind.get(ref.kind)%],
+                                minimum = [%=metaMultiplicity.get(ref.lower)%],
+                                maximum = [%=metaMultiplicity.get(ref.upper)%],
                                 navigable = [%=ref.navigable%],
                                 script = "[% if (ref.derived) {%][%=escapeJavaLiteral(ref.virtualExpressionScript)%][%}%]",
                                 description = "[%=escapeJavaLiteral(ref.derivedDescription)%]",
@@ -98,9 +98,9 @@
                                 xmiid = "[%=ref.opposite.ownerClass.origin.uuid%].[%=ref.opposite.name%]",
                                 collection = [%=ref.opposite.type.isCollection()%],
                                 type = [%if (ref.framework) {%][%=ref.opposite.type.bare().boInterface().fqName()%][%}else{%][%=ref.opposite.type.bare().bo().fqName()%][%}%].class,
-                                kind = [%=kind.get(ref.opposite.kind)%],
-                                minimum = [%=multiplicity.get(ref.opposite.lower)%],
-                                maximum = [%=multiplicity.get(ref.opposite.upper)%],
+                                kind = [%=metaKind.get(ref.opposite.kind)%],
+                                minimum = [%=metaMultiplicity.get(ref.opposite.lower)%],
+                                maximum = [%=metaMultiplicity.get(ref.opposite.upper)%],
                                 navigable = [%=ref.opposite.navigable%],
                                 script = "[% if (ref.opposite.derived) {%][%=escapeJavaLiteral(ref.opposite.virtualExpressionScript)%][%}%]",
                                 description = "[%if (ref.opposite.derivedDescription.isDefined()) {%][%=escapeJavaLiteral(ref.opposite.derivedDescription)%][%}%]",
