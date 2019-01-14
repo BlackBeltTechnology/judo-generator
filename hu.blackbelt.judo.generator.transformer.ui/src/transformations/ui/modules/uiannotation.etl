@@ -1,0 +1,9 @@
+import "../../../operations/_importAll.eol";
+
+@lazy
+rule UIAnnotation
+	transform s : PSM!JAnnotation
+	to t : UI!UIAnnotation {
+	t.name = s.name;
+	t.value = s.value;
+}

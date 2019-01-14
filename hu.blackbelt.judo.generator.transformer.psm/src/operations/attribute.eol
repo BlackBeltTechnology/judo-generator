@@ -69,7 +69,15 @@ operation tgtPSM!JAttribute uuid(namespace : String) : tgtPSM!JAttribute {
 }
 
 operation tgtPSM!JAttribute type(type : tgtPSM!JType) : tgtPSM!JAttribute {
+	return self.type(type, type.name);
+}
+
+operation tgtPSM!JAttribute type(type : tgtPSM!JType, originalType : String) : tgtPSM!JAttribute {
 	self.type = type;
+    var ann : tgtPSM!JAnnotation = new tgtPSM!JAnnotation();
+	self.annotations.add(ann);
+	ann.name = "originalTypeName";
+	ann.value = originalType;
 	return self;
 }
 
