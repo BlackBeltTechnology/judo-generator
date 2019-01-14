@@ -52,6 +52,9 @@ rule UIBaseComponentType
 		uibasetype.interval = jattribute.interval;
 		
 		uibasetype.~search = not jattribute.uiNoSearch;
+		for (ann in  jattribute.annotations) {
+			uibasetype.annotations.add(ann.equivalent("UIAnnotation"));
+		}
 	} 
 
 @lazy

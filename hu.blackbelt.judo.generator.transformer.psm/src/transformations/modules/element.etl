@@ -79,6 +79,10 @@ rule TypedElement
 		t.type ::= s.type;
 	} else if (s.type.isTypeOf(PrimitiveType)) {
 		t.type = s.type.getEquivalentPrimType();
+	    var ann : tgtPSM!JAnnotation = new tgtPSM!JAnnotation();
+		t.annotations.add(ann);
+		ann.name = "originalTypeName";
+		ann.value = s.type.name;
 	} else if (s.type.isTypeOf(Enumeration)) {
 		t.type = s.type.equivalent("Enum2CorrespondingValueClass");
 	} else {

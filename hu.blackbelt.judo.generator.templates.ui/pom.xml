@@ -32,7 +32,7 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>hu.blackbelt.judo.generator</groupId>
+                        <groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<executions>
 							<execution>
@@ -57,7 +57,7 @@
 											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.ui/library/uiTypes.model</platformAlias>
 										</model>
 										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.ui:model:ui:${project.version}</artifact>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:ui:${test.model.version}</artifact>
 											<name>UI</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/ui</param>
@@ -65,7 +65,7 @@
 											<expand>true</expand>
 										</model>
 										<model>
-											<artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.ui:model:resources:${project.version}</artifact>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:resources:${test.model.version}</artifact>
 											<name>Resources</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/ui/resources</param>
@@ -77,10 +77,23 @@
 										<Egl>
 											<source>src/main.egl</source>
 											<outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+                                            <parameters>
+                                                <parameter>
+                                                    <name>projectVersion</name>
+                                                    <value>${project.version}</value>
+                                                </parameter>
+                                            </parameters>
 										</Egl>
 									</eolPrograms>
 								</configuration>
 							</execution>
+                        </executions>
+                    </plugin>
+                            
+                    <plugin>
+                        <groupId>hu.blackbelt.judo</groupId>
+                        <artifactId>generator-runner-maven-plugin</artifactId>
+                        <executions>
 							<execution>
 								<id>mergeJson</id>
 								<phase>process-resources</phase>
@@ -96,8 +109,9 @@
 									</newJson>
 								</configuration>
 							</execution>
-						</executions>
+                        </executions>
 					</plugin>
+
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>build-helper-maven-plugin</artifactId>

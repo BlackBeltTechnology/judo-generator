@@ -33,7 +33,7 @@ post {
 	stereotypeApplications.get("order").setAttrOrderAssocs();
 	
 	for (je in tgtPSM!JElement.all) {
-		if (je.participates.size = 0) {
+		if (je.participates.size() = 0) {
 			je.participates.add(tgtPSM!JLayer#ALL);
 		}
 		if (transformDomain.asBoolean()) {

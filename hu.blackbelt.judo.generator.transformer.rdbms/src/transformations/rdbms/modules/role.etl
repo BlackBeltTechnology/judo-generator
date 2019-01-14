@@ -9,7 +9,9 @@ rule JRoleToRdbmsTableForeignKey
 	    if (s.opposite().isUndefined()) {
 	    	throw "Could not find opposite: " + s.name;
 	    }
-	    fk.referenceKey = s.opposite().ownerClass.equivalent().primaryKey;
+	    // fk.referenceKey = s.opposite().ownerClass.equivalent("JClassToRdbmsTable").primaryKey;
+	    fk.referenceKey = s.opposite().ownerClass.primaryKeyAttribute().equivalent("JAttributeToTableIdField");	    
+	    
 	    fk.sqlName = s.roleIdSqlName();    
 	    fk.foreignKeySqlName = s.roleFkSqlName(); 
 		fk.table =  s.ownerClass.equivalent("JClassToRdbmsTable");

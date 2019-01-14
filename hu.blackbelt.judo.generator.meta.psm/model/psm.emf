@@ -10,6 +10,7 @@ abstract class JElement {
   attr boolean framework;
   attr JLayer[*] participates;
   attr JVisibility visibility;
+  val JAnnotation[*] annotations;
 }
 
 abstract class JType extends JElement {
@@ -17,6 +18,13 @@ abstract class JType extends JElement {
 
 abstract class JTypedElement extends JElement {
   ref JType[1] type;
+  attr String value;
+  attr boolean ~derived;
+  attr boolean calculated;
+  attr int lower = 0;
+  attr int upper = 1;
+  attr boolean ~ordered;
+  attr boolean ~unique;
 }
 
 class JPrimitive extends JType {
@@ -33,9 +41,10 @@ class JEnumeration extends JType {
 class JClass extends JType {
   attr boolean ~abstract;
   val JStateMachine[*]#ownerClass stateMachines;
+
+  @ExtendedMetaData(kind="simple", processing="skip")
   val JOperation[*]#ownerClass operations;
-  attr String[*] aliases;
-  ref JAttribute[*] attributeOrder;
+  val JUIAttributeGroup[*] attributeOrder;
   ref JAttribute[*] attributesForListing;
   ref JEnumeration#classRepresentation fixedEnum;
   attr boolean representsTenant;
@@ -49,21 +58,22 @@ class JClass extends JType {
   ref JRole[*]#ownerClass roles;
   val JAttribute[*]#ownerClass attributes;
   attr boolean businessSingleton;
+  val JUIAlias[*]#ownerClass aliases;
+  attr boolean watched = false;
+  attr boolean representsEnumValue;
 }
 
 class JAttribute extends JTypedElement {
-  attr boolean ~unique;
-  attr boolean ~ordered;
-  attr String value;
   attr String placeholder;
   attr String regexp;
   attr boolean mandatory;
-  attr boolean ~derived;
-  attr boolean calculated;
   attr int decimals;
   attr String interval;
   attr boolean technical;
   ref JClass#attributes ownerClass;
+  attr boolean uiNoSearch = false;
+  attr boolean watched = false;
+  attr boolean representsId = false;
 }
 
 class JOperation extends JElement {
@@ -73,15 +83,13 @@ class JOperation extends JElement {
   ref JTransition[*]#executingOperation transition;
   attr boolean bulk;
   attr JOperationKind kind;
+  attr boolean uiMustConfirm = false;
 }
 
 class JParameter extends JTypedElement {
-  attr boolean ~ordered;
-  attr boolean ~unique;
-  attr int lower = 0;
-  attr int upper = 1;
   ref JOperation#parameters ownerOperation;
   attr boolean input = true;
+  attr String interval;
 }
 
 class JRelationship extends JElement {
@@ -96,7 +104,7 @@ class JRole extends JElement {
   attr boolean navigable;
   attr boolean ~unique;
   attr boolean ~ordered = true;
-  ref JRelationship#roles ownerRelationship;
+  ref JRelationship[1]#roles ownerRelationship;
   attr String derivedExpression;
   attr String derivedDescription;
   attr JAssociationKind kind = "ASSOCIATION";
@@ -104,6 +112,7 @@ class JRole extends JElement {
   ref JClass[1]#roles ownerClass;
   attr String value;
   attr boolean calculated;
+  attr String interval;
 }
 
 class JLiteral extends JElement {
@@ -158,9 +167,10 @@ enum JVisibility {
 
 class JModel extends JElement {
   val JPackage[*]#ownerModel packages;
-  attr String[1] version;
   attr String packagePrefix;
   ref JPackage[1] applicationTop;
+  val JUIMenuItem[*] rootMenuItems;
+  val JInfo info;
 }
 
 enum JAssociationKind {
@@ -183,5 +193,58 @@ enum JLayer {
   UI = 5;
   DOCUMENT = 6;
   PERMISSION = 7;
+  SCREEN = 8;
+}
+
+class JUIMenuItem extends JElement {
+  val JUIMenuItem[*]#parent children;
+  ref JUIMenuItem#children parent;
+  ref JClass represent;
+  val JUIFilter[*] uifilters;
+  attr JMenuItemType type;
+  ref JUIAlias alias;
+}
+
+class JUIAttributeGroup extends JElement {
+  ref JAttribute[*] attributes;
+  attr int position;
+}
+
+enum JMenuItemType {
+  OBJECT = 0;
+  LIST = 1;
+  NONE = 2;
+}
+
+class JUIFilter extends JElement {
+  ref JAttribute[1] attribute;
+  attr JOperator[1] operator;
+  attr String[1] value;
+}
+
+enum JOperator {
+  EQ = 0;
+  NE = 1;
+  LT = 2;
+  LTE = 3;
+  GT = 4;
+  GTE = 5;
+}
+
+class JUIAlias extends JElement {
+  ref JClass[1]#aliases ownerClass;
+}
+
+class JInfo extends JElement {
+  val JSubmodel[*] submodels;
+}
+
+class JSubmodel extends JElement {
+  attr String version;
+}
+
+class JAnnotation {
+  attr String[1] name;
+  attr String[1] value;
 }
 
