@@ -120,6 +120,19 @@ operation Any fullyQualifiedPath() : String {
 	}
 }
 
+@cached
+operation NamedElement getTopLevelPackageOfNamedElement() : inpPIM!Package {
+	if (self.isKindOf(NamedElement)) {
+		if (self.owner.isKindOf(Model)) {
+			return self;
+		} else {
+			return self.owner.getTopLevelPackageOfNamedElement();
+		}
+	} else {
+		throw "Only a NamedElement object is valid as an input!";
+	}
+}
+
 operation checkAllUuidsForDuplicateOrMissing() {
 	var duplicated :Boolean = false;
 	var undefined :Boolean = false;

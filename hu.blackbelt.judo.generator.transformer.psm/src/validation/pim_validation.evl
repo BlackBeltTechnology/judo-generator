@@ -1,0 +1,206 @@
+import "../operations/util.eol"; 
+import "../transformations/pre/collectJUDOStereotypes.eol";
+
+context inpPIM!TypedElement {
+
+	guard : self.hasPackageStereotype() and self.topLevelPackageHasApplicationStereotype()
+	
+	constraint PrimitiveTypeHasToBeAnUMLorJUDOSpecificPrimitiveTypeWithNameDefined {
+		guard : self.type.isTypeOf(PrimitiveType)// and self.type.name.isDefined()
+		check {
+			if (self.type.name.isUndefined()) {
+				return false;
+			}
+			
+			return JTypeMapping!TypeMapping.all.PIM.select(p | p.isDefined()).collect(p | p.trim().toLowerCase()).includes(self.type.name.trim().toLowerCase());
+		}
+		message : "Primitive type has to be an UML or JUDO specific Primitive: " + self.fullyQualifiedPath() + " | type name: " + self.type.name
+	}
+}
+
+context inpPIM!Property {
+
+	guard : self.hasPackageStereotype() and self.topLevelPackageHasApplicationStereotype()
+
+	constraint PrimitiveTypeAttributeUpperMustNotBeGreaterTHanOne {
+		guard : self.type.isTypeOf(PrimitiveType) 
+		check : self.computeUpper() = 1
+		message : "Attrubite multiplicity wrong for: " + self.fullyQualifiedPath() + " | Multiplicity lower: " + self.computeLower() + " upper: " + self.computeUpper()
+	}
+	
+	/*
+	constraint PrimitiveTypeNameMustBeDefined {
+		guard : self.type.isTypeOf(PrimitiveType)
+		check : self.type.name.isDefined()
+		message : "ASDASDASD: " + self + "::" + self.type.name
+	}
+	
+	constraint PrimitiveTypeHasToBeAnUMLorJUDOSpecificPrimitiveType {
+		guard : self.type.isTypeOf(PrimitiveType) and self.type.name.isDefined()
+		check {
+			return JTypeMapping!TypeMapping.all.PIM.select(p | p.isDefined()).collect(p | p.trim().toLowerCase()).includes(self.type.name.trim().toLowerCase());
+		}
+		message : "Primitive type has to be an UML or JUDO specific Primitive: " +self.fullyQualifiedPath() + " | type: " + self.type.name 
+	}
+	*/
+	constraint MemberEndMustHaveAName {
+		guard : self.association.isDefined() 
+		check : self.name.trim().length() > 0
+		message {
+			var fullyQualifiedClassNames = self.association.endType.collect(c | c.fullyQualifiedPath()).concat(" and ");
+			var definedMemberNames = self.association.memberEnd.name.select(n | n.isDefined()).concat(",");
+			return "An association member end property has been found without a name, between: " + fullyQualifiedClassNames
+			+ " | Other member end names of the association: " + definedMemberNames; 
+		}
+	}
+	
+	constraint LowerValueMustBe0Or1 {
+		check : self.computeLower() == 1 or self.computeLower() == 0
+		message : "Property lower value must be either 0 or 1: " + self.fullyQualifiedPath() 
+	}
+}
+
+context inpPIM!Classifier {
+
+	guard : self.hasPackageStereotype() and self.topLevelPackageHasApplicationStereotype()
+	
+	constraint ClassifierCantHaveDuplicateAttributes {
+		guard : self.attribute.isDefined()
+		check {
+			var attributeList = self.attribute;
+			var duplicateSet = new Set;
+			var duplicateName;
+			for (a in attributeList) {
+				if (duplicateSet.add(a.name) == false){
+					duplicateName = a.name;
+					return false;
+				}
+			}
+			return true;
+		} 
+		message : "Duplicate attribute has been found: " + duplicateName + " in: " + self.fullyQualifiedPath()  
+	}
+}
+
+
+context inpPIM!EnumerationLiteral {
+
+	guard : self.hasPackageStereotype() and self.topLevelPackageHasApplicationStereotype()
+	
+	constraint EnumerationLiteralNameMustConformToJavaVariableNameRules {
+		guard : inpPIM!fixed.allInstances()->collect(p | p.base_Enumeration).asSet().exists(e | e.name == self.enumeration.name)
+		check : self.name.matches("^[\\p{L}_$][\\p{L}_$0-9]*$") // \p{L} matches any kind of letter from any language
+		message : " Wrong enum literal name " + self.fullyQualifiedPath()
+	}
+}
+
+context inpPIM!Operation {
+
+	guard : self.hasPackageStereotype() and self.topLevelPackageHasApplicationStereotype()
+
+	constraint OnlyOneReturnParameterIsAllowed {
+		check : self.ownedParameter.select(p | p.direction.name = "return").size() <= 1
+		message : " More than one return parameters has been found for " + self.fullyQualifiedPath()
+	}
+}
+
+context inpPIM!StateMachine {
+
+	guard : self.hasPackageStereotype() and self.topLevelPackageHasApplicationStereotype()
+	
+	constraint TransitionOperationNameForTheSameTriggerSourceMustBeUniqueWithoutAGuard {
+		check {
+			var transitionSourceMap = new Map;
+			
+			var transitions = self
+				.region
+				.transition
+				.flatten()
+				.select(t | t.hasProperty("trigger") and t.`guard`.isUndefined());
+				
+			for(tr in transitions) {
+				var op = tr.trigger
+				.flatten()
+				.event
+				.select(e | e.hasProperty("operation"))
+				.`operation`;
+				if (op.size() > 0){
+					if (transitionSourceMap.containsKey(tr.source)){
+						var m = transitionSourceMap.get(tr.source);
+						m.add(op);
+						transitionSourceMap.put (tr.source, m);
+					} else {
+						var bag = new Bag();
+						bag.add(op);
+						transitionSourceMap.put(tr.source, bag);
+					}			
+				}
+			}
+
+			var duplicateName;
+			for(m in transitionSourceMap.keySet()) {
+				var duplicateCheckSet  = new Set;
+				for (o in transitionSourceMap.get(m).flatten()) {
+					if (duplicateCheckSet.add(o) == false) {
+						duplicateName = o.name;
+						return false;
+					}
+				}		
+			}
+				/*operationNamesOfTransitions = operationNamesOfTransitions.trigger
+				.flatten()
+				.event
+				.select(e | e.hasProperty("operation"))
+				.`operation`;*/
+				/*.aggregate(tr | tr, 
+					tr.trigger.flatten().event
+					.select(e | e.hasProperty("operation"))
+					.`operation`);*/
+				//.select(m | m.asSet().size() <> m.size());
+			
+			return true;
+		}
+		message {
+			return "Duplicate operation name has been found without a  transition guard for the : " + self.fullyQualifiedPath() + " state machine | Duplicate operation name: " + duplicateName; 
+		}
+	}
+
+}
+
+context inpPIM!Package {
+
+	guard : collectJUDOStereotypeInstances().get("packages").exists(e | e == self) 
+	and self.topLevelPackageHasApplicationStereotype()
+	
+	constraint PackagesWithoutUIStereotypeAndWithPackageStereotypeMustHaveBoStereotype {
+		guard : self <> self.getTopLevelPackageOfNamedElement()
+		check {
+			if ((collectJUDOStereotypeInstances().get("boPackages").exists(e | e == self)
+			 and not collectJUDOStereotypeInstances().get("ui").exists(e | e == self))
+		 	or collectJUDOStereotypeInstances().get("ui").exists(e | e == self)) {
+				return true;
+			}
+			return false;
+		} 
+		message : "Not ui stereotyped package found without bo stereotype: " + self.fullyQualifiedPath()
+	}
+}
+
+@cached
+operation Any getClosestPackageElement() : Any {
+	if (self.isTypeOf(inpPIM!Package) or self.isTypeOf(inpPIM!Model) or self.owner.isUndefined()) {
+		return self;
+	} else {
+		return self.owner.getClosestPackageElement();
+	}
+}
+
+@cached
+operation Any hasPackageStereotype() : Boolean {
+	return inpPIM!package.allInstances()->collect(p | p.base_Package).asSet().exists(e | e == self.getClosestPackageElement());
+}
+
+@cached
+operation Any topLevelPackageHasApplicationStereotype() : Boolean {
+	return inpPIM!application.allInstances()->collect(p | p.base_Package).asSet().exists(e | e == self.getTopLevelPackageOfNamedElement());
+}
