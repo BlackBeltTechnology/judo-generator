@@ -10,13 +10,13 @@ operation UI!UIComponentType createIntervals(intervalString : String, classUuid 
 				var uiInterval = new UI!UIInterval();
 							
 				if (splitInterval.first() <> "") {
-					uiInterval.min = splitInterval.first().asInteger();
+					uiInterval.min = splitInterval.first();
 				}
 				if (splitInterval.size() >= 2 and splitInterval.second() <> "") {
-					uiInterval.max = splitInterval.second().asInteger();
+					uiInterval.max = splitInterval.second();
 				}
 				if (splitInterval.size() = 3 and splitInterval.third() <> "") {
-					uiInterval.step = splitInterval.third().asInteger();
+					uiInterval.step = splitInterval.third();
 				}
 				
 				uiInterval.name = "UIInterval";
@@ -26,5 +26,6 @@ operation UI!UIComponentType createIntervals(intervalString : String, classUuid 
 				self.intervals.add(uiInterval);
 			}
 		}
-	}	
+	}
+    	
 }
