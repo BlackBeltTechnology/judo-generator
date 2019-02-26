@@ -19,7 +19,7 @@ rule Relationship
 	t.uuid = generateUuid(s.primaryRole().getUuid(), s.secondaryRole().getUuid(), "-");
 	
 	s.memberEnd.println("FEATURE ==>  ");
-	s.memberEnd.size.println("ENDS IN ASSOCIATION: ");
+	s.memberEnd.size().println("ENDS IN ASSOCIATION: ");
 	for (me in s.memberEnd) {
 		me.println("ME: ");
 		me.owner.println("ME OWNER: ");
