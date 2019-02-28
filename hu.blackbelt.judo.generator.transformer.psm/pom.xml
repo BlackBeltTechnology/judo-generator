@@ -228,7 +228,69 @@
                             </execution>
                         </executions>
                     </plugin>
+                    
+                    
         
+                </plugins>
+            </build>
+            </profile>
+            
+            <profile>
+            <id>psm-validation-development</id>
+            <build>
+                <plugins>
+        
+                    <plugin>
+                        <groupId>hu.blackbelt.epsilon</groupId>
+                        <artifactId>epsilon-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>validate-pim</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.DSL_Customization:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Validation_Profile:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.Dependency_Matrix_Profile:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
+                                    </metaModels>
+                                    <models>
+                                        <model>
+                                            <artifact>file:/home/attila/work/anakin-model/src/main/model/teamworks-exports/BAV_Anakin_FRT_r9.uml</artifact>
+                                            <name>inpPIM</name>
+                                            <metaModelUris>
+                                                <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
+                                                <param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
+                                                <param>http://www.omg.org/spec/UML/20131001/MagicDrawProfile</param>
+                                                <param>http:///schemas/ValidationProfile/_E8DQcDGdEei6IdEFC9bfxw/0</param>
+                                                <param>http:///schemas/DSLCustomization/_E8xpMDGdEei6IdEFC9bfxw/0</param>
+                                                <param>http://www.blackbelt.hu/metamodel/pim/1.1</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                    </models>
+                                     <excelModels>
+                                        <excelModel>
+                                            <name>JTypeMapping</name>
+                                            <artifact>file:/home/attila/work/anakin-model/src/transformer/psm/model/PIM2PSM.xlsx</artifact>
+                                            <configurationArtifact>${project.build.directory}/classes/model/typemapping.xml</configurationArtifact>
+                                        </excelModel>
+                                    </excelModels>
+                                    <eolPrograms>
+                                        <Evl>
+                                            <source>src/validation/pim_validation.evl</source>
+                                        </Evl>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
             </profile>

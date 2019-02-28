@@ -2,6 +2,7 @@ operation collectPersistenceRelatedStInstances() {
 }
 
 // TODO: outsource Model as parameter
+@cached
 operation collectJUDOStereotypeInstances() : Map {
 
 	var JUDOStereotypeInstances : Map;
@@ -247,7 +248,7 @@ operation Sequence collectConstrainedElements() : Map {
 	var withConstrainedElem = self->collect(sttype | sttype.base_Constraint.constrainedElement->aggregate(ce | ce, sttype.base_Constraint
 																								  	  .specification
 																								   	  .getSpecification()));
-	var withoutConstrainedElem = self.select(e | e.base_Constraint.constrainedElement.isUndefined() or e.base_Constraint.constrainedElement.size = 0)
+	var withoutConstrainedElem = self.select(e | e.base_Constraint.constrainedElement.isUndefined() or e.base_Constraint.constrainedElement.size() = 0)
 									 .collect(sttype | sttype.base_Constraint.owner->aggregate(ce | ce, sttype.base_Constraint
 																								  	  .specification
 																								   	  .getSpecification()));
