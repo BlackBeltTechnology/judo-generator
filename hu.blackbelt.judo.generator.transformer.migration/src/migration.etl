@@ -2,43 +2,95 @@ import "operations/_importAll.eol";
 
 pre {
 	"START".println();
-	RDBMS!RdbmsModel.all.size().println("SIZE");
-	var targetModel : RDBMS!RdbmsModel;
+	var classUUIDs : Set<String> = new Set;
+	
+	var excludes : Set<String> = new Set;
+	excludes.add("anakin.business.domain.ugylet.elzalogositas.Ajanlat.kNettoKolcson");
+	
+	
+	var additionalRoles : Set<String> = new Set;
+	additionalRoles.add("Anakin.anakin.business.domain.ugylet.elzalogositas.Ajanlat.zalogtetelek");
+	
+	var elotoltott : Set<String> = new Set;
+	elotoltott.add("");
+	
+	var startClassName = "anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes";
+	var startClass = PSM!JClass.all.selectOne(c | c.fqName() = startClassName);
+	classUUIDs.add(startClass.uuid);
+	startClass.allMandatoryRoles(classUUIDs);
+	
+	classUUIDs = classUUIDs.collect(a | a + "_View").asSet();
+	var viewNames : Set<String> = RDBMS!RdbmsView.all.select(v | classUUIDs.contains(v.uuid)).name.asSet();
+}
+
+operation PSM!JClass allMandatoryRoles(acc : Set<String>) {
+	for (r in PSM!JRole.all.select(r | r.ownerClass = self)) { 
+		if (r.lower == 1 or additionalRoles.contains(r.uuid)) {
+			var opp = r.opposite().ownerClass;
+			if (not opp.`abstract` and not opp.representsEnum and not acc.contains(opp.uuid)) {
+				acc.add(opp.uuid);
+				r.opposite().ownerClass.allMandatoryRoles(acc);
+			}
+		}
+	}
 }
 
 @abstract
 rule Element 
 	transform s : RDBMS!RdbmsElement
-	to 		  t : MIG!RdbmsElement{
+	to 		  t : MIG!RdbmsElement {
+	guard: not s.name.contains("@") //TODO: find out why multichained derived expressions maps to valueField
 		t.name = s.name;
 		t.uuid = s.uuid;
 		t.fullName = s.fullName;
 		t.description = s.description;
 		t.shortName = s.shortName;
 		t.sqlName = s.sqlName;
+		t.originalName = s.originalName;
+	    t.originalPackage = s.originalPackage;
+}
+
+@abstract
+rule ViewField 
+	transform s : RDBMS!RdbmsViewTableField
+	to 		  t : MIG!RdbmsField
+	extends Element {
+		t.rdbmsTypeName = s.tableField.rdbmsTypeName;
+		t.size = s.tableField.size;
+		t.precision = s.tableField.precision;
+		t.scale = s.tableField.scale;
+		t.storageByte = s.tableField.storageByte;
+		t.mandatory = s.tableField.mandatory;
+		t.table = s.view.equivalent();
 }
 
 rule Model 
 	transform s : RDBMS!RdbmsModel
 	to 		  t : MIG!RdbmsModel {
 		t.version = s.version;
-		targetModel = t;
+		for (v in s.rdbmsViews) {
+			if (viewNames.contains(v.name)) {
+				t.rdbmsTables.add(v.equivalent());
+			} 
+		}
 	}
-	
+
+@lazy
 rule View 
 	transform s : RDBMS!RdbmsView
 	to 		  t : MIG!RdbmsTable
 	extends Element {
-		t.sqlName = s.sqlName;
-	    t.name = s.name;
-	    t.originalName = s.originalName;
-	    t.originalPackage = s.originalPackage;
-	    t.description = s.description;
-	    targetModel.rdbmsTables.add(t);
+		var pk = s.primaryIdentifierField;
+	    t.primaryKey = pk.equivalent();
+	    t.primaryKey.name = t.primaryKey.name.substring(0, t.primaryKey.name.length() - 3);
 	    for (f in s.fields) {
-	    f.println("Field: ");
-	    f.equivalent("ViewValueField").println("EQIV: ");
-	    	//t.fields.add(f.equivalent("ViewValueField"));
+	    	var e = excludes.collect(e | "Anakin." + e + "_ViewField@Anakin." + s.name + "_View");
+	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) and not f.equals(pk) and not e.contains(f.uuid)) {
+	    		var fe = f.equivalent();
+	    		if (fe.isDefined()) {
+			    	t.fields.add(fe);
+	    		}
+	    	}
 		}    
 	}
 
@@ -46,45 +98,81 @@ rule View
 rule ViewIdField
 	transform s : RDBMS!RdbmsViewIdentifierField
 	to t : MIG!RdbmsIdentifierField 
-	extends Element {
-	 	t.uuid = s.uuid;
-		t.rdbmsTypeName = s.tableField.rdbmsTypeName;
-		t.size = s.tableField.size;
-		t.precision = s.tableField.precision;
-		t.scale = s.tableField.scale;
-		t.storageByte = s.tableField.storageByte;
-		t.sqlName = s.sqlName;
-		t.name = s.name;
-		t.description = s.description;
-		t.originalName = s.originalName;
-		t.originalPackage = s.originalPackage;
-		t.mandatory = s.tableField.mandatory;
-		t.technical = s.tableField.technical;
-		t.table.primaryKey = t;
+	extends ViewField {		
+		t.name = s.name + "_id";
 }
 
 @lazy
 rule ViewValueField
 	transform s : RDBMS!RdbmsViewValueField
 	to t : MIG!RdbmsValueField 
-	extends Element { 
-		"itt".println();
-		t.uuid = s.uuid;
-		t.rdbmsTypeName = s.tableField.rdbmsTypeName;
-		t.size = s.tableField.size;
-		t.precision = s.tableField.precision;
-		t.scale = s.tableField.scale;
-		t.storageByte = s.tableField.storageByte;
-		t.sqlName = s.tableField.sqlName;
-		t.name = s.tableField.name;
-		t.description = s.description;
-		t.originalName = s.originalName;
-		t.originalPackage = s.originalPackage;
-		t.mandatory = s.tableField.mandatory;
-		t.technical = s.tableField.technical;
+	extends ViewField { 
+	guard: not s.tableField.technical or (s.tableField.technical and s.tableField.name.endsWith("guid"))
 }
 
+@lazy
+rule Fk
+	transform s : RDBMS!RdbmsForeignKey
+	to fk : MIG!RdbmsForeignKey 
+	extends Element {
+		fk.rdbmsTypeName = s.rdbmsTypeName;
+		fk.size = s.size;
+		fk.precision = s.precision;
+		fk.scale = s.scale;
+		fk.storageByte = s.storageByte;
+		fk.mandatory = s.mandatory;
+		
+	    fk.referenceKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = s.referenceKey.name);
+	    
+	    fk.foreignKeySqlName = s.foreignKeySqlName;
+		fk.table =  MIG!RdbmsTable.all.selectOne(t | t.name = s.table.name);
+
+		fk.mandatory = s.mandatory;
+		
+		fk.deleteOnCascade = s.deleteOnCascade;
+		fk.readOnly = s.readOnly;
+}
+
+@lazy
+rule Junction
+	transform s : RDBMS!RdbmsJunctionTable
+	to j : MIG!RdbmsJunctionTable 
+	extends Element {
+		for (i in s.fields) {
+			var p : RDBMS!RdbmsIdentifierField = new RDBMS!RdbmsIdentifierField;
+			p.name = i.name;
+			p.sqlName = i.sqlName;
+			p.rdbmsTypeName = i.rdbmsTypeName;
+			p.uuid =  i.uuid;
+			p.rdbmsTypeName = i.rdbmsTypeName;
+			p.size = i.size;
+			p.precision = i.precision;
+			p.scale = i.scale;
+			p.storageByte = i.storageByte;
+			p.mandatory = i.mandatory;		
+			j.fields.add(p);
+		}
+
+		j.field1 = s.field1.equivalent();
+		j.field2 = s.field2.equivalent();
+}
 
 post {
+	for (fk in RDBMS!RdbmsForeignKey.all) {
+	    var refKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = fk.referenceKey.name);	    
+	    var table = MIG!RdbmsTable.all.selectOne(t | t.name = fk.table.name);
+	    if (refKey.isDefined() and table.isDefined()) {
+			fk.equivalent();
+	    }
+	}
+	for (j in RDBMS!RdbmsJunctionTable.all) {
+		var table1 = MIG!RdbmsTable.all.selectOne(t | t.name = j.field1.referenceKey.table.name);
+		var table2 = MIG!RdbmsTable.all.selectOne(t | t.name = j.field2.referenceKey.table.name);
+		var refKey1 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field1.referenceKey.name);
+		var refKey2 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field1.referenceKey.name);
+		if (table1.isDefined() and table2.isDefined() and refKey1.isDefined() and refKey2.isDefined()) {
+			MIG!RdbmsModel.all.first().rdbmsTables.add(j.equivalent()); 
+		}
+	}
 	"END".println();
 }

@@ -71,8 +71,26 @@
 								<configuration>
 									<metaModels>
 										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
 									</metaModels>
                                     <models>
+                                        <model>
+                                            <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:model:psmTypes:${project.version}</artifact>
+                                            <name>PSMTYPES</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.psm/library/psmTypes.model</platformAlias>
+                                        </model>
+        
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:psm:${test.model.version}</artifact>
+                                            <name>PSM</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
                                         <model>
                                             <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsPostgres:${test.model.version}</artifact>
                                             <name>RDBMS</name>
