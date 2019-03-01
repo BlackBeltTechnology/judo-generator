@@ -1,0 +1,122 @@
+@cached
+operation PSM!JRole opposite () : PSM!JRole {
+	var role1 : PSM!JRole = self.ownerRelationship.roles.first();
+	var role2 : PSM!JRole = self.ownerRelationship.roles.second();
+	if (self = role1) {
+		return role2;
+	} else {
+		return role1;
+	}
+}
+
+@cached
+operation PSM!JRole isForeign() : Boolean {
+	return self.ownerRelationship.relationReferenceOwnerRole() = self;
+}
+
+@cached
+operation PSM!JRole isMandatory() : Boolean {
+	return self.lower = 1;
+}
+
+@cached
+operation PSM!JRole isSingle() : Boolean {
+	return self.upper = 1;
+}
+
+@cached
+operation PSM!JRole roleSqlName() : String {
+    return self.sqlName() + "_" + self.ownerClass.classSqlName() + "_" + self.ownerClass.classSqlName();
+}
+
+@cached
+operation PSM!JRole roleFkSqlName() : String {
+	/*var temp = generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","");
+	if (temp.length() > 30) {
+		return ("FK_" + temp.substring(0,30));
+	} else {
+		return  temp);
+	}*/
+	return ("FK_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-",""))).substring(0,30);
+}
+
+@cached
+operation PSM!JRole roleUniqueSqlName() : String {
+	/*var temp = generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","");
+	if (temp.length() > 30) {
+		return ("UQ_" + temp.substring(0,30));
+	} else {
+		return ("UQ_" + temp);
+	}*/
+	return ("UQ_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-",""))).substring(0,30);
+}
+
+@cached
+operation PSM!JRole roleIndexSqlName() : String {
+	/*var temp = generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-","");
+	if (temp.length() > 30) {
+		return ("IDX_" + temp.substring(0,30));
+	} else {
+		return ("IDX_" + temp);
+	}*/
+	return ("IDX_" + md5(generateUuid(self.uuid, self.roleSqlName(), ".").replaceAll("-",""))).substring(0,30);
+}
+
+@cached
+operation PSM!JRole roleIdSqlName() : String {
+    --    return "C_" +  self.ownerClass.package.sqlName() + "_" + self.opposite().ownerClass.sqlName()+ "_ID" + "_" + self.sqlName();
+    return "C_" +  self.sqlName() + "_ID";
+}
+
+@cached
+operation PSM!JRole roleAliasName() : String {
+	return self.ownerClass.package.fqName() +  "." + self.ownerClass.name + "." + self.name;
+}
+
+/*
+@cached
+operation PSM!JRole isReadOnly() : Boolean {
+	var role1 : PSM!JRole = self;
+	var role2 : PSM!JRole = self.opposite();
+	
+	
+	if (not self.ownerRelationship.derived) {
+		if (role1.upper = 1 and role2.upper = -1) {
+			return role2.kind == PSM!JAssociationKind#COMPOSITION;
+		} else if (role1.upper = 1 and role2.upper = 1) {
+			if (role2.kind = PSM!JAssociationKind#COMPOSITION or role2.kind = PSM!JAssociationKind#AGGREGATION or role1.lower = 1) {
+				return role2.kind == PSM!JAssociationKind#COMPOSITION;
+			} else if (role1.kind = PSM!JAssociationKind#ASSOCIATION and role2.kind = PSM!JAssociationKind#ASSOCIATION and role1.lower = 0 and role2.lower = 0 and role1.name < role2.name) {
+				return false;
+			}
+		} else if (self.isJunction()) {
+			return false;
+		}
+	} else {
+	  return false;
+	}	
+}
+
+@cached
+operation PSM!JRole isReadOnly() : Boolean {
+	var role1 : PSM!JRole = self;
+	var role2 : PSM!JRole = self.opposite();
+	
+	
+	if (not self.ownerRelationship.derived) {
+		if (role1.upper = 1 and role2.upper = -1) {
+			return role2.kind == PSM!JAssociationKind#COMPOSITION;
+		} else if (role1.upper = 1 and role2.upper = 1) {
+			if (role2.kind = PSM!JAssociationKind#COMPOSITION or role2.kind = PSM!JAssociationKind#AGGREGATION or role1.lower = 1) {
+				return role2.kind == PSM!JAssociationKind#COMPOSITION;
+			} else if (role1.kind = PSM!JAssociationKind#ASSOCIATION and role2.kind = PSM!JAssociationKind#ASSOCIATION and role1.lower = 0 and role2.lower = 0 and role1.name < role2.name) {
+				return false;
+			}
+		} else if (self.isJunction()) {
+			return false;
+		}
+	} else {
+	  return false;
+	}	
+}
+*/

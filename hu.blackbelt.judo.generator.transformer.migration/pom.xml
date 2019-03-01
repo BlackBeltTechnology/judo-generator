@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>hu.blackbelt.judo.generator</groupId>
+		<artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+		<version>2.1.0-SNAPSHOT</version>
+		<relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+	</parent>
+
+	<artifactId>hu.blackbelt.judo.generator.transformer.migration</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+        <src.dir>src</src.dir>
+    </properties>
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+    </build>
+    
+    <profiles>
+    	<profile>
+    		<id>migration-development</id>
+			<build>
+				<plugins>
+                    <!-- plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-rdbms-model</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>${test.model.groupId}</groupId>
+                                            <artifactId>${test.model.artifactId}</artifactId>
+                                            <version>${test.model.version}</version>
+                                            <type>model</type>
+                                            <classifier>rdbmsPostgres</classifier>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                            <destFileName>migration.model</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin-->
+		
+					<plugin>
+                        <groupId>hu.blackbelt.epsilon</groupId>
+						<artifactId>epsilon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>migration-helper</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<metaModels>
+										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+									</metaModels>
+                                    <models>
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsPostgres:${test.model.version}</artifact>
+                                            <name>RDBMS</name>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</platformAlias>
+                                        </model>
+                                        <model>
+											<artifact>${project.build.directory}/migration.model</artifact>
+											<name>MIG</name>
+											<readOnLoad>false</readOnLoad>
+											<storeOnDisposal>true</storeOnDisposal>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+										</model>
+                                    </models>
+									<eolPrograms>
+										<Etl>
+											<source>src/migration.etl</source>
+										</Etl>
+									</eolPrograms>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>add-resource</id>
+								<goals>
+									<goal>add-resource</goal>
+								</goals>
+								
+								<configuration>
+									<resources>
+										<resource>
+											<directory>src</directory>
+										</resource>
+									</resources>
+								</configuration>
+								
+							</execution>
+		
+							<execution>
+								<id>attach-artifacts</id>
+								<phase>package</phase>
+								<goals>
+									<goal>attach-artifact</goal>
+								</goals>
+								<configuration>
+									<artifacts>
+										<artifact>
+											<file>${project.build.directory}/migration.model</file>
+											<type>model</type>
+											<classifier>migrationSchema</classifier>
+										</artifact>
+									</artifacts>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+		
+				</plugins>
+			</build>
+    	</profile>
+    </profiles>
+</project>

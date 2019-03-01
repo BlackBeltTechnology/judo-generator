@@ -1,0 +1,109 @@
+operation generateUuid(namespace : String, name : String, separator : String) : String {
+	return namespace + separator + name;
+}
+
+operation md5 (name : String) : String {
+	return MD5Utils.md5(name);
+}
+
+operation abbreviate(text : String, maxLength : Integer) : String {
+	return AbbreviateUtils.abbreviate(text, maxLength);
+}
+
+operation idType() : RDBMS!RdbmsFieldType {
+	// return RDBMS!RdbmsFieldType.all.select( p | p.name = "Id").first();
+	return targetModel.rdbmsFieldTypes.select( p | p.name = "Id").first();
+}
+
+operation RDBMS!EObject clone() : RDBMS!EObject {
+	return EMFTool.ecoreUtil.copy(self);
+}
+
+operation parseDerivedExpression(expression : String) : Sequence {
+    var parser = new Native("hu.blackbelt.judo.generator.parser.derived.expression.sql.DerivedAttributeExpressionToRdbmsModelParser");
+	return parser.parseExpression(expression);
+}
+
+operation checkAllUuidsForDuplicateOrMissing() {
+	var duplicated :Boolean = false;
+	var undefined :Boolean = false;
+	
+	var agg : Map = new Map;
+
+	for (uuid in RDBMS!RdbmsElement.all.collect(e | e.uuid)) {
+		if (uuid.isUndefined()) {
+			"UNDEFINED UUID FOUND".println();
+			undefined = true;
+		} else {
+			if (agg.containsKey(uuid)) {
+				uuid.println("DUPLICATE: ");
+				duplicated = true;
+			} else {
+				agg.put(uuid, 1);
+			}
+		}
+	}
+	
+	if (duplicated) {
+		throw "DUPLICATED UUID!";
+	}
+	
+	if (undefined) {
+		throw "UNDEFINED UUID!";
+	}
+}
+
+
+operation String addWithDotTo(to : String) : String {
+	if (to.isDefined()) {
+		return to + "." + self;
+	} else {
+		return self;
+	}
+}
+
+operation checkForSqlNameIsNotEmpty() {
+	if (RDBMS!RdbmsElement.all.select(e | e.sqlName.isUndefined()).size > 0) {
+        RDBMS!RdbmsElement.all.select(e | e.sqlName.isUndefined()).collect(e | e.uuid).println("Missing SQL Name: ");
+		throw "SQL Name is empty";
+	}
+}
+
+operation checkDuplicateTableSqlNames() {
+	var duplicated :Boolean = false;
+	var agg : Map = new Map;
+
+	for (element in RDBMS!RdbmsElement.all.select(e | e.isKindOf(RDBMS!RdbmsTable) or e.isKindOf(RDBMS!RdbmsField))) {
+	
+		if (element.isKindOf(RDBMS!RdbmsTable)){
+		
+			if (agg.containsKey(element.sqlName)) {
+				element.uuid.print("DUPLICATE SQL NAME: ");
+				element.sqlName.print(" sqlName: ");
+				agg.get(element.sqlName).uuid.print(" AND: ");
+				agg.get(element.sqlName).sqlName.println(" sqlName: ");
+				duplicated = true;
+			} else {
+				agg.put(element.sqlName, element);
+			}
+		}
+		
+		if (element.isKindOf(RDBMS!RdbmsField)){
+			if (agg.containsKey(element.sqlName)  and (element.table.sqlName == agg.get(element.sqlName).table.sqlName) ) {
+				element.uuid.print("DUPLICATE SQL NAME: ");
+				element.sqlName.print(" sqlName: ");
+				agg.get(element.sqlName).uuid.print(" AND: ");
+				agg.get(element.sqlName).sqlName.println(" sqlName: ");
+				duplicated = true;
+			} else {
+				agg.put(element.sqlName, element);
+			}
+		}
+		
+	}
+
+	if (duplicated) {
+		throw "DUPLICATE_SQL_NAME!";
+	}
+
+}

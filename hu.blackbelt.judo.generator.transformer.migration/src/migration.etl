@@ -1,0 +1,90 @@
+import "operations/_importAll.eol";
+
+pre {
+	"START".println();
+	RDBMS!RdbmsModel.all.size().println("SIZE");
+	var targetModel : RDBMS!RdbmsModel;
+}
+
+@abstract
+rule Element 
+	transform s : RDBMS!RdbmsElement
+	to 		  t : MIG!RdbmsElement{
+		t.name = s.name;
+		t.uuid = s.uuid;
+		t.fullName = s.fullName;
+		t.description = s.description;
+		t.shortName = s.shortName;
+		t.sqlName = s.sqlName;
+}
+
+rule Model 
+	transform s : RDBMS!RdbmsModel
+	to 		  t : MIG!RdbmsModel {
+		t.version = s.version;
+		targetModel = t;
+	}
+	
+rule View 
+	transform s : RDBMS!RdbmsView
+	to 		  t : MIG!RdbmsTable
+	extends Element {
+		t.sqlName = s.sqlName;
+	    t.name = s.name;
+	    t.originalName = s.originalName;
+	    t.originalPackage = s.originalPackage;
+	    t.description = s.description;
+	    targetModel.rdbmsTables.add(t);
+	    for (f in s.fields) {
+	    f.println("Field: ");
+	    f.equivalent("ViewValueField").println("EQIV: ");
+	    	//t.fields.add(f.equivalent("ViewValueField"));
+		}    
+	}
+
+@lazy
+rule ViewIdField
+	transform s : RDBMS!RdbmsViewIdentifierField
+	to t : MIG!RdbmsIdentifierField 
+	extends Element {
+	 	t.uuid = s.uuid;
+		t.rdbmsTypeName = s.tableField.rdbmsTypeName;
+		t.size = s.tableField.size;
+		t.precision = s.tableField.precision;
+		t.scale = s.tableField.scale;
+		t.storageByte = s.tableField.storageByte;
+		t.sqlName = s.sqlName;
+		t.name = s.name;
+		t.description = s.description;
+		t.originalName = s.originalName;
+		t.originalPackage = s.originalPackage;
+		t.mandatory = s.tableField.mandatory;
+		t.technical = s.tableField.technical;
+		t.table.primaryKey = t;
+}
+
+@lazy
+rule ViewValueField
+	transform s : RDBMS!RdbmsViewValueField
+	to t : MIG!RdbmsValueField 
+	extends Element { 
+		"itt".println();
+		t.uuid = s.uuid;
+		t.rdbmsTypeName = s.tableField.rdbmsTypeName;
+		t.size = s.tableField.size;
+		t.precision = s.tableField.precision;
+		t.scale = s.tableField.scale;
+		t.storageByte = s.tableField.storageByte;
+		t.sqlName = s.tableField.sqlName;
+		t.name = s.tableField.name;
+		t.description = s.description;
+		t.originalName = s.originalName;
+		t.originalPackage = s.originalPackage;
+		t.mandatory = s.tableField.mandatory;
+		t.technical = s.tableField.technical;
+}
+
+
+post {
+	"END".println();
+}
