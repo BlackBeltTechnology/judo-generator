@@ -1,0 +1,59 @@
+
+@cached
+operation RDBMS!RdbmsTable hasReadonlyForeignKey () : Boolean {
+	for (fk : RDBMS!RdbmsField in self.fields.select(t | t.isKinfOf(RDBMS!ForeignKey))) {
+		if (fk.readOnly) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+@cached
+operation RDBMS!RdbmsTable allDescandences() : Collection {
+	var ret : Sequence = new Sequence();
+	for (c : RDBMS!RdbmsTable in RDBMS!RdbmsTable.all.select( c | c.parent = self)) {
+		ret.add(c);
+		ret.addAll(c.allDescandences());
+	}
+	return ret;
+}
+
+@cached
+operation RDBMS!RdbmsTable allInheritedIdentifier() : Collection {
+	var ret : Sequence = new Sequence();
+	if (self.parent.isUndefined()) {
+		for (inh in self.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.inheritenceBased)) {
+			ret.add(inh);
+		}
+	}
+	return ret;
+}
+	
+operation RDBMS!RdbmsTable inheritedIdentifierForTable(tableFor : RDBMS!RdbmsTable) : RDBMS!RdbmsField {
+	return self.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.inheritenceBased and tableFor == f.referenceKey.table).first;
+}
+
+@cached
+operation RDBMS!RdbmsTable allSupertypes() : Collection {
+	var ret : Sequence = new Sequence();
+	if (self.parent.isDefined()) {
+		ret.add(self.parent);
+		ret.addAll(self.parent.allSupertypes());
+	}
+	return ret;
+}
+
+@cached
+operation RDBMS!RdbmsTable backupName() : String {
+   return  (self.sqlName.substring(2) + version().substring(0,14).replaceAll("\\.", "_").replaceAll("-", "_"));
+}
+
+
+@cached
+operation RDBMS!RdbmsTable uniqueForeignKeys () : Collection {
+	return self.uniqueConstraints.select(u | u.fields.first().isKindOf(RDBMS!RdbmsForeignKey)).collect(u | u.fields.first());
+}
+
+

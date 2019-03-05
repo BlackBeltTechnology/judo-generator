@@ -1,0 +1,23 @@
+[%
+  import "../../../operations/_importAll.eol";
+%]
+
+[%for (fop in modifyTableOperation.modifyFieldOperations.select(m | m.mandatoryChanged and m.field.mandatory)) { %]
+--changeset generator:ALTER_TABLE_ALTER_COLUMN_SET_MANDATORY_[%= table.sqlName %]_[%=fop.field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= fop.field.name %] [%= fop.field.uuid %]
+
+[%
+		var inc : Template = TemplateFactory.load(fop.scriptName());
+		inc.populate("modifyTableOperation", modifyTableOperation);
+		inc.populate("table", modifyTableOperation.table);
+		inc.populate("fieldOperation", fop);
+		inc.populate("field", fop.field);
+		inc.populate("version", version());
+
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+%]
+
+[% } %]
+

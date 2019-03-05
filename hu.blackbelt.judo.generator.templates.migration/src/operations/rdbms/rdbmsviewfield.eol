@@ -1,0 +1,14 @@
+@cached
+operation RDBMS!RdbmsViewField toViewExpression () : String {
+	return self.fieldExpression() + " AS " +  fieldLiteral() + self.sqlName + fieldLiteral(); 
+}
+
+@cached
+operation RDBMS!RdbmsViewField fieldExpression () : String {
+	return fieldLiteral() + self.`alias`.sqlName + fieldLiteral() + "." + fieldLiteral() + self.tableField.sqlName + fieldLiteral();
+}
+
+@cached
+operation RDBMS!RdbmsViewField isHidden () : Boolean {
+	return (self.isKindOf(RDBMS!RdbmsViewAliasField) and self.foreign == true) or (self.isKindOf(RDBMS!RdbmsViewForeignIdentifierField));
+}

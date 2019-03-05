@@ -1,0 +1,209 @@
+[%
+  import "../../operations/_importAll.eol"; 
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[% for (view in CURRENT!RdbmsView.all) { %]
+[* ------------------------------------- *]
+[* ORACLE                                *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Oracle') { %]
+-- [%= view.name %] [%= view.primaryTable.table.uuid %]
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true endDelimiter:\n/\s*\n|\n/\s*$ failOnError:[%= failOnError %]
+CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON  [%= view.sqlName %]
+    FOR EACH ROW
+    DECLARE
+        SERIAL_ID INTEGER;
+    BEGIN
+        IF (:NEW.ID IS NOT NULL) THEN
+            raise_application_error(-202000, 'Field "ID" in view "[%= view.name %]" is not allowed to set');
+        END IF;
+
+        IF (:NEW.C_XMIID IS NOT NULL) THEN
+            raise_application_error(-202000, 'Field "C_XMIID" in view "[%= view.name %]" is not allowed to set');
+        END IF;
+
+        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+		[% for (table in view.updateableTables()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]		
+	  			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+	            IF (:NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+			    END IF;
+	    	[% } %]
+    	[% } %]        	
+
+        SELECT serial.NEXTVAL INTO SERIAL_ID FROM dual;
+        
+        -- Inserting all fields over inheritance. 
+        -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
+		[% for (table in view.updateableTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			INSERT INTO [%= table.sqlName %] (
+			[% for (field in view.updatableTableFields(table)) { %]
+    			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+			[% } %]
+			) VALUES (
+			[% for (field in view.updatableTableFields(table)) { %]
+        		[% if (field.tableField.isPrimary()) { %] 
+        			SERIAL_ID [% if (hasMore) { out.print(","); } %]
+        		[% } else if (field.sqlName == "C_XMIID") { %] 
+        			'[%= view.primaryTable.table.uuid %]' [% if (hasMore) { out.print(","); } %]
+        		[% } else { %] 
+        			:NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %]
+        		[% } %]         		
+			[% } %]
+			);
+		[% } %]
+		
+		-- Update reference in all ascendance for that ID - it have to do here because the foreign keys can be mandatory and have to fill it with value.
+		[% for (table in view.updatableParentTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			[% if (table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
+	        UPDATE [%= table.sqlName %] SET [%= table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+	        [% } %]
+    	[% } %]        	
+
+    END;
+/
+
+--changeset generator:RECOMPILE_TRIGGER_INSTEAD_OF_INSERT_[%= view.name %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
+alter trigger INS_[%= view.sqlName %] compile;
+select is_trigger_valid('[%= view.sqlName %]') from DUAL;
+[% } %]
+
+[* ------------------------------------- *]
+[* HSQLDB                                *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Hsqldb') { %]
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
+-- [%= view.name %] [%= view.primaryTable.table.uuid %]
+CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
+    REFERENCING NEW AS NEW 
+    FOR EACH ROW
+    BEGIN ATOMIC
+    
+        DECLARE SERIAL_ID INTEGER;
+    
+        IF (NEW.ID IS NOT NULL) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "ID" in view "[%= view.sqlName %]" is not allowed to set';
+        END IF;
+
+        IF (NEW.C_XMIID IS NOT NULL) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to set';
+        END IF;
+
+        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+		[% for (table in view.updateableTables()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]		
+	   			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+	   			IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN   			
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+			    END IF;
+	    	[% } %]        				
+    	[% } %]
+
+        SET SERIAL_ID = nextval('serial');
+
+        -- Inserting all fields over inheritance. 
+        -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
+		[% for (table in view.updateableTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			INSERT INTO [%= table.sqlName %] (
+			[% for (field in view.updatableTableFields(table)) { %]
+    			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+			[% } %]
+			) VALUES (
+			[% for (field in view.updatableTableFields(table)) { %]
+        		[% if (field.tableField.isPrimary()) { %] 
+        			SERIAL_ID [% if (hasMore) { out.print(","); } %]
+        		[% } else if (field.sqlName == "C_XMIID") { %] 
+        			'[%= view.primaryTable.table.uuid %]' [% if (hasMore) { out.print(","); } %]
+        		[% } else { %] 
+        			NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %]
+        		[% } %]         		
+			[% } %]
+			);
+		[% } %]
+		[% for (table in view.updatableParentTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			[% if (table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
+	        UPDATE [%= table.sqlName %] SET [%= table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+	    	[% } %]		
+    	[% } %]        	
+    END;
+[% } %]
+
+[* ------------------------------------- *]
+[* POSTGRES                              *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Postgres') { %]
+--changeset generator:CREATE_FUNCTION_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
+-- [%= view.name %] [%= view.primaryTable.table.uuid %]
+CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlName %]$
+    DECLARE
+        SERIAL_ID INTEGER;
+    BEGIN
+        IF (NEW.ID IS NOT NULL) THEN
+            RAISE EXCEPTION 'Field "ID" in view "[%= view.sqlName %]" is not allowed to set';
+        END IF;
+
+        IF (NEW.C_XMIID IS NOT NULL) THEN
+            RAISE EXCEPTION 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to set';
+        END IF;
+
+        SERIAL_ID = nextval('serial');
+        NEW.ID = SERIAL_ID;
+
+
+        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+		[% for (table in view.updateableTables()) { %]
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]		
+	   			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+	   			IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) THEN   			
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+			    END IF;
+	    	[% } %]        				
+    	[% } %]
+
+        -- Inserting all fields over inheritance. 
+        -- TODO: Have to reverse order by inheritance, so from this to root, because all references owned by the ascendent.
+		[% for (table in view.updateableTables()) { %]
+			-- [%= table.name %] [%= table.uuid %]
+			INSERT INTO [%= table.sqlName %] (
+			[% for (field in view.updatableTableFields(table)) { %]
+    			[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+			[% } %]
+			) VALUES (
+			[% for (field in view.updatableTableFields(table)) { %]
+        		[% if (field.tableField.isPrimary()) { %] 
+        			SERIAL_ID [% if (hasMore) { out.print(","); } %]
+        		[% } else if (field.sqlName == "C_XMIID") { %] 
+        			'[%= view.primaryTable.table.uuid %]' [% if (hasMore) { out.print(","); } %]
+        		[% } else { %] 
+        			NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %]
+        		[% } %]         		
+			[% } %]
+			);
+		[% } %]
+
+		-- Update reference in all ascendance for that ID - it have to do here because the foreign keys can be mandatory and have to fill it with value.
+		[% for (table in view.updatableParentTables()) { %]
+	        [% if (table.inheritedIdentifierForTable(view.primaryTable.table).isDefined()) { %]
+	        UPDATE [%= table.sqlName %] SET [%= table.inheritedIdentifierForTable(view.primaryTable.table).sqlName %] = SERIAL_ID WHERE ID = SERIAL_ID;
+	    	[% } %]        	
+    	[% } %]        	
+        RETURN NEW;
+    END;
+$INS_[%= view.sqlName %]$ LANGUAGE plpgsql;
+
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
+CREATE TRIGGER INS_[%= view.sqlName %]
+    INSTEAD OF INSERT ON [%= view.sqlName %]
+    FOR EACH ROW
+    EXECUTE PROCEDURE INS_[%= view.sqlName %]();
+[% } %]
+
+[% } %]
+

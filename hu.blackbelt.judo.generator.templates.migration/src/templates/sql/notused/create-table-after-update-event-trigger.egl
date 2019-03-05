@@ -1,0 +1,40 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+[* LATER *]
+
+-- {%- if table.after_update %}
+-- --changeset generator:create_function_AU_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+-- {{ ddlmacro.CREATE_TRIGGER('AU_' + table.name, table.name, 'AFTER', 'UPDATE') }}
+--     {{ ddlmacro.DECLARE }}
+--         {{ ddlmacro.DEFVAR('EVENT_GUID', 'INTEGER') }}
+--     {{ ddlmacro.BEGIN }}
+--         {%- for field in table.savefields %}
+--         {%- if field.watch %}
+--         IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NULL AND {{ ddlmacro.OLD }}.{{ field.name }} IS NOT NULL) OR ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL AND {{ ddlmacro.OLD }}.{{ field.name }} IS NULL) OR ({{ ddlmacro.NEW }}.{{ field.name }} <> {{ ddlmacro.OLD }}.{{ field.name }}) THEN
+--             {{ ddlmacro.nextval( 'EVENT_GUID' ) }}
+--             INSERT INTO V_FRW_EVENT (C_GUID,      C_ACT,         C_EVENT_TYPE, C_DOMAIN_NAME,                  C_CLASS_NAME,          C_OBJECT_ID,   C_ATTR_NAME)
+--             VALUES                  (EVENT_GUID, {{ ddlmacro.TR_TIME }}, 'SET',        '{{ table.node.parent.name }}', '{{ table.umlname }}', {{ ddlmacro.OLD }}.ID, '{{ field.umlname }}');
+--         END IF;
+--         {% endif %}
+--         {%- endfor %}
+-- 
+--         {{ ddlmacro.RETURN_NEW }}
+--     END;
+-- {{ ddlmacro.END_TRIGGER() }}
+-- {%- endif %}
+-- 
+-- {%- macro CREATE_TRIGGER(name, table, timing, type) -%}
+-- {%- set _ = glob.update({'CURRENT_TRIGGER_NAME':name}) -%}
+-- CREATE TRIGGER {{ name }} {{ timing }} {{ type }} ON {{ table }}
+--     FOR EACH ROW
+-- {%- endmacro -%}
+-- {%- endif %}
+
+[% for (table in tables) { %]
+-- --changeset generator:CREATE_TRIGGER_AFTER_UPDATE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+[% } %]

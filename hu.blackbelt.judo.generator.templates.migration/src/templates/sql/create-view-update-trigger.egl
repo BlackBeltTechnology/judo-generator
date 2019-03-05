@@ -1,0 +1,161 @@
+[%
+  import "../../operations/_importAll.eol";
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[*
+TODO: Implement:
+        IF ({{ ddlmacro.NEW }}.{{ field.name }} IS NOT NULL) AND ({{ ddlmacro.OLD }}.{{ field.name }} IS NULL OR {{ ddlmacro.NEW }}.{{ field.name }} <> {{ ddlmacro.OLD }}.{{ field.name }}) THEN
+            {%- if field.othernull %}
+            UPDATE {{ table.name }} SET {{ field.name }} = NULL WHERE {{ field.name }} = {{ ddlmacro.NEW }}.{{ field.name }};
+            {%- else %}
+            {{ ddlmacro.RAISE( 'Not null constraint violation.' ) }}
+            {%- endif %}
+        END IF;
+*]      
+[% for (view in CURRENT!RdbmsView.all) { %]
+[* ------------------------------------- *]
+[* ORACLE                                *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Oracle') { %]
+-- [%= view.name %] [%= view.primaryTable.table.uuid %]
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true endDelimiter:\n/\s*\n|\n/\s*$ failOnError:[%= failOnError %]
+CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
+    FOR EACH ROW
+    BEGIN
+        IF (:NEW.ID IS NULL OR :NEW.ID <> :OLD.ID) THEN
+            raise_application_error(-202000, 'Field "ID" in view "[%= view.sqlName %]" is not allowed to update');
+        END IF;
+
+        IF (:NEW.C_XMIID IS NULL OR :NEW.C_XMIID <> :OLD.C_XMIID) THEN
+            raise_application_error(-202000, 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to update');
+        END IF;
+
+        IF (:NEW.C_GUID IS NULL OR :NEW.C_GUID <> :OLD.C_GUID) THEN
+            raise_application_error(-202000, 'Field "C_GUID" in view "[%= view.sqlName %]" is not allowed to update');
+        END IF;
+
+        [% for (table in view.updateableTables()) { %]
+	        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (:NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (:OLD.[%= foreignKey.sqlName %] IS NULL OR :NEW.[%= foreignKey.sqlName %] <> :OLD.[%= foreignKey.sqlName %]) THEN		
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+				END IF;
+	    	[% } %]
+
+            -- Update all fields
+			[% if (view.updatableTableFieldsWithoutPrimaryKeys(table).size() > 0) { %]
+				-- [%= table.name %] [%= table.uuid %]
+				UPDATE [%= table.sqlName %] SET
+				[% for (field in view.updatableTableFieldsWithoutPrimaryKeys(table)) { %]
+	    			[%= field.tableField.sqlName %] = :NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+				[% } %]
+		        WHERE ID = :OLD.ID;
+			[% } %]
+		[% } %]        
+    END;
+/
+
+--changeset generator:RECOMPILE_TRIGGER_INSTEAD_OF_UPDATE_[%= view.name %]#[%= version() %] dbms:oracle logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
+alter trigger UPD_[%= view.sqlName %] compile;
+select is_trigger_valid('UPD_[%= view.sqlName %]') from DUAL;
+[% } %]
+
+[* ------------------------------------- *]
+[* HSQLDB                                *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Hsqldb') { %]
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:hsqldb logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
+-- [%= view.name %] [%= view.primaryTable.table.uuid %]
+CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
+    REFERENCING NEW AS NEW OLD AS OLD
+    FOR EACH ROW
+    BEGIN ATOMIC
+    
+        IF (NEW.ID IS NULL OR NEW.ID <> OLD.ID) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "ID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        IF (NEW.C_XMIID IS NULL OR NEW.C_XMIID <> OLD.C_XMIID) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        IF (NEW.C_GUID IS NULL OR NEW.C_GUID <> OLD.C_GUID) THEN
+            SIGNAL SQLSTATE '45000'  SET MESSAGE_TEXT = 'Field "C_GUID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        [% for (table in view.updateableTables()) { %]
+	        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)ss
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (OLD.[%= foreignKey.sqlName %] IS NULL OR NEW.[%= foreignKey.sqlName %] <> OLD.[%= foreignKey.sqlName %]) THEN		
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = :NEW.[%= foreignKey.sqlName %];
+				END IF;
+	    	[% } %]        							
+
+            -- Update all fields
+			[% if (view.updatableTableFieldsWithoutPrimaryKeys(table).size() > 0) { %]
+				-- [%= table.name %] [%= table.uuid %]
+				UPDATE [%= table.sqlName %] SET
+				[% for (field in view.updatableTableFieldsWithoutPrimaryKeys(table)) { %]
+	    			[%= field.tableField.sqlName %] = NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+				[% } %]
+		        WHERE ID = OLD.ID;
+			[% } %]
+		[% } %]        
+    END;
+[% } %]
+
+[* ------------------------------------- *]
+[* POSTGRES                              *]
+[* ------------------------------------- *]
+[% if (dialect() == 'Postgres') { %]
+--changeset generator:CREATE_FUNCTION_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
+CREATE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlName %]$
+    BEGIN
+        IF (NEW.ID IS NULL OR NEW.ID <> OLD.ID) THEN
+            RAISE EXCEPTION 'Field "ID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        IF (NEW.C_XMIID IS NULL OR NEW.C_XMIID <> OLD.C_XMIID) THEN
+            RAISE EXCEPTION 'Field "C_XMIID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        IF (NEW.C_GUID IS NULL OR NEW.C_GUID <> OLD.C_GUID) THEN
+            RAISE EXCEPTION 'Field "C_GUID" in view "[%= view.sqlName %]" is not allowed to update';
+        END IF;
+
+        [% for (table in view.updateableTables()) { %]
+	        -- Detach singe related entities which have same relations. (Means DETACH OTHER REFERRER INSTANCE and ATTACH TO THIS)
+			[% for (foreignKey : RDBMS!RdbmsForeignKey in table.uniqueForeignKeys()) { %]
+    			-- [%= foreignKey.name %] [%= foreignKey.uuid %]
+				IF (NEW.[%= foreignKey.sqlName %] IS NOT NULL) AND (OLD.[%= foreignKey.sqlName %] IS NULL OR NEW.[%= foreignKey.sqlName %] <> OLD.[%= foreignKey.sqlName %]) THEN		
+			        UPDATE [%= table.sqlName %] SET [%= foreignKey.sqlName %] = NULL WHERE [%= foreignKey.sqlName %] = NEW.[%= foreignKey.sqlName %];
+				END IF;
+	    	[% } %]
+
+            -- Update all fields
+			[% if (view.updatableTableFieldsWithoutPrimaryKeys(table).size() > 0) { %]
+				-- [%= table.name %] [%= table.uuid %]
+				UPDATE [%= table.sqlName %] SET
+				[% for (field in view.updatableTableFieldsWithoutPrimaryKeys(table)) { %]
+	    			[%= field.tableField.sqlName %] = NEW.[%= field.tableField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %] 
+				[% } %]
+		        WHERE ID = OLD.ID;
+			[% } %]
+		[% } %]        
+
+        RETURN NEW;
+    END;
+$UPD_[%= view.sqlName %]$ LANGUAGE plpgsql;
+
+--changeset generator:CREATE_TRIGGER_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
+CREATE TRIGGER UPD_[%= view.sqlName %]
+    INSTEAD OF UPDATE ON [%= view.sqlName %]
+    FOR EACH ROW
+    EXECUTE PROCEDURE UPD_[%= view.sqlName %]();
+[% } %]
+
+[% } %]

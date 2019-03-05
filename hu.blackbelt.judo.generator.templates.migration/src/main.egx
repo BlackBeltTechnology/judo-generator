@@ -1,0 +1,70 @@
+import "operations/_importAll.eol";
+
+
+-- Storing previous version to be able to chain version download.
+-- The schema builder plgin will use that for validation.
+rule PreviousVersionGeneration 
+  transform scr : SCRIPT!t_scriptDefinition {
+  guard: version() <> previousVersion()
+  
+  parameters {
+    var params : new Map;
+    (dialect() + "Previous version info").println("Processing: ");
+    return params;
+  }
+  
+  template : "templates/previousVersion.egl"
+  
+  target : "schema/" + version() + ".previous"
+}
+
+
+-- Storing current version to be easy do determinate the version number from the file name.
+-- The schema builder plgin will use that for validation.
+rule CurrentVersionGeneration 
+  transform scr : SCRIPT!t_scriptDefinition {
+  
+  parameters {
+    var params : new Map;
+    (dialect() + "Current version info").println("Processing: ");
+    return params;
+  }
+  
+  template : "templates/version.egl"
+  
+  target : "schema/" + version() + ".version"
+}
+
+-- Processing SQL files. The SQL scripts generated there
+rule SqlGeneration 
+  transform sql : SCRIPT!t_sql {
+  
+  parameters {
+    var params : new Map;
+    params.put("scriptName", sql.a_name);
+    params.put("failOnError",  true);
+    (dialect() + " " + sql.a_name).println("Processing: ");
+    return params;
+  }
+  
+  template : sql.a_scriptName
+  
+  target : sql.a_out.bindDefaultVariables()
+}
+
+-- Changesets are grouping the scripts to scenarios.
+rule ChangesetGeneration 
+  transform chg : SCRIPT!t_changeset {
+  
+  parameters {
+    var params : new Map;
+    params.put("changes", chg.c_change.collect(c | c.a_sql.bindDefaultVariables()));
+    (dialect() + " " + chg.a_name).println("Processing: ");
+    return params;
+  }
+  
+  template : chg.a_scriptName
+  
+  target : chg.a_out.bindDefaultVariables()
+}
+

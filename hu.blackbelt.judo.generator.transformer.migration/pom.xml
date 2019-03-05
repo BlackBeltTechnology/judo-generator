@@ -152,7 +152,7 @@
 										<artifact>
 											<file>${project.build.directory}/migration.model</file>
 											<type>model</type>
-											<classifier>migrationSchema</classifier>
+											<classifier>migration</classifier>
 										</artifact>
 									</artifacts>
 								</configuration>

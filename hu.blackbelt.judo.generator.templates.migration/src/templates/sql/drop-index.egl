@@ -1,0 +1,12 @@
+[%
+  import "../../operations/_importAll.eol";
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[% for (index in CURRENT!RdbmsIndex.all) { %]
+--changeset generator:DROP_INDEX_[%= index.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+DROP INDEX [%= index.sqlName %];
+[% out.println("\n"); %]
+[% } %]
+

@@ -1,0 +1,24 @@
+[%
+  import "../../operations/_importAll.eol";
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[* TODO: *]
+[*   - Handling identifier types - lookup select generation *]
+[*   - Type casting *]
+[% for (record in CURRENT!RdbmsViewRecord.all) { %]
+
+--changeset generator:INSERT_VIEW_RECORD_#[%= record.getValueFieldBySqlName("C_GUID").value %] logicalFilePath:[%= scriptName%]
+INSERT INTO [%= record.view.sqlName %] (
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		[%= v.valueField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= v.valueField.name %] [%= v.valueField.uuid %]
+	[% } %]
+) VALUES (
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		'[%= v.value %]' [% if (hasMore) { out.print(","); } %]
+	[% } %]
+);
+
+[% } %]
+

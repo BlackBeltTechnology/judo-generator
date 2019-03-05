@@ -1,0 +1,18 @@
+[%
+  import "../../operations/_importAll.eol";
+  out.setContentType("Java");
+%]
+--liquibase formatted sql
+
+[% for (op in INCREMENTAL!RdbmsModifyTableOperation.all.select(o | o.modifyFieldOperations.select(f | f.fieldIsAltered()).size > 0 or o.deleteFieldOperations.size > 0)) { %]
+--changeset generator:BACKUP_TABLE_[%= op.table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= op.table.name %] [%= op.table.uuid %]
+CREATE TABLE [%= op.table.backupName() %] AS
+SELECT ID, 
+	[% for (field in op.modifyFieldOperations.select(o | o.fieldIsAltered()).collect(o | o.field).includingAll(op.deleteFieldOperations.collect(f | f.field))) { %]
+		[%= field.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %]
+	[% } %]
+FROM [%= op.table.sqlName %];
+
+[% } %]
+

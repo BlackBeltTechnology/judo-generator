@@ -1,0 +1,33 @@
+[%
+  import "../../operations/_importAll.eol";
+  import "../../main.egl";
+  
+  out.setContentType("Java");
+%]
+
+[* LATER *]
+
+-- {%- if table.after_insert %}
+--changeset generator:create_function_AI_{{ table.name }}#{{ changesetversion }} {{ changesetextraargs }} {{ ddlmacro.DBMSTYPE }} logicalFilePath:triggersViewsConstraintCreate stripComments:true {{ ddlmacro.endDelimiter() }}
+--{{ ddlmacro.CREATE_TRIGGER('AI_' + table.name, table.name, 'AFTER', 'INSERT') }}
+--    {{ ddlmacro.DECLARE }}
+--        {{ ddlmacro.DEFVAR('EVENT_GUID', 'INTEGER') }}
+--    {{ ddlmacro.BEGIN }}
+--        {{ ddlmacro.nextval( 'EVENT_GUID' ) }}
+--        INSERT INTO V_FRW_EVENT (C_GUID,      C_ACT,         C_EVENT_TYPE, C_DOMAIN_NAME,                  C_CLASS_NAME,         C_OBJECT_ID)
+--        VALUES                  (EVENT_GUID, {{ ddlmacro.TR_TIME }}, 'CREATE',     '{{ table.node.parent.name }}', '{{ table.umlname }}', {{ ddlmacro.NEW }}.ID);
+--
+--        {{ ddlmacro.RETURN_NEW }}
+--    END;
+-- {{ ddlmacro.END_TRIGGER() }}
+
+-- {%- macro CREATE_TRIGGER(name, table, timing, type) -%}
+-- {%- set _ = glob.update({'CURRENT_TRIGGER_NAME':name}) -%}
+-- CREATE TRIGGER {{ name }} {{ timing }} {{ type }} ON {{ table }}
+--     FOR EACH ROW
+-- {%- endmacro -%}
+-- {%- endif %}
+
+[% for (table in tables) { %]
+--  --changeset generator:CREATE_TRIGGER_AFTER_INSERT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+[% } %]

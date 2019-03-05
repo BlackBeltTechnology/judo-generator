@@ -5,15 +5,15 @@ pre {
 	var classUUIDs : Set<String> = new Set;
 	
 	var excludes : Set<String> = new Set;
-	excludes.add("anakin.business.domain.ugylet.elzalogositas.Ajanlat.kNettoKolcson");
+	excludes.add("anakin.business.domain.ugylet.elzalogositas.Ajanlat.k.*");
+	//ecludes must include derived from the original/extension uml, as the derived information is lost
 	
 	
 	var additionalRoles : Set<String> = new Set;
+	//there are roles that are not mandatory in uml, but must be included due to business requirement
 	additionalRoles.add("Anakin.anakin.business.domain.ugylet.elzalogositas.Ajanlat.zalogtetelek");
-	
-	var elotoltott : Set<String> = new Set;
-	elotoltott.add("");
-	
+
+	//the class from where we want to start the transitive colsure computation	
 	var startClassName = "anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes";
 	var startClass = PSM!JClass.all.selectOne(c | c.fqName() = startClassName);
 	classUUIDs.add(startClass.uuid);
@@ -27,7 +27,7 @@ operation PSM!JClass allMandatoryRoles(acc : Set<String>) {
 	for (r in PSM!JRole.all.select(r | r.ownerClass = self)) { 
 		if (r.lower == 1 or additionalRoles.contains(r.uuid)) {
 			var opp = r.opposite().ownerClass;
-			if (not opp.`abstract` and not opp.representsEnum and not acc.contains(opp.uuid)) {
+			if (not opp.`abstract` and not acc.contains(opp.uuid)) {
 				acc.add(opp.uuid);
 				r.opposite().ownerClass.allMandatoryRoles(acc);
 			}
@@ -41,11 +41,12 @@ rule Element
 	to 		  t : MIG!RdbmsElement {
 	guard: not s.name.contains("@") //TODO: find out why multichained derived expressions maps to valueField
 		t.name = s.name;
+		t.name.println("NAME: ");
 		t.uuid = s.uuid;
 		t.fullName = s.fullName;
 		t.description = s.description;
 		t.shortName = s.shortName;
-		t.sqlName = s.sqlName;
+		t.sqlName = s.name.cutFqNameToLastElement();
 		t.originalName = s.originalName;
 	    t.originalPackage = s.originalPackage;
 }
@@ -61,7 +62,7 @@ rule ViewField
 		t.scale = s.tableField.scale;
 		t.storageByte = s.tableField.storageByte;
 		t.mandatory = s.tableField.mandatory;
-		t.table = s.view.equivalent();
+		//t.table = s.view.equivalent();
 }
 
 rule Model 
@@ -82,13 +83,13 @@ rule View
 	extends Element {
 		var pk = s.primaryIdentifierField;
 	    t.primaryKey = pk.equivalent();
-	    t.primaryKey.name = t.primaryKey.name.substring(0, t.primaryKey.name.length() - 3);
+	    t.fields.add(t.primaryKey);
 	    for (f in s.fields) {
 	    	var e = excludes.collect(e | "Anakin." + e + "_ViewField@Anakin." + s.name + "_View");
-	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) and not f.equals(pk) and not e.contains(f.uuid)) {
+	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) and not f.equals(pk) and not e.exists(e | f.uuid.matches(e))) {
 	    		var fe = f.equivalent();
-	    		if (fe.isDefined()) {
-			    	t.fields.add(fe);
+	    		if (fe.isDefined() and not t.fields.exists(x | x.name.cutFqNameToLastElement() = s.name.cutFqNameToLastElement())) {
+	    			t.fields.add(fe);
 	    		}
 	    	}
 		}    
@@ -98,29 +99,29 @@ rule View
 rule ViewIdField
 	transform s : RDBMS!RdbmsViewIdentifierField
 	to t : MIG!RdbmsIdentifierField 
-	extends ViewField {		
-		t.name = s.name + "_id";
+	extends ViewField {
+	guard : not RDBMS!RdbmsForeignKey.all.exists(f | f.referenceKey.name = s.name) or s.view.primaryIdentifierField = s
 }
 
 @lazy
 rule ViewValueField
 	transform s : RDBMS!RdbmsViewValueField
 	to t : MIG!RdbmsValueField 
-	extends ViewField { 
-	guard: not s.tableField.technical or (s.tableField.technical and s.tableField.name.endsWith("guid"))
+	extends ViewField {
+	guard: not s.tableField.technical
 }
 
 @lazy
 rule Fk
 	transform s : RDBMS!RdbmsForeignKey
 	to fk : MIG!RdbmsForeignKey 
-	extends Element {
-		fk.rdbmsTypeName = s.rdbmsTypeName;
+	extends ViewIdField {
+		/*fk.rdbmsTypeName = s.rdbmsTypeName;
 		fk.size = s.size;
 		fk.precision = s.precision;
 		fk.scale = s.scale;
 		fk.storageByte = s.storageByte;
-		fk.mandatory = s.mandatory;
+		fk.mandatory = s.mandatory;*/
 		
 	    fk.referenceKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = s.referenceKey.name);
 	    
@@ -138,7 +139,7 @@ rule Junction
 	transform s : RDBMS!RdbmsJunctionTable
 	to j : MIG!RdbmsJunctionTable 
 	extends Element {
-		for (i in s.fields) {
+		for (i in s.fields.select(f | f.isTypeOf(RDBMS!RdbmsIdentifierField))) {
 			var p : RDBMS!RdbmsIdentifierField = new RDBMS!RdbmsIdentifierField;
 			p.name = i.name;
 			p.sqlName = i.sqlName;
@@ -152,9 +153,17 @@ rule Junction
 			p.mandatory = i.mandatory;		
 			j.fields.add(p);
 		}
+		
+		var n = s.name.split(" to ").collect(s | s.cutFqNameToLastElement());
+		j.sqlName = n.first() + "_" + n.second() ;
 
 		j.field1 = s.field1.equivalent();
 		j.field2 = s.field2.equivalent();
+}
+
+operation String cutFqNameToLastElement() : String {
+	var start = self.lastindexOf(".");
+	return self.substring(start + 1, self.length());
 }
 
 post {
