@@ -7,7 +7,7 @@
 [% for (table in CURRENT!RdbmsTable.all) { %]
 	[% if (hasFeature('SupportMultipleColumnModificationInOneStatement') and table.fields.exists(f | f.mandatory and not f.isPrimary())) { %]
 --changeset generator:CREATE_NOT_NULL_CONSTRAINT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
--- [%= table.name %] [%= table.uuid %]
+-- [%= table.name %]
 ALTER TABLE [%= table.sqlName %] 
 		[% if (dialect() == 'Oracle') { %]
 			MODIFY (
@@ -17,7 +17,7 @@ ALTER TABLE [%= table.sqlName %]
 			[% if (dialect() == 'Oracle') { %]
 				[%= field.sqlName %] NOT NULL
 			[% } else { %]
-				ALTER COLUMN [%= field.sqlName %] SET NOT NULL	-- [%= field.name %] [%= field.uuid %]
+				ALTER COLUMN [%= field.sqlName %] SET NOT NULL	
 			[% } %]
 			[% if (hasMore) { out.print(","); } %]
 		[% } %]

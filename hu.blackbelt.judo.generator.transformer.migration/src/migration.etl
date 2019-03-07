@@ -6,12 +6,44 @@ pre {
 	
 	var excludes : Set<String> = new Set;
 	excludes.add("anakin.business.domain.ugylet.elzalogositas.Ajanlat.k.*");
+	excludes.add("anakin.business.domain.ugylet.termek.Termekverzio.trk_.*");
+	excludes.add("anakin.business.domain.ugylet.termek.KolcsonSema.modosit.*"); 
+
 	//ecludes must include derived from the original/extension uml, as the derived information is lost
-	
 	
 	var additionalRoles : Set<String> = new Set;
 	//there are roles that are not mandatory in uml, but must be included due to business requirement
 	additionalRoles.add("Anakin.anakin.business.domain.ugylet.elzalogositas.Ajanlat.zalogtetelek");
+	
+	var additionalAttributes : Set<String> = new Set;
+	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.kezelesiDijElore"); 
+	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.kezelesiDijUtolag"); 
+	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.hetiKezelesiPotdij"); 
+	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.kesedelmiDijmentesNapok"); 
+	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.elotorlesztesiDij"); 
+	
+	
+	
+	var elotoltott : Set<String> = new Set;
+	elotoltott.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonSzorzo");
+	elotoltott.add("anakin.business.domain.ugylet.termek.Termek");
+	elotoltott.add("anakin.business.domain.targy.Arfolyam");
+	elotoltott.add("anakin.business.domain.ugylet.termek.Dijszabas");
+	elotoltott.add("anakin.business.domain.targy.Finomsag");
+	elotoltott.add("anakin.business.domain.ugylet.termek.KolcsonSema");
+	elotoltott.add("anakin.business.domain.szervezetKozvetitoCeg");
+	elotoltott.add("anakin.business.domain.felhasznalo.Privilegium");
+	elotoltott.add("anakin.business.domain.felhasznalo.Szerepkor");
+	elotoltott.add("anakin.business.domain.targy.TargyleirasRoviditesek");
+	elotoltott.add("anakin.business.domain.ugylet.termek.TermekKategoria");
+	elotoltott.add("anakin.business.domain.ugylet.termek.Termek");
+	elotoltott.add("anakin.business.domain.ugylet.termek.Termekverzio");
+	elotoltott.add("anakin.business.domain.ugylet.UzletiKonfiguracio");
+	elotoltott.add("anakin.business.domain.targy.Zalognem");
+	
+	var enumClasses = PSM!JClass.all.select(c | c.representsEnum).collect(c | c.fqName()).asSet();
+	
+	var mandatoryAttributes : Set<String> = PSM!JAttribute.all.select(a | a.lower > 0).collect(a | a.uuid.substring(a.uuid.indexOf(".") + 1, a.uuid.length())).asSet();
 
 	//the class from where we want to start the transitive colsure computation	
 	var startClassName = "anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes";
@@ -41,11 +73,10 @@ rule Element
 	to 		  t : MIG!RdbmsElement {
 	guard: not s.name.contains("@") //TODO: find out why multichained derived expressions maps to valueField
 		t.name = s.name;
-		t.name.println("NAME: ");
 		t.uuid = s.uuid;
 		t.fullName = s.fullName;
 		t.description = s.description;
-		t.shortName = s.shortName;
+		t.shortName = s.sqlName; // I am using the shortName for storing the original sqlName for later use
 		t.sqlName = s.name.cutFqNameToLastElement();
 		t.originalName = s.originalName;
 	    t.originalPackage = s.originalPackage;
@@ -85,14 +116,25 @@ rule View
 	    t.primaryKey = pk.equivalent();
 	    t.fields.add(t.primaryKey);
 	    for (f in s.fields) {
-	    	var e = excludes.collect(e | "Anakin." + e + "_ViewField@Anakin." + s.name + "_View");
-	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) and not f.equals(pk) and not e.exists(e | f.uuid.matches(e))) {
+	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) 
+	    		and not f.equals(pk) 
+	    		and not f.uuid.isExcluded(s.name)
+	    		and not t.fields.exists(x | x.name.cutFqNameToLastElement() = f.name.cutFqNameToLastElement())) {
 	    		var fe = f.equivalent();
 	    		if (fe.isDefined() and not t.fields.exists(x | x.name.cutFqNameToLastElement() = s.name.cutFqNameToLastElement())) {
 	    			t.fields.add(fe);
 	    		}
 	    	}
-		}    
+		}
+		if (elotoltott.contains(t.name)) {
+			t.shortName.println();
+			t.sqlName = "ET_" + t.sqlName;
+			t.sqlName.println();
+		} else if (enumClasses.contains(t.name)) {
+			t.shortName.println();
+			t.sqlName = "ENUM_" + t.sqlName;
+			t.sqlName.println();
+		}
 	}
 
 @lazy
@@ -100,7 +142,7 @@ rule ViewIdField
 	transform s : RDBMS!RdbmsViewIdentifierField
 	to t : MIG!RdbmsIdentifierField 
 	extends ViewField {
-	guard : not RDBMS!RdbmsForeignKey.all.exists(f | f.referenceKey.name = s.name) or s.view.primaryIdentifierField = s
+	guard : not RDBMS!RdbmsForeignKey.all.exists(f | f.name = s.name)
 }
 
 @lazy
@@ -108,20 +150,22 @@ rule ViewValueField
 	transform s : RDBMS!RdbmsViewValueField
 	to t : MIG!RdbmsValueField 
 	extends ViewField {
-	guard: not s.tableField.technical
+	guard: not s.tableField.technical 
+		   and (mandatoryAttributes.contains(s.name) or s.name.cutFqNameToLastElement() = "code" or additionalAttributes.contains(s.name)) 
+		   and not s.name.extension()
 }
 
 @lazy
 rule Fk
 	transform s : RDBMS!RdbmsForeignKey
 	to fk : MIG!RdbmsForeignKey 
-	extends ViewIdField {
-		/*fk.rdbmsTypeName = s.rdbmsTypeName;
+	extends Element {
+		fk.rdbmsTypeName = s.rdbmsTypeName;
 		fk.size = s.size;
 		fk.precision = s.precision;
 		fk.scale = s.scale;
 		fk.storageByte = s.storageByte;
-		fk.mandatory = s.mandatory;*/
+		fk.mandatory = s.mandatory;
 		
 	    fk.referenceKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = s.referenceKey.name);
 	    
@@ -161,16 +205,28 @@ rule Junction
 		j.field2 = s.field2.equivalent();
 }
 
+//HACK!! somehow we need to distinguish extension elements
+operation String extension() : Boolean {
+	return (self.cutFqNameToLastElement().contains("extension") or self.cutFqNameToLastElement().contains("Extension"));
+}
+
 operation String cutFqNameToLastElement() : String {
 	var start = self.lastindexOf(".");
 	return self.substring(start + 1, self.length());
 }
 
+operation String isExcluded(viewName : String) : Boolean{
+	var e = excludes.collect(e | "Anakin." + e + "_ViewField@Anakin." + viewName + "_View");
+	return e.exists(e | self.matches(e)) ;
+}
+
 post {
 	for (fk in RDBMS!RdbmsForeignKey.all) {
-	    var refKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = fk.referenceKey.name);	    
+	    var refKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = fk.referenceKey.name);
+	    var fkName = "Anakin." + fk.name;
+	    var isMandatory = PSM!JRole.all.select(r | r.uuid = fkName and r.lower > 0).isDefined();
 	    var table = MIG!RdbmsTable.all.selectOne(t | t.name = fk.table.name);
-	    if (refKey.isDefined() and table.isDefined()) {
+	    if (not fk.name.extension() and refKey.isDefined() and table.isDefined() and isMandatory) {
 			fk.equivalent();
 	    }
 	}
@@ -183,5 +239,6 @@ post {
 			MIG!RdbmsModel.all.first().rdbmsTables.add(j.equivalent()); 
 		}
 	}
+	
 	"END".println();
 }

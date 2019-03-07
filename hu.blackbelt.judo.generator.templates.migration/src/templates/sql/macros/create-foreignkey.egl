@@ -3,7 +3,7 @@
 %]
 [% (foreignKey.name + " " + foreignKey.uuid).println("Foreign key: "); %]
 --changeset generator:CREATE_FOREIGN_KEY_[%= foreignKey.table.sqlName %]_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true failOnError:[%= failOnError %]
--- [%= foreignKey.name %] [%= foreignKey.uuid %]
+-- [%= foreignKey.name %]
 ALTER TABLE [%= foreignKey.table.sqlName %] 
 ADD CONSTRAINT [%= foreignKey.foreignKeySqlName %]
 FOREIGN KEY ([%= foreignKey.sqlName %])
