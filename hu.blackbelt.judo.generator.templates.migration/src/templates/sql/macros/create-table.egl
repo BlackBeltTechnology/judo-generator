@@ -2,8 +2,6 @@
   import "../../../operations/_importAll.eol";
 %]
 
---changeset generator:CREATE_TABLE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
--- [%= table.name %]
 CREATE TABLE [%= table.sqlName %] (
 	[% for (field in table.fields) { %]
 		[%= field.sqlName %] [%= field.toFieldDefinition() %] [% if (field.isPrimary()) { %] NOT NULL PRIMARY KEY[% } %] [% if (hasMore) { out.print(","); } %] 

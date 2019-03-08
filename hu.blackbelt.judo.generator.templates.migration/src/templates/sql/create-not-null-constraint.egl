@@ -2,12 +2,8 @@
   import "../../operations/_importAll.eol";
   out.setContentType("Java");
 %]
---liquibase formatted sql
-
 [% for (table in CURRENT!RdbmsTable.all) { %]
 	[% if (hasFeature('SupportMultipleColumnModificationInOneStatement') and table.fields.exists(f | f.mandatory and not f.isPrimary())) { %]
---changeset generator:CREATE_NOT_NULL_CONSTRAINT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
--- [%= table.name %]
 ALTER TABLE [%= table.sqlName %] 
 		[% if (dialect() == 'Oracle') { %]
 			MODIFY (
@@ -28,8 +24,6 @@ ALTER TABLE [%= table.sqlName %]
 ;[% out.println("\n"); %]
 	[% } else { %]
 		[%for (field in table.fields.select(f | f.mandatory and not f.isPrimary())) { %]
---changeset generator:CREATE_NOT_NULL_CONSTRAINT_[%= table.sqlName %]_[%=field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
--- [%= field.name %] [%= field.uuid %]
 ALTER TABLE [%= table.sqlName %] ALTER COLUMN [%= field.sqlName %] SET NOT NULL;
 			[% out.println("\n"); %]
 		[% } %]

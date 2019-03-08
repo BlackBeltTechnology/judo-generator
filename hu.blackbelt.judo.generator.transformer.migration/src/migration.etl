@@ -31,7 +31,7 @@ pre {
 	elotoltott.add("anakin.business.domain.ugylet.termek.Dijszabas");
 	elotoltott.add("anakin.business.domain.targy.Finomsag");
 	elotoltott.add("anakin.business.domain.ugylet.termek.KolcsonSema");
-	elotoltott.add("anakin.business.domain.szervezetKozvetitoCeg");
+	elotoltott.add("anakin.business.domain.szervezet.KozvetitoCeg");
 	elotoltott.add("anakin.business.domain.felhasznalo.Privilegium");
 	elotoltott.add("anakin.business.domain.felhasznalo.Szerepkor");
 	elotoltott.add("anakin.business.domain.targy.TargyleirasRoviditesek");
@@ -45,7 +45,7 @@ pre {
 	
 	var mandatoryAttributes : Set<String> = PSM!JAttribute.all.select(a | a.lower > 0).collect(a | a.uuid.substring(a.uuid.indexOf(".") + 1, a.uuid.length())).asSet();
 
-	//the class from where we want to start the transitive colsure computation	
+	//the class from where we want to start the transitive colsure on mandatory role relation	
 	var startClassName = "anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes";
 	var startClass = PSM!JClass.all.selectOne(c | c.fqName() = startClassName);
 	classUUIDs.add(startClass.uuid);
@@ -93,7 +93,6 @@ rule ViewField
 		t.scale = s.tableField.scale;
 		t.storageByte = s.tableField.storageByte;
 		t.mandatory = s.tableField.mandatory;
-		//t.table = s.view.equivalent();
 }
 
 rule Model 
@@ -121,7 +120,7 @@ rule View
 	    		and not f.uuid.isExcluded(s.name)
 	    		and not t.fields.exists(x | x.name.cutFqNameToLastElement() = f.name.cutFqNameToLastElement())) {
 	    		var fe = f.equivalent();
-	    		if (fe.isDefined() and not t.fields.exists(x | x.name.cutFqNameToLastElement() = s.name.cutFqNameToLastElement())) {
+	    		if (fe.isDefined()) {
 	    			t.fields.add(fe);
 	    		}
 	    	}
@@ -215,7 +214,7 @@ operation String cutFqNameToLastElement() : String {
 	return self.substring(start + 1, self.length());
 }
 
-operation String isExcluded(viewName : String) : Boolean{
+operation String isExcluded(viewName : String) : Boolean {
 	var e = excludes.collect(e | "Anakin." + e + "_ViewField@Anakin." + viewName + "_View");
 	return e.exists(e | self.matches(e)) ;
 }
