@@ -129,6 +129,16 @@
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
 										</model>
+                                        <model>
+                                            <artifact>file:/home/gyturi/git/anakin-model/src/main/model/anakinExtension.ecore</artifact>
+                                            <name>pimEXT</name>
+                                            <readOnLoad>true</readOnLoad>
+                                            <expand>true</expand>
+                                            <storeOnDisposal>false</storeOnDisposal>
+                                            <metaModelUris>
+                                                <param>http://www.eclipse.org/emf/2002/Ecore</param>
+                                            </metaModelUris>
+                                        </model>
                                     </models>
 									<eolPrograms>
 										<Etl>

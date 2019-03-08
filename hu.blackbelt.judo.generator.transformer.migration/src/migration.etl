@@ -2,27 +2,32 @@ import "operations/_importAll.eol";
 
 pre {
 	"START".println();
-	var classUUIDs : Set<String> = new Set;
 	
-	var excludes : Set<String> = new Set;
-	excludes.add("anakin.business.domain.ugylet.elzalogositas.Ajanlat.k.*");
-	excludes.add("anakin.business.domain.ugylet.termek.Termekverzio.trk_.*");
-	excludes.add("anakin.business.domain.ugylet.termek.KolcsonSema.modosit.*"); 
-
-	//ecludes must include derived from the original/extension uml, as the derived information is lost
+	//i need to extract the derived information from the UML as this info is lost during PIM/PSM transformation 	
+	var excludes : Set<String> = inpPIM!Property.all.select(p | p.isDerived 
+																or p.visibility = inpPIM!VisibilityKind#private
+																/*or p.visibility = inpPIM!VisibilityKind#protected*/)
+													.collect(p | p.fqName()).asSet();
+													
+	//all things from extension model must be excluded
+	excludes.addAll(pimEXT!EStructuralFeature.all.collect(a | a.fqName()));
+	
+	PSM!JRole.all.select(r | r.uuid = "Anakin.anakin.business.domain.raktar.RaktariTetel.felhasznaloKezeben").first().lower.println("LOWER: ");
+	
+	for (e in excludes) { 
+		e.println("EXC: ");
+	}
 	
 	var additionalRoles : Set<String> = new Set;
 	//there are roles that are not mandatory in uml, but must be included due to business requirement
 	additionalRoles.add("Anakin.anakin.business.domain.ugylet.elzalogositas.Ajanlat.zalogtetelek");
-	
-	var additionalAttributes : Set<String> = new Set;
-	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.kezelesiDijElore"); 
-	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.kezelesiDijUtolag"); 
-	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.hetiKezelesiPotdij"); 
-	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.kesedelmiDijmentesNapok"); 
-	additionalAttributes.add("anakin.business.domain.ugylet.termek.Dijszabas.elotorlesztesiDij"); 
-	
-	
+	additionalRoles.add("Anakin.anakin.business.domain.ugylet.Szerzodes.zalogtargyBecslesek");
+	additionalRoles.add("Anakin.anakin.business.domain.targy.ZalogtargyBecsles.zalogtargy");
+	additionalRoles.add("Anakin.anakin.business.domain.targy.Zalogtargy.feljegyzesek");
+	additionalRoles.add("Anakin.anakin.business.domain.targy.Zalogtargy.raktariTetel");
+	additionalRoles.add("Anakin.anakin.business.domain.raktar.RaktariTetel.feljegyzesek");
+	additionalRoles.add("Anakin.anakin.business.domain.raktar.RaktariTetel.tarolohely");
+	additionalRoles.add("Anakin.anakin.business.domain.raktar.Tarolohely.raktar");
 	
 	var elotoltott : Set<String> = new Set;
 	elotoltott.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonSzorzo");
@@ -43,21 +48,21 @@ pre {
 	
 	var enumClasses = PSM!JClass.all.select(c | c.representsEnum).collect(c | c.fqName()).asSet();
 	
-	var mandatoryAttributes : Set<String> = PSM!JAttribute.all.select(a | a.lower > 0).collect(a | a.uuid.substring(a.uuid.indexOf(".") + 1, a.uuid.length())).asSet();
+	//var mandatoryAttributes : Set<String> = PSM!JAttribute.all.select(a | a.lower > 0).collect(a | a.uuid.substring(a.uuid.indexOf(".") + 1, a.uuid.length())).asSet();
 
 	//the class from where we want to start the transitive colsure on mandatory role relation	
 	var startClassName = "anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes";
 	var startClass = PSM!JClass.all.selectOne(c | c.fqName() = startClassName);
+	var classUUIDs : Set<String> = new Set;
 	classUUIDs.add(startClass.uuid);
 	startClass.allMandatoryRoles(classUUIDs);
-	
 	classUUIDs = classUUIDs.collect(a | a + "_View").asSet();
 	var viewNames : Set<String> = RDBMS!RdbmsView.all.select(v | classUUIDs.contains(v.uuid)).name.asSet();
 }
 
 operation PSM!JClass allMandatoryRoles(acc : Set<String>) {
-	for (r in PSM!JRole.all.select(r | r.ownerClass = self)) { 
-		if (r.lower == 1 or additionalRoles.contains(r.uuid)) {
+	for (r in PSM!JRole.all.select(r | r.ownerClass = self or r.ownerClass = self.supertype)) { //supertype collctor must be recursive 
+		if (r.lower > 0 or additionalRoles.contains(r.uuid)) {
 			var opp = r.opposite().ownerClass;
 			if (not opp.`abstract` and not acc.contains(opp.uuid)) {
 				acc.add(opp.uuid);
@@ -150,8 +155,7 @@ rule ViewValueField
 	to t : MIG!RdbmsValueField 
 	extends ViewField {
 	guard: not s.tableField.technical 
-		   and (mandatoryAttributes.contains(s.name) or s.name.cutFqNameToLastElement() = "code" or additionalAttributes.contains(s.name)) 
-		   and not s.name.extension()
+		   and (not enumClasses.contains(s.tableField.table.name) or s.name.cutFqNameToLastElement() = "code") 
 }
 
 @lazy
@@ -204,11 +208,6 @@ rule Junction
 		j.field2 = s.field2.equivalent();
 }
 
-//HACK!! somehow we need to distinguish extension elements
-operation String extension() : Boolean {
-	return (self.cutFqNameToLastElement().contains("extension") or self.cutFqNameToLastElement().contains("Extension"));
-}
-
 operation String cutFqNameToLastElement() : String {
 	var start = self.lastindexOf(".");
 	return self.substring(start + 1, self.length());
@@ -216,16 +215,19 @@ operation String cutFqNameToLastElement() : String {
 
 operation String isExcluded(viewName : String) : Boolean {
 	var e = excludes.collect(e | "Anakin." + e + "_ViewField@Anakin." + viewName + "_View");
-	return e.exists(e | self.matches(e)) ;
+	return e.contains(self) ;
 }
 
 post {
 	for (fk in RDBMS!RdbmsForeignKey.all) {
 	    var refKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = fk.referenceKey.name);
 	    var fkName = "Anakin." + fk.name;
-	    var isMandatory = PSM!JRole.all.select(r | r.uuid = fkName and r.lower > 0).isDefined();
+	    var isMandatory = PSM!JRole.all.selectOne(r | r.uuid = fkName and r.lower > 0).isDefined();
 	    var table = MIG!RdbmsTable.all.selectOne(t | t.name = fk.table.name);
-	    if (not fk.name.extension() and refKey.isDefined() and table.isDefined() and isMandatory) {
+	    if (refKey.isDefined() 
+	    	and table.isDefined() 
+	    	and (isMandatory or additionalRoles.contains(fkName)) 
+	    	and not excludes.contains(fk.name)) {
 			fk.equivalent();
 	    }
 	}

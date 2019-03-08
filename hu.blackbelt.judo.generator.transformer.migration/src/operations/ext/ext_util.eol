@@ -1,0 +1,13 @@
+@cached
+operation pimEXT!EStructuralFeature fqName(): String {
+	if (self.eContainingClass.isDefined()
+		and self.eContainingClass.eAnnotations.isDefined()
+		and self.eContainingClass.eAnnotations.first().isDefined()
+		and self.eContainingClass.eAnnotations.first().details.isDefined()
+		and self.eContainingClass.eAnnotations.first().details.first().isDefined()
+		and self.eContainingClass.eAnnotations.first().details.first().value.isDefined()) {
+		return self.eContainingClass.eAnnotations.first().details.first().value + "." + self.name;
+	} else {
+		return self.name;
+	} 
+}
