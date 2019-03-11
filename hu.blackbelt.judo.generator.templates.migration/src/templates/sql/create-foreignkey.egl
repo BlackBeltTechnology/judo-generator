@@ -2,8 +2,6 @@
   import "../../operations/_importAll.eol";
   out.setContentType("Java");
 %]
---liquibase formatted sql
-
 [* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
 
 [% for (foreignKey in CURRENT!RdbmsForeignKey.all) {

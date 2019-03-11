@@ -4,19 +4,27 @@ pre {
 	"START".println();
 	
 	//i need to extract the derived information from the UML as this info is lost during PIM/PSM transformation 	
-	var excludes : Set<String> = inpPIM!Property.all.select(p | p.isDerived 
+	var ecxludedFields : Set<String> = inpPIM!Property.all.select(p | p.isDerived 
 																or p.visibility = inpPIM!VisibilityKind#private
 																/*or p.visibility = inpPIM!VisibilityKind#protected*/)
 													.collect(p | p.fqName()).asSet();
 													
 	//all things from extension model must be excluded
-	excludes.addAll(pimEXT!EStructuralFeature.all.collect(a | a.fqName()));
+	ecxludedFields.addAll(pimEXT!EStructuralFeature.all.collect(a | a.fqName()));
+	//additional field exclusions
+	ecxludedFields.add("anakin.business.domain.ugylet.termek.KolcsonSema.modositasDatuma");
+	ecxludedFields.add("anakin.business.domain.ugylet.termek.KolcsonSema.modositoFelhasznalo");
+	ecxludedFields.add("anakin.business.domain.felhasznalo.Felhasznalo.becsusiKolcsonLimit");
+	ecxludedFields.add("anakin.business.domain.felhasznalo.Felhasznalo.lastFailedLoginTime");
+	ecxludedFields.add("judo.framework.User.credential");
+	ecxludedFields.add("judo.framework.User.lastLoginTime");
+	ecxludedFields.add("judo.framework.User.sms");
+	ecxludedFields.add("judo.framework.User.notificationEmail");
+	ecxludedFields.add("judo.framework.User.notificationSms");
 	
-	PSM!JRole.all.select(r | r.uuid = "Anakin.anakin.business.domain.raktar.RaktariTetel.felhasznaloKezeben").first().lower.println("LOWER: ");
-	
-	for (e in excludes) { 
-		e.println("EXC: ");
-	}
+	//we can defined classes to be excluded
+	var excludedClasses : Set<String> = new Set;
+	excludedClasses.add("judo.framework.UserInfo");
 	
 	var additionalRoles : Set<String> = new Set;
 	//there are roles that are not mandatory in uml, but must be included due to business requirement
@@ -29,6 +37,7 @@ pre {
 	additionalRoles.add("Anakin.anakin.business.domain.raktar.RaktariTetel.tarolohely");
 	additionalRoles.add("Anakin.anakin.business.domain.raktar.Tarolohely.raktar");
 	
+	//later use for flagging elotoltott data as we need to remame them in the migration schema
 	var elotoltott : Set<String> = new Set;
 	elotoltott.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonSzorzo");
 	elotoltott.add("anakin.business.domain.ugylet.termek.Termek");
@@ -46,11 +55,12 @@ pre {
 	elotoltott.add("anakin.business.domain.ugylet.UzletiKonfiguracio");
 	elotoltott.add("anakin.business.domain.targy.Zalognem");
 	
+	//later use for flagging enum classes as we need to remame them in the migration schema
 	var enumClasses = PSM!JClass.all.select(c | c.representsEnum).collect(c | c.fqName()).asSet();
+	var enumTableNamesMap : Map<String, String> = new Map;
+	var elotoltottTableNamesMap : Map<String, String> = new Map;
 	
-	//var mandatoryAttributes : Set<String> = PSM!JAttribute.all.select(a | a.lower > 0).collect(a | a.uuid.substring(a.uuid.indexOf(".") + 1, a.uuid.length())).asSet();
-
-	//the class from where we want to start the transitive colsure on mandatory role relation	
+	//the class from where we want to start the transitive colsure on mandatory and above defiend additional roles	
 	var startClassName = "anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes";
 	var startClass = PSM!JClass.all.selectOne(c | c.fqName() = startClassName);
 	var classUUIDs : Set<String> = new Set;
@@ -58,6 +68,9 @@ pre {
 	startClass.allMandatoryRoles(classUUIDs);
 	classUUIDs = classUUIDs.collect(a | a + "_View").asSet();
 	var viewNames : Set<String> = RDBMS!RdbmsView.all.select(v | classUUIDs.contains(v.uuid)).name.asSet();
+	//remove excluded classes
+	viewNames.removeAll(excludedClasses);
+	
 }
 
 operation PSM!JClass allMandatoryRoles(acc : Set<String>) {
@@ -122,7 +135,7 @@ rule View
 	    for (f in s.fields) {
 	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) 
 	    		and not f.equals(pk) 
-	    		and not f.uuid.isExcluded(s.name)
+	    		and not f.uuid.isExcludedField(s.name)
 	    		and not t.fields.exists(x | x.name.cutFqNameToLastElement() = f.name.cutFqNameToLastElement())) {
 	    		var fe = f.equivalent();
 	    		if (fe.isDefined()) {
@@ -131,13 +144,16 @@ rule View
 	    	}
 		}
 		if (elotoltott.contains(t.name)) {
-			t.shortName.println();
+			//prefix elotoltott tables
 			t.sqlName = "ET_" + t.sqlName;
-			t.sqlName.println();
+			//helper map for making easier the dump manipulation see the grep sed command at the end 
+			elotoltottTableNamesMap.put(t.originalTableName(), t.sqlName);
+			
 		} else if (enumClasses.contains(t.name)) {
-			t.shortName.println();
+			//prefix enum tables
 			t.sqlName = "ENUM_" + t.sqlName;
-			t.sqlName.println();
+			//helper map for making easier the dump manipulation see the grep sed command at the end
+			enumTableNamesMap.put(t.originalTableName(), t.sqlName);
 		}
 	}
 
@@ -155,7 +171,7 @@ rule ViewValueField
 	to t : MIG!RdbmsValueField 
 	extends ViewField {
 	guard: not s.tableField.technical 
-		   and (not enumClasses.contains(s.tableField.table.name) or s.name.cutFqNameToLastElement() = "code") 
+		   and (not enumClasses.contains(s.tableField.table.name) or s.name.cutFqNameToLastElement() = "code") //hack i only need the code for enums 
 }
 
 @lazy
@@ -213,9 +229,57 @@ operation String cutFqNameToLastElement() : String {
 	return self.substring(start + 1, self.length());
 }
 
-operation String isExcluded(viewName : String) : Boolean {
-	var e = excludes.collect(e | "Anakin." + e + "_ViewField@Anakin." + viewName + "_View");
+operation String isExcludedField(viewName : String) : Boolean {
+	var e = ecxludedFields.collect(e | "Anakin." + e + "_ViewField@Anakin." + viewName + "_View");
 	return e.contains(self) ;
+}
+
+operation MIG!RdbmsTable originalTableName() : String {
+	return "t_"  + self.shortName.substring(2).toLowerCase();
+}
+
+operation printEnumMod() {
+	var grepAndSedCommand = "grep -E \"%s\"";
+	var tables = "";
+	var sed = "";
+	for (k in enumTableNamesMap.keySet()) {
+		tables += "INSERT INTO ";
+		tables += k.toLowerCase();
+		tables += "|";
+		
+		sed += "s/" + k.toLowerCase() + "/" + enumTableNamesMap.get(k) + "/g;";
+	}
+	var first = tables.substring(0, tables.length()-1).format(grepAndSedCommand).println("GREP: ");
+	var second = "awk '{print $1 \" \" $2 \" \" $3 \" \" $4 \" \" $5  \") VALUES(\" $14 \" \" $15 \");\"}' | sed 's/,) /) /g;s/.);/);/g'".println("AWK 1: ");
+	sed += "s/c_code/code/g";
+	var third = sed.format("sed '%s'").println("SED: ");
+	var all = first + " | " + second + " | " + third;
+	all.println("ALL: ");
+	
+}
+
+operation printETMod() {
+	var grepAndSedCommand = "grep -E \"%s\"";
+	var tables = "";
+	var sed = "";
+	for (k in elotoltottTableNamesMap.keySet()) {
+		tables += "INSERT INTO ";
+		tables += k.toLowerCase();
+		tables += "|";
+		
+		sed += "s/" + k.toLowerCase() + "/" + elotoltottTableNamesMap.get(k) + "/g;";
+	}
+	
+	for (f in MIG!RdbmsField.all.select(x | elotoltottTableNamesMap.keySet().contains(x.table.originalTableName()))) {
+		if (not f.equals(f.table.primaryKey)) {
+			sed += "s/" + f.shortName.toLowerCase() + "/" + f.sqlName + "/g;";
+		}
+	}
+	
+	var first = tables.substring(0, tables.length()-1).format(grepAndSedCommand).println("GREP: ");
+	var second = sed.substring(0, sed.length()-1).format("sed '%s'").println("SED: ");
+	var all = first + " | " + second;
+	all.println("ALL: ");
 }
 
 post {
@@ -227,7 +291,7 @@ post {
 	    if (refKey.isDefined() 
 	    	and table.isDefined() 
 	    	and (isMandatory or additionalRoles.contains(fkName)) 
-	    	and not excludes.contains(fk.name)) {
+	    	and not ecxludedFields.contains(fk.name)) {
 			fk.equivalent();
 	    }
 	}
@@ -241,5 +305,12 @@ post {
 		}
 	}
 	
+	//Helper command line things to extract a dump and then extract the preloaded and enum tables for insert, as the migratin schema must contain these records
+	"You can use these command snippets to replace and shape the extracted dump file".println();
+	printEnumMod();
+	printETMod();
+	"pg_dump -a -O --column-inserts -d anakin -U anakin -w -f anakin.sql".println("Use this command for dumnping preloaded and enum data from a running anakin system.");
+	
 	"END".println();
+	
 }

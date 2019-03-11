@@ -2,9 +2,24 @@
   import "../../operations/_importAll.eol";
   out.setContentType("Java");
 %]
---liquibase formatted sql
 
-[% for (table in CURRENT!RdbmsTable.all) {
+[% for (table in CURRENT!RdbmsTable.all.select(t | not (t.sqlName.startsWith("ENUM_") or t.sqlName.startsWith("ET_"))).sortBy(t | t.sqlName)) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-table.egl");
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]
+
+[% for (table in CURRENT!RdbmsTable.all.select(t | t.sqlName.startsWith("ENUM_")).sortBy(t | t.sqlName)) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-table.egl");
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]
+
+[% for (table in CURRENT!RdbmsTable.all.select(t | t.sqlName.startsWith("ET_")).sortBy(t | t.sqlName)) {
 		var inc : Template = TemplateFactory.load("templates/sql/macros/create-table.egl");
 		inc.populate("table", table);
     	inc.populate("scriptName", scriptName);
