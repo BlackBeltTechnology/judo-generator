@@ -113,13 +113,26 @@ rule Transition
 		}
 	}*/
 	
+	if (s.`guard`.isDefined()) {
+		var g : tgtPSM!JGuard = new tgtPSM!JGuard;
+		g.uuid = t.uuid + "_guard_" + t.toState.name;
+		
+		g.transition = t;
+		t.`guard` = g;
+		
+		g.text = t.fromState.name + "_" + t.toState.name;
+		g.expression = s.`guard`.specification.body.asString();
+	}
+	
 	if ( s.trigger.event.`operation`.isDefined() and s.trigger.event.`operation`.size() > 0) {
 	
 		s.trigger.event.`operation`.println("RULE: TRANSITION - EXECUTING METHOD");
 	
 		var op = s.trigger.event.`operation`.first().equivalent("Operation");
 		t.executingOperation = op;
-		op.transition.add( t );	
+		op.transition.add( t );
+		
+		t.uuid = t.uuid.concat(op.name);
 	}
 	
 	t.println("RULE::Transition - tgt : ");
