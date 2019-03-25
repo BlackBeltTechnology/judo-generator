@@ -18,16 +18,16 @@
           </contents>
           <contents xsi:type="java:JvmPackage" xmi:id="_jUCyAMn0EeeX449WIjE-Vg" name="dto" uuid="package-judo-dto-api-root" framework="true" fwElement="true">
             <contents xsi:type="java:JvmPackage" xmi:id="_pcZQUMn0EeeX449WIjE-Vg" name="api" uuid="package-judo-dto-api" framework="true" fwElement="true">
-              <contents xsi:type="java:JvmClass" xmi:id="_tUzFQMn0EeeX449WIjE-Vg" name="PaginationDto" fullName="" framework="true" fwElement="true" coordinate="DTO" origin="_B5-_0A1kEeePApeXDfl6EQ"/>
-              <contents xsi:type="java:JvmClass" xmi:id="_i-HgwNN1Eeeb2-wbY5TnMw" name="FilterDto" framework="true" fwElement="true" coordinate="DTO" origin="_UhEoYNN1Eeeb2-wbY5TnMw"/>
+              <contents xsi:type="java:JvmClass" xmi:id="_tUzFQMn0EeeX449WIjE-Vg" name="PaginationDto"  uuid="calss-pagination-dto" fullName="" framework="true" fwElement="true" coordinate="DTO" origin="_B5-_0A1kEeePApeXDfl6EQ"/>
+              <contents xsi:type="java:JvmClass" xmi:id="_i-HgwNN1Eeeb2-wbY5TnMw" name="FilterDto" framework="true" uuid="calss-fitler-dto" fwElement="true" coordinate="DTO" origin="_UhEoYNN1Eeeb2-wbY5TnMw"/>
             </contents>
           </contents>
         </contents>
-        <contents xsi:type="java:JvmPackage" xmi:id="_u8nEQNQ_EeevDrBcZLTQcQ" name="integration">
-          <contents xsi:type="java:JvmPackage" xmi:id="_ymvzsNQ_EeevDrBcZLTQcQ" name="rest">
-            <contents xsi:type="java:JvmPackage" xmi:id="_0GVXINQ_EeevDrBcZLTQcQ" name="api">
-              <contents xsi:type="java:JvmClass" xmi:id="_2bG2INQ_EeevDrBcZLTQcQ" name="PaginationRestDto" framework="true" fwElement="true" coordinate="REST_DTO" origin="_B5-_0A1kEeePApeXDfl6EQ"/>
-              <contents xsi:type="java:JvmClass" xmi:id="_zFoYYFOREeiPetw4gIhqjA" name="FilterRestDto" framework="true" fwElement="true" coordinate="REST_DTO" origin="_UhEoYNN1Eeeb2-wbY5TnMw"/>
+        <contents xsi:type="java:JvmPackage" xmi:id="_u8nEQNQ_EeevDrBcZLTQcQ" name="integration" uuid="package-hu-integration">
+          <contents xsi:type="java:JvmPackage" xmi:id="_ymvzsNQ_EeevDrBcZLTQcQ" name="rest" uuid="package-hu-integration-rest">
+            <contents xsi:type="java:JvmPackage" xmi:id="_0GVXINQ_EeevDrBcZLTQcQ" name="api" uuid="package-hu-integration-rest-api">
+              <contents xsi:type="java:JvmClass" xmi:id="_2bG2INQ_EeevDrBcZLTQcQ" name="PaginationRestDto" framework="true" uuid="calss-pagination-rest-dto" fwElement="true" coordinate="REST_DTO" origin="_B5-_0A1kEeePApeXDfl6EQ"/>
+              <contents xsi:type="java:JvmClass" xmi:id="_zFoYYFOREeiPetw4gIhqjA" name="FilterRestDto" framework="true"  uuid="calss-filter-rest-dto" fwElement="true" coordinate="REST_DTO" origin="_UhEoYNN1Eeeb2-wbY5TnMw"/>
             </contents>
           </contents>
         </contents>

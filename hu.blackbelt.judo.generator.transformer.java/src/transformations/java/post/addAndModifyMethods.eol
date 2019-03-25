@@ -32,7 +32,7 @@ operation createQueryCountMethodFor (method : JAVA!JvmMethod) : Any {
 	countMethod.uuid = generateUuid(method.uuid, countMethod.name, ".");
 	countMethod.origin = method.origin;
 	countMethod.ownerClass = method.ownerClass;
-	countMethod.type = intType();
+	countMethod.type = longType();
 	countMethod.kind = JAVA!JvmMethodKind#QUERY_COUNT;
 	countMethod.classBased = method.classBased;
 	var allParams = method.parameters.asSequence();
@@ -43,6 +43,8 @@ operation createQueryCountMethodFor (method : JAVA!JvmMethod) : Any {
 		countParam.type = param.type;
 		countParam.ownerMethod = countMethod;
 	}
+	countMethod.addFilterParam();
+	
 }
 
 operation createBulkMethodFor (method : JAVA!JvmMethod) : Any {

@@ -32,7 +32,7 @@ operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
 	if (ret.isUndefined()) {
 		ret = new JAVA!JvmList;
 		ret.uuid = generateUuid(componentType.uuid, "list", "_");
-		ret.name = "List";	
+		ret.name = "List";
 		ret.package = JAVA!JvmModel.all.first().findOrCreateJavaUtilPackage();
 		ret.componentType = componentType;
 	}

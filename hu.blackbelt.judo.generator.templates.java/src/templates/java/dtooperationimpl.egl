@@ -186,7 +186,11 @@ operation JAVA!JvmMethod extractStatements () : String {
     var result : Sequence;
     for (param in self.parameters.select(p | not p.type.isPrimitive())) {
         var convertMethod : String = param.type.isCollection().ternary("convertAll", "convert");
-        result.add(param.type.boFqName() + " " + param.name + "Input" + " = getConverterService()." + convertMethod + "(" + param.name + ", " + param.type.bare().boFqName() + ".class);");
+        if (param.isPagination() or param.isFilter()) {
+        	result.add(param.type.bo().fqName() + " " + param.name + "Input" + " = getConverterService()." + convertMethod + "(" + param.name + ", " + param.type.bare().bo().fqName() + ".class);");
+        } else {
+        	result.add(param.type.boFqName() + " " + param.name + "Input" + " = getConverterService()." + convertMethod + "(" + param.name + ", " + param.type.bare().boFqName() + ".class);");
+        }
     }
     return result.concat("\n");
 }
@@ -195,7 +199,11 @@ operation JAVA!JvmMethod extractStatements () : String {
 operation JAVA!JvmMethod parameterExtractedNameSequence () : String {
     var result : Sequence;
     for (param in self.parameters) {
+    	
         if (param.isPagination() or param.isFilter()) {
+        	param.uuid.println("UUID: ");
+        	param.type.uuid.println("T UUID: ");
+        	param.type.bo().uuid.println("BO UUID: ");
             result.add("converterService.convert(" + param.name + ", " + param.type.bo().fqName() + ".class)");
         } else if (not param.type.isPrimitive() and not param.ownerMethod.isQuery()) {
             result.add(param.name + "Input");
@@ -211,7 +219,7 @@ operation bqlCall (class : JAVA!JvmClass, ref : JAVA!JvmElement) : String {
 }
 
 operation JAVA!JvmType boFqName() : String {
-	if (self.framework or (self.isCollection() and self.componentType.framework)) {
+ 	if (self.framework or (self.isCollection() and self.componentType.framework)) {
 		return self.boInterface().fqName();
 	} else { 
 		return self.bo().fqName();

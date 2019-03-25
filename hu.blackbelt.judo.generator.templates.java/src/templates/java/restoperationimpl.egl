@@ -464,6 +464,9 @@ operation JAVA!JvmMethod parameterExtractedNameSequence (skipPagination : Boolea
     for (param in self.parameters) {
         if (param.isPagination()) {
             if (not skipPagination) {
+            	param.uuid.println("UUID: ");
+            	param.type.uuid.println("T UUID: ");
+            	param.type.dto().uuid.println("DTO UUIUD: ");
                 result.add("converterService.convert(paginationRestDto, " + param.type.dto().fqName() + ".class)");
             }
         } else if (param.isFilter()) {

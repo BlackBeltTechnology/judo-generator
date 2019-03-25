@@ -32,7 +32,7 @@ rule Relationship
 		}
 	}
 
-	t.derived = s.memberEnd.exists(me | me.isDerived);
+	t.derived = s.memberEnd.exists(me | me.equivalent().derivedExpression.isDefined() or me.equivalent().derivedDescription.isDefined());
 	
 	if (t.derived) {
 		t.println("Rule::Relationship - Association has at least one member, flagged as <<derived>> ");

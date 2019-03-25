@@ -60,7 +60,7 @@
 										</model>
 		
 										<model>
-											<artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:psm:${test.model.version}</artifact>
+											<artifact>file:/home/zoltan/work/anakin-model/target/psm.model</artifact>
 											<name>PSM</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm</param>
