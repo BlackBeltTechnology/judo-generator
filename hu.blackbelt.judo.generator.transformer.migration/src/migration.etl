@@ -25,6 +25,10 @@ pre {
 	//we can defined classes to be excluded
 	var excludedClasses : Set<String> = new Set;
 	excludedClasses.add("judo.framework.UserInfo");
+	excludedClasses.add("ext.SecurityInputPair");
+	excludedClasses.add("ext.RaktariTetelAllapot");
+	excludedClasses.add("ext.RaktariTetelAllapotValue");
+	excludedClasses.add("anakin.business.domain.workflow.Workflow");
 	
 	var additionalRoles : Set<String> = new Set;
 	//there are roles that are not mandatory in uml, but must be included due to business requirement
@@ -60,26 +64,40 @@ pre {
 	var enumTableNamesMap : Map<String, String> = new Map;
 	var elotoltottTableNamesMap : Map<String, String> = new Map;
 	
+	//set this true if all association must be traversed not only mandatory ones
+	var allAssociations : Boolean = true;
 	//the class from where we want to start the transitive colsure on mandatory and above defiend additional roles	
 	var startClassName = "anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes";
 	var startClass = PSM!JClass.all.selectOne(c | c.fqName() = startClassName);
 	var classUUIDs : Set<String> = new Set;
 	classUUIDs.add(startClass.uuid);
-	startClass.allMandatoryRoles(classUUIDs);
+	startClass.allRoles(classUUIDs);
 	classUUIDs = classUUIDs.collect(a | a + "_View").asSet();
 	var viewNames : Set<String> = RDBMS!RdbmsView.all.select(v | classUUIDs.contains(v.uuid)).name.asSet();
 	//remove excluded classes
 	viewNames.removeAll(excludedClasses);
 	
+	var fieldReservedSqlNames : Set<String> = new Set;
+	fieldReservedSqlNames.add("language");
+	fieldReservedSqlNames.add("group");
+	fieldReservedSqlNames.add("type");
+	fieldReservedSqlNames.add("key");
+	fieldReservedSqlNames.add("index");
+	fieldReservedSqlNames.add("table");
+	fieldReservedSqlNames.add("user");
+	fieldReservedSqlNames.add("source");
+	
+	var allAssociations : Boolean = true;
+	
 }
 
-operation PSM!JClass allMandatoryRoles(acc : Set<String>) {
+operation PSM!JClass allRoles(acc : Set<String>) {
 	for (r in PSM!JRole.all.select(r | r.ownerClass = self or r.ownerClass = self.supertype)) { //supertype collctor must be recursive 
-		if (r.lower > 0 or additionalRoles.contains(r.uuid)) {
+		if ((r.lower > 0 or allAssociations) or additionalRoles.contains(r.uuid)) {
 			var opp = r.opposite().ownerClass;
 			if (not opp.`abstract` and not acc.contains(opp.uuid)) {
 				acc.add(opp.uuid);
-				r.opposite().ownerClass.allMandatoryRoles(acc);
+				r.opposite().ownerClass.allRoles(acc);
 			}
 		}
 	}
@@ -98,6 +116,9 @@ rule Element
 		t.sqlName = s.name.cutFqNameToLastElement();
 		t.originalName = s.originalName;
 	    t.originalPackage = s.originalPackage;
+	    if (fieldReservedSqlNames.contains(t.sqlName.toLowerCase())) {
+	    	t.sqlName = "_" + t.sqlName;
+		}
 }
 
 @abstract
@@ -179,6 +200,7 @@ rule Fk
 	transform s : RDBMS!RdbmsForeignKey
 	to fk : MIG!RdbmsForeignKey 
 	extends Element {
+		guard : not s.inheritenceBased
 		fk.rdbmsTypeName = s.rdbmsTypeName;
 		fk.size = s.size;
 		fk.precision = s.precision;
@@ -189,7 +211,12 @@ rule Fk
 	    fk.referenceKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = s.referenceKey.name);
 	    
 	    fk.foreignKeySqlName = s.foreignKeySqlName;
-		fk.table =  MIG!RdbmsTable.all.selectOne(t | t.name = s.table.name);
+	    var byUuid = MIG!RdbmsTable.all.selectOne(t | t.uuid = s.table.uuid);
+	    if (byUuid.isDefined()) {
+	    	fk.table =  byUuid;	
+	    } else {
+	    	fk.table =  MIG!RdbmsTable.all.selectOne(t | t.name = s.table.name);
+	    }		
 
 		fk.mandatory = s.mandatory;
 		
@@ -218,7 +245,7 @@ rule Junction
 		}
 		
 		var n = s.name.split(" to ").collect(s | s.cutFqNameToLastElement());
-		j.sqlName = n.first() + "_" + n.second() ;
+		j.sqlName = n.first() + "_" + n.second() + "_" + s.field1.name + "_" + s.field2.name;
 
 		j.field1 = s.field1.equivalent();
 		j.field2 = s.field2.equivalent();
@@ -290,7 +317,7 @@ post {
 	    var table = MIG!RdbmsTable.all.selectOne(t | t.name = fk.table.name);
 	    if (refKey.isDefined() 
 	    	and table.isDefined() 
-	    	and (isMandatory or additionalRoles.contains(fkName)) 
+	    	and ((isMandatory or allAssociations) or additionalRoles.contains(fkName)) 
 	    	and not ecxludedFields.contains(fk.name)) {
 			fk.equivalent();
 	    }
