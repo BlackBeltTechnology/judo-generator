@@ -2,8 +2,8 @@
   import "../../../operations/_importAll.eol";
 %]
 
-CREATE TABLE [%= table.sqlName %] /*[%= table.shortName %]*/ (
+CREATE TABLE [%= table.sqlName %] (
 	[% for (field in table.fields) { %]
-		[%= field.sqlName %] [%= field.toFieldDefinition() %] [% if (field.isPrimary()) { %] NOT NULL PRIMARY KEY[% } %] /*[%= field.shortName%]*/ [% if (hasMore) { out.print(","); } %] 
+		[%= field.sqlName %] [%= field.toFieldDefinition() %] [% if (field.isPrimary()) { %] NOT NULL PRIMARY KEY[% } %] [% if (hasMore) { out.print(","); } %] 
 	[% } %]
 );[% out.println("\n"); %]

@@ -32,6 +32,7 @@ pre {
 	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumIranyultsag");
 	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumIranyultsagValue");
 	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumLeiro");
+	excludedClasses.add("anakin.business.domain.nyomtatas.Dokumentum");
 	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumTipus");
 	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumTipusValue");
 	excludedClasses.add("anakin.business.domain.nyomtatas.NyomatKeszultsegiSzint");
@@ -49,7 +50,7 @@ pre {
 	excludedClasses.add("anakin.business.domain.penztar.Penztar");
 	excludedClasses.add("anakin.business.domain.penztar.TrezorTipus");
 	excludedClasses.add("anakin.business.domain.penztar.TrezorTipusValue");
-	excludedClasses.add("anakin.business.domain.raktar.Aktiv_e");
+	//excludedClasses.add("anakin.business.domain.raktar.Aktiv_e");
 	excludedClasses.add("anakin.business.domain.raktar.Aktiv_eValue");
 	excludedClasses.add("anakin.business.domain.raktar.EgyediRaktarTetelMuvelet");
 	excludedClasses.add("anakin.business.domain.raktar.FeladatTipus");
@@ -63,13 +64,13 @@ pre {
 	excludedClasses.add("anakin.business.domain.raktar.RaktariFeladatokOsszesito");
 	excludedClasses.add("anakin.business.domain.raktar.RaktariMuveletStatusz");
 	excludedClasses.add("anakin.business.domain.raktar.RaktariMuveletStatuszValue");
-	excludedClasses.add("anakin.business.domain.raktar.RaktariTetelStatusz");
+	//excludedClasses.add("anakin.business.domain.raktar.RaktariTetelStatusz");
 	excludedClasses.add("anakin.business.domain.raktar.RaktariTetelStatuszValue");
 	excludedClasses.add("anakin.business.domain.raktar.Rovancs");
 	excludedClasses.add("anakin.business.domain.raktar.RovancsAdag");
 	excludedClasses.add("anakin.business.domain.raktar.RovancsAdagRovancsAdagAllapot");
 	excludedClasses.add("anakin.business.domain.raktar.RovancsAdagRovancsAdagAllapotValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsAnyag");
+	//excludedClasses.add("anakin.business.domain.raktar.RovancsAnyag");
 	excludedClasses.add("anakin.business.domain.raktar.RovancsAnyagValue");
 	excludedClasses.add("anakin.business.domain.raktar.RovancsEredmeny");
 	excludedClasses.add("anakin.business.domain.raktar.RovancsEredmenyValue");
@@ -92,66 +93,66 @@ pre {
 	excludedClasses.add("anakin.business.domain.raktar.RovancsTetelRovancsTetelAllapotValue");
 	excludedClasses.add("anakin.business.domain.raktar.RovancsTipus");
 	excludedClasses.add("anakin.business.domain.raktar.RovancsTipusValue");
-	excludedClasses.add("anakin.business.domain.raktar.TetelHolVan");
+	//excludedClasses.add("anakin.business.domain.raktar.TetelHolVan");
 	excludedClasses.add("anakin.business.domain.raktar.TetelHolVanValue");
-	excludedClasses.add("anakin.business.domain.raktar.TetelTipus");
+	//excludedClasses.add("anakin.business.domain.raktar.TetelTipus");
 	excludedClasses.add("anakin.business.domain.raktar.TetelTipusValue");
 	excludedClasses.add("anakin.business.domain.raktar.UzletiMuveletTipus");
 	excludedClasses.add("anakin.business.domain.raktar.UzletiMuveletTipusValue");
 	excludedClasses.add("anakin.business.domain.raktar.integer");
-	excludedClasses.add("anakin.business.domain.szervezet.FiokTipus");
+	//excludedClasses.add("anakin.business.domain.szervezet.FiokTipus");
 	excludedClasses.add("anakin.business.domain.szervezet.FiokTipusValue");
-	excludedClasses.add("anakin.business.domain.szervezet.KozvetitoCeg");
-	excludedClasses.add("anakin.business.domain.szervezet.SzervEgysTipus");
+	//excludedClasses.add("anakin.business.domain.szervezet.KozvetitoCeg");
+	//excludedClasses.add("anakin.business.domain.szervezet.SzervEgysTipus");
 	excludedClasses.add("anakin.business.domain.szervezet.SzervEgysTipusValue");
-	excludedClasses.add("anakin.business.domain.targy.Anyag");
+	//excludedClasses.add("anakin.business.domain.targy.Anyag");
 	excludedClasses.add("anakin.business.domain.targy.AnyagValue");
 	excludedClasses.add("anakin.business.domain.targy.Arfolyam");
-	excludedClasses.add("anakin.business.domain.targy.BecslesTipus");
+	//excludedClasses.add("anakin.business.domain.targy.BecslesTipus");
 	excludedClasses.add("anakin.business.domain.targy.BecslesTipusValue");
-	excludedClasses.add("anakin.business.domain.targy.Finomsag");
-	excludedClasses.add("anakin.business.domain.targy.TargyHolVan");
+	//excludedClasses.add("anakin.business.domain.targy.Finomsag");
+	//excludedClasses.add("anakin.business.domain.targy.TargyHolVan");
 	excludedClasses.add("anakin.business.domain.targy.TargyHolVanValue");
-	excludedClasses.add("anakin.business.domain.targy.TargyTipus");
+	//excludedClasses.add("anakin.business.domain.targy.TargyTipus");
 	excludedClasses.add("anakin.business.domain.targy.TargyTipusValue");
-	excludedClasses.add("anakin.business.domain.targy.Zalognem");
+	//excludedClasses.add("anakin.business.domain.targy.Zalognem");
 	excludedClasses.add("anakin.business.domain.targy.ZalogtargyStatusz");
 	excludedClasses.add("anakin.business.domain.targy.ZalogtargyStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugyfel.CimTipusa");
+	//excludedClasses.add("anakin.business.domain.ugyfel.CimTipusa");
 	excludedClasses.add("anakin.business.domain.ugyfel.CimTipusaValue");
-	excludedClasses.add("anakin.business.domain.ugyfel.OkmanyTipus");
+	//excludedClasses.add("anakin.business.domain.ugyfel.OkmanyTipus");
 	excludedClasses.add("anakin.business.domain.ugyfel.OkmanyTipusValue");
-	excludedClasses.add("anakin.business.domain.ugyfel.PmtAdatkor");
+	//excludedClasses.add("anakin.business.domain.ugyfel.PmtAdatkor");
 	excludedClasses.add("anakin.business.domain.ugyfel.PmtAdatkorValue");
-	excludedClasses.add("anakin.business.domain.ugyfel.TelefonTipusa");
+	//excludedClasses.add("anakin.business.domain.ugyfel.TelefonTipusa");
 	excludedClasses.add("anakin.business.domain.ugyfel.TelefonTipusaValue");
-	excludedClasses.add("anakin.business.domain.ugyfel.TvkStatusz");
+	//excludedClasses.add("anakin.business.domain.ugyfel.TvkStatusz");
 	excludedClasses.add("anakin.business.domain.ugyfel.TvkStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugyfel.UgyfelStatusz");
+	//excludedClasses.add("anakin.business.domain.ugyfel.UgyfelStatusz");
 	excludedClasses.add("anakin.business.domain.ugyfel.UgyfelStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.AjanlatStatusz");
+	//excludedClasses.add("anakin.business.domain.ugylet.AjanlatStatusz");
 	excludedClasses.add("anakin.business.domain.ugylet.AjanlatStatuszValue");
 	excludedClasses.add("anakin.business.domain.ugylet.BankiUtalas");
 	excludedClasses.add("anakin.business.domain.ugylet.BankiUtalasStatusz");
 	excludedClasses.add("anakin.business.domain.ugylet.BankiUtalasStatuszValue");
 	excludedClasses.add("anakin.business.domain.ugylet.ElallasiOk");
-	excludedClasses.add("anakin.business.domain.ugylet.KHRLekerdezesStatusz");
+	//excludedClasses.add("anakin.business.domain.ugylet.KHRLekerdezesStatusz");
 	excludedClasses.add("anakin.business.domain.ugylet.KHRLekerdezesStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.KifizetesModja");
+	//excludedClasses.add("anakin.business.domain.ugylet.KifizetesModja");
 	excludedClasses.add("anakin.business.domain.ugylet.KifizetesModjaValue");
-	excludedClasses.add("anakin.business.domain.ugylet.Kockazat");
+	//excludedClasses.add("anakin.business.domain.ugylet.Kockazat");
 	excludedClasses.add("anakin.business.domain.ugylet.KockazatValue");
 	excludedClasses.add("anakin.business.domain.ugylet.NfAnyagKonfig");
 	excludedClasses.add("anakin.business.domain.ugylet.SzerzodesStatusz");
 	excludedClasses.add("anakin.business.domain.ugylet.SzerzodesStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.SzerzodesTipusa");
+	//excludedClasses.add("anakin.business.domain.ugylet.SzerzodesTipusa");
 	excludedClasses.add("anakin.business.domain.ugylet.SzerzodesTipusaValue");
-	excludedClasses.add("anakin.business.domain.ugylet.Ugylettipus");
+	//excludedClasses.add("anakin.business.domain.ugylet.Ugylettipus");
 	excludedClasses.add("anakin.business.domain.ugylet.UgylettipusValue");
 	excludedClasses.add("anakin.business.domain.ugylet.UzletiKonfiguracio");
-	excludedClasses.add("anakin.business.domain.ugylet.elzalogositas.ElzalogositasFazis");
+	//excludedClasses.add("anakin.business.domain.ugylet.elzalogositas.ElzalogositasFazis");
 	excludedClasses.add("anakin.business.domain.ugylet.elzalogositas.ElzalogositasFazisValue");
-	excludedClasses.add("anakin.business.domain.ugylet.kezeles.SzerzKezMuveletTipus");
+	//excludedClasses.add("anakin.business.domain.ugylet.kezeles.SzerzKezMuveletTipus");
 	excludedClasses.add("anakin.business.domain.ugylet.kezeles.SzerzKezMuveletTipusValue");
 	excludedClasses.add("anakin.business.domain.ugylet.kezeles.Szerzodeskezeles");
 	excludedClasses.add("anakin.business.domain.ugylet.kezeles.SzerzodeskezelesFazis");
@@ -169,13 +170,13 @@ pre {
 	excludedClasses.add("anakin.business.domain.ugylet.termek.CiklusEsedekessegValue");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.CiklusGyakorisag");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.CiklusGyakorisagValue");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.Dijszabas");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.KezelesiDijEsedekessege");
+	//excludedClasses.add("anakin.business.domain.ugylet.termek.Dijszabas");
+	//excludedClasses.add("anakin.business.domain.ugylet.termek.KezelesiDijEsedekessege");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.KezelesiDijEsedekessegeValue");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.KolcsonSema");
+	//excludedClasses.add("anakin.business.domain.ugylet.termek.KolcsonSema");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.SzerzodesMuveletek");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.SzerzodesMuveletekValue");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.Termek");
+	//excludedClasses.add("anakin.business.domain.ugylet.termek.Termek");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekKategoria");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekKategoriaEleres");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekKategoriaStatusz");
@@ -185,8 +186,8 @@ pre {
 	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekSzuro");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekVerzioStatusz");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekVerzioStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.Termekverzio");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.ToketorlesztesModja");
+	//excludedClasses.add("anakin.business.domain.ugylet.termek.Termekverzio");
+	//excludedClasses.add("anakin.business.domain.ugylet.termek.ToketorlesztesModja");
 	excludedClasses.add("anakin.business.domain.ugylet.termek.ToketorlesztesModjaValue");
 	excludedClasses.add("anakin.business.domain.workflow.AlapFolyamatAdat");
 	excludedClasses.add("anakin.business.domain.workflow.AnakinTask");
@@ -240,11 +241,8 @@ pre {
 	excludedClasses.add("judo.framework.UserConfig");
 	excludedClasses.add("judo.framework.UserInfo");
 	excludedClasses.add("judo.framework.Workflow");
+	excludedClasses.add("judo.framework.ProcessData");
 	
-	//we can defined enums to be excluded
-	var excludedEnums : Set<String> = new Set;
-	excludedEnums.add("anakin.business.domain.workflow.ProcessState");
-		
 	var additionalRoles : Set<String> = new Set;
 	//there are roles that are not mandatory in uml, but must be included due to business requirement
 	additionalRoles.add("Anakin.anakin.business.domain.ugylet.elzalogositas.Ajanlat.zalogtetelek");
@@ -291,10 +289,6 @@ pre {
 	var viewNames : Set<String> = RDBMS!RdbmsView.all.select(v | classUUIDs.contains(v.uuid)).name.asSet();
 	//remove excluded classes
 	viewNames.removeAll(excludedClasses);
-	//add enum and elotoltott classes back
-	viewNames.addAll(enumClasses);
-	viewNames.removeAll(excludedEnums);
-	viewNames.addAll(elotoltott);
 	
 	var fieldReservedSqlNames : Set<String> = new Set;
 	fieldReservedSqlNames.add("language");
@@ -305,21 +299,15 @@ pre {
 	fieldReservedSqlNames.add("table");
 	fieldReservedSqlNames.add("user");
 	fieldReservedSqlNames.add("source");
-	
-	var allAssociations : Boolean = true;
-	
 }
 
 operation PSM!JClass allRoles(acc : Set<String>) {
 	for (r in PSM!JRole.all.select(r | r.ownerClass = self or r.ownerClass = self.supertype)) { //TODO: supertype collctor must be recursive
-		(self.uuid + "::" + r.uuid).println("ASSOC: ");
 		if ((r.lower > 0 or allAssociations) or additionalRoles.contains(r.uuid)) {
-			(self.uuid + "::" + r.uuid).println("ASSOC: ");
 			var opp = r.opposite().ownerClass;
-			if (not opp.`abstract` and not acc.contains(opp.uuid)) {
-				opp.uuid.println("OPP: ");
-				acc.add(opp.uuid);
-				r.opposite().ownerClass.allRoles(acc);
+			if (not acc.contains(opp.uuid)) {
+					acc.add(opp.uuid);
+					opp.allRoles(acc);
 			}
 		}
 	}
@@ -366,7 +354,7 @@ rule Model
 			} 
 		}
 	}
-
+	
 @lazy
 rule View 
 	transform s : RDBMS!RdbmsView
@@ -375,30 +363,37 @@ rule View
 		var pk = s.primaryIdentifierField;
 	    t.primaryKey = pk.equivalent();
 	    t.fields.add(t.primaryKey);
-	    for (f in s.fields) {
-	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) 
-	    		and not f.equals(pk) 
-	    		and not f.uuid.isExcludedField(s.name)
-	    		and not t.fields.exists(x | x.name.cutFqNameToLastElement() = f.name.cutFqNameToLastElement())) {
-	    		var fe = f.equivalent();
-	    		if (fe.isDefined()) {
-	    			t.fields.add(fe);
-	    		}
-	    	}
-		}
-		if (elotoltott.contains(t.name)) {
-			//prefix elotoltott tables
-			t.sqlName = "ET_" + t.sqlName;
-			//helper map for making easier the dump manipulation see the grep sed command at the end 
-			elotoltottTableNamesMap.put(t.originalTableName(), t.sqlName);
-			t.sqlName.println("ET: ");
-		} else if (enumClasses.contains(t.name)) {
-			//prefix enum tables
-			t.sqlName = "ENUM_" + t.sqlName;
-			//helper map for making easier the dump manipulation see the grep sed command at the end
-			enumTableNamesMap.put(t.originalTableName(), t.sqlName);
+	    if (not s.isAbstract()) {
+		    for (f in s.fields) {
+		    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) 
+		    		and not f.equals(pk) 
+		    		and not f.uuid.isExcludedField(s.name)
+		    		and not t.fields.exists(x | x.name.cutFqNameToLastElement() = f.name.cutFqNameToLastElement())) {
+		    		var fe = f.equivalent();
+		    		if (fe.isDefined()) {
+		    			t.fields.add(fe);
+		    		}
+		    	}
+			}
+			if (elotoltott.contains(t.name.println("TNAME: "))) {
+				//prefix elotoltott tables
+				t.sqlName = "ET_" + t.sqlName;
+				//helper map for making easier the dump manipulation see the grep sed command at the end 
+				elotoltottTableNamesMap.put(t.originalTableName(), t.sqlName);
+				t.sqlName.println("ET: ");
+			} else if (enumClasses.contains(t.name)) {
+				//prefix enum tables
+				t.sqlName = "ENUM_" + t.sqlName;
+				//helper map for making easier the dump manipulation see the grep sed command at the end
+				enumTableNamesMap.put(t.originalTableName(), t.sqlName);
+			}
 		}
 	}
+
+operation RDBMS!RdbmsView isAbstract() {
+	var target = self.uuid.substring(0, self.uuid.indexOf("_View")).println("TARGET: "); 
+	return PSM!JClass.all.selectOne(c | c.uuid = target).`abstract`.asBoolean();
+}
 
 @lazy
 rule ViewIdField
@@ -422,8 +417,12 @@ rule Fk
 	transform s : RDBMS!RdbmsForeignKey
 	to fk : MIG!RdbmsForeignKey 
 	extends Element {
-		guard : not s.inheritenceBased
-		fk.rdbmsTypeName = s.rdbmsTypeName;
+		//guard : not s.inheritenceBased
+		var typeName = s.rdbmsTypeName;
+		if (not typeName.isDefined()) {
+			typeName = s.type.rdbmsTypeName;
+		}		
+		fk.rdbmsTypeName = typeName;
 		fk.size = s.size;
 		fk.precision = s.precision;
 		fk.scale = s.scale;
