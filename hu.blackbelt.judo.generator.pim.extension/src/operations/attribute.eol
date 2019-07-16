@@ -17,6 +17,7 @@ operation transformAttribute(attribute : pimEXT!EAttribute, newPimAttr : inpPIM!
 		
 		newPimAttr.visibility = visibilityMap.get(attrAnnotation.details.get("visibility"));
 		
+		newPimAttr.setIsDerived(attrAnnotation);		
 		newPimAttr.addStereotypes(attrAnnotation);
 		newPimAttr.addConstraints(attribute);
 	}
