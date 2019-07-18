@@ -115,8 +115,8 @@ rule Transition
 	
 	if (s.`guard`.isDefined()) {
 		var g : tgtPSM!JGuard = new tgtPSM!JGuard;
-		g.uuid = t.uuid + "_guard_" + t.toState.name;
-		
+		g.uuid = t.uuid + "_guard_" + t.toState.name + "_op_" + s.trigger.event.`operation`.name.first();
+				
 		g.transition = t;
 		t.`guard` = g;
 		
