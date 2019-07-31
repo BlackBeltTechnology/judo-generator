@@ -16,10 +16,6 @@ operation inpPIM!Property addStereotypes(annotation : pimEXT!EAnnotation) {
 		const = new inpPIM!calculated();
 		const.base_Property = self;
 	}
-	if (annotation.details.get("derived").isDefined() and annotation.details.get("derived") = "true") {
-		const = new inpPIM!derived();
-		const.base_Property = self;
-	}
 }
 
 operation inpPIM!Property addConstraints(property : pimEXT!ENamedElement) {
@@ -57,6 +53,14 @@ operation inpPIM!Property addConstraints(property : pimEXT!ENamedElement) {
 			stereotype.base_Constraint = const;
 		}
 	}	
+}
+
+operation inpPIM!Property setIsDerived(annotation : pimEXT!EAnnotation) {
+
+	if (annotation.details.get("derived").isDefined() and annotation.details.get("derived") = "true") {
+			self.isDerived = true;
+	}
+		
 }
 
 @cached

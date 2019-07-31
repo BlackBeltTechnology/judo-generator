@@ -2,11 +2,13 @@ operation addGuardMethodsAndEnum () : Any {
 	for (state in JAVA!JvmState.all.select(s | s.outgoingTransitions.size() > 1)) {
 		var groupedByMethod = state.getOutgoingTransitionsGroupedByExecutingMethod();
 		for (key in groupedByMethod.keySet()) {
-			var val = JAVA!JvmMethod.all.selectOne(m | m.uuid = groupedByMethod.get(key));
+			var val = groupedByMethod.get(key);
 			if (val.size() > 1) {
+				var method = JAVA!JvmMethod.all.selectOne(m | m.uuid = key);
 				var oClass = state.ownerStateMachine.ownerClass;
 				var enum = new JAVA!JvmEnum;
-				enum.name = key.name.firstToUpperCase() + state.name.firstToUpperCase();
+				
+				enum.name = method.name.firstToUpperCase() + state.name.firstToUpperCase();
 				
 				enum.name.println("ENUM NAME ITTTT: ");
 				
@@ -18,7 +20,7 @@ operation addGuardMethodsAndEnum () : Any {
 				decideMethod.ownerClass = oClass.boServiceAbstract();
 				decideMethod.type = enum;
 				decideMethod.kind = JAVA!JvmMethodKind#SM_DECIDE;
-				for (param in key.parameters) {
+				for (param in method.parameters) {
 				    var p = new JAVA!JvmMethodParameter;
                     p.type = param.type;
                     p.name = param.name;

@@ -1,0 +1,15 @@
+
+operation removeIgnored() {
+	
+	var ignoreStereotypes = inpPIM!JudoIgnore.allInstances();
+	var ignoredElements = ignoreStereotypes->select(c | c.base_Element.isDefined())->collect(c | c.base_Element).asSet();
+	
+	for (ignoreSteretype in ignoreStereotypes) {
+		delete ignoreSteretype;
+	}
+	
+	for (ignoredElement in ignoredElements) {
+		delete ignoredElement;
+	}
+	
+}

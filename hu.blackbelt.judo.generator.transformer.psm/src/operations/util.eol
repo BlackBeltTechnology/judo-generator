@@ -10,6 +10,9 @@ operation inpPIM!Property computeLower() : Integer {
 	if (self.isDerived) {
 		return 0;
 	}
+	if (self.computeUpper() = -1) {
+		return 0;
+	}
 	if (self.lowerValue.isDefined()) {
 		return self.lowerValue.value;
 	} else {
@@ -18,11 +21,15 @@ operation inpPIM!Property computeLower() : Integer {
 }
 
 operation inpPIM!Property computeUpper() : Integer {
-	self.name.println("PROP NAME: ");
+	var upperValue;
 	if (self.upperValue.isDefined()) {
-		return self.upperValue.value.println("PROP VALUE: ");
+		upperValue = self.upperValue.value;
 	} else {
-		return self.upper;
+		upperValue = self.upper;
+	}
+	
+	if (upperValue > 1 or upperValue = -1) {
+		return -1;
 	}
 }
 

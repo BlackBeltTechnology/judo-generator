@@ -11,7 +11,11 @@ var ecoreUMLTypeMap = Map {
 	"EFloat" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "float"),
 	"EFloatObject" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "float"),
 	"EDate" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "date"),
-	"EInt" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "Integer")
+	"EInt" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "Integer"),
+	"currency" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "currency"),
+	"percentage" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "percentage"),
+	"memo" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "memo"),
+	"datetime" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "datetime")
 	//"DateTime" = inpPIM!PrimitiveType.all.selectOne(type | type.name = "datetime")
 };
 
@@ -54,7 +58,8 @@ for (annotation : pimEXT!EAnnotation in annotations) {
 	transformTargetClass(annotation, associationList);
 }
 
-
+//Possibly a bug in EMF, Node elements disappear after PIM storage
+removeActivityDiagrams();
 
 
 

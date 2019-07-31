@@ -26,6 +26,7 @@ operation transformReference(reference : pimEXT!EReference, pimClass : inpPIM!Cl
 		var pimPackage = inpPIM!Package.all.selectOne(package | package.fqName() = pimClass.package.fqName());
 		pimPackage.packagedElement.add(pimAssoc);
 		
+		newPimRef.setIsDerived(refAnnotation);		
 		newPimRef.addStereotypes(refAnnotation);
 		newPimRef.addConstraints(reference);
 		

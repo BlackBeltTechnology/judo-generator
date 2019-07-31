@@ -1,0 +1,14 @@
+
+operation removeActivityDiagrams() {
+	
+	"Removing diagrams".println();
+	
+	var activityDiagrams = Activity.all;
+	
+	for (diagram in activityDiagrams) {
+		delete diagram;
+	}
+
+	"Removed diagrams".println();
+	
+}

@@ -11,12 +11,15 @@ import "modules/parameter.etl";
 import "modules/stateMachine.etl";
 
 import "pre/collectJUDOStereotypes.eol";
+import "pre/ignoredRemoval.eol";
 
 pre {
 	var frameworkPkgPath = "judo module::judo"; // any distinction betwen "judo" and "judo::framework" ??
 	var tgtModel;
 	var stereotypeApplications : Map = collectJUDOStereotypeInstances();
 	var frameworkQName = inpPIM!Model.allInstances()->selectOne(m | m.name = modelName).name + "::" + frameworkPkgPath;	
+	
+	removeIgnored();
 	
 	frameworkPkgPath.println();
 	frameworkQName.println();
