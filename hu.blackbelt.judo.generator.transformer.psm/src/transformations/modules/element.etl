@@ -75,7 +75,17 @@ rule TypedElement
 	
 	guard: s.type.isDefined()
 	
+	if (s.isTypeOf(Parameter) and s.type.name = "State") { 
+		var stateMachines = s.owner.owner.ownedBehaviors.select(o | o.isTypeOf(StateMachine)).equivalent("StateMachine");
+		if (stateMachines.size > 1) {
+			throw "The parameter type is state, but the class has multiple statemachines attached to it.";
+		} else {
+			t.type = stateMachines.first().correspondingEnum.classRepresentation;
+		} 
+	}
+	
 	if (s.type.isTypeOf(Class) and s.type.equivalent().isDefined()) {
+	
 		t.type ::= s.type;
 	} else if (s.type.isTypeOf(PrimitiveType)) {
 		t.type = s.type.getEquivalentPrimType();
