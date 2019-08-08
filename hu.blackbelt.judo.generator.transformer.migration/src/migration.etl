@@ -24,7 +24,7 @@ pre {
 	
 	//we can defined classes to be excluded
 	var excludedClasses : Set<String> = new Set;
-	excludedClasses.add("anakin.business.domain.felhasznalo.Beosztas");
+	/*excludedClasses.add("anakin.business.domain.felhasznalo.Beosztas");
 	excludedClasses.add("anakin.business.domain.felhasznalo.Privilegium");
 	excludedClasses.add("anakin.business.domain.felhasznalo.PrivilegiumErtek");
 	excludedClasses.add("anakin.business.domain.felhasznalo.PrivilegiumErtekValue");
@@ -188,7 +188,7 @@ pre {
 	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekVerzioStatuszValue");
 	//excludedClasses.add("anakin.business.domain.ugylet.termek.Termekverzio");
 	//excludedClasses.add("anakin.business.domain.ugylet.termek.ToketorlesztesModja");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.ToketorlesztesModjaValue");
+	excludedClasses.add("anakin.business.domain.ugylet.termek.ToketorlesztesModjaValue");*/
 	excludedClasses.add("anakin.business.domain.workflow.AlapFolyamatAdat");
 	excludedClasses.add("anakin.business.domain.workflow.AnakinTask");
 	excludedClasses.add("anakin.business.domain.workflow.FolyamatFeladat");
@@ -256,20 +256,32 @@ pre {
 	
 	//later use for flagging elotoltott data as we need to remame them in the migration schema
 	var elotoltott : Set<String> = new Set;
-	elotoltott.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonSzorzo");
-	elotoltott.add("anakin.business.domain.ugylet.termek.Termek");
-	elotoltott.add("anakin.business.domain.targy.Arfolyam");
-	elotoltott.add("anakin.business.domain.ugylet.termek.Dijszabas");
-	elotoltott.add("anakin.business.domain.targy.Finomsag");
-	elotoltott.add("anakin.business.domain.ugylet.termek.KolcsonSema");
-	elotoltott.add("anakin.business.domain.szervezet.KozvetitoCeg");
-	elotoltott.add("anakin.business.domain.felhasznalo.Privilegium");
-	elotoltott.add("anakin.business.domain.felhasznalo.Szerepkor");
-	elotoltott.add("anakin.business.domain.targy.TargyleirasRoviditesek");
-	elotoltott.add("anakin.business.domain.ugylet.termek.TermekKategoria");
-	elotoltott.add("anakin.business.domain.ugylet.termek.Termekverzio");
 	elotoltott.add("anakin.business.domain.ugylet.UzletiKonfiguracio");
+	elotoltott.add("anakin.business.domain.ugylet.NfAnyagKonfig");
+	elotoltott.add("anakin.business.domain.RiportUtemBeallitas");
+	elotoltott.add("anakin.business.domain.felhasznalo.Szerepkor");
 	elotoltott.add("anakin.business.domain.targy.Zalognem");
+	elotoltott.add("anakin.business.domain.targy.Finomsag");
+	elotoltott.add("anakin.business.domain.targy.TargyleirasRoviditesek");
+	elotoltott.add("anakin.business.domain.szervezet.KozvetitoCeg");
+	elotoltott.add("anakin.business.domain.szervezet.Regio");
+	elotoltott.add("anakin.business.domain.ugylet.termek.Termek");
+	elotoltott.add("anakin.business.domain.ugylet.termek.Termekverzio");
+	elotoltott.add("anakin.business.domain.ugylet.termek.Dijszabas");
+	elotoltott.add("anakin.business.domain.ugylet.termek.TermekKategoria");
+	elotoltott.add("anakin.business.domain.ugylet.termek.TermekKategoriaEleres");
+	elotoltott.add("anakin.business.domain.ugylet.termek.KolcsonSema");
+	elotoltott.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonRogzites");
+	elotoltott.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonSzorzo");
+	elotoltott.add("anakin.business.domain.szervezet.Zalogfiok");
+	elotoltott.add("anakin.business.domain.szervezet.SzervezetiEgyseg");
+	elotoltott.add("anakin.business.domain.raktar.Raktar");
+	elotoltott.add("anakin.business.domain.raktar.Tarolohely");
+	elotoltott.add("anakin.business.domain.ugylet.ElallasiOk");
+	elotoltott.add("anakin.business.domain.penztar.Cimlet");
+	elotoltott.add("anakin.business.domain.szervezet.ZarasKonfiguracio");
+	//elotoltott.add("anakin.business.domain.targy.Arfolyam");
+	//elotoltott.add("anakin.business.domain.felhasznalo.Privilegium");
 	
 	//later use for flagging enum classes as we need to remame them in the migration schema
 	var enumClasses = PSM!JClass.all.select(c | c.representsEnum).collect(c | c.fqName()).asSet();
