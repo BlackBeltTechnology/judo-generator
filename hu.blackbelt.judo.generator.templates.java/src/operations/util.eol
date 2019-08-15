@@ -22,6 +22,7 @@ operation idType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.useForJudoId).first();
 }
 
+@cached
 operation JAVA!JvmType isURL() : Boolean {
     return self.uuid = urlType().uuid;
 }
@@ -39,14 +40,11 @@ operation generateUuid(namespace : String, name : String, separator : String) : 
 }
 
 operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
-	var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
-	if (ret.isUndefined()) {
-		ret = new JAVA!JvmList;
+		var ret = new JAVA!JvmList;
 		ret.uuid = generateUuid(componentType.uuid, "list", "_");
 		ret.name = "List";	
 		ret.package = JAVA!JvmModel.all.first().findJavaUtilPackage();
 		ret.componentType = componentType;
-	}
 	return ret;
 }
 

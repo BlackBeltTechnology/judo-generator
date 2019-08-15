@@ -1,3 +1,4 @@
+@cached
 operation JAVA!JvmModel findJavaUtilPackage () : JAVA!JvmPackage {
 	return self.findPackageRecursively("java.util");
 }

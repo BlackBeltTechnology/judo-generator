@@ -22,5 +22,5 @@ rule RdbmsForeignKeyToQueryDslJunctionField
     extends QueryDslJunctionFieldGeneric {
     	t.sqlName = s.sqlName; 
     	t.view = RDBMS!RdbmsView.all.selectOne(view | view.primaryTable.table = s.referenceKey.table).equivalent("RdbmsViewToQueryDslView");
-    	t.javaClass = JAVA!JvmClass.all.selectOne(class | class.fqBaseName() = t.view.name).equivalent("JvmClassToQueryDslClass");
+    	t.javaClass = JVM_CLASS_MAP.get(t.view.name).equivalent("JvmClassToQueryDslClass");
     }

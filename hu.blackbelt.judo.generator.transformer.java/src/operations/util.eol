@@ -28,15 +28,28 @@ operation generateUuid(namespace : String, name : String, separator : String) : 
 }
 
 operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
-	var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
+	var ret = JVM_LISTS.get(componentType.uuid);
 	if (ret.isUndefined()) {
 		ret = new JAVA!JvmList;
 		ret.uuid = generateUuid(componentType.uuid, "list", "_");
-		ret.name = "List";	
-		ret.package = JAVA!JvmModel.all.first().findOrCreateJavaUtilPackage();
+		ret.name = "List";
+		if (JVM_LISTS_PACKAGE.isUndefined()) {
+			JVM_LISTS_PACKAGE = JAVA!JvmModel.all.first().findOrCreateJavaUtilPackage();
+		}
+		ret.package = JVM_LISTS_PACKAGE;
 		ret.componentType = componentType;
+		JVM_LISTS.put(componentType.uuid, ret);
 	}
 	return ret;
+}
+
+operation addmethodTime(method : String, took : Real) {
+	var sum = METHOD_TIMES.get(method);
+	if (sum.isUndefined()) {
+		METHOD_TIMES.put(method, took);
+	} else {
+		METHOD_TIMES.put(method, sum + took);
+	}
 }
 
 operation checkAllUuidsForDuplicateOrMissing() {

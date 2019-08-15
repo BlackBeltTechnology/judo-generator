@@ -1,6 +1,6 @@
 @cached
 operation JAVA!JvmCoordinated po () : JAVA!JvmCoordinated {
-    return self.find(JAVA!JvmJudoCoordinate#PO);
+    return PO_COORD.get(self.origin().uuid);
 }
 
 @cached
@@ -10,9 +10,4 @@ operation JAVA!JvmCoordinated origin() : JAVA!JvmCoordinated {
     } else {
         return self.origin;
     }
-}
-
-operation JAVA!JvmCoordinated find (jvmJudoCoordinate : Any) : JAVA!JvmCoordinated {
-    var ret =  JAVA!JvmCoordinated.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().isDefined() and c.origin().uuid = self.origin().uuid)).first();
-    return ret;
 }

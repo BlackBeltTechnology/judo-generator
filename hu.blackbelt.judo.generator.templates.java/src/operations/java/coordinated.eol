@@ -166,19 +166,21 @@ operation JAVA!JvmCoordinated origin() : JAVA!JvmCoordinated {
 }
 
 operation JAVA!JvmCoordinated find (jvmJudoCoordinate : Any) : JAVA!JvmCoordinated {
+	var key;
 	if (self.isTypeOf(JAVA!JvmEnum)) {
 		if (jvmJudoCoordinate.asString().endsWith("ENUM")) {
-			return JAVA!JvmEnum.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().uuid = self.origin().uuid)).first();
+			key = self.origin().uuid + "!" + jvmJudoCoordinate;
 		} else {
-			return JAVA!JvmInterface.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().fixedEnum.uuid = self.origin().uuid)).first();
+			key = "ei!" + self.origin().uuid + "!" + jvmJudoCoordinate;
 		}
 	} else {
 		if (jvmJudoCoordinate.asString().endsWith("ENUM")) {
-			return JAVA!JvmEnum.all.select(e | (e.coordinate = jvmJudoCoordinate and e.classRepresentation.origin().uuid = self.origin().uuid)).first();
+			key = "ie!" + self.origin().uuid + "!" + jvmJudoCoordinate;
 		} else {
-			return JAVA!JvmInterface.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().uuid = self.origin().uuid)).first();
+			key = self.origin().uuid + "!" + jvmJudoCoordinate;
 		}
 	}
+	return JAVA!JvmModel.all.first().~coordinateMap.get(key);
 }
 
 @cached

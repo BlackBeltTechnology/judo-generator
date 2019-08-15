@@ -1,3 +1,4 @@
+@cached
 operation PSM!JPrimitive findJavaPrimitive () : JAVATYPES!JvmPrimitive {
 	// return JTM!Mapping.all.select(m | m.psmType.name = self.name).first().javaType;
 	// HACK! Problem with cross model reference without it.

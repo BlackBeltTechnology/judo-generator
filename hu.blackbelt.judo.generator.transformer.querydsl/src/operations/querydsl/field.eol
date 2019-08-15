@@ -1,13 +1,13 @@
 import "../util.eol";
 
 operation transformAttributeField(s : RDBMS!RdbmsViewAliasField) : QUERYDSL!QueryDslAttribute {
-	var jvmAttr = JAVA!JvmAttribute.all.selectOne(attr | attr.baseUUID() = s.tableField.uuid);
+	var jvmAttr = JVM_ATTR_MAP.get(s.tableField.uuid);
     return transformJvmAttribute(jvmAttr, s);
 }
 
 operation transformExpressionAttributeField(s : RDBMS!RdbmsViewField) : QUERYDSL!QueryDslAttribute {
 	var jvmAttrName : String = s.name.split("\\.").last();
-	var jvmAttr = JAVA!JvmClass.all.selectOne(c | c.fqBaseName() = s.view.name).allAttributes().selectOne(a | a.name = jvmAttrName);
+	var jvmAttr = JVM_CLASS_MAP.get(s.view.name).allAttributes().selectOne(a | a.name = jvmAttrName);
 	return transformJvmAttribute(jvmAttr, s);
 }
 
@@ -24,19 +24,19 @@ operation transformJvmAttribute(jvmAttr : JAVA!JvmAttribute, s : RDBMS!RdbmsView
     	javaAttribute = jvmAttr.equivalent("JvmAttributeToQueryDslAttribute");
     }
     
-   	javaAttribute.ownerClass =  JAVA!JvmClass.all.selectOne(class | class.fqBaseName() = s.view.name).equivalent("JvmClassToQueryDslClass");
+   	javaAttribute.ownerClass =  JVM_CLASS_MAP.get(s.view.name).equivalent("JvmClassToQueryDslClass");
    	javaAttribute.uuid = generateUuid(javaAttribute.ownerClass.uuid, javaAttribute.name, ".");
    	
    	return javaAttribute;
 }
 
 operation transformReferenceField(s : RDBMS!RdbmsViewTableField) : QUERYDSL!QueryDslReference {
-	var jvmReference = JAVA!JvmReference.all.selectOne(ref | ref.baseUUID() = s.tableField.uuid);
+	var jvmReference = JVM_REF_MAP.get(s.tableField.uuid);
 	return transformJvmReference(jvmReference, s);
 }
 
 operation transformInverseReferenceField(s : RDBMS!RdbmsViewTableField) : QUERYDSL!QueryDslReference {
-	var jvmReference = JAVA!JvmReference.all.selectOne(ref | ref.baseUUID() = s.tableField.uuid).opposite;
+	var jvmReference = JVM_REF_MAP.get(s.tableField.uuid).opposite;
 	return transformJvmReference(jvmReference, s);
     
 }
@@ -56,8 +56,7 @@ operation transformJvmReference(jvmReference : JAVA!JvmReference, s : RDBMS!Rdbm
     	javaReference = jvmReference.equivalent("JvmReferenceToQueryDslReference");
     }
 
-    
-   	javaReference.ownerClass = JAVA!JvmClass.all.selectOne(class | class.fqBaseName() = s.view.name).equivalent("JvmClassToQueryDslClass");
+   	javaReference.ownerClass = JVM_CLASS_MAP.get(s.view.name).equivalent("JvmClassToQueryDslClass");
    	javaReference.opposite = jvmReference.opposite.equivalent("JvmReferenceToQueryDslReference");					
    	
    	javaReference.uuid = generateUuid(javaReference.ownerClass.uuid, javaReference.name, ".");

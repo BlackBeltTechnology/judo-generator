@@ -1,3 +1,4 @@
+@cached
 operation PSM!JClass hasSuperType () : Boolean {
 	return self.supertype.isDefined();
 }

@@ -1,3 +1,4 @@
+@cached
 operation JAVA!JvmMember originUUID () : String {
 	return self.ownerClass.origin().members.select(m | m.name = self.name).first().uuid;
 }

@@ -4,9 +4,8 @@
   import "../../operations/java/resttestwrapper_common.eol";
   out.setContentType("Java");
 
-  var builderMethodsMacro = getJavaMacro("resttestwrapper_buildermethods");
-  builderMethodsMacro.populate("class", class);
-  builderMethodsMacro.populate("instanceBased", false);
+  macro_resttestwrapper_buildermethods.populate("class", class);
+  macro_resttestwrapper_buildermethods.populate("instanceBased", false);
 %]
 
 package [%=class.package.fqName()%];
@@ -45,7 +44,7 @@ public class [%=class.name%] implements RestTestWrapper {
 
     public static final String XMIID = "[%=class.origin().uuid%]";
 
-    [%=builderMethodsMacro.process()%]
+    [%=macro_resttestwrapper_buildermethods.process()%]
 
     public static [%=class.name%] [%=class.name.firstToLowerCase()%]Empty(){
         return new [%=class.name%]();

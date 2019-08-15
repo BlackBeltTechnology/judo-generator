@@ -11,6 +11,7 @@ operation JAVA!JvmInterface methods (kind : Any) : Collection {
     return self.methods.select(m | m.kind = kind).sortBy(m | m.name);
 }
 
+@cached
 operation JAVA!JvmInterface dtoMethods () : Collection {
     var set = Set{JAVA!JvmMethodKind#QUERY, JAVA!JvmMethodKind#QUERY_COUNT,
                   JAVA!JvmMethodKind#TRAVERSE, JAVA!JvmMethodKind#COUNT_TRAVERSE,

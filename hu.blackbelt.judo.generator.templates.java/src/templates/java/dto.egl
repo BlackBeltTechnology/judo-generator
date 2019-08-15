@@ -3,9 +3,9 @@
   import "../../main.egl";
   out.setContentType("Java");
   
-  var t = getJavaMacro("equalsToStringHashCode");
-  t.populate("className", class.name);
-  t.populate("classForEquals", "hu.blackbelt.judo.business.dto.api.IdentifiableDto");
+  
+  macro_equalsToStringHashCode.populate("className", class.name);
+  macro_equalsToStringHashCode.populate("classForEquals", "hu.blackbelt.judo.business.dto.api.IdentifiableDto");
 %]
 
 
@@ -44,5 +44,5 @@ public class [%= class.name %] [% if (class.hasSuper()) { %] extends [%=class.su
 		[%}%]
 	[%}%]
 	
-	[%=t.process()%]
+	[%=macro_equalsToStringHashCode.process()%]
 }

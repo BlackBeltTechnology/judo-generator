@@ -1,3 +1,4 @@
+@cached
 operation JAVA!JvmElement nameToRest() : String {
 	return self.name.toLowerCase();
 }

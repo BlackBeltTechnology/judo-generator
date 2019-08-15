@@ -4,14 +4,12 @@
   import "../../operations/java/resttestwrapper_common.eol";
   out.setContentType("Java");
 
-  var builderMethodsMacro = getJavaMacro("resttestwrapper_buildermethods");
-  builderMethodsMacro.populate("class", class);
-  builderMethodsMacro.populate("instanceBased", false);
+  macro_resttestwrapper_buildermethods.populate("class", class); 
+  macro_resttestwrapper_buildermethods.populate("instanceBased", false);
 
-  var wrapperMethodsMacro = getJavaMacro("resttestwrapper_methods");
-  wrapperMethodsMacro.populate("class", class);
-  wrapperMethodsMacro.populate("showClassBased", false);
-  wrapperMethodsMacro.populate("idsParam", "extractIds()");
+  macro_resttestwrapper_methods.populate("class", class);
+  macro_resttestwrapper_methods.populate("showClassBased", false);
+  macro_resttestwrapper_methods.populate("idsParam", "extractIds()");
 %]
 
 package [%=class.package.fqName()%];
@@ -41,7 +39,7 @@ public class [%=class.name%] implements RestTestWrapper {
     private Suppressions.SuppressionsBuilder suppBuilder = Suppressions.builder();
 
     public static final String XMIID = "[%=class.origin().uuid%]";
-    [%=builderMethodsMacro.process()%]
+    [%=macro_resttestwrapper_buildermethods.process()%]
 
     private [%=class.name%] (java.util.List<[%=class.restTestWrapperT().fqName()%]> internals) {
         this.internals = internals;
@@ -110,5 +108,5 @@ public class [%=class.name%] implements RestTestWrapper {
         return ret;
     }
     
-    [%=wrapperMethodsMacro.process()%]
+    [%=macro_resttestwrapper_methods.process()%]
 }
