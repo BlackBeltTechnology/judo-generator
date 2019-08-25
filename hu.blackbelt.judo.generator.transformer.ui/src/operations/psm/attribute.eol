@@ -1,4 +1,9 @@
 @cached
+operation PSM!JAttribute isRepresentation() {
+	return self.ownerClass.representation = self;
+}
+
+@cached
 operation PSM!JAttribute isPrimaryKey () : Boolean {
 	return self.name = "id";
 }
