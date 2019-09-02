@@ -19,13 +19,7 @@ rule UIClass
 		uiclass.readonly = false;
 	}
 
-	//References
-	var representation : UI!UIBaseComponentType = jclass.representation.equivalent("UIBaseComponentType");
-	if (representation.isDefined()) {
-		representation.representation = true;
-		uiclass.representation = representation;
-	}
-	
+	//References	
 	uiclass.super = jclass.supertype.equivalent("UIClass");
 
 	var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
