@@ -1,0 +1,7 @@
+[%
+  import "../../../operations/_importAll.eol";
+%]
+
+INSERT INTO [%=mig_schema_name%].[%= table.sqlName %] ([% for (n in table.fields.sqlName) {%] [%= n %] [% if (hasMore) { out.print(","); } %] [%}%] ) 
+SELECT [% for (n in table.fields.shortName) {%] [%= n %] [% if (hasMore) { out.print(","); } %] [%}%] FROM public.[%= table.shortName %];
+[% out.println("\n"); %]

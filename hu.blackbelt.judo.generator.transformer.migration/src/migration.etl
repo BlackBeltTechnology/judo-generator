@@ -362,7 +362,10 @@ rule Model
 		t.version = s.version;
 		for (v in s.rdbmsViews) {
 			if (viewNames.contains(v.name)) {
-				t.rdbmsTables.add(v.equivalent());
+				var equiv = v.equivalent();
+				if (equiv.isDefined()) {
+					t.rdbmsTables.add(equiv);
+				}
 			} 
 		}
 	}
@@ -372,38 +375,37 @@ rule View
 	transform s : RDBMS!RdbmsView
 	to 		  t : MIG!RdbmsTable
 	extends Element {
+		guard: not s.isAbstract()
 		var pk = s.primaryIdentifierField;
 	    t.primaryKey = pk.equivalent();
 	    t.fields.add(t.primaryKey);
-	    if (not s.isAbstract()) {
-		    for (f in s.fields) {
-		    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) 
-		    		and not f.equals(pk) 
-		    		and not f.uuid.isExcludedField(s.name)
-		    		and not t.fields.exists(x | x.name.cutFqNameToLastElement() = f.name.cutFqNameToLastElement())) {
-		    		var fe = f.equivalent();
-		    		if (fe.isDefined()) {
-		    			t.fields.add(fe);
-		    		}
-		    	}
-			}
-			if (elotoltott.contains(t.name.println("TNAME: "))) {
-				//prefix elotoltott tables
-				t.sqlName = "ET_" + t.sqlName;
-				//helper map for making easier the dump manipulation see the grep sed command at the end 
-				elotoltottTableNamesMap.put(t.originalTableName(), t.sqlName);
-				t.sqlName.println("ET: ");
-			} else if (enumClasses.contains(t.name)) {
-				//prefix enum tables
-				t.sqlName = "ENUM_" + t.sqlName;
-				//helper map for making easier the dump manipulation see the grep sed command at the end
-				enumTableNamesMap.put(t.originalTableName(), t.sqlName);
-			}
+		for (f in s.fields) {
+	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) 
+	    		and not f.equals(pk) 
+	    		and not f.uuid.isExcludedField(s.name)
+	    		and not t.fields.exists(x | x.name.cutFqNameToLastElement() = f.name.cutFqNameToLastElement())) {
+	    		var fe = f.equivalent();
+	    		if (fe.isDefined()) {
+	    			t.fields.add(fe);
+	    		}
+	    	}
 		}
-	}
+		if (elotoltott.contains(t.name)) {
+			//prefix elotoltott tables
+			t.sqlName = "ET_" + t.sqlName;
+			//helper map for making easier the dump manipulation see the grep sed command at the end 
+			elotoltottTableNamesMap.put(t.originalTableName(), t.sqlName);
+			t.sqlName;
+		} else if (enumClasses.contains(t.name)) {
+			//prefix enum tables
+			t.sqlName = "ENUM_" + t.sqlName;
+			//helper map for making easier the dump manipulation see the grep sed command at the end
+			enumTableNamesMap.put(t.originalTableName(), t.sqlName);
+		}
+}
 
 operation RDBMS!RdbmsView isAbstract() {
-	var target = self.uuid.substring(0, self.uuid.indexOf("_View")).println("TARGET: "); 
+	var target = self.uuid.substring(0, self.uuid.indexOf("_View"));
 	return PSM!JClass.all.selectOne(c | c.uuid = target).`abstract`.asBoolean();
 }
 
@@ -429,7 +431,7 @@ rule Fk
 	transform s : RDBMS!RdbmsForeignKey
 	to fk : MIG!RdbmsForeignKey 
 	extends Element {
-		//guard : not s.inheritenceBased
+		guard : not s.inheritenceBased
 		var typeName = s.rdbmsTypeName;
 		if (not typeName.isDefined()) {
 			typeName = s.type.rdbmsTypeName;
@@ -473,7 +475,8 @@ rule Junction
 			p.precision = i.precision;
 			p.scale = i.scale;
 			p.storageByte = i.storageByte;
-			p.mandatory = i.mandatory;		
+			p.mandatory = i.mandatory;
+			p.shortName = i.sqlName;
 			j.fields.add(p);
 		}
 		
@@ -498,54 +501,6 @@ operation MIG!RdbmsTable originalTableName() : String {
 	return "t_"  + self.shortName.substring(2).toLowerCase();
 }
 
-operation printEnumMod() {
-	if (enumTableNamesMap.keySet().size() > 0) {
-		var grepAndSedCommand = "grep -E \"%s\"";
-		var tables = "";
-		var sed = "";
-		for (k in enumTableNamesMap.keySet()) {
-			tables += "INSERT INTO ";
-			tables += k.toLowerCase();
-			tables += "|";
-			
-			sed += "s/" + k.toLowerCase() + "/" + enumTableNamesMap.get(k) + "/g;";
-		}
-		var first = tables.substring(0, tables.length()-1).format(grepAndSedCommand).println("GREP: ");
-		var second = "awk '{print $1 \" \" $2 \" \" $3 \" \" $4 \" \" $5  \") VALUES(\" $14 \" \" $15 \");\"}' | sed 's/,) /) /g;s/.);/);/g'".println("AWK 1: ");
-		sed += "s/c_code/code/g";
-		var third = sed.format("sed '%s'").println("SED: ");
-		var all = first + " | " + second + " | " + third;
-		all.println("ALL: ");
-	}
-	
-}
-
-operation printETMod() {
-	if (elotoltottTableNamesMap.keySet().size() > 0) {
-		var grepAndSedCommand = "grep -E \"%s\"";
-		var tables = "";
-		var sed = "";
-		for (k in elotoltottTableNamesMap.keySet()) {
-			tables += "INSERT INTO ";
-			tables += k.toLowerCase();
-			tables += "|";
-			
-			sed += "s/" + k.toLowerCase() + "/" + elotoltottTableNamesMap.get(k) + "/g;";
-		}
-		
-		for (f in MIG!RdbmsField.all.select(x | elotoltottTableNamesMap.keySet().contains(x.table.originalTableName()))) {
-			if (not f.equals(f.table.primaryKey)) {
-				sed += "s/" + f.shortName.toLowerCase() + "/" + f.sqlName + "/g;";
-			}
-		}
-		
-		var first = tables.substring(0, tables.length()-1).format(grepAndSedCommand).println("GREP: ");
-		var second = sed.substring(0, sed.length()-1).format("sed '%s'").println("SED: ");
-		var all = first + " | " + second;
-		all.println("ALL: ");
-	}
-}
-
 post {
 	for (fk in RDBMS!RdbmsForeignKey.all) {
 	    var refKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = fk.referenceKey.name);
@@ -568,13 +523,6 @@ post {
 			MIG!RdbmsModel.all.first().rdbmsTables.add(j.equivalent()); 
 		}
 	}
-	
-	//Helper command line things to extract a dump and then extract the preloaded and enum tables for insert, as the migratin schema must contain these records
-	"You can use these command snippets to replace and shape the extracted dump file".println();
-	printEnumMod();
-	printETMod();
-	"pg_dump -a -O --column-inserts -d anakin -U anakin -w -f anakin.sql".println("Use this command for dumnping preloaded and enum data from a running anakin system.");
-	
 	"END".println();
 	
 }

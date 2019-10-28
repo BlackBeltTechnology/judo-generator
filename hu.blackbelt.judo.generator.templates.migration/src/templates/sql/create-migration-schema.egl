@@ -1,0 +1,89 @@
+[%
+  import "../../operations/_importAll.eol";
+  out.setContentType("Java");
+  var mig_schema_name = "migration";
+%]
+
+--USAGE: 
+-- 1., obtain a pg dump from the environment in question with: pg_dump -F custom -O -d <db_name> -U <user_name> -w -f <output_file>
+-- 2., use pg_restore to load this dump file to your envionment: pg_restore <output_file> -U <user_name> -d <db-name> -C -O
+-- 3., run this script to create the migration schema
+-- OR:
+-- u can use this directly on an evironment to create the migration schema: psql -d <db_name> -U <user_name> this_script_file
+
+-- just for completeness and ease of development
+-- DROP SCHEMA IF EXISTS [%=mig_schema_name%] CASCADE;
+
+-- STEP 0: create schema
+CREATE SCHEMA [%=mig_schema_name%];
+-- search path need due to stored procedures
+SET search_path TO [%=mig_schema_name%], public;
+
+--STEP 1: create tables in migration schema
+[% for (table in CURRENT!RdbmsTable.all.select(t | not (t.sqlName.startsWith("ENUM_") or t.sqlName.startsWith("ET_"))).sortBy(t | t.sqlName)) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-table.egl");
+		inc.populate("mig_schema_name", mig_schema_name);
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]
+
+[% for (table in CURRENT!RdbmsTable.all.select(t | t.sqlName.startsWith("ENUM_")).sortBy(t | t.sqlName)) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-table.egl");
+		inc.populate("mig_schema_name", mig_schema_name);
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]
+
+[% for (table in CURRENT!RdbmsTable.all.select(t | t.sqlName.startsWith("ET_")).sortBy(t | t.sqlName)) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-table.egl");
+		inc.populate("mig_schema_name", mig_schema_name);
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]
+--STEP 2: migration data to load, values fetched from the oerational schema currently public
+[% for (table in CURRENT!RdbmsTable.all.select(t | not (t.sqlName.startsWith("ENUM_") or t.sqlName.startsWith("ET_"))).sortBy(t | t.sqlName)) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-insert-into.egl");
+		inc.populate("mig_schema_name", mig_schema_name);
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.print(inc.process());
+} %]
+[% for (table in CURRENT!RdbmsTable.all.select(t | t.sqlName.startsWith("ENUM_")).sortBy(t | t.sqlName)) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-insert-into.egl");
+		inc.populate("mig_schema_name", mig_schema_name);
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.print(inc.process());
+} %]
+[% for (table in CURRENT!RdbmsTable.all.select(t | t.sqlName.startsWith("ET_")).sortBy(t | t.sqlName)) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-insert-into.egl");
+		inc.populate("mig_schema_name", mig_schema_name);
+		inc.populate("table", table);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.print(inc.process());
+} %]
+--STEP 3: create foraign keys
+[% for (foreignKey in CURRENT!RdbmsForeignKey.all) {
+		var inc : Template = TemplateFactory.load("templates/sql/macros/create-foreignkey.egl");
+		inc.populate("mig_schema_name", mig_schema_name);
+		inc.populate("foreignKey", foreignKey);
+    	inc.populate("scriptName", scriptName);
+    	inc.populate("failOnError",  failOnError);
+		out.println(inc.process());
+} %]
+--STEP 4: create not null constraints
+[%  var inc : Template = TemplateFactory.load("templates/sql/create-not-null-constraint.egl");
+	inc.populate("mig_schema_name", mig_schema_name);
+    inc.populate("scriptName", scriptName);
+    inc.populate("failOnError",  failOnError);
+	out.println(inc.process());
+%]

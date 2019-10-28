@@ -1,8 +1,0 @@
-[%
-  import "../../operations/_importAll.eol";
-  out.setContentType("Java");
-%]
---liquibase formatted sql
-
---changeset generator:VERSION_END_#[%= version() %] stripComments:true logicalFilePath:[%= scriptName %] stripComments:true
-UPDATE EXECUTED_VERSIONS SET STATUS = 'EXECUTED' WHERE DB_VERSION = '[%= version() %]';
