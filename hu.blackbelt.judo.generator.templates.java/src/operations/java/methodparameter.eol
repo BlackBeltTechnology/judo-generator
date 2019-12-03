@@ -1,3 +1,4 @@
+@cached
 operation JAVA!JvmMethodParameter restAnnotation() : String {
     if (self.isId()) {
         return "@PathParam(\"" + self.name +"\") ";
@@ -7,18 +8,22 @@ operation JAVA!JvmMethodParameter restAnnotation() : String {
     return "";
 }
 
+@cached
 operation JAVA!JvmMethodParameter isId() : Boolean {
     return self.representsJudoId;
 }
 
+@cached
 operation JAVA!JvmMethodParameter isPagination() : Boolean {
     return self.type.isKindOf(JAVA!JvmCoordinated) and self.type.origin.uuid = paginationOrigin().uuid;
 }
 
+@cached
 operation JAVA!JvmMethodParameter isFilter() : Boolean {
     return self.type.isKindOf(JAVA!JvmCoordinated) and self.type.origin.uuid = filterOrigin().uuid;
 }
 
+@cached
 operation JAVA!JvmMethodParameter isFilterRestDto() : Boolean {
     return self.type.isKindOf(JAVA!JvmCoordinated) and self.type.coordinate = JAVA!JvmJudoCoordinate#FILTER_REST_DTO;
 }

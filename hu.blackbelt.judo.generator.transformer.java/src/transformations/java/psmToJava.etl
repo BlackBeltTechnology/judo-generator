@@ -17,7 +17,15 @@ import "post/addPackageBasedAndSingleClasses.eol";
 import "post/addAndModifyMethods.eol";
 import "post/modifyReferenceTypeToInterfaceForFrameworkEntities.eol";
 
+
 pre {
+	var JAVA_LANG = Native("java.lang.System");
+	var LAST_TIME = JAVA_LANG.currentTimeMillis();
+	var METHOD_TIMES = Map{};
+	
+	var JVM_LISTS = Map{};
+	var JVM_LISTS_PACKAGE;
+	
 	var PACKAGE_NAME = "key_package_name";
 	var NAME_SUFFIX = "key_name_suffix";
 	var NAME_PREFIX = "key_name_prefix";
@@ -65,12 +73,14 @@ pre {
 			JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "S", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S},
 			JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M = Map{PACKAGE_NAME = "rest.dto", NAME_PREFIX = "M", NAME_SUFFIX = "", COORDINATE_GROUP=JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M}
 		};
-
+		
+		var JCLASSUUID_TO_ORIGIN = Map{};
+		var ORIGINUUIDS_TO_COORDINATE_TO_JCLASS = Map{};
+		
 	modifyVoidBusinessMethodsToReturnDeclaringClass();
 }
 
 post {
-	
 	repairScrewedUpReferenceOppositeType();
 	hacklongtoPOId();
 	
@@ -107,4 +117,11 @@ operation repairScrewedUpReferenceOppositeType () : Any {
 		}
 	}
 	
+}
+
+operation logTime (phase : String) : Any {
+	var current = JAVA_LANG.currentTimeMillis();
+	var took = current - LAST_TIME;
+	LAST_TIME = current;
+	took.println("TIME_FOR_" + phase + ": ");
 }

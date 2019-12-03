@@ -4,14 +4,12 @@
   import "../../operations/java/resttestwrapper_common.eol";
   out.setContentType("Java");
 
-  var builderMethodsMacro = getJavaMacro("resttestwrapper_buildermethods");
-  builderMethodsMacro.populate("class", class);
-  builderMethodsMacro.populate("instanceBased", true);
+  macro_resttestwrapper_buildermethods.populate("class", class);
+  macro_resttestwrapper_buildermethods.populate("instanceBased", true);
 
-  var wrapperMethodsMacro = getJavaMacro("resttestwrapper_methods");
-  wrapperMethodsMacro.populate("class", class);
-  wrapperMethodsMacro.populate("showClassBased", false);
-  wrapperMethodsMacro.populate("idsParam", "asList(internal.getId())");
+  macro_resttestwrapper_methods.populate("class", class);
+  macro_resttestwrapper_methods.populate("showClassBased", false);
+  macro_resttestwrapper_methods.populate("idsParam", "asList(internal.getId())");
 %]
 
 package [%=class.package.fqName()%];
@@ -42,7 +40,7 @@ public class [%=class.name%] [% if (class.hasSuper()) { %] extends [%=class.supe
     private Suppressions.SuppressionsBuilder suppBuilder = Suppressions.builder();
 
     public static final String XMIID = "[%=class.origin().uuid%]";
-    [%=builderMethodsMacro.process()%]
+    [%=macro_resttestwrapper_buildermethods.process()%]
 
     public [%=class.name%]([%=class.restDto().fqName()%] internal){
         [% if (class.hasSuper()) { %]
@@ -253,7 +251,7 @@ public class [%=class.name%] [% if (class.hasSuper()) { %] extends [%=class.supe
         }
     [%}%]
 
-    [%=wrapperMethodsMacro.process()%]
+    [%=macro_resttestwrapper_methods.process()%]
 }
 
 [%

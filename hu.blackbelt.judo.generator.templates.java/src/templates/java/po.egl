@@ -3,9 +3,8 @@
   import "../../main.egl";
   out.setContentType("Java");
   
-  var t = getJavaMacro("equalsToStringHashCode");
-  t.populate("className", class.name);
-  t.populate("classForEquals", class.name);
+  macro_equalsToStringHashCode.populate("className", class.name);
+  macro_equalsToStringHashCode.populate("classForEquals", class.name);
   
 %]
 
@@ -20,7 +19,7 @@ public class [%=class.name%] [% if (class.hasSuper()) { %] extends [%=class.supe
 		private [%=member.type.fqName()%] [%=member.name%];
 	[% } %]
 
-	[%=t.process()%]
+	[%=macro_equalsToStringHashCode.process()%]
 
 	private hu.blackbelt.judo.common.lang.api.meta.Metadata $judo$meta;
 }

@@ -67,18 +67,34 @@ var COORDINATE_TO_TEMPLATE = Map {
 		JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_M = "resttestwrapperm",
 		JAVA!JvmJudoCoordinate#REST_TEST_WRAPPER_S = "resttestwrappers"
 	};
+	
+var JAVA_LANG = Native("java.lang.System");
+var macros = Map{
+	"macro_equalsToStringHashCode" = getJavaMacroInternal("equalsToStringHashCode"),
+	"macro_metainfo" = getJavaMacroInternal("metainfo"),
+	"macro_resttestwrapper_buildermethods" = getJavaMacroInternal("resttestwrapper_buildermethods"),
+	"macro_resttestwrapper_methods" = getJavaMacroInternal("resttestwrapper_methods")
+	};
+	
+JAVA!JvmModel.all.first().~coordinateMap = createMaps();
 
 for (key in COORDINATE_TO_TEMPLATE.keySet()) {
-	getJavaTemplate(COORDINATE_TO_TEMPLATE.get(key)).genJavaFor(key);
+	getJavaTemplate(COORDINATE_TO_TEMPLATE.get(key)).genJavaFor(key, macros);
 }
 
 genJavaForAbstractCrudService();
 genTransactionManagerProvider();
 
-operation Template genJavaFor(coordinate : Any) : Any {
+operation Template genJavaFor(coordinate : Any, macros : Map) : Any {
 	for (coordinated in filterBy(coordinate)) {
 		if (not coordinated.fwElement) {
+			for (e in macros.entrySet()) {
+				self.populate(e.key, e.value);
+			}
 			self.genJava(coordinated);
+			for (v in macros.values()) {
+				v.reset();
+			}
 		}
 	}
 }
@@ -89,7 +105,7 @@ operation Template genJava(coordinated : JAVA!JvmCoordinated) : Any {
 	self.reset();
 }
 
-operation getJavaMacro (macroName : String) : Any {
+operation getJavaMacroInternal (macroName : String) : Any {
 	return getTemplate("java/macros", macroName);
 }
 
@@ -132,6 +148,28 @@ operation genTransactionManagerProvider() {
 }
 
 
-
+operation createMaps () : Map {
+	var m = Map{};
+	for (e in JAVA!JvmEnum.all){
+		var key = e.origin().uuid + "!" + e.coordinate;
+		m.put(key, e);
+		if (e.classRepresentation.isDefined()) {
+			var key2 = "ie!" + e.classRepresentation.origin().uuid + "!" + e.coordinate;
+			m.put(key2, e);
+		}
+	}
+	
+	for (e in JAVA!JvmInterface.all){
+		if (e.origin().isDefined()) {
+			var key = e.origin().uuid + "!" + e.coordinate;
+			m.put(key, e);
+			if (e.isTypeOf(JAVA!JvmClass) and e.fixedEnum.isDefined()) {
+				var key2 = "ei!" + e.fixedEnum.origin().uuid + "!" + e.coordinate;
+				m.put(key2, e);
+			}
+		}
+	}
+	return m;
+}
 
 %]

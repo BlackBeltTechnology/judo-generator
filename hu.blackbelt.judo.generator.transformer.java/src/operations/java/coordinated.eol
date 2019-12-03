@@ -75,14 +75,30 @@ operation JAVA!JvmCoordinated boServiceAbstract () : JAVA!JvmCoordinated {
 
 @cached
 operation JAVA!JvmCoordinated origin() : JAVA!JvmCoordinated {
-	if (self.coordinate == JAVA!JvmJudoCoordinate#ORIGIN) {
-		return self;
-	} else {
-		return self.origin;
+	var ret = JCLASSUUID_TO_ORIGIN.get(self.uuid);
+	if (ret.isUndefined()) {
+		if (self.coordinate == JAVA!JvmJudoCoordinate#ORIGIN) {
+			ret = self;
+		} else {
+			ret = self.origin;
+		}
+		JCLASSUUID_TO_ORIGIN.put(self.uuid, ret);
 	}
+	return ret;
 }
 
 operation JAVA!JvmCoordinated find (jvmJudoCoordinate : Any) : JAVA!JvmCoordinated {
-	var ret =  JAVA!JvmCoordinated.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().uuid = self.origin().uuid)).first();
+	var origUUID = self.origin().uuid;
+	var coordMap : Map = ORIGINUUIDS_TO_COORDINATE_TO_JCLASS.get(origUUID);
+	if (coordMap.isUndefined()) {
+		coordMap = Map{};
+		ORIGINUUIDS_TO_COORDINATE_TO_JCLASS.put(origUUID, coordMap);
+	}
+	var ret = coordMap.get(jvmJudoCoordinate);
+	if (ret.isUndefined()) {
+		ret =  JAVA!JvmCoordinated.all.select(c | (c.coordinate = jvmJudoCoordinate and c.origin().uuid = origUUID)).first();
+		coordMap.put(jvmJudoCoordinate, ret);
+	}
+	
 	return ret;
 }

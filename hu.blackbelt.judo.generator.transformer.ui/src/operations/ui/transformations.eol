@@ -16,7 +16,12 @@ operation transformJAttribute(uiClass : UI!UIClass, jAttribute : PSM!JAttribute,
 			interval.uuid = generateUuid(generateUuid(uiClass.uuid, attribute.name, "."), attribute.intervals.indexOf(interval).asString(), "_");
 		}	
 	}
-	attribute.~search = not jAttribute.uiNoSearch;		
+	attribute.~search = not jAttribute.uiNoSearch;
+	
+	if (jAttribute.isRepresentation() and uiClass.representation = null) {
+		attribute.representation = true;
+		uiClass.representation = attribute;
+	}		
 }
 
 operation transformJRole(uiClass : UI!UIClass, jRole : PSM!JRole, inherited : Boolean, emfTool) {

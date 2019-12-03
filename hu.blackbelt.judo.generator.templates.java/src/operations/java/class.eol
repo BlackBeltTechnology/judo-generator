@@ -63,6 +63,7 @@ operation JAVA!JvmClass createAllowed () : Boolean {
 	return not (self.abstract and self.references().size() > 0);
 }
 
+@cached
 operation JAVA!JvmClass enumValueClass () : JAVA!JvmClass {
     //TODO: this should be introduced in the meta PSM model
     var ref = self.origin.allReferences().selectOne(r | Set{self.origin.name + "Value", self.origin.shortName + "Value"}.includes(r.opposite.ownerClass.name));

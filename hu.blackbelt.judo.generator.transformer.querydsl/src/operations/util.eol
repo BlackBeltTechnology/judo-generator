@@ -16,17 +16,8 @@ operation RDBMS!EObject clone() : RDBMS!EObject {
 }
 
 operation createJvmList ( componentType : JAVA!JvmType) : JAVA!JvmList {
-    var ret = JAVA!JvmList.all.select(l | l.componentType.uuid = componentType.uuid).first();
-    if (ret.isUndefined()) {
-        ret = new JAVA!JvmList;
-        ret.uuid = randomUUID();
-        ret.name = "List";  
-        ret.package = JAVA!JvmModel.all.first().findOrCreateJavaUtilPackage();
-        ret.componentType = componentType;
-    }
-    return ret;
+    return JVM_LISTS.get(componentType.uuid);
 }
-
 operation abbreviate(text : String, maxLength : Integer) : String {
 
     if (text.length() > maxLength) {

@@ -20,6 +20,12 @@ pre {
         targetModel.name = javaModel.name;
         targetModel.topPackageName = javaModel.applicationTop.fqName();
         targetModel.persistenceName = javaModel.applicationTop.name.firstToUpperCase();
+        
+    var JVM_LISTS = JAVA!JvmList.all.aggregate(l | l.componentType.uuid, l);
+    var PO_COORD = JAVA!JvmCoordinated.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#PO and c.origin.isDefined()).aggregate(c | c.origin.uuid, c);
+    var JVM_CLASS_MAP = JAVA!JvmClass.all.select(c | c.coordinate = JAVA!JvmJudoCoordinate#ORIGIN).aggregate(c | c.fqBaseName(), c);
+    var JVM_ATTR_MAP = JAVA!JvmAttribute.all.aggregate(attr | attr.baseUUID(), attr);
+    var JVM_REF_MAP = JAVA!JvmReference.all.aggregate(ref | ref.baseUUID(), ref);
 }
 post {
 

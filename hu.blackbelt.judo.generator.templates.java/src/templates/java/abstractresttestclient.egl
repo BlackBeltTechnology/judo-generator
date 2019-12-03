@@ -7,6 +7,7 @@
 package [%=class.package.fqName()%];
 
 import javax.ws.rs.Path;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +26,8 @@ import hu.blackbelt.judo.example.common.rest.test.JudoReqSpec;
 [%}%]
 
 import static java.util.Arrays.asList;
+
+import org.joda.time.LocalDateTime;
 
 public abstract class [%=class.name%] extends [%=class.isEnum().ternary("AbstractEnumRestClient", "AbstractRestClient")%]<[%=class.restDto().name%]> {
 
