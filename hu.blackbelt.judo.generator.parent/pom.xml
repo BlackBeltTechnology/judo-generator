@@ -11,15 +11,15 @@
 		<tycho.version>0.23.0</tycho.version>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-	    <epsilon.maven.plugin.version>1.1.1</epsilon.maven.plugin.version>
-        <framework.model.version>1.4.0-5</framework.model.version>
-        <framework.domain.version>1.4.0-12</framework.domain.version>
+	    <epsilon.maven.plugin.version>1.1.3</epsilon.maven.plugin.version>
+        <framework.model.version>1.4.0-11</framework.model.version>
+        <framework.domain.version>1.4.0-20</framework.domain.version>
 
 
         <test.model.groupId>hu.blackbelt.anakin</test.model.groupId>
         <test.model.artifactId>anakin-model</test.model.artifactId>
-        <test.model.version>5.0.0-SNAPSHOT</test.model.version>
-        <test.model.previousVersion>5.0.0-SNAPSHOT</test.model.previousVersion>
+        <test.model.version>5.0.0-568</test.model.version>
+        <test.model.previousVersion>5.0.0-568</test.model.previousVersion>
         <test.model.applicationName>Anakin</test.model.applicationName>
 
         <!-- 

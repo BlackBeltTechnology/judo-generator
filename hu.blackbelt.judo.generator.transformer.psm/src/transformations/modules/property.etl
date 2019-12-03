@@ -28,7 +28,7 @@ rule ClassProperty
 		t.value = s.`default`;
 	}
 	
-	t.mandatory = s.lowerValue.isDefined() and s.lowerValue.value > 0;
+	t.mandatory = s.lowerValue.isDefined() and s.lowerValue.value > 0 and not s.isDerived;
 	t.lower = s.computeLower();
 	t.upper = s.computeUpper();
 	
