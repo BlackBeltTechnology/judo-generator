@@ -143,7 +143,7 @@
                                         </model>
                                     </models>
                                     <plainXmlModels>
-                                        <model>
+                                        <plainXmlModel>
                                             <artifact>${project.basedir}/src/script-definition.xml</artifact>
                                             <name>SCRIPT</name>
                                             <readOnLoad>true</readOnLoad>
@@ -151,7 +151,7 @@
                                             <aliases>
                                                 <alias>SCRIPT</alias>
                                             </aliases>
-                                        </model>
+                                        </plainXmlModel>
                                     </plainXmlModels>
 
                                     <eolPrograms>
@@ -218,7 +218,7 @@
                                         </model>
                                     </models>
                                     <plainXmlModels>
-                                        <model>
+                                        <plainXmlModel>
                                             <artifact>${project.basedir}/src/script-definition.xml</artifact>
                                             <name>SCRIPT</name>
                                             <readOnLoad>true</readOnLoad>
@@ -226,7 +226,7 @@
                                             <aliases>
                                                 <alias>SCRIPT</alias>
                                             </aliases>
-                                        </model>
+                                        </plainXmlModel>
                                     </plainXmlModels>
 
                                     <eolPrograms>
@@ -293,7 +293,7 @@
                                         </model>
                                     </models>
                                     <plainXmlModels>
-                                        <model>
+                                        <plainXmlModel>
                                             <artifact>${project.basedir}/src/script-definition.xml</artifact>
                                             <name>SCRIPT</name>
                                             <readOnLoad>true</readOnLoad>
@@ -301,7 +301,7 @@
                                             <aliases>
                                                 <alias>SCRIPT</alias>
                                             </aliases>
-                                        </model>
+                                        </plainXmlModel>
                                     </plainXmlModels>
 
                                     <eolPrograms>

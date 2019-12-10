@@ -4,6 +4,9 @@
   var mig_schema_name = "migration";
 %]
 
+
+
+[% if (CURRENT!RdbmsTable.all.size() > 0) { %]
 --USAGE: 
 -- 1., obtain a pg dump from the environment in question with: pg_dump -F custom -O -d <db_name> -U <user_name> -w -f <output_file>
 -- 2., use pg_restore to load this dump file to your envionment: pg_restore <output_file> -U <user_name> -d <db-name> -C -O
@@ -87,3 +90,5 @@ SET search_path TO [%=mig_schema_name%], public;
     inc.populate("failOnError",  failOnError);
 	out.println(inc.process());
 %]
+
+[%}%]

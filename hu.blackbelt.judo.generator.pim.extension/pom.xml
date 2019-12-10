@@ -101,7 +101,7 @@
                                     </metaModels>
                                     <models>
                                         <model>
-                                            <artifact>${project.build.directory}/opm_pim_-_Modelio_import.uml</artifact>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:uml:pim:${test.model.version}</artifact>
                                             <name>inpPIM</name>
                                             <metaModelUris>
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
@@ -110,7 +110,7 @@
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
                                                 <param>http:///schemas/ValidationProfile/_E8DQcDGdEei6IdEFC9bfxw/0</param>
                                                 <param>http:///schemas/DSLCustomization/_E8xpMDGdEei6IdEFC9bfxw/0</param>
-                                                <param>http://www.blackbelt.hu/metamodel/pim/v1.0</param>
+                                                <param>http://www.blackbelt.hu/metamodel/pim/1.3</param>
                                             </metaModelUris>
                                             <readOnLoad>true</readOnLoad>
                                             <storeOnDisposal>true</storeOnDisposal>

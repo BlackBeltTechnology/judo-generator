@@ -14,7 +14,7 @@
 	<sql name = "create-migration-schema" scriptName="templates/sql/create-migration-schema.egl" out ="schema/sql/${currentVersion}/${dialect}/create-migration-schema.sql"/>    
 
 	<!-- It runs when there is NO DB presented -->
-	<changeset name = "changeset-full"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-schema-full.xml" >
+	<changeset name = "changeset-migration-full"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-migration-schema-full.xml" >
 		<change sql ="sql/${currentVersion}/${dialect}/create-migration-schema.sql"/>
 	</changeset>
 

@@ -64,7 +64,7 @@
 						<executions>
 							<execution>
 								<id>migration-helper</id>
-								<phase>generate-resources</phase>
+								<phase>compile</phase>
 								<goals>
 									<goal>execute</goal>
 								</goals>
@@ -78,7 +78,6 @@
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
 										<metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
-                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.psm:ecore:psm:${project.version}</metaModel>
 									</metaModels>
                                     <models>
                                         <model>
@@ -118,7 +117,6 @@
                                                 <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
                                             </metaModelUris>
                                             <expand>true</expand>
-                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</platformAlias>
                                         </model>
                                         <model>
 											<artifact>${project.build.directory}/migration.model</artifact>
@@ -140,9 +138,26 @@
                                             </metaModelUris>
                                         </model>
                                     </models>
+                                    <excelModels>
+                                        <excelModel>
+                                            <name>MigrationConfig</name>
+                                            <artifact>${project.build.directory}/classes/model/AnakinMigrationConfig.xlsx</artifact>
+                                            <configurationArtifact>${project.build.directory}/classes/model/migrationconfig.xml</configurationArtifact>
+                                        </excelModel>
+                                    </excelModels>
 									<eolPrograms>
 										<Etl>
 											<source>src/migration.etl</source>
+                                            <parameters>
+                                                <parameter>
+                                                    <name>modelName</name>
+                                                    <value>${test.model.name}</value>
+                                                </parameter>
+                                                <parameter>
+                                                    <name>startClassName</name>
+                                                    <value>anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes</value>
+                                                </parameter>
+                                            </parameters>
 										</Etl>
 									</eolPrograms>
 								</configuration>

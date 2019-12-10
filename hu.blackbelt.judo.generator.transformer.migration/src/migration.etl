@@ -1,307 +1,43 @@
 import "operations/_importAll.eol";
 
 pre {
-	"START".println();
-	
-	//i need to extract the derived information from the UML as this info is lost during PIM/PSM transformation 	
-	var ecxludedFields : Set<String> = inpPIM!Property.all.select(p | p.isDerived 
-																or p.visibility = inpPIM!VisibilityKind#private
-																/*or p.visibility = inpPIM!VisibilityKind#protected*/)
-													.collect(p | p.fqName()).asSet();
+	//i need to extract the derived information from the UML as this info is lost during PIM/PSM transformation	
+	var ecxludedFields : Set<String> = inpPIM!Property.all.select(p | p.isDerived or p.visibility = inpPIM!VisibilityKind#private)
+														  .collect(p | p.fqName()).asSet();
 													
 	//all things from extension model must be excluded
 	ecxludedFields.addAll(pimEXT!EStructuralFeature.all.collect(a | a.fqName()));
-	//additional field exclusions
-	ecxludedFields.add("anakin.business.domain.ugylet.termek.KolcsonSema.modositasDatuma");
-	ecxludedFields.add("anakin.business.domain.ugylet.termek.KolcsonSema.modositoFelhasznalo");
-	ecxludedFields.add("anakin.business.domain.felhasznalo.Felhasznalo.becsusiKolcsonLimit");
-	ecxludedFields.add("anakin.business.domain.felhasznalo.Felhasznalo.lastFailedLoginTime");
-	ecxludedFields.add("judo.framework.User.credential");
-	ecxludedFields.add("judo.framework.User.lastLoginTime");
-	ecxludedFields.add("judo.framework.User.sms");
-	ecxludedFields.add("judo.framework.User.notificationEmail");
-	ecxludedFields.add("judo.framework.User.notificationSms");
+	//read migration config model and add all excluded field
+	ecxludedFields.addAll(MigrationConfig!ExcludeFieldNames.all.Name);
 	
 	//we can defined classes to be excluded
-	var excludedClasses : Set<String> = new Set;
-	/*excludedClasses.add("anakin.business.domain.felhasznalo.Beosztas");
-	excludedClasses.add("anakin.business.domain.felhasznalo.Privilegium");
-	excludedClasses.add("anakin.business.domain.felhasznalo.PrivilegiumErtek");
-	excludedClasses.add("anakin.business.domain.felhasznalo.PrivilegiumErtekValue");
-	excludedClasses.add("anakin.business.domain.felhasznalo.Szerepkor");
-	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumIranyultsag");
-	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumIranyultsagValue");
-	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumLeiro");
-	excludedClasses.add("anakin.business.domain.nyomtatas.Dokumentum");
-	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumTipus");
-	excludedClasses.add("anakin.business.domain.nyomtatas.DokumentumTipusValue");
-	excludedClasses.add("anakin.business.domain.nyomtatas.NyomatKeszultsegiSzint");
-	excludedClasses.add("anakin.business.domain.nyomtatas.NyomatKeszultsegiSzintValue");
-	excludedClasses.add("anakin.business.domain.nyomtatas.NyomtatasEredmenykod");
-	excludedClasses.add("anakin.business.domain.nyomtatas.NyomtatasEredmenykodValue");
-	excludedClasses.add("anakin.business.domain.nyomtatas.NyomtatasiFeladat");
-	excludedClasses.add("anakin.business.domain.nyomtatas.NyomtatasiFeladatStatusz");
-	excludedClasses.add("anakin.business.domain.nyomtatas.NyomtatasiFeladatStatuszValue");
-	excludedClasses.add("anakin.business.domain.nyomtatas.NyugtaDok");
-	excludedClasses.add("anakin.business.domain.penztar.Cimlet");
-	excludedClasses.add("anakin.business.domain.penztar.MuveletNaploEsemeny");
-	excludedClasses.add("anakin.business.domain.penztar.MuveletNaploEsemenyTipus");
-	excludedClasses.add("anakin.business.domain.penztar.MuveletNaploEsemenyTipusValue");
-	excludedClasses.add("anakin.business.domain.penztar.Penztar");
-	excludedClasses.add("anakin.business.domain.penztar.TrezorTipus");
-	excludedClasses.add("anakin.business.domain.penztar.TrezorTipusValue");
-	//excludedClasses.add("anakin.business.domain.raktar.Aktiv_e");
-	excludedClasses.add("anakin.business.domain.raktar.Aktiv_eValue");
-	excludedClasses.add("anakin.business.domain.raktar.EgyediRaktarTetelMuvelet");
-	excludedClasses.add("anakin.business.domain.raktar.FeladatTipus");
-	excludedClasses.add("anakin.business.domain.raktar.FeladatTipusValue");
-	excludedClasses.add("anakin.business.domain.raktar.Gyakorisag");
-	excludedClasses.add("anakin.business.domain.raktar.GyakorisagValue");
-	excludedClasses.add("anakin.business.domain.raktar.RaktarMuvelet");
-	excludedClasses.add("anakin.business.domain.raktar.RaktarMuveletTipus");
-	excludedClasses.add("anakin.business.domain.raktar.RaktarMuveletTipusValue");
-	excludedClasses.add("anakin.business.domain.raktar.RaktariFeladat");
-	excludedClasses.add("anakin.business.domain.raktar.RaktariFeladatokOsszesito");
-	excludedClasses.add("anakin.business.domain.raktar.RaktariMuveletStatusz");
-	excludedClasses.add("anakin.business.domain.raktar.RaktariMuveletStatuszValue");
-	//excludedClasses.add("anakin.business.domain.raktar.RaktariTetelStatusz");
-	excludedClasses.add("anakin.business.domain.raktar.RaktariTetelStatuszValue");
-	excludedClasses.add("anakin.business.domain.raktar.Rovancs");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsAdag");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsAdagRovancsAdagAllapot");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsAdagRovancsAdagAllapotValue");
-	//excludedClasses.add("anakin.business.domain.raktar.RovancsAnyag");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsAnyagValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsEredmeny");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsEredmenyValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsIsmetlodes");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsIsmetlodesValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsRovancsAllapot");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsRovancsAllapotValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsSablon");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTargy");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTargyEredmeny");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTargyEredmenyValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTargyRovancsTargyAllapot");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTargyRovancsTargyAllapotValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTargykor");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTargykorValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTetel");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTetelEredmeny");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTetelEredmenyValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTetelRovancsTetelAllapot");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTetelRovancsTetelAllapotValue");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTipus");
-	excludedClasses.add("anakin.business.domain.raktar.RovancsTipusValue");
-	//excludedClasses.add("anakin.business.domain.raktar.TetelHolVan");
-	excludedClasses.add("anakin.business.domain.raktar.TetelHolVanValue");
-	//excludedClasses.add("anakin.business.domain.raktar.TetelTipus");
-	excludedClasses.add("anakin.business.domain.raktar.TetelTipusValue");
-	excludedClasses.add("anakin.business.domain.raktar.UzletiMuveletTipus");
-	excludedClasses.add("anakin.business.domain.raktar.UzletiMuveletTipusValue");
-	excludedClasses.add("anakin.business.domain.raktar.integer");
-	//excludedClasses.add("anakin.business.domain.szervezet.FiokTipus");
-	excludedClasses.add("anakin.business.domain.szervezet.FiokTipusValue");
-	//excludedClasses.add("anakin.business.domain.szervezet.KozvetitoCeg");
-	//excludedClasses.add("anakin.business.domain.szervezet.SzervEgysTipus");
-	excludedClasses.add("anakin.business.domain.szervezet.SzervEgysTipusValue");
-	//excludedClasses.add("anakin.business.domain.targy.Anyag");
-	excludedClasses.add("anakin.business.domain.targy.AnyagValue");
-	excludedClasses.add("anakin.business.domain.targy.Arfolyam");
-	//excludedClasses.add("anakin.business.domain.targy.BecslesTipus");
-	excludedClasses.add("anakin.business.domain.targy.BecslesTipusValue");
-	//excludedClasses.add("anakin.business.domain.targy.Finomsag");
-	//excludedClasses.add("anakin.business.domain.targy.TargyHolVan");
-	excludedClasses.add("anakin.business.domain.targy.TargyHolVanValue");
-	//excludedClasses.add("anakin.business.domain.targy.TargyTipus");
-	excludedClasses.add("anakin.business.domain.targy.TargyTipusValue");
-	//excludedClasses.add("anakin.business.domain.targy.Zalognem");
-	excludedClasses.add("anakin.business.domain.targy.ZalogtargyStatusz");
-	excludedClasses.add("anakin.business.domain.targy.ZalogtargyStatuszValue");
-	//excludedClasses.add("anakin.business.domain.ugyfel.CimTipusa");
-	excludedClasses.add("anakin.business.domain.ugyfel.CimTipusaValue");
-	//excludedClasses.add("anakin.business.domain.ugyfel.OkmanyTipus");
-	excludedClasses.add("anakin.business.domain.ugyfel.OkmanyTipusValue");
-	//excludedClasses.add("anakin.business.domain.ugyfel.PmtAdatkor");
-	excludedClasses.add("anakin.business.domain.ugyfel.PmtAdatkorValue");
-	//excludedClasses.add("anakin.business.domain.ugyfel.TelefonTipusa");
-	excludedClasses.add("anakin.business.domain.ugyfel.TelefonTipusaValue");
-	//excludedClasses.add("anakin.business.domain.ugyfel.TvkStatusz");
-	excludedClasses.add("anakin.business.domain.ugyfel.TvkStatuszValue");
-	//excludedClasses.add("anakin.business.domain.ugyfel.UgyfelStatusz");
-	excludedClasses.add("anakin.business.domain.ugyfel.UgyfelStatuszValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.AjanlatStatusz");
-	excludedClasses.add("anakin.business.domain.ugylet.AjanlatStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.BankiUtalas");
-	excludedClasses.add("anakin.business.domain.ugylet.BankiUtalasStatusz");
-	excludedClasses.add("anakin.business.domain.ugylet.BankiUtalasStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.ElallasiOk");
-	//excludedClasses.add("anakin.business.domain.ugylet.KHRLekerdezesStatusz");
-	excludedClasses.add("anakin.business.domain.ugylet.KHRLekerdezesStatuszValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.KifizetesModja");
-	excludedClasses.add("anakin.business.domain.ugylet.KifizetesModjaValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.Kockazat");
-	excludedClasses.add("anakin.business.domain.ugylet.KockazatValue");
-	excludedClasses.add("anakin.business.domain.ugylet.NfAnyagKonfig");
-	excludedClasses.add("anakin.business.domain.ugylet.SzerzodesStatusz");
-	excludedClasses.add("anakin.business.domain.ugylet.SzerzodesStatuszValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.SzerzodesTipusa");
-	excludedClasses.add("anakin.business.domain.ugylet.SzerzodesTipusaValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.Ugylettipus");
-	excludedClasses.add("anakin.business.domain.ugylet.UgylettipusValue");
-	excludedClasses.add("anakin.business.domain.ugylet.UzletiKonfiguracio");
-	//excludedClasses.add("anakin.business.domain.ugylet.elzalogositas.ElzalogositasFazis");
-	excludedClasses.add("anakin.business.domain.ugylet.elzalogositas.ElzalogositasFazisValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.kezeles.SzerzKezMuveletTipus");
-	excludedClasses.add("anakin.business.domain.ugylet.kezeles.SzerzKezMuveletTipusValue");
-	excludedClasses.add("anakin.business.domain.ugylet.kezeles.Szerzodeskezeles");
-	excludedClasses.add("anakin.business.domain.ugylet.kezeles.SzerzodeskezelesFazis");
-	excludedClasses.add("anakin.business.domain.ugylet.kezeles.SzerzodeskezelesFazisValue");
-	excludedClasses.add("anakin.business.domain.ugylet.kondicio.LezarasiKondicio");
-	excludedClasses.add("anakin.business.domain.ugylet.penzforgalmi.MuveletBeallitas");
-	excludedClasses.add("anakin.business.domain.ugylet.penzforgalmi.Muvelet");
-	excludedClasses.add("anakin.business.domain.ugylet.penzforgalmi.MuveletValue");
-	excludedClasses.add("anakin.business.domain.ugylet.penzforgalmi.PenzugyiTranzakcioStatusz");
-	excludedClasses.add("anakin.business.domain.ugylet.penzforgalmi.PenzugyiTranzakcioStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.penzforgalmi.TranzakcioTipus");
-	excludedClasses.add("anakin.business.domain.ugylet.penzforgalmi.TranzakcioTipusValue");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonSzorzo");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.CiklusEsedekesseg");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.CiklusEsedekessegValue");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.CiklusGyakorisag");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.CiklusGyakorisagValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.termek.Dijszabas");
-	//excludedClasses.add("anakin.business.domain.ugylet.termek.KezelesiDijEsedekessege");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.KezelesiDijEsedekessegeValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.termek.KolcsonSema");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.SzerzodesMuveletek");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.SzerzodesMuveletekValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.termek.Termek");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekKategoria");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekKategoriaEleres");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekKategoriaStatusz");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekKategoriaStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekStatusz");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekStatuszValue");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekSzuro");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekVerzioStatusz");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.TermekVerzioStatuszValue");
-	//excludedClasses.add("anakin.business.domain.ugylet.termek.Termekverzio");
-	//excludedClasses.add("anakin.business.domain.ugylet.termek.ToketorlesztesModja");
-	excludedClasses.add("anakin.business.domain.ugylet.termek.ToketorlesztesModjaValue");*/
-	excludedClasses.add("anakin.business.domain.workflow.AlapFolyamatAdat");
-	excludedClasses.add("anakin.business.domain.workflow.AnakinTask");
-	excludedClasses.add("anakin.business.domain.workflow.FolyamatFeladat");
-	excludedClasses.add("anakin.business.domain.workflow.ProcessState");
-	excludedClasses.add("anakin.business.domain.workflow.ProcessStateValue");
-	excludedClasses.add("anakin.business.domain.workflow.TaskState");
-	excludedClasses.add("anakin.business.domain.workflow.TaskStateValue");
-	excludedClasses.add("anakin.business.domain.workflow.Workflow");
-	excludedClasses.add("ext.RaktariTetelAllapot");
-	excludedClasses.add("ext.RaktariTetelAllapotValue");
-	excludedClasses.add("ext.SecurityInputPair");
-	excludedClasses.add("judo.framework.Candidate");
-	excludedClasses.add("judo.framework.Checklist");
-	excludedClasses.add("judo.framework.ChecklistItem");
-	excludedClasses.add("judo.framework.Comment");
-	excludedClasses.add("judo.framework.Config");
-	excludedClasses.add("judo.framework.ConfigEntry");
-	excludedClasses.add("judo.framework.CustomFieldDescriptor");
-	excludedClasses.add("judo.framework.CustomFieldType");
-	excludedClasses.add("judo.framework.CustomFieldTypeValue");
-	excludedClasses.add("judo.framework.Expression");
-	excludedClasses.add("judo.framework.Header");
-	excludedClasses.add("judo.framework.InstanceState");
-	excludedClasses.add("judo.framework.InstanceStateValue");
-	excludedClasses.add("judo.framework.Language");
-	excludedClasses.add("judo.framework.Model");
-	excludedClasses.add("judo.framework.Operator");
-	excludedClasses.add("judo.framework.OperatorValue");
-	excludedClasses.add("judo.framework.Permission");
-	excludedClasses.add("judo.framework.Priority");
-	excludedClasses.add("judo.framework.PriorityValue");
-	excludedClasses.add("judo.framework.Process");
-	excludedClasses.add("judo.framework.ProcessComment");
-	excludedClasses.add("judo.framework.Profile");
-	excludedClasses.add("judo.framework.ProfileEntry");
-	excludedClasses.add("judo.framework.Resolution");
-	excludedClasses.add("judo.framework.Role");
-	excludedClasses.add("judo.framework.Rule");
-	excludedClasses.add("judo.framework.Table");
-	excludedClasses.add("judo.framework.TableTest");
-	excludedClasses.add("judo.framework.TableTestInput");
-	excludedClasses.add("judo.framework.Task");
-	excludedClasses.add("judo.framework.Tenant");
-	excludedClasses.add("judo.framework.TenantRole");
-	excludedClasses.add("judo.framework.TenantUser");
-	excludedClasses.add("judo.framework.Type");
-	excludedClasses.add("judo.framework.TypeValue");
-	excludedClasses.add("judo.framework.User");
-	excludedClasses.add("judo.framework.UserCandidate");
-	excludedClasses.add("judo.framework.UserConfig");
-	excludedClasses.add("judo.framework.UserInfo");
-	excludedClasses.add("judo.framework.Workflow");
-	excludedClasses.add("judo.framework.ProcessData");
-	
-	var additionalRoles : Set<String> = new Set;
-	//there are roles that are not mandatory in uml, but must be included due to business requirement
-	additionalRoles.add("Anakin.anakin.business.domain.ugylet.elzalogositas.Ajanlat.zalogtetelek");
-	additionalRoles.add("Anakin.anakin.business.domain.ugylet.Szerzodes.zalogtargyBecslesek");
-	additionalRoles.add("Anakin.anakin.business.domain.targy.ZalogtargyBecsles.zalogtargy");
-	additionalRoles.add("Anakin.anakin.business.domain.targy.Zalogtargy.feljegyzesek");
-	additionalRoles.add("Anakin.anakin.business.domain.targy.Zalogtargy.raktariTetel");
-	additionalRoles.add("Anakin.anakin.business.domain.raktar.RaktariTetel.feljegyzesek");
-	additionalRoles.add("Anakin.anakin.business.domain.raktar.RaktariTetel.tarolohely");
-	additionalRoles.add("Anakin.anakin.business.domain.raktar.Tarolohely.raktar");
+	var excludedClasses : Set<String> = MigrationConfig!ExcludeClassNames.all.Name.asSet();
 	
 	//later use for flagging elotoltott data as we need to remame them in the migration schema
-	var elotoltott : Set<String> = new Set;
-	elotoltott.add("anakin.business.domain.ugylet.UzletiKonfiguracio");
-	elotoltott.add("anakin.business.domain.ugylet.NfAnyagKonfig");
-	elotoltott.add("anakin.business.domain.RiportUtemBeallitas");
-	elotoltott.add("anakin.business.domain.felhasznalo.Szerepkor");
-	elotoltott.add("anakin.business.domain.targy.Zalognem");
-	elotoltott.add("anakin.business.domain.targy.Finomsag");
-	elotoltott.add("anakin.business.domain.targy.TargyleirasRoviditesek");
-	elotoltott.add("anakin.business.domain.szervezet.KozvetitoCeg");
-	elotoltott.add("anakin.business.domain.szervezet.Regio");
-	elotoltott.add("anakin.business.domain.ugylet.termek.Termek");
-	elotoltott.add("anakin.business.domain.ugylet.termek.Termekverzio");
-	elotoltott.add("anakin.business.domain.ugylet.termek.Dijszabas");
-	elotoltott.add("anakin.business.domain.ugylet.termek.TermekKategoria");
-	elotoltott.add("anakin.business.domain.ugylet.termek.TermekKategoriaEleres");
-	elotoltott.add("anakin.business.domain.ugylet.termek.KolcsonSema");
-	elotoltott.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonRogzites");
-	elotoltott.add("anakin.business.domain.ugylet.termek.AdhatoKolcsonSzorzo");
-	elotoltott.add("anakin.business.domain.szervezet.Zalogfiok");
-	elotoltott.add("anakin.business.domain.szervezet.SzervezetiEgyseg");
-	elotoltott.add("anakin.business.domain.raktar.Raktar");
-	elotoltott.add("anakin.business.domain.raktar.Tarolohely");
-	elotoltott.add("anakin.business.domain.ugylet.ElallasiOk");
-	elotoltott.add("anakin.business.domain.penztar.Cimlet");
-	elotoltott.add("anakin.business.domain.szervezet.ZarasKonfiguracio");
-	//elotoltott.add("anakin.business.domain.targy.Arfolyam");
-	//elotoltott.add("anakin.business.domain.felhasznalo.Privilegium");
+	var elotoltott : Set<String> = MigrationConfig!ElotoltottClassNames.all.Name.asSet();
 	
 	//later use for flagging enum classes as we need to remame them in the migration schema
 	var enumClasses = PSM!JClass.all.select(c | c.representsEnum).collect(c | c.fqName()).asSet();
-	var enumTableNamesMap : Map<String, String> = new Map;
-	var elotoltottTableNamesMap : Map<String, String> = new Map;
 	
-	//set this true if all association must be traversed not only mandatory ones
-	var allAssociations : Boolean = true;
-	//the class from where we want to start the transitive colsure on mandatory and above defiend additional roles	
-	var startClassName = "anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes";
+	//constants
+	var viewSuffix = "_View";
+	var derivedFieldNameMarker = "@";
+	var enumClassCodeFieldName = "code";
+	
+	//the class from where we want to start the transitive colsure on mandatory and above defiend additional roles
 	var startClass = PSM!JClass.all.selectOne(c | c.fqName() = startClassName);
-	var classUUIDs : Set<String> = new Set;
-	classUUIDs.add(startClass.uuid);
-	startClass.allRoles(classUUIDs);
-	classUUIDs = classUUIDs.collect(a | a + "_View").asSet();
-	//classUUIDs.removeAll(excludedClasses);
-	var viewNames : Set<String> = RDBMS!RdbmsView.all.select(v | classUUIDs.contains(v.uuid)).name.asSet();
-	//remove excluded classes
-	viewNames.removeAll(excludedClasses);
-	
+	var viewNames : Set<String> = new Set;
+	if (startClass.isDefined()) {
+		var classUUIDs : Set<String> = new Set;
+		classUUIDs.add(startClass.uuid);
+		startClass.allRoles(classUUIDs);
+		classUUIDs = classUUIDs.collect(a | a + viewSuffix).asSet();
+		viewNames = RDBMS!RdbmsView.all.select(v | classUUIDs.contains(v.uuid)).name.asSet();
+		//remove excluded classes
+		viewNames.removeAll(excludedClasses);
+	}
+		
+	//reserved sql keywords
 	var fieldReservedSqlNames : Set<String> = new Set;
 	fieldReservedSqlNames.add("language");
 	fieldReservedSqlNames.add("group");
@@ -314,13 +50,11 @@ pre {
 }
 
 operation PSM!JClass allRoles(acc : Set<String>) {
-	for (r in PSM!JRole.all.select(r | r.ownerClass = self or r.ownerClass = self.supertype)) { //TODO: supertype collctor must be recursive
-		if ((r.lower > 0 or allAssociations) or additionalRoles.contains(r.uuid)) {
-			var opp = r.opposite().ownerClass;
-			if (not acc.contains(opp.uuid)) {
-					acc.add(opp.uuid);
-					opp.allRoles(acc);
-			}
+	for (r in PSM!JRole.all.select(r | self.allSupertypesAndIncludingSelf().contains(r.ownerClass))) {
+		var opp = r.opposite().ownerClass;
+		if (not acc.contains(opp.uuid)) {
+				acc.add(opp.uuid);
+				opp.allRoles(acc);
 		}
 	}
 }
@@ -329,7 +63,7 @@ operation PSM!JClass allRoles(acc : Set<String>) {
 rule Element 
 	transform s : RDBMS!RdbmsElement
 	to 		  t : MIG!RdbmsElement {
-	guard: not s.name.contains("@") //TODO: find out why multichained derived expressions maps to valueField
+	guard: not s.name.contains(derivedFieldNameMarker) //TODO: find out why multichained derived expressions maps to valueField, been put here not to repeat everywhere
 		t.name = s.name;
 		t.uuid = s.uuid;
 		t.fullName = s.fullName;
@@ -359,6 +93,7 @@ rule ViewField
 rule Model 
 	transform s : RDBMS!RdbmsModel
 	to 		  t : MIG!RdbmsModel {
+		guard : viewNames.size() > 0
 		t.version = s.version;
 		for (v in s.rdbmsViews) {
 			if (viewNames.contains(v.name)) {
@@ -367,6 +102,32 @@ rule Model
 					t.rdbmsTables.add(equiv);
 				}
 			} 
+		}
+		
+		for (j in RDBMS!RdbmsJunctionTable.all) {
+			var table1 = t.rdbmsTables.selectOne(t | t.uuid = j.field1.referenceKey.table.uuid);
+			var table2 = t.rdbmsTables.selectOne(t | t.uuid = j.field2.referenceKey.table.uuid);
+			var refKey1 = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = j.field1.referenceKey.uuid);
+			var refKey2 = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = j.field2.referenceKey.uuid);
+			if (table1.isDefined() and table2.isDefined() and refKey1.isDefined() and refKey2.isDefined()) {
+				t.rdbmsTables.add(j.equivalent());
+			}
+		}
+		
+		for (fk in RDBMS!RdbmsForeignKey.all) {
+		    var refKey = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = fk.referenceKey.uuid);
+		    var table = t.rdbmsTables.selectOne(t | t.uuid = fk.table.uuid);
+		    var fkName = modelName + "." + fk.name;
+		    if (refKey.isDefined() 
+		    	and table.isDefined() 
+		    	and not ecxludedFields.contains(fk.name)) {
+				var equiv = fk.equivalent();
+				if (equiv.isDefined()) {
+					equiv.table = table;
+					equiv.referenceKey = refKey;
+					//refKey.foreignKeys.add(equiv);
+				}
+		    }
 		}
 	}
 	
@@ -379,6 +140,7 @@ rule View
 		var pk = s.primaryIdentifierField;
 	    t.primaryKey = pk.equivalent();
 	    t.fields.add(t.primaryKey);
+	    t.uuid = s.originUuid;
 		for (f in s.fields) {
 	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) 
 	    		and not f.equals(pk) 
@@ -393,20 +155,10 @@ rule View
 		if (elotoltott.contains(t.name)) {
 			//prefix elotoltott tables
 			t.sqlName = "ET_" + t.sqlName;
-			//helper map for making easier the dump manipulation see the grep sed command at the end 
-			elotoltottTableNamesMap.put(t.originalTableName(), t.sqlName);
-			t.sqlName;
 		} else if (enumClasses.contains(t.name)) {
 			//prefix enum tables
 			t.sqlName = "ENUM_" + t.sqlName;
-			//helper map for making easier the dump manipulation see the grep sed command at the end
-			enumTableNamesMap.put(t.originalTableName(), t.sqlName);
 		}
-}
-
-operation RDBMS!RdbmsView isAbstract() {
-	var target = self.uuid.substring(0, self.uuid.indexOf("_View"));
-	return PSM!JClass.all.selectOne(c | c.uuid = target).`abstract`.asBoolean();
 }
 
 @lazy
@@ -414,7 +166,8 @@ rule ViewIdField
 	transform s : RDBMS!RdbmsViewIdentifierField
 	to t : MIG!RdbmsIdentifierField 
 	extends ViewField {
-	guard : not RDBMS!RdbmsForeignKey.all.exists(f | f.name = s.name)
+		guard : not RDBMS!RdbmsForeignKey.all.exists(f | f.name = s.name)
+		t.uuid = s.uuid.substring(0, s.uuid.indexOf("_ViewField@")); 
 }
 
 @lazy
@@ -423,7 +176,7 @@ rule ViewValueField
 	to t : MIG!RdbmsValueField 
 	extends ViewField {
 	guard: not s.tableField.technical 
-		   and (not enumClasses.contains(s.tableField.table.name) or s.name.cutFqNameToLastElement() = "code") //hack i only need the code for enums 
+		   and (not enumClasses.contains(s.tableField.table.name) or s.name.cutFqNameToLastElement() = enumClassCodeFieldName) //hack i only need the code column for enums tables 
 }
 
 @lazy
@@ -442,19 +195,8 @@ rule Fk
 		fk.scale = s.scale;
 		fk.storageByte = s.storageByte;
 		fk.mandatory = s.mandatory;
-		
-	    fk.referenceKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = s.referenceKey.name);
-	    
 	    fk.foreignKeySqlName = s.foreignKeySqlName;
-	    var byUuid = MIG!RdbmsTable.all.selectOne(t | t.uuid = s.table.uuid);
-	    if (byUuid.isDefined()) {
-	    	fk.table =  byUuid;	
-	    } else {
-	    	fk.table =  MIG!RdbmsTable.all.selectOne(t | t.name = s.table.name);
-	    }		
-
 		fk.mandatory = s.mandatory;
-		
 		fk.deleteOnCascade = s.deleteOnCascade;
 		fk.readOnly = s.readOnly;
 }
@@ -477,6 +219,7 @@ rule Junction
 			p.storageByte = i.storageByte;
 			p.mandatory = i.mandatory;
 			p.shortName = i.sqlName;
+			j.primaryKey = p; 
 			j.fields.add(p);
 		}
 		
@@ -484,7 +227,14 @@ rule Junction
 		j.sqlName = n.first() + "_" + n.second() + "_" + s.field1.name + "_" + s.field2.name;
 
 		j.field1 = s.field1.equivalent();
+		j.field1.table = j;
 		j.field2 = s.field2.equivalent();
+		j.field2.table = j;
+}
+
+operation RDBMS!RdbmsView isAbstract() {
+	var target = self.uuid.substring(0, self.uuid.indexOf(viewSuffix));
+	return PSM!JClass.all.selectOne(c | c.uuid = target).`abstract`.asBoolean();
 }
 
 operation String cutFqNameToLastElement() : String {
@@ -493,8 +243,8 @@ operation String cutFqNameToLastElement() : String {
 }
 
 operation String isExcludedField(viewName : String) : Boolean {
-	var e = ecxludedFields.collect(e | "Anakin." + e + "_ViewField@Anakin." + viewName + "_View");
-	return e.contains(self) ;
+	var e = ecxludedFields.collect(e | modelName + "." + e + "_ViewField@" + modelName + "." + viewName + viewSuffix);
+	return e.contains(self);
 }
 
 operation MIG!RdbmsTable originalTableName() : String {
@@ -502,27 +252,14 @@ operation MIG!RdbmsTable originalTableName() : String {
 }
 
 post {
-	for (fk in RDBMS!RdbmsForeignKey.all) {
-	    var refKey = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = fk.referenceKey.name);
-	    var fkName = "Anakin." + fk.name;
-	    var isMandatory = PSM!JRole.all.selectOne(r | r.uuid = fkName and r.lower > 0).isDefined();
-	    var table = MIG!RdbmsTable.all.selectOne(t | t.name = fk.table.name);
-	    if (refKey.isDefined() 
-	    	and table.isDefined() 
-	    	and ((isMandatory or allAssociations) or additionalRoles.contains(fkName)) 
-	    	and not ecxludedFields.contains(fk.name)) {
-			fk.equivalent();
-	    }
-	}
-	for (j in RDBMS!RdbmsJunctionTable.all) {
+	/*for (j in RDBMS!RdbmsJunctionTable.all) {
 		var table1 = MIG!RdbmsTable.all.selectOne(t | t.name = j.field1.referenceKey.table.name);
 		var table2 = MIG!RdbmsTable.all.selectOne(t | t.name = j.field2.referenceKey.table.name);
 		var refKey1 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field1.referenceKey.name);
-		var refKey2 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field1.referenceKey.name);
+		var refKey2 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field2.referenceKey.name);
 		if (table1.isDefined() and table2.isDefined() and refKey1.isDefined() and refKey2.isDefined()) {
+			"OTT".println();
 			MIG!RdbmsModel.all.first().rdbmsTables.add(j.equivalent()); 
 		}
-	}
-	"END".println();
-	
+	}*/
 }

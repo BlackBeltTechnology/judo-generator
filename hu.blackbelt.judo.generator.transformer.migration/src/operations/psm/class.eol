@@ -68,6 +68,14 @@ operation PSM!JClass allSupertypes() : Collection {
 }
 
 @cached
+operation PSM!JClass allSupertypesAndIncludingSelf() : Collection {
+	var ret : Sequence = new Sequence();
+	ret.add(self);
+	ret.addAll(self.allSupertypes());
+	return ret;
+}
+
+@cached
 operation PSM!JClass allRoles() : Collection {
 	var ret : Sequence = new Sequence();
 	ret.addAll(self.roles);

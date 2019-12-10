@@ -144,15 +144,12 @@
                                         
                                     </models>
                                     <plainXmlModels>
-                                        <model>
+                                        <plainXmlModel>
                                             <artifact>${project.basedir}/src/script-definition.xml</artifact>
                                             <name>SCRIPT</name>
                                             <readOnLoad>true</readOnLoad>
                                             <storeOnDisposal>false</storeOnDisposal>
-                                            <aliases>
-                                                <alias>SCRIPT</alias>
-                                            </aliases>
-                                        </model>
+                                        </plainXmlModel>
                                     </plainXmlModels>
 
                                     <eolPrograms>
@@ -164,13 +161,6 @@
                                 </configuration>
                             </execution>
                         </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>hu.blackbelt.judo.generator</groupId>
-                                <artifactId>hu.blackbelt.judo.generator.formatter.sql</artifactId>
-                                <version>${project.version}</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
 
                     <plugin>
