@@ -1,0 +1,31 @@
+[%
+  import "../../operations/_importAll.eol";
+  out.setContentType("Java");
+%]
+[% for (table in CURRENT!RdbmsTable.all) { %]
+	[% if (hasFeature('SupportMultipleColumnModificationInOneStatement') and table.fields.exists(f | f.mandatory and not f.isPrimary())) { %]
+ALTER TABLE [%= table.sqlName %] 
+		[% if (dialect() == 'Oracle') { %]
+			MODIFY (
+		[% } %]
+
+		[% for (field in table.fields.select(f | f.mandatory and not f.isPrimary())) { %]
+			[% if (dialect() == 'Oracle') { %]
+				[%= field.sqlName %] NOT NULL
+			[% } else { %]
+				ALTER COLUMN [%= field.sqlName %] SET NOT NULL	
+			[% } %]
+			[% if (hasMore) { out.print(","); } %]
+		[% } %]
+		
+		[% if (dialect() == 'Oracle') { %]
+			)
+		[% } %]
+;[% out.println("\n"); %]
+	[% } else { %]
+		[%for (field in table.fields.select(f | f.mandatory and not f.isPrimary())) { %]
+ALTER TABLE [%= table.sqlName %] ALTER COLUMN [%= field.sqlName %] SET NOT NULL;
+			[% out.println("\n"); %]
+		[% } %]
+	[% } %]
+[% } %]

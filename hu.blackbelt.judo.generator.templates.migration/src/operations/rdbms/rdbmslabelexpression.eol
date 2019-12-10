@@ -1,0 +1,5 @@
+@cached
+operation RDBMS!RdbmsLabelExpression statement () : String {
+	return "COALESCE(CAST('" + self.text + "' AS VARCHAR(255)), '')";
+}
+

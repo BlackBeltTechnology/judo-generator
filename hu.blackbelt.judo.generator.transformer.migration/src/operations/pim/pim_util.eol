@@ -1,0 +1,21 @@
+operation inpPIM!Package fqName() : String {
+	if (self.owner.isDefined() and not self.owner.isTypeOf(inpPIM!Model) and inpPIM!package.allInstances()->collect(p | p.base_Package).asSet().includes(self)) {
+		return self.owner.fqName() + "." + self.name;
+	}
+	return self.name;
+}
+
+operation inpPIM!Class fqName() : String {
+	if (self.owner.isDefined()) {
+		return self.owner.fqName() + "." + self.name;
+	}
+	return self.name;
+}
+
+operation inpPIM!Property fqName() : String {
+	if (self.owner.isTypeOf(inpPIM!Association)) {
+		return self.owner.memberEnd.selectOne(m | m <> self).type.fqName() + "." + self.name; 
+	} else {
+		return self.owner.fqName() + "." + self.name;
+	}
+}

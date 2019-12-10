@@ -1,0 +1,3 @@
+operation RDBMS!RdbmsTableAlias isPrimary () : Boolean {
+	return self == self.view.primaryTable;
+}

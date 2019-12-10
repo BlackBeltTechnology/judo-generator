@@ -1,0 +1,4 @@
+@cached
+operation RDBMS!RdbmsViewRecord getValueFieldBySqlName (name : String) : RDBMS!RdbmsViewRecordValue {
+	return self.values.select(r | r.valueField.isDefined() and r.valueField.sqlName == name).first;
+}

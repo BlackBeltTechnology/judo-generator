@@ -1,0 +1,48 @@
+@cached
+operation RDBMS!RdbmsView updatableParentTables (): Collection {
+	return self.tables.select(t | t.table.parent.isUndefined() and t <> self.primaryTable and t.table.allInheritedIdentifier().size() > 0).collect(t | t.table).asSet();
+}
+
+operation RDBMS!RdbmsView updatableTableFields (table : RDBMS!RdbmsTable) : Collection {
+	return self.fields.select(f | f.isKindOf(RDBMS!RdbmsViewAliasField) and f.`alias`.table == table);
+}
+
+operation RDBMS!RdbmsView updatableTableFieldsWithoutPrimaryKeys (table : RDBMS!RdbmsTable) : Collection {
+	return self.updatableTableFields(table).select(f | not f.tableField.isPrimary());
+}
+
+
+@cached
+operation RDBMS!RdbmsView updateableTables () : Collection {
+	return self.tables.select(t | (t = self.primaryTable or self.primaryTable.table.allSupertypes().selectOne(t2 | t.table == t2).isDefined()) and self.updatableTableFields(t.table).size() > 0).sortBy(t | t.table.parent.isDefined()).collect(t | t.table).asSet();
+}
+
+/*
+    @property
+    def before_update(self):
+        for f in self.savefields:
+            if f.notupdate:
+                return True
+
+        return not self.general
+
+    @property
+    def after_update(self):
+        for f in self.savefields:
+            if f.watch:
+                return True
+
+        return False
+
+    @property
+    def before_insert(self):
+        return not self.general
+
+    @property
+    def after_insert(self):
+        return self.watch
+
+    @property
+    def after_delete(self):
+        return self.watch
+*/

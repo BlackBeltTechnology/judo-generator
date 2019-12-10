@@ -1,0 +1,265 @@
+import "operations/_importAll.eol";
+
+pre {
+	//i need to extract the derived information from the UML as this info is lost during PIM/PSM transformation	
+	var ecxludedFields : Set<String> = inpPIM!Property.all.select(p | p.isDerived or p.visibility = inpPIM!VisibilityKind#private)
+														  .collect(p | p.fqName()).asSet();
+													
+	//all things from extension model must be excluded
+	ecxludedFields.addAll(pimEXT!EStructuralFeature.all.collect(a | a.fqName()));
+	//read migration config model and add all excluded field
+	ecxludedFields.addAll(MigrationConfig!ExcludeFieldNames.all.Name);
+	
+	//we can defined classes to be excluded
+	var excludedClasses : Set<String> = MigrationConfig!ExcludeClassNames.all.Name.asSet();
+	
+	//later use for flagging elotoltott data as we need to remame them in the migration schema
+	var elotoltott : Set<String> = MigrationConfig!ElotoltottClassNames.all.Name.asSet();
+	
+	//later use for flagging enum classes as we need to remame them in the migration schema
+	var enumClasses = PSM!JClass.all.select(c | c.representsEnum).collect(c | c.fqName()).asSet();
+	
+	//constants
+	var viewSuffix = "_View";
+	var derivedFieldNameMarker = "@";
+	var enumClassCodeFieldName = "code";
+	
+	//the class from where we want to start the transitive colsure on mandatory and above defiend additional roles
+	var startClass = PSM!JClass.all.selectOne(c | c.fqName() = startClassName);
+	var viewNames : Set<String> = new Set;
+	if (startClass.isDefined()) {
+		var classUUIDs : Set<String> = new Set;
+		classUUIDs.add(startClass.uuid);
+		startClass.allRoles(classUUIDs);
+		classUUIDs = classUUIDs.collect(a | a + viewSuffix).asSet();
+		viewNames = RDBMS!RdbmsView.all.select(v | classUUIDs.contains(v.uuid)).name.asSet();
+		//remove excluded classes
+		viewNames.removeAll(excludedClasses);
+	}
+		
+	//reserved sql keywords
+	var fieldReservedSqlNames : Set<String> = new Set;
+	fieldReservedSqlNames.add("language");
+	fieldReservedSqlNames.add("group");
+	fieldReservedSqlNames.add("type");
+	fieldReservedSqlNames.add("key");
+	fieldReservedSqlNames.add("index");
+	fieldReservedSqlNames.add("table");
+	fieldReservedSqlNames.add("user");
+	fieldReservedSqlNames.add("source");
+}
+
+operation PSM!JClass allRoles(acc : Set<String>) {
+	for (r in PSM!JRole.all.select(r | self.allSupertypesAndIncludingSelf().contains(r.ownerClass))) {
+		var opp = r.opposite().ownerClass;
+		if (not acc.contains(opp.uuid)) {
+				acc.add(opp.uuid);
+				opp.allRoles(acc);
+		}
+	}
+}
+
+@abstract
+rule Element 
+	transform s : RDBMS!RdbmsElement
+	to 		  t : MIG!RdbmsElement {
+	guard: not s.name.contains(derivedFieldNameMarker) //TODO: find out why multichained derived expressions maps to valueField, been put here not to repeat everywhere
+		t.name = s.name;
+		t.uuid = s.uuid;
+		t.fullName = s.fullName;
+		t.description = s.description;
+		t.shortName = s.sqlName; // I am using the shortName for storing the original sqlName for later use
+		t.sqlName = s.name.cutFqNameToLastElement();
+		t.originalName = s.originalName;
+	    t.originalPackage = s.originalPackage;
+	    if (fieldReservedSqlNames.contains(t.sqlName.toLowerCase())) {
+	    	t.sqlName = "_" + t.sqlName;
+		}
+}
+
+@abstract
+rule ViewField 
+	transform s : RDBMS!RdbmsViewTableField
+	to 		  t : MIG!RdbmsField
+	extends Element {
+		t.rdbmsTypeName = s.tableField.rdbmsTypeName;
+		t.size = s.tableField.size;
+		t.precision = s.tableField.precision;
+		t.scale = s.tableField.scale;
+		t.storageByte = s.tableField.storageByte;
+		t.mandatory = s.tableField.mandatory;
+}
+
+rule Model 
+	transform s : RDBMS!RdbmsModel
+	to 		  t : MIG!RdbmsModel {
+		guard : viewNames.size() > 0
+		t.version = s.version;
+		for (v in s.rdbmsViews) {
+			if (viewNames.contains(v.name)) {
+				var equiv = v.equivalent();
+				if (equiv.isDefined()) {
+					t.rdbmsTables.add(equiv);
+				}
+			} 
+		}
+		
+		for (j in RDBMS!RdbmsJunctionTable.all) {
+			var table1 = t.rdbmsTables.selectOne(t | t.uuid = j.field1.referenceKey.table.uuid);
+			var table2 = t.rdbmsTables.selectOne(t | t.uuid = j.field2.referenceKey.table.uuid);
+			var refKey1 = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = j.field1.referenceKey.uuid);
+			var refKey2 = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = j.field2.referenceKey.uuid);
+			if (table1.isDefined() and table2.isDefined() and refKey1.isDefined() and refKey2.isDefined()) {
+				t.rdbmsTables.add(j.equivalent());
+			}
+		}
+		
+		for (fk in RDBMS!RdbmsForeignKey.all) {
+		    var refKey = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = fk.referenceKey.uuid);
+		    var table = t.rdbmsTables.selectOne(t | t.uuid = fk.table.uuid);
+		    var fkName = modelName + "." + fk.name;
+		    if (refKey.isDefined() 
+		    	and table.isDefined() 
+		    	and not ecxludedFields.contains(fk.name)) {
+				var equiv = fk.equivalent();
+				if (equiv.isDefined()) {
+					equiv.table = table;
+					equiv.referenceKey = refKey;
+					//refKey.foreignKeys.add(equiv);
+				}
+		    }
+		}
+	}
+	
+@lazy
+rule View 
+	transform s : RDBMS!RdbmsView
+	to 		  t : MIG!RdbmsTable
+	extends Element {
+		guard: not s.isAbstract()
+		var pk = s.primaryIdentifierField;
+	    t.primaryKey = pk.equivalent();
+	    t.fields.add(t.primaryKey);
+	    t.uuid = s.originUuid;
+		for (f in s.fields) {
+	    	if (not f.isTypeOf(RDBMS!RdbmsViewExpressionField) 
+	    		and not f.equals(pk) 
+	    		and not f.uuid.isExcludedField(s.name)
+	    		and not t.fields.exists(x | x.name.cutFqNameToLastElement() = f.name.cutFqNameToLastElement())) {
+	    		var fe = f.equivalent();
+	    		if (fe.isDefined()) {
+	    			t.fields.add(fe);
+	    		}
+	    	}
+		}
+		if (elotoltott.contains(t.name)) {
+			//prefix elotoltott tables
+			t.sqlName = "ET_" + t.sqlName;
+		} else if (enumClasses.contains(t.name)) {
+			//prefix enum tables
+			t.sqlName = "ENUM_" + t.sqlName;
+		}
+}
+
+@lazy
+rule ViewIdField
+	transform s : RDBMS!RdbmsViewIdentifierField
+	to t : MIG!RdbmsIdentifierField 
+	extends ViewField {
+		guard : not RDBMS!RdbmsForeignKey.all.exists(f | f.name = s.name)
+		t.uuid = s.uuid.substring(0, s.uuid.indexOf("_ViewField@")); 
+}
+
+@lazy
+rule ViewValueField
+	transform s : RDBMS!RdbmsViewValueField
+	to t : MIG!RdbmsValueField 
+	extends ViewField {
+	guard: not s.tableField.technical 
+		   and (not enumClasses.contains(s.tableField.table.name) or s.name.cutFqNameToLastElement() = enumClassCodeFieldName) //hack i only need the code column for enums tables 
+}
+
+@lazy
+rule Fk
+	transform s : RDBMS!RdbmsForeignKey
+	to fk : MIG!RdbmsForeignKey 
+	extends Element {
+		guard : not s.inheritenceBased
+		var typeName = s.rdbmsTypeName;
+		if (not typeName.isDefined()) {
+			typeName = s.type.rdbmsTypeName;
+		}		
+		fk.rdbmsTypeName = typeName;
+		fk.size = s.size;
+		fk.precision = s.precision;
+		fk.scale = s.scale;
+		fk.storageByte = s.storageByte;
+		fk.mandatory = s.mandatory;
+	    fk.foreignKeySqlName = s.foreignKeySqlName;
+		fk.mandatory = s.mandatory;
+		fk.deleteOnCascade = s.deleteOnCascade;
+		fk.readOnly = s.readOnly;
+}
+
+@lazy
+rule Junction
+	transform s : RDBMS!RdbmsJunctionTable
+	to j : MIG!RdbmsJunctionTable 
+	extends Element {
+		for (i in s.fields.select(f | f.isTypeOf(RDBMS!RdbmsIdentifierField))) {
+			var p : RDBMS!RdbmsIdentifierField = new RDBMS!RdbmsIdentifierField;
+			p.name = i.name;
+			p.sqlName = i.sqlName;
+			p.rdbmsTypeName = i.rdbmsTypeName;
+			p.uuid =  i.uuid;
+			p.rdbmsTypeName = i.rdbmsTypeName;
+			p.size = i.size;
+			p.precision = i.precision;
+			p.scale = i.scale;
+			p.storageByte = i.storageByte;
+			p.mandatory = i.mandatory;
+			p.shortName = i.sqlName;
+			j.primaryKey = p; 
+			j.fields.add(p);
+		}
+		
+		var n = s.name.split(" to ").collect(s | s.cutFqNameToLastElement());
+		j.sqlName = n.first() + "_" + n.second() + "_" + s.field1.name + "_" + s.field2.name;
+
+		j.field1 = s.field1.equivalent();
+		j.field1.table = j;
+		j.field2 = s.field2.equivalent();
+		j.field2.table = j;
+}
+
+operation RDBMS!RdbmsView isAbstract() {
+	var target = self.uuid.substring(0, self.uuid.indexOf(viewSuffix));
+	return PSM!JClass.all.selectOne(c | c.uuid = target).`abstract`.asBoolean();
+}
+
+operation String cutFqNameToLastElement() : String {
+	var start = self.lastindexOf(".");
+	return self.substring(start + 1, self.length());
+}
+
+operation String isExcludedField(viewName : String) : Boolean {
+	var e = ecxludedFields.collect(e | modelName + "." + e + "_ViewField@" + modelName + "." + viewName + viewSuffix);
+	return e.contains(self);
+}
+
+operation MIG!RdbmsTable originalTableName() : String {
+	return "t_"  + self.shortName.substring(2).toLowerCase();
+}
+
+post {
+	/*for (j in RDBMS!RdbmsJunctionTable.all) {
+		var table1 = MIG!RdbmsTable.all.selectOne(t | t.name = j.field1.referenceKey.table.name);
+		var table2 = MIG!RdbmsTable.all.selectOne(t | t.name = j.field2.referenceKey.table.name);
+		var refKey1 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field1.referenceKey.name);
+		var refKey2 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field2.referenceKey.name);
+		if (table1.isDefined() and table2.isDefined() and refKey1.isDefined() and refKey2.isDefined()) {
+			"OTT".println();
+			MIG!RdbmsModel.all.first().rdbmsTables.add(j.equivalent()); 
+		}
+	}*/
+}

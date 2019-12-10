@@ -1,0 +1,13 @@
+operation addAllRdbmsFieldTypes () : Any {
+	for (s: RDBMSTYPES!RdbmsFieldType in RDBMSTYPES!RdbmsFieldType.all) {
+		targetModel.rdbmsFieldTypes.add(s.clone());		
+	}	
+}
+
+operation addAllRdbmsConfiguration () : Any {
+	for (s: RDBMSTYPES!RdbmsConfiguration in RDBMSTYPES!RdbmsConfiguration.all) {
+		var t : RDBMS!RdbmsConfiguration = s.clone();
+		targetModel.configuration = t;
+		targetConfiguration = t;			
+	}	
+}

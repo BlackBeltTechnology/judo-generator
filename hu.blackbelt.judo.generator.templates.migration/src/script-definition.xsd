@@ -1,0 +1,46 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="scriptDefinition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="sql" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name" use="required"/>
+                <xs:attribute type="xs:string" name="scriptName" use="required"/>
+                <xs:attribute type="xs:string" name="out" use="required"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="changeset" maxOccurs="4" minOccurs="4">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:element name="change" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="sql" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" use="required">
+            	<xs:simpleType>
+            		<xs:restriction base="xs:string">
+            			<xs:enumeration value="changeset-full"/>
+            			<xs:enumeration value="changeset-before-incremental"/>
+            			<xs:enumeration value="changeset-incremental"/>
+            			<xs:enumeration value="changeset-after-incremental"/>
+            		</xs:restriction>
+            	</xs:simpleType>
+            </xs:attribute>           
+            <xs:attribute type="xs:string" name="scriptName" use="required"/>
+            <xs:attribute type="xs:string" name="out" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

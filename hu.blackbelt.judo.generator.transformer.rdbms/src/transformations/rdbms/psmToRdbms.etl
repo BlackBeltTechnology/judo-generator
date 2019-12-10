@@ -19,7 +19,7 @@ pre {
 }	
 
 post {
-	RDBMS!RdbmsModel.all.first().version = psmVersion;
+	targetModel.version = psmVersion;
 	
 	//Use it to check if all Uuids are unique
 	//Impacts performance

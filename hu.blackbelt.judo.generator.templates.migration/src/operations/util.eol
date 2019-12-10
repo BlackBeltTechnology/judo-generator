@@ -1,0 +1,57 @@
+operation hasFeature(feature : String) : Boolean {
+    return RDBMS!RdbmsFeature.all.exists(f | f.name = feature);
+}
+
+@cached
+operation version() : String {
+	return INCREMENTAL!RdbmsOperationMeta.all.first().currentModel.version;
+}
+
+@cached
+operation previousVersion() : String {
+	return INCREMENTAL!RdbmsOperationMeta.all.first().previousModel.version;
+
+	/*
+	if (previousVersion.isUndefined()) {
+		return "";
+	}
+	return previousVersion;
+*/
+	return "";
+}
+
+
+@cached
+operation dialect() : String {
+	return RDBMS!RdbmsConfiguration.all.first().dialect;
+}
+
+@cached
+operation fieldLiteral() : String {
+	if (dialect() == 'Oracle') {
+		return "\"";
+	} else {
+		return "";
+	}
+}
+
+operation String bindVariable(name : String, value : Any) : String {
+	return self.replaceAll("\\$\\{" + name + "\\}", value);	
+}
+
+operation String bindDefaultVariables() : String {
+	return self.bindVariable("currentVersion", version())
+	.bindVariable("previousVersion", previousVersion())
+	.bindVariable("dialect", dialect());	
+}
+
+
+operation currentTime() : String {
+	if (dialect() == "Oracle") 
+		return "SYSTIMESTAMP";
+	else if (dialect() == "Postgres")
+		return "transaction_timestamp()";
+	else if (dialect() == "Hsqldb")
+		return "CURRENT_TIMESTAMP";
+		
+}

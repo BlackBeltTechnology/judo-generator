@@ -1,0 +1,9 @@
+[%
+  import "../../../operations/_importAll.eol";
+%]
+
+CREATE TABLE "[%=mig_schema_name%]".[%= table.sqlName %] (
+	[% for (field in table.fields) { %]
+		[%= field.sqlName %] [%= field.toFieldDefinition() %] [% if (field.isPrimary()) { %] NOT NULL PRIMARY KEY[% } %] [% if (hasMore) { out.print(","); } %] 
+	[% } %]
+);[% out.println("\n"); %]

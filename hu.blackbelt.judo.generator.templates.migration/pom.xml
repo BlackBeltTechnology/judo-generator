@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.blackbelt.judo.generator</groupId>
+        <artifactId>hu.blackbelt.judo.generator.parent</artifactId>
+        <version>2.1.0-SNAPSHOT</version>
+        <relativePath>../hu.blackbelt.judo.generator.parent</relativePath>
+    </parent>
+
+    <artifactId>hu.blackbelt.judo.generator.templates.migration</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <src.dir>src</src.dir>
+    </properties>
+
+    <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>${src.dir}</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>src/script-definition.xml</file>
+                                    <type>xml</type>
+                                    <classifier>scriptDefinition</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <profiles>
+        <profile>
+            <id>migration-templates-development</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/rdbms/templates</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                        <resource>
+                                            <directory>test</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>hu.blackbelt.epsilon</groupId>
+                        <artifactId>epsilon-maven-plugin</artifactId>
+                        <configuration>
+                            <sourceDirectory>${basedir}/target/rdbms/templates</sourceDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>template-model-postgres</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.rdbms:ecore:rdbms:${project.version}</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>file:/home/gyturi/git/judo-generator/hu.blackbelt.judo.generator.transformer.migration/target/migration.model</artifact>
+											<name>CURRENT</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.migartion/target/migration.model</platformAlias>
+                                        </model>
+                                        
+                                        <model>
+                                            <artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:rdbmsPostgres:${test.model.previousVersion}</artifact>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <platformAlias>platform:/resource/hu.blackbelt.judo.generator.transformer.rdbms.incremental/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsPostgres.model</platformAlias>
+                                        </model>
+
+                                        <model>
+                                            <artifact>mvn:${project.groupId}:hu.blackbelt.judo.generator.transformer.rdbms.incremental:model:rdbmsPostgres-incremental-${test.model.previousVersion}_${test.model.version}:${project.version}</artifact>
+											<name>INCREMENTAL</name>
+											<aliases>
+												<alias>TARGET</alias>
+												<alias>RDBMS</alias>
+											</aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                        
+                                    </models>
+                                    <plainXmlModels>
+                                        <plainXmlModel>
+                                            <artifact>${project.basedir}/src/script-definition.xml</artifact>
+                                            <name>SCRIPT</name>
+                                            <readOnLoad>true</readOnLoad>
+                                            <storeOnDisposal>false</storeOnDisposal>
+                                        </plainXmlModel>
+                                    </plainXmlModels>
+
+                                    <eolPrograms>
+                                        <Egx>
+                                            <source>main.egx</source>
+                                            <outputRoot>${project.basedir}/target/generated-sources</outputRoot>
+                                        </Egx>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>add-resource</id>
+                                <goals>
+                                    <goal>add-resource</goal>
+                                </goals>
+
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>src</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
+</project>

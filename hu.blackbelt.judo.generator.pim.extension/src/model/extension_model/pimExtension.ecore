@@ -2,484 +2,2811 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ext" nsURI="hu.blackbelt.judo.generator.meta.pim.extension"
     nsPrefix="pim">
-  <eClassifiers xsi:type="ecore:EClass" name="User">
-    <eAnnotations source="Target">
-      <details key="name" value="judo.framework.User"/>
-    </eAnnotations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OpmUser">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.users.OpmUser"/>
-    </eAnnotations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DoctorUser">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.users.DoctorUser"/>
-    </eAnnotations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Task">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.Task"/>
-    </eAnnotations>
-    <eOperations name="taskExpired">
+    
+    <eClassifiers xsi:type="ecore:EDataType" 
+      name="currency" instanceClassName="java.math.BigDecimal"/>
+
+    <eClassifiers xsi:type="ecore:EDataType" 
+      name="file" instanceClassName="java.net.URL"/>
+
+	<eClassifiers xsi:type="ecore:EDataType"
+				  name="percentage" instanceClassName="java.lang.Float"/>
+
+	<eClassifiers xsi:type="ecore:EDataType"
+				  name="memo" instanceClassName="java.lang.String"/>
+
+	<eClassifiers xsi:type="ecore:EDataType"
+				  name="datetime" instanceClassName="org.joda.time.LocalDateTime"/>
+
+    <eClassifiers xsi:type="ecore:EEnum" name="RaktariTetelAllapot">
       <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="static" value="true"/>
-      </eAnnotations>
-    </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="task" eType="#//domain/OpenTask"
-        eOpposite="#//domain/OpenTask/openTask">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MedicalRecord">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.MedicalRecord"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="partialValues" upperBound="-1"
-        eType="#//BasicDataValueSpecification" eOpposite="#//BasicDataValueSpecification/medicalRecord">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="navigable" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecordPatient" eType="#//PatientUser"
-        eOpposite="#//PatientUser/lastMedicalRecords">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="openTask" eType="#//domain/OpenTask"
-        eOpposite="#//domain/OpenTask/lastMedicalRecord">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="hostTuple" upperBound="-1"
-        eType="#//domain/MRTypeTuple" eOpposite="#//domain/MRTypeTuple/medicalRecordExtension">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BasicDataValueSpecification">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.BasicDataValueSpecification"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecord" eType="#//MedicalRecord"
-        eOpposite="#//MedicalRecord/partialValues">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatientUser">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.users.PatientUser"/>
-    </eAnnotations>
-    <eOperations name="registerNewTreatmentWithCurrentUser">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="static" value="false"/>
-      </eAnnotations>
-      <eParameters name="protocol" eType="#//Protocol"/>
-      <eParameters name="startDate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
-      <eParameters name="endDate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
-    </eOperations>
-    <eOperations name="createTasksFromExpiredPrimerData">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="static" value="true"/>
-      </eAnnotations>
-    </eOperations>
-    <eOperations name="completeTask">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="static" value="true"/>
-      </eAnnotations>
-    </eOperations>
-    <eOperations name="customNotificationList" upperBound="-1" eType="#//Notification">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="static" value="true"/>
-        <details key="query" value="true"/>
-      </eAnnotations>
-      <eParameters name="patientUserId" eType="#//PatientUser"/>
-      <eParameters name="doctorUserId" eType="#//DoctorUser"/>
-    </eOperations>
-    <eOperations name="customLastValidMedicalRecords" lowerBound="1" upperBound="-1"
-        eType="#//domain/MRTypeTuple">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="static" value="true"/>
-        <details key="query" value="true"/>
-      </eAnnotations>
-      <eParameters name="patientUser" eType="#//PatientUser"/>
-    </eOperations>
-    <eOperations name="deletePassword">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="static" value="true"/>
-      </eAnnotations>
-    </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="onBoardingCompleted" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="notificationListHack" upperBound="-1"
-        eType="#//Notification" eOpposite="#//Notification/notificationPatient">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="navigable" value="true"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="notificationExtension"
-        eType="#//Notification" eOpposite="#//Notification/patientUserExtension">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lastMedicalRecords" upperBound="-1"
-        eType="#//MedicalRecord" eOpposite="#//MedicalRecord/medicalRecordPatient">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="navigable" value="true"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProtocolCfg">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.ProtocolCfg"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patId" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="{self.patient.patientId}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-      <eAnnotations source="Decimals">
-        <details key="expression" value="2"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeBindings" upperBound="-1"
-        eType="#//ProtocolMRTypeBinding" eOpposite="#//ProtocolMRTypeBinding/ownerCfg">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="navigable" value="true"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProtocolMRTypeBinding">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.protocols.ProtocolMRTypeBinding"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="{self.mrType.name}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="validityFull" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="{self.validityDuration} {self.validityDurationCategory.code}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeClass" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerCfg" eType="#//ProtocolCfg"
-        eOpposite="#//ProtocolCfg/typeBindings">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TaskScheduleAbstract">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.TaskScheduleAbstract"/>
-    </eAnnotations>
-    <eOperations name="scheduledTaskRequired">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="static" value="true"/>
-      </eAnnotations>
-    </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repetition" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.repetitionRate} {self.repetitionUnit.code}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Notification">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.Notification"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientHack" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.userInfo.lastName} {self.protocolCfg.patient.userInfo.firstName}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="representation" value="true"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="protocolHack" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.protocol.name}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientBirthDate" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.birthDate}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientFullName" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.userInfo.lastName} {self.protocolCfg.patient.userInfo.firstName}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="patientPatientID" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.protocolCfg.patient.patientId}">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="protocolExtension" eType="#//Protocol"
-        eOpposite="#//Protocol/notificationExtension">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="navigable" value="true"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-      <eAnnotations source="DerivedExpression">
-        <details key="expression" value="self.protocolCfg.protocol"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="patientUserExtension" eType="#//PatientUser"
-        eOpposite="#//PatientUser/notificationExtension">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-        <details key="navigable" value="true"/>
-        <details key="derived" value="true"/>
-      </eAnnotations>
-      <eAnnotations source="DerivedExpression">
-        <details key="expression" value="self.protocolCfg.patient"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="notificationPatient" eType="#//PatientUser"
-        eOpposite="#//PatientUser/notificationListHack">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Protocol">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.protocols.Protocol"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mnemonic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="protected"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="notificationExtension"
-        eType="#//Notification" eOpposite="#//Notification/protocolExtension">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MedicalRecordType">
-    <eAnnotations source="Target">
-      <details key="name" value="opmpim.treatments.protocols.MedicalRecordType"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="hostTuple" upperBound="-1"
-        eType="#//domain/MRTypeTuple" eOpposite="#//domain/MRTypeTuple/medicalRecordTypeExtension">
-      <eAnnotations source="Addition">
-        <details key="visibility" value="public"/>
-        <details key="navigable" value="false"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eSubpackages name="domain">
-    <eAnnotations source="Addition">
-      <details key="package" value="true"/>
-      <details key="participates" value="bo,dto,rest"/>
-    </eAnnotations>
-    <eClassifiers xsi:type="ecore:EClass" name="OpenTask">
-      <eAnnotations source="Addition"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="openTask" eType="#//Task"
-          eOpposite="#//Task/task">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="navigable" value="true"/>
-        </eAnnotations>
-      </eStructuralFeatures>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="lastMedicalRecord" eType="#//MedicalRecord"
-          eOpposite="#//MedicalRecord/openTask">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="navigable" value="true"/>
-        </eAnnotations>
-      </eStructuralFeatures>
+		  <details key="fixed" value="true" />
+	  </eAnnotations>
+      <eLiterals name="Beadásra_vár" value="1"/>
+      <eLiterals name="Kihozatalra_vár" value="2"/>
+      <eLiterals name="Végrehajtás_alatt" value="3"/>
+      <eLiterals name="Végrehajtva" value="4"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="MRTypeTuple">
-      <eAnnotations source="Addition"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecordExtension"
-          eType="#//MedicalRecord" eOpposite="#//MedicalRecord/hostTuple">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="navigable" value="true"/>
-        </eAnnotations>
-      </eStructuralFeatures>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="medicalRecordTypeExtension"
-          eType="#//MedicalRecordType" eOpposite="#//MedicalRecordType/hostTuple">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="navigable" value="true"/>
-        </eAnnotations>
-      </eStructuralFeatures>
+    
+    <eClassifiers xsi:type="ecore:EEnum" name="PrivilegiumErtek">
+      <eAnnotations source="Target"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="EventType">
-      <eAnnotations source="Addition"/>
-      <eLiterals name="NewTask"/>
-      <eLiterals name="MsgToPatient" value="1"/>
-      <eLiterals name="ClosedTask" value="2"/>
+    
+    <eClassifiers xsi:type="ecore:EEnum" name="Aktiv_e">
+      <eAnnotations source="Target"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Android" abstract="true">
-      <eAnnotations source="Addition"/>
-      <eOperations name="activatePatientUser" eType="#//User">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="static" value="true"/>
+    
+    <eClassifiers xsi:type="ecore:EEnum" name="FiokTipus">
+      <eAnnotations source="Target"/>
+    </eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EEnum" name="NyomatKeszultsegiSzint">
+		<eAnnotations source="Target"/>
+	</eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EEnum" name="SzerzodesEsemenyTipus">
+		<eAnnotations source="Target"/>
+	</eClassifiers>
+	
+	<eClassifiers xsi:type="ecore:EEnum" name="TTargykorJellemzoTipus">
+		<eAnnotations source="Target"/>
+	</eClassifiers>
+	 
+	<eClassifiers xsi:type="ecore:EClass" name="RaktariTetel">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.raktar.RaktariTetel"/>
+		</eAnnotations>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="meta" unique="false"
+			eType="#//RaktariTetelMeta" lowerBound="0" upperBound="1" eOpposite="#//RaktariTetelMeta/raktariTetel">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="raktar" unique="false"
+			eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="{self.tarolohely.raktar.nev}">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="protected"/>
+			<details key="derived" value="true"/>
+		  </eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="allapot" unique="false" eType="#//RaktariTetelAllapot">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="protected"/>
+		  </eAnnotations>
+		</eStructuralFeatures>
+        
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="feljegyzes" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+		  </eAnnotations>
+		</eStructuralFeatures>
+        
+        <eStructuralFeatures xsi:type="ecore:EReference" name="raktarExtension" eType="#//Raktar"
+             eOpposite="#//Raktar/raktariTetelExtension">
+            <eAnnotations source="Addition">
+                <details key="visibility" value="protected"/>
+                <details key="navigable" value="true"/>
+                <details key="derived" value="true"/>
+            </eAnnotations>
+            <eAnnotations source="DerivedExpression">
+                <details key="expression" value="self.tarolohely.raktar"/>
+            </eAnnotations>
+        </eStructuralFeatures>
+        
+        <eOperations name="querySzerzodeskezelesekByKezelendoRtk" upperBound="-1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodeskezelesekByKiadandoRtk" upperBound="-1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="queryRaktariFeladatokByMozgatandoRaktariTetel" upperBound="-1" eType="#//RaktariFeladat">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodesekByRaktariTetel" upperBound="-1" eType="#//Szerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+	</eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Privilegium">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.felhasznalo.Privilegium"/>
+		</eAnnotations>
+    </eClassifiers>
+    
+	<eClassifiers xsi:type="ecore:EClass" name="Felhasznalo">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.felhasznalo.Felhasznalo"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="legutobbiBecsultZalogtargyak" unique="false"
+			eType="#//Zalogtargy" upperBound="-1" eOpposite="#//Zalogtargy/becslesekLegutobbiBecsus">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eOperations name="igenyloRaktariFeladatok" upperBound="-1" eType="#//RaktariFeladat">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="true"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="raktarosRaktariFeladatok" upperBound="-1" eType="#//RaktariFeladat">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="true"/>
+		  </eAnnotations>
+		</eOperations>
+        <eOperations name="findBeosztottFiokok" upperBound="-1" eType="#//Zalogfiok">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="privilegiumId" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="findErvFiokiPrivilegiumok" upperBound="-1" eType="#//Privilegium">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="szervezetId" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="findErvKozpPrivilegiumok" upperBound="-1" eType="#//Privilegium">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+        <eOperations name="findBeosztottFelhasznalok" upperBound="-1" eType="#//Felhasznalo">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="szervezetId" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="RaktariFeladat">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.raktar.RaktariFeladat"/>
+		</eAnnotations>
+		<eOperations name="queryMozgatandoRaktariTetelekByRaktariFeladat" upperBound="-1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="Szervezet">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.szervezet.Szervezet"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="securityInputPair" unique="false"	
+				eType="#//SecurityInputPair" upperBound="-1" eOpposite="#//SecurityInputPair/szervezetiEgyseg">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="false"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="KozvetitoCeg">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.szervezet.KozvetitoCeg"/>
+		</eAnnotations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="SzervezetiEgyseg">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.szervezet.SzervezetiEgyseg"/>
+		</eAnnotations>
+		<eOperations name="updateCustom" eType="#//SzervezetiEgyseg">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="nev" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		  <eParameters name="telepules" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		  <eParameters name="cim" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		  <eParameters name="telefonszam" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		  <eParameters name="allapot" eType="#//Aktiv_e"/>
+		  <eParameters name="menedzser" eType="#//Felhasznalo"/>
+		</eOperations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="Zalogfiok">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.szervezet.Zalogfiok"/>
+		</eAnnotations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="SecurityInputPair">
+		<eAnnotations source="Addition"/>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="privilegiumErtek" unique="false"	
+				eType="#//PrivilegiumErtek" lowerBound="1" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="szervezetiEgyseg" unique="false"	
+				eType="#//Szervezet" lowerBound="0" upperBound="1" eOpposite="#//Szervezet/securityInputPair">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="AnakinSecurity">
+		<eAnnotations source="Addition"/>
+		<eOperations name="throwExceptionSzuksegesPrivilegiumHianyaban">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+		  </eAnnotations>
+		  <eParameters name="privilegium" eType="#//PrivilegiumErtek"/>
+		  <eParameters name="szervezetiEgyseg" eType="#//Szervezet"/>
+		</eOperations>
+		<eOperations name="vanSzuksegesPrivilegium" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+		  </eAnnotations>
+		  <eParameters name="privilegium" eType="#//PrivilegiumErtek"/>
+		  <eParameters name="szervezetiEgyseg" eType="#//Szervezet"/>
+		</eOperations>
+		<eOperations name="vannakSzuksegesPrivilegiumok" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+		  </eAnnotations>
+		  <eParameters name="securityInputPairs" eType="#//SecurityInputPair" upperBound="-1"/>
+		</eOperations>
+        <eOperations name="vannakSzuksegesPrivilegiumokForFelhasznalok" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+		  </eAnnotations>
+		  <eParameters name="felhasznalok" eType="#//Felhasznalo" upperBound="1"/>
+		  <eParameters name="securityInputPairs" eType="#//SecurityInputPair" upperBound="-1"/>
+		</eOperations>
+		<eOperations name="throwExceptionSzuksegesPrivilegiumokHianyaban">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+		  </eAnnotations>
+		  <eParameters name="securityInputPairs" eType="#//SecurityInputPair" upperBound="-1"/>
+		</eOperations>
+		<eOperations name="keresettEgysegekPrivilegiumokhoz" eType="//Szervezet" upperBound="-1">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+		  </eAnnotations>
+		  <eParameters name="felhasznalo" eType="#//Felhasznalo"/>
+		  <eParameters name="privilegiumok" eType="#//PrivilegiumErtek" upperBound="-1"/>
+		</eOperations>
+		<eOperations name="hozzaferesiTablaLekeres" eType="#//Szerepkor" upperBound="-1">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+		  </eAnnotations>
+		</eOperations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="Szerepkor">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.felhasznalo.Szerepkor"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="privilegiumokSzoveg" unique="false"
+			eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="protected"/>
+		  </eAnnotations>
+		</eStructuralFeatures>
+	</eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="NaploEsemeny">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.naploesemeny.NaploEsemeny"/>
+		</eAnnotations>
+	</eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EnumLanguage">
+		<eAnnotations source="Addition"/>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="code" unique="false"	
+				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="1" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="value" unique="false"	
+				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="1" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="langcode" unique="false"	
+				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="1" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eOperations name="allEnumsForGivenLanguage" eType="#//EnumLanguage" upperBound="-1">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+		  </eAnnotations>
+		  <eParameters name="languageCode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="Zalogtargy">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.targy.Zalogtargy"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="becslesekLegutobbiBecsus" unique="false"
+			eType="#//Felhasznalo" lowerBound="0" upperBound="1" eOpposite="#//Felhasznalo/legutobbiBecsultZalogtargyak">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="becslesekLegutobbiBecsultErtek" unique="false"
+			eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="protected"/>
+		  </eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="becslesekLegutobbiBecslesIdopont" unique="false"
+			eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="protected"/>
+		  </eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="legutobbiTargyFeljegyzes" unique="false"
+			eType="#//TargyFeljegyzes" lowerBound="0" upperBound="1" eOpposite="#//TargyFeljegyzes/legutobbiFeljegyzettZalogtargy">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eOperations name="querySzerzodeskezelesekByKotErtekelendoZtk" upperBound="-1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="TargyFeljegyzes">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.targy.TargyFeljegyzes"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="legutobbiFeljegyzettZalogtargy" unique="false"
+			eType="#//Zalogtargy" lowerBound="0" upperBound="1" eOpposite="#//Zalogtargy/legutobbiTargyFeljegyzes">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+	</eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Raktar">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.raktar.Raktar"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="raktariTetelExtension" unique="false"
+			eType="#//RaktariTetel" lowerBound="0" upperBound="1" eOpposite="#//RaktariTetel/raktarExtension">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="false"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+	</eClassifiers>
+	
+    <eClassifiers xsi:type="ecore:EClass" name="FolyamatFeladat">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.workflow.FolyamatFeladat"/>
+		</eAnnotations>
+	</eClassifiers>
+    
+	<eClassifiers xsi:type="ecore:EClass" name="Workflow">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.workflow.Workflow"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="initiatorLoginName" unique="false"	
+				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="0" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="processDataOrgName" unique="false"	
+				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="0" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+        <eOperations name="listElvallalhatoFeladatok" eType="#//FolyamatFeladat" upperBound="-1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+			</eAnnotations>
+		</eOperations>
+	</eClassifiers>
+	
+	<eClassifiers xsi:type="ecore:EClass" name="Ajanlat">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.elzalogositas.Ajanlat"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kockazatExtension" unique="false"	
+				eType="#//Kockazat" lowerBound="1" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="ugylettipusExtension" unique="false"	
+				eType="#//Ugylettipus" lowerBound="1" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="termekverzioExtension" unique="false"
+			eType="#//Termekverzio" lowerBound="0" upperBound="1" eOpposite="#//Termekverzio/ajanlatExtension">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="kolcsonSemaExtension" unique="false"
+			eType="#//KolcsonSema" lowerBound="0" upperBound="1" eOpposite="#//KolcsonSema/ajanlatExtension">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kBruttoKolcson" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kKezelesiDij" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kNettoKolcson" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kElzalogositasNapja" unique="false"
+							 eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kLejaratNapja" unique="false"
+							 eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kVisszafizetLejarat" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kKamat" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kKezelesiDijUtolag" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kTHM" unique="false"
+							 eType="#//percentage">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kTurelmiIdoVege" unique="false"
+							 eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kVisszafizetTurelmi" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kKesedelmiKamat" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kKezelesiPotdij" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kErtekesitesIdopontja" unique="false"
+							 eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+
+	</eClassifiers>
+	
+	 <eClassifiers xsi:type="ecore:EEnum" name="Kockazat">
+      <eAnnotations source="Target"/>
+    </eClassifiers>
+	 <eClassifiers xsi:type="ecore:EEnum" name="Ugylettipus">
+      <eAnnotations source="Target"/>
+    </eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="Termekverzio">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.termek.Termekverzio"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="ajanlatExtension" unique="false"
+			eType="#//Ajanlat" lowerBound="0" upperBound="-1" eOpposite="#//Ajanlat/termekverzioExtension">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="false"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eOperations name="torolhetosegVizsgalat" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="Termek">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.termek.Termek"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kompatibilisKockazatokSzoveg" unique="false"
+			eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="0" upperBound="1">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kompatibilisUgylettipusokSzoveg" unique="false"
+			eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="0" upperBound="1">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+	</eClassifiers>
+	<eClassifiers xsi:type="ecore:EClass" name="KolcsonSema">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.termek.KolcsonSema"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EReference" name="ajanlatExtension" unique="false"
+			eType="#//Ajanlat" lowerBound="0" upperBound="1" eOpposite="#//Ajanlat/kolcsonSemaExtension">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+				<details key="navigable" value="false"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+	</eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EClass" name="ETetel">
+        <eAnnotations source="Addition"/>
+	<eStructuralFeatures xsi:type="ecore:EAttribute" name="muvelet" unique="false"
+				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="1" upperBound="1">
+		<eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="navigable" value="true"/>
+		</eAnnotations>
+	</eStructuralFeatures>
+	<eStructuralFeatures xsi:type="ecore:EAttribute" name="zJSzam" unique="false"
+				eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="1" upperBound="1">
+		<eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="navigable" value="true"/>
+		</eAnnotations>
+	</eStructuralFeatures>
+	<eStructuralFeatures xsi:type="ecore:EAttribute" name="kolcsValt" unique="false"
+				eType="#//currency" lowerBound="1" upperBound="1">
+		<eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="navigable" value="true"/>
+		</eAnnotations>
+	</eStructuralFeatures>
+	<eStructuralFeatures xsi:type="ecore:EAttribute" name="dijTetel" unique="false"
+				eType="#//currency" lowerBound="1" upperBound="1">
+		<eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="navigable" value="true"/>
+		</eAnnotations>
+	</eStructuralFeatures>
+	<eStructuralFeatures xsi:type="ecore:EAttribute" name="osszesen" unique="false"
+				eType="#//currency" lowerBound="1" upperBound="1">
+		<eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="navigable" value="true"/>
+		</eAnnotations>
+	</eStructuralFeatures>
+	<eStructuralFeatures xsi:type="ecore:EAttribute" name="engedmeny" unique="false"
+				eType="#//currency" lowerBound="0" upperBound="1">
+		<eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="navigable" value="true"/>
+		</eAnnotations>
+	</eStructuralFeatures>
+	<eStructuralFeatures xsi:type="ecore:EAttribute" name="fizetendo" unique="false"
+				eType="#//currency" lowerBound="1" upperBound="1">
+		<eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="navigable" value="true"/>
+		</eAnnotations>
+	</eStructuralFeatures>
+	</eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="NyomtatasiFeladat">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.nyomtatas.NyomtatasiFeladat"/>
+		</eAnnotations>
+	</eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Dokumentum">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.nyomtatas.Dokumentum"/>
+		</eAnnotations>
+	</eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Elzalogositas">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.ugylet.elzalogositas.Elzalogositas"/>
         </eAnnotations>
-        <eParameters name="loginName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-        <eParameters name="password" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      </eOperations>
-      <eOperations name="recordSpirofon" eType="#//MedicalRecord">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="static" value="true"/>
+        
+        <eStructuralFeatures xsi:type="ecore:EReference" name="meta" unique="false"
+			eType="#//ElzalogositasAdapter" lowerBound="0" upperBound="1" eOpposite="#//ElzalogositasAdapter/elzalogositas">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+        
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="nyMegjegyzes" unique="false"
+                             eType="#//memo">
+            <eAnnotations source="Addition">
+                <details key="visibility" value="protected"/>
+            </eAnnotations>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="nyNyomatKeszultsegiSzintje" unique="false"
+                             eType="#//NyomatKeszultsegiSzint">
+            <eAnnotations source="Addition">
+                <details key="visibility" value="protected"/>
+            </eAnnotations>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="nyNyomtatasLezarasIdeje" unique="false"
+                             eType="#//datetime">
+            <eAnnotations source="Addition">
+                <details key="visibility" value="protected"/>
+            </eAnnotations>
+        </eStructuralFeatures>
+        <eOperations name="getUtolsoSikeresNyugtaNyomtatas" upperBound="1" eType="#//NyomtatasiFeladat">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+        <eOperations name="getHianyzoDokumentumok" upperBound="-1" eType="#//Dokumentum">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="elzalogositas" eType="#//Elzalogositas"/>
+		</eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ElzalogositasSzerzodes">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.ugylet.elzalogositas.ElzalogositasSzerzodes"/>
+		</eAnnotations>
+		<eOperations name="queryRaktariTetelekBySzerzodes" upperBound="-1" eType="#//RaktariTetel">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodeskezelesekByCsatSzerz" upperBound="-1" eType="#//Szerzodeskezeles">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodeskezelesekBySzerzodesek" upperBound="-1" eType="#//Szerzodeskezeles">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="updateStatusz" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="newStatus" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="szerzAzonLeptetese" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="kolcsonKondicioKalkulal" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="pBruttoKolcson" eType="#//currency"/>
+		</eOperations>
+        <eOperations name="ujSzerzDokKeszitese" eType="#//Dokumentum">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+         <eOperations name="aktivalas" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="becsatolas" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="pTrxTetel" eType="#//TrxTetel"/>
+		</eOperations>
+		<eOperations name="kivaltasraJeloles" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="pTomegesKedv" eType="#//Kedvezmeny"/>
+		</eOperations>
+		<eOperations name="kiadasra" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="modositasraJeloles" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="pModTip" eType="#//SzerzKezMuveletTipus"/>
+		  <eParameters name="pTomegesKedv" eType="#//Kedvezmeny"/>
+		</eOperations>
+		<eOperations name="penztariRendezesre" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="lezarasKiadasbol" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="lezarasPenztarbol" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="lecsatolas" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="muvJelolesVisszavonasa" eType="#//ElzalogositasSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="lezErteknapBeallitasa" eType="#//ElzalogositasSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pLezErteknap" eType="#//datetime"/>
+			<eParameters name="pLezErteknapMegj" eType="#//memo"/>
+		</eOperations>
+		<eOperations name="lezarasiKedvezmenyBeallitasa" eType="#//ElzalogositasSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pKedvezmeny" eType="#//Kedvezmeny"/>
+		</eOperations>
+		<eOperations name="penztariFizetes" eType="#//PenztariTranzakcio">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="szerzkezKotRendez" eType="#//PenzforgalmiTranzakcio">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="tvkPontgyujtes" eType="#//ElzalogositasSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="kivaltasKonyvel" eType="#//PenzugyiTranzakcio" upperBound="-1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pSzerzodes" eType="#//Szerzodes"/>
+		</eOperations>
+		<eOperations name="dijakKonyvel" eType="#//PenzforgalmiTranzakcio" upperBound="-1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pElozmenyszerz" eType="#//Szerzodes"/>
+			<eParameters name="pModszerz" eType="#//ModositoSzerzodes"/>
+		</eOperations>
+		<eOperations name="szerzEsemenyLetrehoz" eType="#//NaploEsemeny" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pEsemenyTipus" eType="#//SzerzodesEsemenyTipus"/>
+		</eOperations>
+		<eOperations name="kereses" eType="#//Szerzodes" upperBound="-1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pSzerzodesAzon" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+			<eParameters name="pSzerzKotDateStart" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="pSzerzKotDateEnd" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="pElzalogDateStart" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="pElzalogDateEnd" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="pSzerzodesForrasa" lowerBound="0" upperBound="1" eType="#//SzerzodesForrasa"/>
+			<eParameters name="pSzerzodesStatusz" lowerBound="0" upperBound="1" eType="#//SzerzodesAllapot"/>
+			<eParameters name="pHonosFiok" lowerBound="0" upperBound="1" eType="#//Zalogfiok"/>
+			<eParameters name="pKotoFiok" lowerBound="0" upperBound="1" eType="#//Zalogfiok"/>
+			<eParameters name="pSzerzodesTipusa" lowerBound="0" upperBound="1" eType="#//SzerzodesTipusa"/>
+			<eParameters name="pFolyositasModja" lowerBound="0" upperBound="1" eType="#//KifizetesModja"/>
+			<eParameters name="pZalogertekFrom" lowerBound="0" upperBound="1" eType="#//currency"/>
+			<eParameters name="pZalogertekTo" lowerBound="0" upperBound="1" eType="#//currency"/>
+		</eOperations>
+	</eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="ModositoSzerzodes">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.ugylet.kezeles.ModositoSzerzodes"/>
+		</eAnnotations>
+		<eOperations name="queryRaktariTetelekBySzerzodes" upperBound="-1" eType="#//RaktariTetel">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodeskezelesekByCsatSzerz" upperBound="-1" eType="#//Szerzodeskezeles">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodeskezelesekBySzerzodesek" upperBound="-1" eType="#//Szerzodeskezeles">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="updateStatusz" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="newStatus" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="szerzAzonLeptetese" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="kolcsonKondicioKalkulal" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="pBruttoKolcson" eType="#//currency"/>
+		</eOperations>
+        <eOperations name="ujSzerzDokKeszitese" eType="#//Dokumentum">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+         <eOperations name="aktivalas" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="becsatolas" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="pTrxTetel" eType="#//TrxTetel"/>
+		</eOperations>
+        <eOperations name="deleteCustom" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="vazlatLezaras" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="rontas" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="kivaltasraJeloles" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="pTomegesKedv" eType="#//Kedvezmeny"/>
+		</eOperations>
+		<eOperations name="kiadasra" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="modositasraJeloles" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="pModTip" eType="#//SzerzKezMuveletTipus"/>
+		  <eParameters name="pTomegesKedv" eType="#//Kedvezmeny"/>
+		</eOperations>
+		<eOperations name="penztariRendezesre" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="lezarasKiadasbol" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="lezarasPenztarbol" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="lecsatolas" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="muvJelolesVisszavonasa" eType="#//ModositoSzerzodes">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="private"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="lezErteknapBeallitasa" eType="#//ModositoSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pLezErteknap" eType="#//datetime"/>
+			<eParameters name="pLezErteknapMegj" eType="#//memo"/>
+		</eOperations>
+		<eOperations name="lezarasiKedvezmenyBeallitasa" eType="#//ModositoSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pKedvezmeny" eType="#//Kedvezmeny"/>
+		</eOperations>
+		<eOperations name="penztariFizetes" eType="#//PenztariTranzakcio">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="szerzkezKotRendez" eType="#//PenzforgalmiTranzakcio">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="tvkPontgyujtes" eType="#//ModositoSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="kivaltasKonyvel" eType="#//PenzugyiTranzakcio" upperBound="-1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pSzerzodes" eType="#//Szerzodes"/>
+		</eOperations>
+		<eOperations name="dijakKonyvel" eType="#//PenzforgalmiTranzakcio" upperBound="-1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pElozmenyszerz" eType="#//Szerzodes"/>
+			<eParameters name="pModszerz" eType="#//ModositoSzerzodes"/>
+		</eOperations>
+		<eOperations name="szerzEsemenyLetrehoz" eType="#//NaploEsemeny" upperBound="1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pEsemenyTipus" eType="#//SzerzodesEsemenyTipus"/>
+		</eOperations>
+		<eOperations name="kereses" eType="#//Szerzodes" upperBound="-1">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="pSzerzodesAzon" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+			<eParameters name="pSzerzKotDateStart" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="pSzerzKotDateEnd" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="pElzalogDateStart" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="pElzalogDateEnd" lowerBound="0" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="pSzerzodesForrasa" lowerBound="0" upperBound="1" eType="#//SzerzodesForrasa"/>
+			<eParameters name="pSzerzodesStatusz" lowerBound="0" upperBound="1" eType="#//SzerzodesAllapot"/>
+			<eParameters name="pHonosFiok" lowerBound="0" upperBound="1" eType="#//Zalogfiok"/>
+			<eParameters name="pKotoFiok" lowerBound="0" upperBound="1" eType="#//Zalogfiok"/>
+			<eParameters name="pSzerzodesTipusa" lowerBound="0" upperBound="1" eType="#//SzerzodesTipusa"/>
+			<eParameters name="pFolyositasModja" lowerBound="0" upperBound="1" eType="#//KifizetesModja"/>
+			<eParameters name="pZalogertekFrom" lowerBound="0" upperBound="1" eType="#//currency"/>
+			<eParameters name="pZalogertekTo" lowerBound="0" upperBound="1" eType="#//currency"/>
+		</eOperations>
+	</eClassifiers>
+	
+	<eClassifiers xsi:type="ecore:EClass" name="Szerzodes">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.Szerzodes"/>
+		</eAnnotations>
+		<eStructuralFeatures xsi:type="ecore:EAttribute" name="kNettoKolcson" unique="false"
+							 eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="protected"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+        <eOperations name="getUtolsoSikeresSzerzodesNyomtatas" upperBound="1" eType="#//NyomtatasiFeladat">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="queryRaktariTetelekBySzerzodes" upperBound="-1" eType="#//RaktariTetel">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodeskezelesekByCsatSzerz" upperBound="-1" eType="#//Szerzodeskezeles">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodeskezelesekBySzerzodesek" upperBound="-1" eType="#//Szerzodeskezeles">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="queryZalognemek" upperBound="-1" eType="#//Zalognem">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+            <details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+	</eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ZalogtargyBecsles">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.targy.ZalogtargyBecsles"/>
+		</eAnnotations>
+		<eOperations name="createBecslesAndZalogtargy" upperBound="1" eType="#//ZalogtargyBecsles">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+          <eParameters name="pSzerzodes" eType="#//Szerzodes"/>
+          <eParameters name="pOrgContext" eType="#//Szervezet"/>
+          <eParameters name="pRaktariTetel" eType="#//RaktariTetel"/>
+          <eParameters name="pZalogtargybecsles" eType="#//ZalogtargyBecsles"/>
+		</eOperations>
+    </eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EClass" name="BeszallitasKenyszerraktarba">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.aukcio.BeszallitasKenyszerraktarba"/>
+		</eAnnotations>
+		<eOperations name="queryRaktariTetelekByBeszallitasKenyszerraktarba" upperBound="-1" eType="#//RaktariTetel">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="true"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		  <eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="EgyebPenztariRendezes">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.penztar.EgyebPenztariRendezes"/>
+		</eAnnotations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="PenzugyiTranzakcio">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.penzforgalmi.PenzugyiTranzakcio"/>
+		</eAnnotations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="PenztariTranzakcio">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.penzforgalmi.PenztariTranzakcio"/>
+		</eAnnotations>
+		<eOperations name="konyvel" upperBound="1" eType="#//PenztariTranzakcio">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="PenzforgalmiTranzakcio">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.penzforgalmi.PenzforgalmiTranzakcio"/>
+		</eAnnotations>
+		<eOperations name="konyvel" upperBound="1" eType="#//PenzforgalmiTranzakcio">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="sztorno" upperBound="1" eType="#//PenzforgalmiTranzakcio">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="TokeTranzakcio">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.penzforgalmi.TokeTranzakcio"/>
+		</eAnnotations>
+		<eOperations name="konyvel" upperBound="1" eType="#//TokeTranzakcio">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+		<eOperations name="sztorno" upperBound="1" eType="#//TokeTranzakcio">
+		  <eAnnotations source="Addition">
+			<details key="visibility" value="public"/>
+			<details key="static" value="false"/>
+			<details key="query" value="false"/>
+		  </eAnnotations>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Zalogtetel">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.elzalogositas.Zalogtetel"/>
+		</eAnnotations>
+    </eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EClass" name="Dijszabas">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.termek.Dijszabas"/>
+		</eAnnotations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EEnum" name="Ugylettipus">
+		<eAnnotations source="Target"/>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EEnum" name="SzerzodesTipusa">
+			<eAnnotations source="Target"/>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EEnum" name="Kockazat">
+			<eAnnotations source="Target"/>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EEnum" name="KifizetesModja">
+			<eAnnotations source="Target"/>
+    </eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EEnum" name="SzerzodesForrasa">
+		<eAnnotations source="Target"/>
+	</eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EEnum" name="SzerzodesAllapot">
+		<eAnnotations source="Target"/>
+	</eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EEnum" name="AjanlatStatusz">
+			<eAnnotations source="Target"/>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="MinosegiParameterezo">
+        <eAnnotations source="Addition"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="nemesfemErtekVan" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="brillErtekVan" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="anyag" eType="#//Anyag">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="finomsag" eType="#//Finomsag" eOpposite="#//Finomsag/parameterezo">
+            <eAnnotations source="Addition">
+                <details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+            </eAnnotations>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="zalognem" eType="#//Zalognem" eOpposite="#//Zalognem/parameterezo">
+            <eAnnotations source="Addition">
+                <details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+            </eAnnotations>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="brillEkitmenyLeiras" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="bruttoSuly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="nettoSuly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="brullSulyCar" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="zalogertek" eType="#//currency">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="alapAdhatoKolcson" eType="#//currency">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="brillAdhatoKolcson" eType="#//currency">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+	</eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EClass" name="ElzalogositasAdapter">
+        <eAnnotations source="Addition"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="penztarState" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        
+        <eStructuralFeatures xsi:type="ecore:EReference" name="elzalogositas" unique="false"
+			eType="#//Elzalogositas" lowerBound="0" upperBound="1" eOpposite="#//Elzalogositas/meta">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+        
+		<eOperations name="readElzalogositas" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="readElzalogositasiSzerzodes" upperBound="1" eType="#//ElzalogositasSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="readZalogtargy" upperBound="1" eType="#//Zalogtargy">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="zalogtargyId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="readZalogtetel" upperBound="1" eType="#//Zalogtetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="zalogtetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="createElzalogositas" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="zalogfiokId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="updateElzalogositas" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesTipusaId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="kifizetesModjaId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="ugylettipusId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="kockazatId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="elallas" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="elallasiOk" eType="#//ElallasiOk"/>
+            <eParameters name="egyebOk" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="saveZalogtetel" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+                <details key="static" value="true"/>
+			</eAnnotations>
+			<eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+			<eParameters name="zalogtetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="ajanlatbanFoglalt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+            <eParameters name="minosegiParameterek" eType="#//MinosegiParameterezo"/>
+        </eOperations>
+        <eOperations name="updateSzerzodes" upperBound="1" eType="#//ElzalogositasSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="megiteltKolcson" eType="#//currency"/>
+            <eParameters name="bruttoKolcson" eType="#//currency"/>
+            <eParameters name="raktariTetelAzonosito" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="nincsZarjegy" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+            <eParameters name="zarjegyAzonosito" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="createSzerzodes" upperBound="1" eType="#//ElzalogositasSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="ajanlatId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="ajanlatRogzites" upperBound="1" eType="#//ElzalogositasSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="dijszabasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtetelek" eType="#//Zalogtetel" upperBound="-1"/>
+		</eOperations>
+        <eOperations name="saveZalogtargy" upperBound="1" eType="#//Zalogtargy">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargy" eType="#//Zalogtargy"/>
+            <eParameters name="zalogtargyBecsles" eType="#//ZalogtargyBecsles"/>
+            <eParameters name="megjegyzes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="deleteZalogtargy" upperBound="1" eType="#//ElzalogositasSzerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="zalogtargyId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="calculateNemesfemAdhatoKolcson" upperBound="1" eType="#//currency">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="nettoSulyG" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="finomsagId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="deleteSzerzodes" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="ajanlatErvenytelenites" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="ajanlatId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="updateNyugtaMegjegyzes" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="megjegyzes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="kifizetve" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="legutobbiNyomtatasiFeladat" upperBound="1" eType="#//NyomtatasiFeladat">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="dokumentumId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="nyomtatasMinositese" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="nyomtatasiEredmenyId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="nyomtatasiFeladatId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="calculateArfolyamByFinomsag" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="finomsagId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="penztariRendezes" upperBound="1" eType="#//Elzalogositas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="elzalogositasId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+	</eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ElallasiOk">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.ElallasiOk"/>
+		</eAnnotations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Kedvezmeny">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.kondicio.Kedvezmeny"/>
+		</eAnnotations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Szerzodeskezeles">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.kezeles.Szerzodeskezeles"/>
+		</eAnnotations>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="szerzodeskezelesMeta" unique="false"
+			eType="#//SzerzodeskezelesMeta" lowerBound="0" upperBound="1" eOpposite="#//SzerzodeskezelesMeta/szerzodeskezeles">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eOperations name="queryCsatSzerzekBySzerzodeskezeles" upperBound="-1" eType="#//Szerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="queryKezelendoRtkBySzerzodeskezeles" upperBound="-1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="queryKiadandoRtkBySzerzodeskezeles" upperBound="-1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="queryKotErtekelendoZtkBySzerzodeskezeles" upperBound="-1" eType="#//Zalogtargy">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="querySzerzodesekBySzerzodeskezeles" upperBound="-1" eType="#//Szerzodes">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+    </eClassifiers>
+
+	<eClassifiers xsi:type="ecore:EEnum" name="SzerzKezMuveletTipus">
+			<eAnnotations source="Target"/>S
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="TrxTetel">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.ugylet.kezeles.TrxTetel"/>
+		</eAnnotations>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="meta" unique="false"
+			eType="#//TrxTetelMeta" lowerBound="0" upperBound="1" eOpposite="#//TrxTetelMeta/trxTetel">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+		<eOperations name="findValaszthatoMuvTipk" upperBound="-1" eType="#//SzerzKezMuveletTipus">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="TrxTetelMeta">
+         <eAnnotations source="Addition"/>
+        
+        <eOperations name="createMeta" upperBound="1" eType="#//TrxTetelMeta">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+    
+        <eStructuralFeatures xsi:type="ecore:EReference" name="trxTetel" unique="false"
+			eType="#//TrxTetel" lowerBound="0" upperBound="1" eOpposite="#//TrxTetel/meta">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isPontbevaltasDijkedvezmenyreEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isPontbevaltasKolcsonemelesreEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        ű<eStructuralFeatures xsi:type="ecore:EAttribute" name="isPontbevaltasVisszavonasaEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+    </eClassifiers>
+   
+    
+    <eClassifiers xsi:type="ecore:EClass" name="SzerzodesKezelesAdapter">
+		<eAnnotations source="Addition"/>
+        <eOperations name="createSzerzodeskezeles" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+        <eOperations name="readTrxTetel" upperBound="1" eType="#//TrxTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="trxTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="readSzerzodeskezeles" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="szerzodesCsatolasa" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesIds" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="szerzodesLecsatolasa" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesIds" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="elutasitas" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="elallasiOk" eType="#//ElallasiOk"/>
+		</eOperations>
+        <eOperations name="muveletBeallitasa" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="muveletIds" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="muvelettipus" eType="#//SzerzKezMuveletTipus"/>
+		</eOperations>
+        <eOperations name="osszesProlongalasa" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="osszesKivaltasa" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="muveletLecsatolasa" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="muveletId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="dijszabasErtekNapjaBeallitasa" upperBound="1" eType="#//TrxTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="dijszabasErtekNapja" eType="#//datetime"/>
+            <eParameters name="megjegyzes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="getFutamidoErtekkeszlet" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="trxTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="futamidoBeallitasa" upperBound="1" eType="#//TrxTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="futamido" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+		</eOperations>
+        <eOperations name="kolcsonemelesBeallitasa" upperBound="1" eType="#//TrxTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="kolcsonemeles" eType="#//currency"/>
+		</eOperations>
+        <eOperations name="kolcsonTorlesztesBeallitasa" upperBound="1" eType="#//TrxTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="kolcsonTorlesztes" eType="#//currency"/>
+		</eOperations>
+        <eOperations name="setZalogtargyUjraertekelesFlag" upperBound="1" eType="#//Zalogtargy">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="trxTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="flagValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+		</eOperations>
+        <eOperations name="setMutatasFlag" upperBound="1" eType="#//Zalogtargy">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="trxTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="flagValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+		</eOperations>
+        <eOperations name="setKivaltasFlag" upperBound="1" eType="#//Zalogtargy">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="trxTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="flagValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+		</eOperations>
+        <eOperations name="checkRaktariTetelExists" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="raktariTetelAzonosito" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelZarjegyAzonosito" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="readRaktariTetel" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+			<eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="zalogtargyUjrabecslese" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyBecsles" eType="#//ZalogtargyBecsles"/>
+		</eOperations>
+        <eOperations name="raktariTetelBontasa" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="ujRaktariTetelbe" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesAzonosito" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyak" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="visszahelyezes" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzodesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyak" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="raktariTetelLezarasa" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="biztonsagiMatrica" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelAzon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zarjegyVan" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+		</eOperations>
+        <eOperations name="kifizetesRogzitese" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="osszeg" eType="#//currency"/>
+		</eOperations>
+        <eOperations name="validateRaktariTetel" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="azonosito" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zarjegy" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="raktariTetelElveszett" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="raktariTetelZtkKiadva" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="zalogtargyElveszett" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyIds" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="zalogtargyKiadva" upperBound="1" eType="#//RaktariTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="zalogtargyIds" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="ajanlatElokeszitesBefejezese" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="ajanlatElfogadasa" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="penztarBefejezes" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="nyomtatasBefejezes" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="ztKiadBefejezes" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="updateNyugtaMegjegyzes" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="megjegyzes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="saveEgyediKedvezmeny" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="szerzTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="megjegyzes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="teljesDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="eloKezelesiDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="utoKezelesiDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="ugyletiKamatKedvezmeny" eType="#//percentage"/>
+            <eParameters name="kezelesiPotdijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="kesedelmiKamatKedvezmeny" eType="#//percentage"/>
+            <eParameters name="prolongalasiDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="elotorlesztesiDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="reszkivaltasiDijKedvezmeny" eType="#//percentage"/>
+		</eOperations>
+        <eOperations name="saveTomegesKedvezmeny" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="megjegyzes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="teljesDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="eloKezelesiDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="utoKezelesiDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="ugyletiKamatKedvezmeny" eType="#//percentage"/>
+            <eParameters name="kezelesiPotdijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="kesedelmiKamatKedvezmeny" eType="#//percentage"/>
+            <eParameters name="prolongalasiDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="elotorlesztesiDijKedvezmeny" eType="#//percentage"/>
+            <eParameters name="reszkivaltasiDijKedvezmeny" eType="#//percentage"/>
+		</eOperations>
+		<eOperations name="egyediKedvezmenyekTorlese" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="pontbevaltasDijkedvezmenyre" upperBound="1" eType="#//TrxTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="trxTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="pontbevaltasKolcsonemelesre" upperBound="1" eType="#//TrxTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="trxTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="pontbevaltasVisszavonasa" upperBound="1" eType="#//TrxTetel">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="trxTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="ugyfelTorlese" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="ugyfelKivalasztasa" upperBound="1" eType="#//Szerzodeskezeles">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="ugyfelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="okmanyId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+	</eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SzerzodeskezelesMeta">
+		<eAnnotations source="Addition"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="szerzodeskezeles" unique="false"
+			eType="#//Szerzodeskezeles" lowerBound="0" upperBound="1" eOpposite="#//Szerzodeskezeles/szerzodeskezelesMeta">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="kepernyoFazis" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="aktualisFazis1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="aktualisFazis2" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="aktualisFazis3" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="aktualisFazis4" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="aktualisFazis5" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="aktualisFazis6" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="illetekesUgyintezo" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="illetekesBecsus" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="illetekesPenztaros" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="nincsFolyamatbanAtcsomagolas" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="canGoNext" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="canFinish" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="canCancel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="ugyfelKivalasztasEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="kedvezmenyReszletezesEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eOperations name="createMeta" upperBound="1" eType="#//SzerzodeskezelesMeta">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="findIlletekesUgyintezo" upperBound="1" eType="#//SzerzodeskezelesMeta">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="template" eType="#//SzerzodeskezelesMeta"/>
+		</eOperations>
+        <eOperations name="findIlletekesPenztaros" upperBound="1" eType="#//SzerzodeskezelesMeta">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="template" eType="#//SzerzodeskezelesMeta"/>
+		</eOperations>
+        <eOperations name="findIlletekesBecsus" upperBound="1" eType="#//SzerzodeskezelesMeta">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="template" eType="#//SzerzodeskezelesMeta"/>
+		</eOperations>
+        <eOperations name="findSzerzodeskezelesFazis" upperBound="1" eType="#//SzerzodeskezelesMeta">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="template" eType="#//SzerzodeskezelesMeta"/>
+		</eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="RaktariTetelMeta">
+		<eAnnotations source="Addition"/>
+        <eOperations name="createMeta" upperBound="1" eType="#//RaktariTetelMeta">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+            <eParameters name="szerzodeskezelesId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+			<eParameters name="raktariTetelId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="raktariTetel" unique="false"
+			eType="#//RaktariTetel" lowerBound="0" upperBound="1" eOpposite="#//RaktariTetel/meta">
+		    <eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+			</eAnnotations>
+		</eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="elozmenySzerzodesAzon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+         <eStructuralFeatures xsi:type="ecore:EAttribute" name="szerzodesAzon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isBontando" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUjRaktariTetelbeActive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isBontottTetelLezarasa" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isRontottTetelbeVissza" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUjTetelLezarasaActive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUjRaktariTetelLazrasaActive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUjOsszesKijeloleseActive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="isModositandoOsszesKijeloleseActive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="eMutatas" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="eUjraertekeles" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="eKiadas" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="eTetelAllapot" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="TorzsvasarloiKartya">
+		<eAnnotations source="Target">
+		  <details key="name" value="anakin.business.domain.tvk.TorzsvasarloiKartya"/>
+		</eAnnotations>
+		<eOperations name="felhasznalhatoGrammErvVegeLejart" upperBound="1" eType="#//TorzsvasarloiKartya">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+	</eClassifiers>
+
+
+	<eClassifiers xsi:type="ecore:EClass" name="RiportUtemBeallitas">
+		<eAnnotations source="Target">
+			<details key="name" value="anakin.business.domain.riport.RiportUtemBeallitas"/>
+		</eAnnotations>
+		<eOperations name="riportGeneralas" upperBound="1" eType="#//RiportUtemBeallitas">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+	</eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="ArfolyamRogzites">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.ugylet.termek.ArfolyamRogzites"/>
         </eAnnotations>
-        <eParameters name="patientId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-        <eParameters name="pif" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fvc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fev" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fev1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fev6" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fiv" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fiv6" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="pef" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fef25" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fef50" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fef75" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fef2575" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fif25" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fif50" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fif75" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fif2575" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fev1Pct" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="pefPct" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fvcPct" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fev1PerFvcPct" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fefPct2575" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="fiv1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
-        <eParameters name="recorder" eType="#//OpmUser"/>
-        <eParameters name="referredEventTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
-        <eParameters name="note" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-        <eParameters name="allFile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      </eOperations>
-      <eOperations name="openTasks" upperBound="-1" eType="#//domain/OpenTask">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="static" value="true"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="ervenyes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="AdhatoKolcsonRogzites">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.ugylet.termek.AdhatoKolcsonRogzites"/>
         </eAnnotations>
-        <eParameters name="patientId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      </eOperations>
-      <eOperations name="forgottenPassword">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="static" value="true"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="ervenyes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+    </eClassifiers>
+
+    <eClassifiers xsi:type="ecore:EClass" name="ZalogertekRogzites">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.ugylet.termek.ZalogertekRogzites"/>
         </eAnnotations>
-        <eParameters name="registrationCode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      </eOperations>
-      <eOperations name="targetValues" upperBound="-1" eType="#//BasicDataValueSpecification">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="static" value="true"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="ervenyes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+            <eAnnotations source="Addition"/>
+        </eStructuralFeatures>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Zalognem">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.targy.Zalognem"/>
         </eAnnotations>
-        <eParameters name="scheduledTaskId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      </eOperations>
-      <eOperations name="mqttBrokerUrl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-        <eAnnotations source="Addition">
-          <details key="visibility" value="public"/>
-          <details key="static" value="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="parameterezo" upperBound="-1" eType="#//MinosegiParameterezo" eOpposite="#//MinosegiParameterezo/zalognem">
+            <eAnnotations source="Addition">
+                <details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+            </eAnnotations>
+        </eStructuralFeatures>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Finomsag">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.targy.Finomsag"/>
         </eAnnotations>
-      </eOperations>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="parameterezo" upperBound="-1" eType="#//MinosegiParameterezo" eOpposite="#//MinosegiParameterezo/finomsag">
+            <eAnnotations source="Addition">
+                <details key="visibility" value="public"/>
+				<details key="navigable" value="true"/>
+            </eAnnotations>
+        </eStructuralFeatures>
     </eClassifiers>
-  </eSubpackages>
-  <eSubpackages name="ui">
-    <eAnnotations source="Addition">
-      <details key="package" value="true"/>
-      <details key="participates" value="ui"/>
-    </eAnnotations>
-    <eClassifiers xsi:type="ecore:EClass" name="MenuRoot">
-      <eAnnotations source="MenuRoot"/>
+    
+    <eClassifiers xsi:type="ecore:EEnum" name="Anyag">
+      <eAnnotations source="Target"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="MenuExt">
-      <eAnnotations source="MenuItem">
-        <details key="parent" value="ext.ui.MenuRoot"/>
-      </eAnnotations>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Ugylet">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.ugylet.Ugylet"/>
+        </eAnnotations>
+        <eOperations name="findUtolsoSzerzKotes" upperBound="1" eType="#//datetime">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="findProlongSorHossza" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TreatedPatientUser">
-      <eAnnotations source="Screen">
-        <details key="base" value="opmpim.users.PatientUser"/>
-        <details key="parent" value="ext.ui.MenuExt"/>
-      </eAnnotations>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="PdfDocumentProvider">
+        <eAnnotations source="Addition"/>
+        <eOperations name="createPrintJob" upperBound="1" eType="#//NyomtatasiFeladat">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+        <eOperations name="qualify" upperBound="1" eType="#//Dokumentum">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+            <eParameters name="success" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+		</eOperations>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="MyUncheckedNotifications">
-      <eAnnotations source="Screen">
-        <details key="base" value="opmpim.treatments.Notification"/>
-        <details key="parent" value="ext.ui.MenuExt"/>
-      </eAnnotations>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="RovancsLista">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.RovancsLista"/>
+        </eAnnotations>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="MyCheckedNotifications">
-      <eAnnotations source="Screen">
-        <details key="base" value="opmpim.treatments.Notification"/>
-        <details key="parent" value="ext.ui.MenuExt"/>
-      </eAnnotations>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="RaktariTetelLista">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.RaktariTetelLista"/>
+        </eAnnotations>
     </eClassifiers>
-  </eSubpackages>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="EgyediRovancsJellemzo">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.EgyediRovancsJellemzo"/>
+        </eAnnotations>
+        <eOperations name="konkretJellemzoTipus" upperBound="1" eType="#//TTargykorJellemzoTipus">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="NormalEgyediRovancsJellemzo">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.NormalEgyediRovancsJellemzo"/>
+        </eAnnotations>
+        <eOperations name="rovancsokLetrehozasa" upperBound="1" eType="#//RovancsLista">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="esedekes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="hatarido" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+		</eOperations>
+		<eOperations name="rovancsolandoRaktariTetelek" upperBound="1" eType="#//RaktariTetelLista">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szervezet" eType="#//Szervezet"/>
+		</eOperations>
+		<eOperations name="rovancsolandoRaktariTetelekSzama" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szervezet" eType="#//Szervezet"/>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="GyanusTetelekRovancsJellemzo">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.GyanusTetelekRovancsJellemzo"/>
+        </eAnnotations>
+        <eOperations name="rovancsokLetrehozasa" upperBound="1" eType="#//RovancsLista">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="esedekes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="hatarido" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+		</eOperations>
+		<eOperations name="rovancsolandoRaktariTetelek" upperBound="1" eType="#//RaktariTetelLista">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szervezet" eType="#//Szervezet"/>
+		</eOperations>
+		<eOperations name="rovancsolandoRaktariTetelekSzama" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szervezet" eType="#//Szervezet"/>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="AltalanosRovancsJellemzo">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.AltalanosRovancsJellemzo"/>
+        </eAnnotations>
+      	<eOperations name="rovancsolandoRaktariTetelek" upperBound="1" eType="#//RaktariTetelLista">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szervezet" eType="#//Szervezet"/>
+		</eOperations>
+		<eOperations name="rovancsolandoRaktariTetelekSzama" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="szervezet" eType="#//Szervezet"/>
+		</eOperations>
+		<eOperations name="konkretJellemzoTipus" upperBound="1" eType="#//TTargykorJellemzoTipus">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="TeljesRovancsJellemzo">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.TeljesRovancsJellemzo"/>
+        </eAnnotations>
+        <eOperations name="rovancsokLetrehozasa" upperBound="1" eType="#//RovancsLista">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="esedekes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="hatarido" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="ReszlegesRovancsJellemzo">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.ReszlegesRovancsJellemzo"/>
+        </eAnnotations>
+        <eOperations name="rovancsokLetrehozasa" upperBound="1" eType="#//RovancsLista">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="esedekes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+			<eParameters name="hatarido" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="RaktariTetelRovancsInformacio">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.RaktariTetelRovancsInformacio"/>
+        </eAnnotations>
+        <eOperations name="azonositas1StateSetter" upperBound="1" eType="#//RaktariTetelRovancsInformacio">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="private"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="raktariTetelRovancsInformacio" eType="#//RaktariTetelRovancsInformacio"/>
+		</eOperations>
+		<eOperations name="eredmeny1ElveszettStateSetter" upperBound="1" eType="#//RaktariTetelRovancsInformacio">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="private"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="raktariTetelRovancsInformacio" eType="#//RaktariTetelRovancsInformacio"/>
+		</eOperations>
+		<eOperations name="ellenorzesVegeStateSetter" upperBound="1" eType="#//RaktariTetelRovancsInformacio">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="private"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="raktariTetelRovancsInformacio" eType="#//RaktariTetelRovancsInformacio"/>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="RaktariTetelTetelesRovancsInf">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.RaktariTetelTetelesRovancsInf"/>
+        </eAnnotations>
+        <eOperations name="ellenorFelhasznalo" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="eredmeny1Elveszett" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="azonositas1" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="biztonsagiMatrica" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="gyanusTetel" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="ellenorzesVege" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+    </eClassifiers>
+   
+   <eClassifiers xsi:type="ecore:EClass" name="RaktariTetelTartalmiRovancsInf">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.RaktariTetelTartalmiRovancsInf"/>
+        </eAnnotations>
+        <eOperations name="ellenorFelhasznalo" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="eredmeny1Elveszett" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="azonositas1" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="biztonsagiMatrica" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+		</eOperations>
+		<eOperations name="gyanusTetel" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+		<eOperations name="ellenorzesVege" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="TetelCsomag">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.TetelCsomag"/>
+        </eAnnotations>
+        <eOperations name="befejezStateSetter" upperBound="1" eType="#//TetelCsomag">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="tetelCsomag" eType="#//TetelCsomag"/>
+		</eOperations>
+    </eClassifiers>
+    
+    <eClassifiers xsi:type="ecore:EClass" name="Rovancs">
+        <eAnnotations source="Target">
+            <details key="name" value="anakin.business.domain.raktar.Rovancs"/>
+        </eAnnotations>
+        <eOperations name="uresRovancslezarasaStateSetter" upperBound="1" eType="#//Rovancs">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="rovancs" eType="#//Rovancs"/>
+		</eOperations>
+		<eOperations name="jegyzokonyvFeltolteseStateSetter" upperBound="1" eType="#//Rovancs">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="true"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="rovancs" eType="#//Rovancs"/>
+		</eOperations>
+		<eOperations name="veglegesEredmenyekMenteseTeteles" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="veglegesEredmenyek" upperBound="-1" eType="#//RaktariTetelTetelesRovancsInf"/>
+		</eOperations>
+		<eOperations name="veglegesEredmenyekMenteseTartalmi" upperBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+			<eAnnotations source="Addition">
+				<details key="visibility" value="public"/>
+				<details key="static" value="false"/>
+				<details key="query" value="false"/>
+			</eAnnotations>
+			<eParameters name="veglegesEredmenyek" upperBound="-1" eType="#//RaktariTetelTartalmiRovancsInf"/>
+		</eOperations>
+    </eClassifiers>
+    
 </ecore:EPackage>
