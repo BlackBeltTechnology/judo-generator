@@ -2,7 +2,7 @@ import "operations/_importAll.eol";
 
 pre {
 	//i need to extract the derived information from the UML as this info is lost during PIM/PSM transformation	
-	var ecxludedFields : Set<String> = inpPIM!Property.all.select(p | p.isDerived or p.visibility = inpPIM!VisibilityKind#private)
+	var ecxludedFields : Set<String> = inpPIM!Property.all.select(p | p.isDerived /*or p.visibility = inpPIM!VisibilityKind#private*/)
 														  .collect(p | p.fqName()).asSet();
 													
 	//all things from extension model must be excluded
@@ -64,17 +64,21 @@ rule Element
 	transform s : RDBMS!RdbmsElement
 	to 		  t : MIG!RdbmsElement {
 	guard: not s.name.contains(derivedFieldNameMarker) //TODO: find out why multichained derived expressions maps to valueField, been put here not to repeat everywhere
-		t.name = s.name;
-		t.uuid = s.uuid;
-		t.fullName = s.fullName;
-		t.description = s.description;
-		t.shortName = s.sqlName; // I am using the shortName for storing the original sqlName for later use
-		t.sqlName = s.name.cutFqNameToLastElement();
-		t.originalName = s.originalName;
-	    t.originalPackage = s.originalPackage;
-	    if (fieldReservedSqlNames.contains(t.sqlName.toLowerCase())) {
-	    	t.sqlName = "_" + t.sqlName;
-		}
+		mapElement(s,t,"");
+}
+
+operation mapElement(s, t, suffix) {
+	t.name = s.name + suffix;
+	t.uuid = s.uuid + suffix;
+	t.fullName = s.fullName + suffix;
+	t.description = s.description + suffix;
+	t.shortName = s.sqlName; // I am using the shortName for storing the original sqlName for later use
+	t.sqlName = s.name.cutFqNameToLastElement() + suffix;
+	t.originalName = s.originalName + suffix;
+    t.originalPackage = s.originalPackage;
+    if (fieldReservedSqlNames.contains(t.sqlName.toLowerCase())) {
+    	t.sqlName = "_" + t.sqlName;
+	}
 }
 
 @abstract
@@ -115,22 +119,34 @@ rule Model
 		}
 		
 		for (fk in RDBMS!RdbmsForeignKey.all) {
-		    var refKey = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = fk.referenceKey.uuid);
-		    var table = t.rdbmsTables.selectOne(t | t.uuid = fk.table.uuid);
-		    var fkName = modelName + "." + fk.name;
-		    if (refKey.isDefined() 
-		    	and table.isDefined() 
-		    	and not ecxludedFields.contains(fk.name)) {
-				var equiv = fk.equivalent();
-				if (equiv.isDefined()) {
-					equiv.table = table;
-					equiv.referenceKey = refKey;
-					//refKey.foreignKeys.add(equiv);
-				}
-		    }
+			if (not ecxludedFields.contains(fk.name) and not fk.inheritenceBased) {
+			    var refKey = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = fk.referenceKey.uuid);
+			    var table = t.rdbmsTables.selectOne(t | t.uuid = fk.table.uuid);
+			    
+			    if (refKey.isDefined() and table.isDefined()) {
+			    	var equiv = fk.equivalent();
+					if (equiv.isDefined()) {
+						equiv.table = table;
+						equiv.referenceKey = refKey;
+					}
+			    } else {
+			    	if (fk.referenceKey.table.isAbstract() and table.isDefined()) {
+					    var ds = descendants(fk.referenceKey.table.uuid, t.rdbmsTables);
+					    for (d in ds) {
+					    	var equiv = new MIG!RdbmsForeignKey;
+					    	mapElement(fk, equiv, "_" + d.sqlName);
+					    	mapFK(fk, equiv, "_" + d.sqlName);
+					    	equiv.mandatory = false;
+					    	equiv.inheritenceBased = true; //using this to be able distinguish in the INSERT statements int he templates 
+							equiv.table = table;
+							equiv.referenceKey = d.primaryKey;
+					    }
+				    }
+				}				
+			}
 		}
 	}
-	
+
 @lazy
 rule View 
 	transform s : RDBMS!RdbmsView
@@ -185,20 +201,23 @@ rule Fk
 	to fk : MIG!RdbmsForeignKey 
 	extends Element {
 		guard : not s.inheritenceBased
-		var typeName = s.rdbmsTypeName;
-		if (not typeName.isDefined()) {
-			typeName = s.type.rdbmsTypeName;
-		}		
-		fk.rdbmsTypeName = typeName;
-		fk.size = s.size;
-		fk.precision = s.precision;
-		fk.scale = s.scale;
-		fk.storageByte = s.storageByte;
-		fk.mandatory = s.mandatory;
-	    fk.foreignKeySqlName = s.foreignKeySqlName;
-		fk.mandatory = s.mandatory;
-		fk.deleteOnCascade = s.deleteOnCascade;
-		fk.readOnly = s.readOnly;
+		mapFK(s, fk, "");
+}
+
+operation mapFK(s, fk, suffix) {
+	var typeName = s.rdbmsTypeName;
+	if (not typeName.isDefined()) {
+		typeName = s.type.rdbmsTypeName;
+	}		
+	fk.rdbmsTypeName = typeName;
+	fk.size = s.size;
+	fk.precision = s.precision;
+	fk.scale = s.scale;
+	fk.storageByte = s.storageByte;
+	fk.mandatory = s.mandatory;
+    fk.foreignKeySqlName = s.foreignKeySqlName + suffix;
+	fk.deleteOnCascade = s.deleteOnCascade;
+	fk.readOnly = s.readOnly;
 }
 
 @lazy
@@ -237,6 +256,15 @@ operation RDBMS!RdbmsView isAbstract() {
 	return PSM!JClass.all.selectOne(c | c.uuid = target).`abstract`.asBoolean();
 }
 
+operation RDBMS!RdbmsTable isAbstract() {
+	var c = PSM!JClass.all.selectOne(c | c.uuid = self.uuid);
+	if (c.isDefined()) {
+		return c.`abstract`.asBoolean();
+	} else {
+		return false;
+	}
+}
+
 operation String cutFqNameToLastElement() : String {
 	var start = self.lastindexOf(".");
 	return self.substring(start + 1, self.length());
@@ -251,15 +279,11 @@ operation MIG!RdbmsTable originalTableName() : String {
 	return "t_"  + self.shortName.substring(2).toLowerCase();
 }
 
-post {
-	/*for (j in RDBMS!RdbmsJunctionTable.all) {
-		var table1 = MIG!RdbmsTable.all.selectOne(t | t.name = j.field1.referenceKey.table.name);
-		var table2 = MIG!RdbmsTable.all.selectOne(t | t.name = j.field2.referenceKey.table.name);
-		var refKey1 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field1.referenceKey.name);
-		var refKey2 = MIG!RdbmsIdentifierField.all.selectOne(f | f.name = j.field2.referenceKey.name);
-		if (table1.isDefined() and table2.isDefined() and refKey1.isDefined() and refKey2.isDefined()) {
-			"OTT".println();
-			MIG!RdbmsModel.all.first().rdbmsTables.add(j.equivalent()); 
-		}
-	}*/
+operation descendants(uuid : String, tables : Collection<MIG!RdbmsTable>) : Set<MIG!RdbmsTable> {
+	var cs = PSM!JClass.all
+		.select(c | c.supertype.isDefined() and c.supertype.uuid == uuid)
+		.select(c | not c.`abstract`)
+		.collect(c | c.uuid)
+		.asSet();
+	return tables.select(t | cs.contains(t.uuid)).asSet();
 }

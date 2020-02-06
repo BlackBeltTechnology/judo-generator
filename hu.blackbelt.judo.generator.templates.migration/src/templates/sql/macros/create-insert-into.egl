@@ -3,5 +3,25 @@
 %]
 
 INSERT INTO [%=mig_schema_name%].[%= table.sqlName %] ([% for (n in table.fields.sqlName) {%] [%= n %] [% if (hasMore) { out.print(","); } %] [%}%] ) 
-SELECT [% for (n in table.fields.shortName) {%] [%= n %] [% if (hasMore) { out.print(","); } %] [%}%] FROM public.[%= table.shortName %];
+SELECT [% for (n in table.fields) {%] [%= selectProjection(n) %] [% if (hasMore) { out.print(","); } %] [%}%] FROM public.[%= table.shortName %];
 [% out.println("\n"); %]
+
+[%
+operation selectProjection (f) : String {
+	if (f.isTypeOf(CURRENT!RdbmsForeignKey) and f.inheritenceBased) {
+		//(SELECT %s FROM %s WHERE %s = %s)
+		var ret = "(SELECT ";
+		ret += f.referenceKey.sqlName;
+		ret += " FROM ";
+		ret += f.referenceKey.table.shortName;
+		ret += " WHERE ";
+		ret += f.referenceKey.sqlName;
+		ret += " = ";
+		ret += f.shortName;
+		ret += ")";
+		return ret;
+	} else {
+		return f.shortName;
+	}
+}
+%]
