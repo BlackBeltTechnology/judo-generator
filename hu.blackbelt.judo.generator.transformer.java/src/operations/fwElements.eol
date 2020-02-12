@@ -4,11 +4,8 @@ operation paginationOrigin () : FWELEMENTS!JvmClass {
 }
 
 operation paginationClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
+	//jvmJudoCoordinate.println("CCORD: ");
     return FWELEMENTS!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Pagination" and c.coordinate = jvmJudoCoordinate)).first();
-}
-
-operation filterClass (jvmJudoCoordinate : Any) : FWELEMENTS!JvmClass {
-    return FWELEMENTS!JvmClass.all.select(c | (c.origin.isDefined() and c.origin.name = "Filter" and c.coordinate = jvmJudoCoordinate)).first();
 }
 
 @cached

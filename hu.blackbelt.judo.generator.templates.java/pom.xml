@@ -62,7 +62,7 @@
 											<platformAlias>platform:/resource/hu.blackbelt.judo.generator.meta.java/library/javaTypes.model</platformAlias>
 										</model>
 										<model>
-											<artifact>mvn:${test.model.groupId}:${test.model.artifactId}:model:java:${test.model.version}</artifact>
+											<artifact>file:/home/gyturi/git/judo-generator/hu.blackbelt.judo.generator.transformer.java/target/java.model</artifact>
 											<name>JAVA</name>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/java</param>

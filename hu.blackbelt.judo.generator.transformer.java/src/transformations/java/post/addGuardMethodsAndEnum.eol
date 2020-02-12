@@ -27,6 +27,8 @@ operation addGuardMethodsAndEnum () : Any {
                     p.uuid = generateUuid(decideMethod.uuid, p.name, ".");
                     decideMethod.parameters.add(p);
 				}
+				
+				createInstanceBasedMethodWithProperIdTypeFor(decideMethod, JAVA!JvmMethodKind#SM_DECIDE);
 				decideMethod.addIdParam();
 
 				for (tr in val) {

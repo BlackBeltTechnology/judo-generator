@@ -69,6 +69,16 @@ operation JAVA!JvmMethod parameterSequenceReplacedForCall (toBeReplaced : String
 	return ret.concat(", ");
 }
 
+operation JAVA!JvmMethod addIdParamWithProperType() : Any {
+	var idParam = new JAVA!JvmMethodParameter;
+	var coord = COORDINATES.get(self.ownerClass.coordinate).get(COORDINATE_GROUP);
+	idParam.type = self.ownerClass.find(coord);
+	idParam.name = "o";
+	idParam.uuid = generateUuid(self.uuid, idParam.name, ".");
+	idParam.representsJudoId = false;
+	self.parameters.add(0, idParam);
+}
+
 operation JAVA!JvmMethod addIdParam() : Any {
 	var idParam = new JAVA!JvmMethodParameter;
 	idParam.type = idType();
@@ -80,7 +90,9 @@ operation JAVA!JvmMethod addIdParam() : Any {
 
 operation JAVA!JvmMethod addPaginationParam() : Any {
 	var param = new JAVA!JvmMethodParameter;
+	//self.ownerClass.coordinate.println("OC COORD: ");
 	param.type = paginationClass(COORDINATES.get(self.ownerClass.coordinate).get(COORDINATE_GROUP));
+	//param.type.uuid.println("PAGINATION PARAM TYPE: ");
 	param.name = "pagination";
 	param.uuid = generateUuid(self.uuid, param.name, ".");
 	self.parameters.add(param);

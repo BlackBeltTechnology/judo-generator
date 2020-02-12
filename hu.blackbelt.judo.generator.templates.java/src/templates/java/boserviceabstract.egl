@@ -159,62 +159,65 @@ public abstract class [%=class.name%] extends AbstractCrudService<[%=class.bo().
 				[%if (not method.isTransitionExecutingMethod()){%]
 		    		throw new UnsupportedOperationException("You have to override custom method implementation in your default service!!");
 				[%} else {%]
-					Query q = Query.builder()
+					[%if (method.parameters.get(0).representsJudoId) { %]
+						Query q = Query.builder()
 			          		.condition(Expressions.id(id))
-			           		.initialize([%=method.transitions.ownerStateMachine.collect(s | class.origin.package.domainBqlClass.fqName() + "." + class.bo().name.firstToLowerCase() + "." + s.name + "()").concat(", ")%])
 			           		.source([%=class.bo().fqName()%].class)
 			           		.build();
-				    [%=class.bo().fqName()%] [%=class.bo().name.firstToLowerCase()%] = [%=daoFieldName%].findSingle(q);
-				    
-				    if ([%=class.bo().name.firstToLowerCase()%] == null) {
-				        throw new ValidationException(
-				                                    Arrays.asList(
-				                                        Validator.Result.builder()
-				                                            .severity(Validator.Severity.Error)
-				                                            .messageId(hu.blackbelt.judo.business.validator.api.codes.FrameworkErrorCodes.INVALID_STATE_TRANSITION)
-				                                            .defaultMessage("[%=class.bo().name%] - [%=method.name%] nem található entitás: " + id)
-				                                            .build()));
-				    }
-				        
-				    [%for (stateMachine in method.origin.transitions.ownerStateMachine.asSet()) { %]
-					    if ([%=class.bo().name.firstToLowerCase()%].get[%=stateMachine.name.firstToUpperCase()%]() == null) {
+				    	[%=class.bo().fqName()%] [%=class.bo().name.firstToLowerCase()%] = [%=daoFieldName%].findSingle(q);
+				    	
+				    	[%if (not method.isReturnVoid()) { %]
+				    		return [%=method.name%] ([%=method.parameterSequenceReplacedForCall(method.parameters.get(0).name, class.bo().name.firstToLowerCase())%]);
+				    	[%} else {%]
+				    		[%=method.name%] ([%=method.parameterSequenceReplacedForCall(method.parameters.get(0).name, class.bo().name.firstToLowerCase())%]);
+						[%}%]
+				    	
+					[%} else {%]
+						if ([%=method.parameters.get(0).name.firstToLowerCase()%] == null) {
 					        throw new ValidationException(
-					                Arrays.asList(
-					                    Validator.Result.builder()
-					                        .severity(Validator.Severity.Error)
-					                        .messageId(hu.blackbelt.judo.business.validator.api.codes.FrameworkErrorCodes.INVALID_STATE_TRANSITION)
-					                        .defaultMessage("[%=class.bo().name%] - [%=method.name%] Ismeretlen állapot.")
-					                        .build()));
+					                                    Arrays.asList(
+					                                        Validator.Result.builder()
+					                                            .severity(Validator.Severity.Error)
+					                                            .messageId(hu.blackbelt.judo.business.validator.api.codes.FrameworkErrorCodes.INVALID_STATE_TRANSITION)
+					                                            .defaultMessage("[%=class.bo().name%] - [%=method.name%] nem található entitás: " + [%=method.parameters.get(0).name.firstToLowerCase()%].getId())
+					                                            .build()));
 					    }
-					    switch ([%=class.bo().name.firstToLowerCase()%].get[%=stateMachine.name.firstToUpperCase()%]().getCode()) {
-					        [%for (state in method.getFromStatesInStateMachine(stateMachine)) { %]
-					            case "[%=state.name%]":
-					            	[%var decideMethod = state.getDecideMethodFor(method.origin);%]
-						            [%if (decideMethod.isUndefined()) {%]
-						              	update[%=stateMachine.name.firstToUpperCase()%](id, "[%=state.toStateViaExecutingMethod(method.origin).name%]");
-						            [%} else {%]
-						                switch ([%=decideMethod.name%] ([%=method.parameterNameSequence()%])) {
-						                    [%for (guard in decideMethod.guards.asSet()) { %]
-						                        case [%=guard.literal.name%] :
-						                            update[%=stateMachine.name.firstToUpperCase()%](id, "[%=guard.ownerTransition.toState.name%]");
-						                            break;
-											[%}%]
-						                }
-						            [%}%]
-						            break;
-							[%}%]
-					        default:
-					            throw new ValidationException(
-					                Arrays.asList(
-					                    Validator.Result.builder()
-					                        .severity(Validator.Severity.Error)
-					                        .messageId(hu.blackbelt.judo.business.validator.api.codes.FrameworkErrorCodes.INVALID_STATE_TRANSITION)
-					                        .defaultMessage("[%=class.bo().name%] - [%=method.name%] Nem megengedett állapotátmenet. " + [%=class.bo().name.firstToLowerCase()%].get[%=stateMachine.name.firstToUpperCase()%]().getCode())
-					                        .build()));
-					    }
-					[%}%]
-					[%if (not method.isReturnVoid()) { %]
-			    		return read(id);
+					        
+					    [%for (stateMachine in method.origin.transitions.ownerStateMachine.asSet()) { %]
+						    if ([%=method.parameters.get(0).name.firstToLowerCase()%].get[%=stateMachine.name.firstToUpperCase()%]() == null) {
+						        throw new ValidationException(
+						                Arrays.asList(
+						                    Validator.Result.builder()
+						                        .severity(Validator.Severity.Error)
+						                        .messageId(hu.blackbelt.judo.business.validator.api.codes.FrameworkErrorCodes.INVALID_STATE_TRANSITION)
+						                        .defaultMessage("[%=class.bo().name%] - [%=method.name%] Ismeretlen állapot.")
+						                        .build()));
+						    }
+						    switch ([%=method.parameters.get(0).name.firstToLowerCase()%].get[%=stateMachine.name.firstToUpperCase()%]().getCode()) {
+						        [%for (state in method.getFromStatesInStateMachine(stateMachine)) { %]
+						            case "[%=state.name%]":
+						            	[%var decideMethod = state.getDecideMethodFor(method.origin);%]
+							            [%if (decideMethod.isUndefined()) {%]
+							              	return update[%=stateMachine.name.firstToUpperCase()%]([%=method.parameters.get(0).name.firstToLowerCase()%].getId(), "[%=state.toStateViaExecutingMethod(method.origin).name%]");
+							            [%} else {%]
+							                switch ([%=decideMethod.name%] ([%=method.parameters.get(0).name.firstToLowerCase()%].getId())) {
+							                    [%for (guard in decideMethod.guards.asSet()) { %]
+							                        case [%=guard.literal.name%] :
+							                            return update[%=stateMachine.name.firstToUpperCase()%]([%=method.parameters.get(0).name.firstToLowerCase()%].getId(), "[%=guard.ownerTransition.toState.name%]");
+												[%}%]
+							                }
+							            [%}%]
+								[%}%]
+						        default:
+						            throw new ValidationException(
+						                Arrays.asList(
+						                    Validator.Result.builder()
+						                        .severity(Validator.Severity.Error)
+						                        .messageId(hu.blackbelt.judo.business.validator.api.codes.FrameworkErrorCodes.INVALID_STATE_TRANSITION)
+						                        .defaultMessage("[%=class.bo().name%] - [%=method.name%] Nem megengedett állapotátmenet. " + [%=method.parameters.get(0).name.firstToLowerCase()%].get[%=stateMachine.name.firstToUpperCase()%]().getCode())
+						                        .build()));
+						    }
+						[%}%]
 					[%}%]
 		    	[%}%]
 			[%}%]

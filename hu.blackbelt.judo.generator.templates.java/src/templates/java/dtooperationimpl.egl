@@ -212,9 +212,10 @@ operation bqlCall (class : JAVA!JvmClass, ref : JAVA!JvmElement) : String {
 
 operation JAVA!JvmType boFqName() : String {
 	if (self.framework or (self.isCollection() and self.componentType.framework)) {
-		return self.boInterface().fqName();
-	} else { 
-		return self.bo().fqName();
+		if (self.boInterface().isDefined()) {
+			return self.boInterface().fqName();
+		}  
 	} 
+	return self.bo().fqName();
 }
 %]

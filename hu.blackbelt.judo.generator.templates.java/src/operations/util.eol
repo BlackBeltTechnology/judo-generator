@@ -1,23 +1,28 @@
+@cached
 operation voidType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.name = "Void").first();
 }
-
+@cached
 operation intType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.name = "Integer").first();
 }
 
+@cached
 operation stringType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.name = "String").first();
 }
 
+@cached
 operation longType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.name = "Long").first();
 }
 
+@cached
 operation urlType () : JAVA!JvmType {
     return JAVATYPES!JvmType.all.select( t | t.name = "URL").first();
 }
 
+@cached
 operation idType () : JAVA!JvmType {
 	return JAVATYPES!JvmType.all.select( t | t.useForJudoId).first();
 }
