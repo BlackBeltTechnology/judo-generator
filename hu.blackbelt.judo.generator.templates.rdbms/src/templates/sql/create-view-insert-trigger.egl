@@ -141,7 +141,7 @@ CREATE TRIGGER INS_[%= view.sqlName %] INSTEAD OF INSERT ON [%= view.sqlName %]
 [% if (dialect() == 'Postgres') { %]
 --changeset generator:CREATE_FUNCTION_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
-CREATE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlName %]$
+CREATE OR REPLACE FUNCTION INS_[%= view.sqlName %]() RETURNS TRIGGER AS $INS_[%= view.sqlName %]$
     DECLARE
         SERIAL_ID INTEGER;
     BEGIN

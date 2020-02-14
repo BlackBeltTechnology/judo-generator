@@ -8,7 +8,7 @@
 
 --changeset generator:DROP_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= table.name %] [%= table.uuid %]
-DROP TRIGGER BI_[%= table.sqlName %];
+DROP TRIGGER BI_[%= table.sqlName %] ON [%= table.sqlName %];
 
 [% } %]
 

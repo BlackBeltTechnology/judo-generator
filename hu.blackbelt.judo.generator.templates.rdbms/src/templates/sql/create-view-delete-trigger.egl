@@ -44,7 +44,7 @@ CREATE TRIGGER DEL_[%= view.sqlName %] INSTEAD OF DELETE ON [%= view.sqlName %]
 [% if (dialect() == 'Postgres') { %]
 --changeset generator:CREATE_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
-CREATE FUNCTION DEL_[%= view.sqlName %]() RETURNS TRIGGER AS $DEL_[%= view.sqlName %]$
+CREATE OR REPLACE FUNCTION DEL_[%= view.sqlName %]() RETURNS TRIGGER AS $DEL_[%= view.sqlName %]$
     BEGIN
         DELETE FROM [%= view.primaryTable.table.sqlName %] WHERE ID = OLD.ID;
 

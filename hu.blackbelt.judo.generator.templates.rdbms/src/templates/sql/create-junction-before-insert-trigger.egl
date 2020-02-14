@@ -49,7 +49,7 @@ CREATE TRIGGER BI_[%= table.sqlName %] BEFORE INSERT ON [%= table.sqlName %]
 [% if (dialect() == 'Postgres') {%]
 --changeset generator:CREATE_FUNCTION_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] failOnError:false dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
 -- [%= table.name %] [%= table.uuid %]
-CREATE FUNCTION BI_[%= table.sqlName %]() RETURNS TRIGGER AS $BI_[%= table.sqlName %]$
+CREATE OR REPLACE FUNCTION BI_[%= table.sqlName %]() RETURNS TRIGGER AS $BI_[%= table.sqlName %]$
     BEGIN
         IF (NEW.ID IS NULL) THEN
             NEW.ID = nextval('serial');

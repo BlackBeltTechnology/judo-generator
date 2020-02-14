@@ -8,6 +8,6 @@
 
 --changeset generator:DROP_TRIGGER_INSTEAD_OF_INSERT_[%= view.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %]
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
-DROP TRIGGER INS_[%= view.sqlName %];
+DROP TRIGGER INS_[%= view.sqlName %] ON [%= view.sqlName %];
 
 [% } %]

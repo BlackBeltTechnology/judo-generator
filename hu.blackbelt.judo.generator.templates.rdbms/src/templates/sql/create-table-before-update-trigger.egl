@@ -37,7 +37,7 @@ select is_trigger_valid('BU_[%= table.sqlName %]') from DUAL;
 [% if (dialect() == 'Postgres') { %]
 --changeset generator:CREATE_FUNCTION_BEFORE_UPDATE_[%= table.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
 -- [%= table.name %] [%= table.uuid %]
-CREATE FUNCTION BU_[%= table.sqlName %]() RETURNS TRIGGER AS $BU_[%= table.sqlName %]$
+CREATE OR REPLACE FUNCTION BU_[%= table.sqlName %]() RETURNS TRIGGER AS $BU_[%= table.sqlName %]$
     BEGIN
         [% for (fk in table.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly)) { %]
         -- [%= fk.name %]

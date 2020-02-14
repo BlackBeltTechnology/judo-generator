@@ -113,7 +113,7 @@ CREATE TRIGGER UPD_[%= view.sqlName %] INSTEAD OF UPDATE ON [%= view.sqlName %]
 [* ------------------------------------- *]
 [% if (dialect() == 'Postgres') { %]
 --changeset generator:CREATE_FUNCTION_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:postgresql logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false failOnError:[%= failOnError %]
-CREATE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlName %]$
+CREATE OR REPLACE FUNCTION UPD_[%= view.sqlName %]() RETURNS TRIGGER AS $UPD_[%= view.sqlName %]$
     BEGIN
         IF (NEW.ID IS NULL OR NEW.ID <> OLD.ID) THEN
             RAISE EXCEPTION 'Field "ID" in view "[%= view.sqlName %]" is not allowed to update';
