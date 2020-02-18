@@ -5,7 +5,8 @@ import "operations/_importAll.eol";
 ("===================================================================================================================").println("");
  for (top in INCREMENTAL!RdbmsModifyTableOperation.all) {
 
-	for (fop in top.modifyFieldOperations.select(m | m.fieldIsAltered()).includingAll(top.modifyFieldOperations.select(m | m.mandatoryChanged and m.field.mandatory) )) {
+	for (fop in top.modifyFieldOperations.select(m | m.fieldIsAltered())
+										 .includingAll(top.modifyFieldOperations.select(m | m.mandatoryChanged and m.field.mandatory))) {
 		
 		("------------------------------------------------------------------------------------------------------------------------").println("");
 		fop.scriptName().println("Put script: ");
@@ -17,6 +18,20 @@ import "operations/_importAll.eol";
 		("The file can contain the new field update. The developer have car the correct casing in SQL statement.").println("");
 		("Model name: " + top.table.name + " " + fop.field.name).println("");
 	    fop.exampleSql().println("Example: ");
+	    ("").println("");
+
+	}
+	
+	for (cop in top.createFieldOperations.select(m | m.field.mandatory)) {
+		
+		("------------------------------------------------------------------------------------------------------------------------").println("");
+		cop.scriptName().println("Put script: ");
+		("------------------------------------------------------------------------------------------------------------------------").println("");
+	    (cop.field.name + " (" + top.table.sqlName + "." + cop.field.sqlName + ")").println("New: ");
+	    ("").println("");
+		("The file can contain the new field update. The developer have car the correct casing in SQL statement.").println("");
+		("Model name: " + top.table.name + " " + cop.field.name).println("");
+	    cop.exampleSql().println("Example: ");
 	    ("").println("");
 
 	}

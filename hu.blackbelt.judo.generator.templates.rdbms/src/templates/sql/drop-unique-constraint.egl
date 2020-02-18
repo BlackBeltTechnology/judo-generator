@@ -6,6 +6,6 @@
 
 [% for (constraint in CURRENT!RdbmsUniqueConstraint.all) { %]
 --changeset generator:DROP_UNIQUE_CONSTRAINT_[%= constraint.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
-ALTER TABLE [%= constraint.table.sqlName %] DROP CONSTRAINT [%= constraint.sqlName %];	
+ALTER TABLE [%= constraint.table.sqlName %] DROP CONSTRAINT IF EXISTS [%= constraint.sqlName %];	
 
 [% } %]

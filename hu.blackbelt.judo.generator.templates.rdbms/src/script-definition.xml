@@ -95,15 +95,15 @@
 
 	<!-- Run all incremental version between last installed version and current version -->
 	<changeset name = "changeset-incremental"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-incremental.xml" >
-		<change sql ="sql/${currentVersion}/${dialect}/backup-table-delete-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/backup-table-modify-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-table-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-column-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-add-column-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-type-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-set-mandatory-incremental.sqL"/>
-		<change sql ="sql/${currentVersion}/${dialect}/drop-table-incremental.sqL"/>
+		<change sql ="sql/${currentVersion}/${dialect}/backup-table-delete-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/backup-table-modify-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-table-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-column-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-add-column-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-type-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-set-mandatory-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/drop-table-incremental.sql"/>
 	</changeset>
 
 	<changeset name = "changeset-after-incremental"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-after-incremental.xml" >

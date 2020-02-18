@@ -1,0 +1,26 @@
+@cached
+operation RDBMS!RdbmsCreateFieldOperation modifyTableOperation () : RDBMS!RdbmsModifyTableOperation {
+    return INCREMENTAL!RdbmsModifyTableOperation.all.selectOne(to | to.createFieldOperations.includes(self)); 
+}
+
+@cached
+operation RDBMS!RdbmsCreateFieldOperation scriptPrefix () : String {
+        var scriptPrefix;
+		if (self.field.mandatory) {
+            scriptPrefix = "update-for-set-mandatory-";
+		}
+		return scriptPrefix;
+}
+
+@cached
+operation RDBMS!RdbmsCreateFieldOperation exampleSql () : String {
+        var example;
+        if (self.field.mandatory) {
+			example = "UPDATE " + self.modifyTableOperation().table.sqlName + " SET " + self.field.sqlName + " = <value> ";
+		}
+		return example;
+}
+
+operation RDBMS!RdbmsCreateFieldOperation scriptName () : String {
+	return "migration/" + previousVersion() + "/" + self.scriptPrefix() + self.modifyTableOperation().table.sqlName.toLowerCase() + "-" + self.field.sqlName.toLowerCase() + "-" + dialect() +".sql";
+}
