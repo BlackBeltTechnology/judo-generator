@@ -101,8 +101,8 @@
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-column-incremental.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-add-column-incremental.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-type-incremental.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/alter-table-modify-column-set-mandatory-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-alter-column-type-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/alter-table-alter-column-set-mandatory-incremental.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/drop-table-incremental.sql"/>
 	</changeset>
 
