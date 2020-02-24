@@ -56,4 +56,3 @@ operation RDBMS!RdbmsTable uniqueForeignKeys () : Collection {
 	return self.uniqueConstraints.select(u | u.fields.first().isKindOf(RDBMS!RdbmsForeignKey)).collect(u | u.fields.first());
 }
 
-

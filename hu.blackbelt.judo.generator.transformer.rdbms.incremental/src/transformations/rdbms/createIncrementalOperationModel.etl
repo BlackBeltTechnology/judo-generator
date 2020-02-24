@@ -4,31 +4,31 @@ import "../../operations/rdbms/field.eol";
 
 pre {
 	var previousModel = PREVIOUS!RdbmsModel.all.first();
-	var newModel = CURRENT!RdbmsModel.all.first();
+	var newModel = NEW!RdbmsModel.all.first();
 	
 	previousModel.flattenTypes();
 	newModel.flattenTypes();
 }
 
 rule OperationModel 
-	transform s : CURRENT!RdbmsModel
-	to t : INCREMENTAL!RdbmsModel {
+	transform s : NEW!RdbmsModel
+	to t : TARGET!RdbmsModel {
 	    t.version = previousModel.version + "_" + newModel.version;
 		"".println("Created operation model: ");
 }
 
 
 rule CreateOperationMeta 
-	transform s : CURRENT!RdbmsModel
-	to t : INCREMENTAL!RdbmsOperationMeta {
+	transform s : NEW!RdbmsModel
+	to t : TARGET!RdbmsOperationMeta {
 		t.previousModel = previousModel;
 		t.currentModel = newModel;
 		"".println("Created operation meta: ");
 }
 
 rule CreateNewTable 
-	transform s : CURRENT!RdbmsTable
-	to t : INCREMENTAL!RdbmsCreateTableOperation {
+	transform s : NEW!RdbmsTable
+	to t : TARGET!RdbmsCreateTableOperation {
 	guard : not previousModel.tableExists(s)
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Create " + s.name;
@@ -39,7 +39,7 @@ rule CreateNewTable
 
 rule DeletePreviousTable 
 	transform s : PREVIOUS!RdbmsTable
-	to t : INCREMENTAL!RdbmsDeleteTableOperation {
+	to t : TARGET!RdbmsDeleteTableOperation {
 	guard : not newModel.tableExists(s)
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Delete " + s.name;
@@ -51,7 +51,7 @@ rule DeletePreviousTable
 @lazy
 rule ModifyTableOperationForExistingTable 
 	transform s : RDBMS!RdbmsTable
-	to t : INCREMENTAL!RdbmsModifyTableOperation {
+	to t : TARGET!RdbmsModifyTableOperation {
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Modify " + s.name;
 	    t.uuid =  s.uuid + "-ModifyTable";
@@ -60,8 +60,8 @@ rule ModifyTableOperationForExistingTable
 }
 
 rule CreateNewValueFieldOnExistingTable
-	transform f : CURRENT!RdbmsValueField
-	to t : INCREMENTAL!RdbmsCreateFieldOperation {
+	transform f : NEW!RdbmsValueField
+	to t : TARGET!RdbmsCreateFieldOperation {
 		guard : previousModel.tableExists(f.table) and (not previousModel.tableOf(f.table).fieldExists(f) or not previousModel.tableOf(f.table).fieldOf(f).isTypeOf(PREVIOUS!RdbmsValueField))
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").createFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-CreateValueField";
@@ -72,8 +72,8 @@ rule CreateNewValueFieldOnExistingTable
 
 rule DeletePreviousValueFieldOnExistingTable
 	transform f : PREVIOUS!RdbmsValueField
-	to t : INCREMENTAL!RdbmsDeleteFieldOperation {
-		guard : newModel.tableExists(f.table) and (not newModel.tableOf(f.table).fieldExists(f) or not newModel.tableOf(f.table).fieldOf(f).isTypeOf(CURRENT!RdbmsValueField))
+	to t : TARGET!RdbmsDeleteFieldOperation {
+		guard : newModel.tableExists(f.table) and (not newModel.tableOf(f.table).fieldExists(f) or not newModel.tableOf(f.table).fieldOf(f).isTypeOf(NEW!RdbmsValueField))
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").deleteFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-DeleteValueField";
 	    t.name = "Delete " + f.name;
@@ -83,8 +83,8 @@ rule DeletePreviousValueFieldOnExistingTable
 }
 
 rule CreateNewForeignKeyOnExistingTable
-	transform f : CURRENT!RdbmsForeignKey
-	to t : INCREMENTAL!RdbmsCreateFieldOperation {
+	transform f : NEW!RdbmsForeignKey
+	to t : TARGET!RdbmsCreateFieldOperation {
 		guard : previousModel.tableExists(f.table) and not previousModel.tableOf(f.table).fieldExists(f)
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").createFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-CreateForeignKey";
@@ -95,7 +95,7 @@ rule CreateNewForeignKeyOnExistingTable
 
 rule DeletePreviousForeignKeyOnExistingTable
 	transform f : PREVIOUS!RdbmsForeignKey
-	to t : INCREMENTAL!RdbmsDeleteFieldOperation {
+	to t : TARGET!RdbmsDeleteFieldOperation {
 		guard : newModel.tableExists(f.table) and not newModel.tableOf(f.table).fieldExists(f)
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").deleteFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-DeleteForeignKey";
@@ -108,7 +108,7 @@ rule DeletePreviousForeignKeyOnExistingTable
 
 rule ModifyExistingValueField
 	transform f : PREVIOUS!RdbmsValueField
-	to t : INCREMENTAL!RdbmsModifyFieldOperation {
+	to t : TARGET!RdbmsModifyFieldOperation {
 		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) 
 		var n : RDBMS!RdbmsField = newModel.tableOf(f.table).fieldOf(f);
 
@@ -120,7 +120,7 @@ rule ModifyExistingValueField
 
 		f.uuid.println("Modify field: ");
 
-	    if (not n.isTypeOf(CURRENT!RdbmsValueField)) {
+	    if (not n.isTypeOf(NEW!RdbmsValueField)) {
 	    	t.changedValueFieldToForeignKey = true;
 			"".println("    Value field changed to foreign key");
 	    } else {	    
@@ -136,6 +136,7 @@ rule ModifyExistingValueField
 		    	t.sizeChanged = true;
 		    	("Size: " + f.size  + " ->" + n.size + " Precision: " + f.precision  + " ->" + n.precision + " Scale: " + f.scale  + " ->" + n.scale + " StorageByte: " + f.storageByte  + " ->" + n.storageByte).println("    Type changed: ");
 		    }
+		    
 		    if (f.isMandatoryChanged(n)) {
 		    	t.mandatoryChanged = true;	
 		    }
@@ -144,7 +145,7 @@ rule ModifyExistingValueField
 
 rule ModifyExistingForeignKeyField
 	transform f : PREVIOUS!RdbmsForeignKey
-	to t : INCREMENTAL!RdbmsModifyFieldOperation {
+	to t : TARGET!RdbmsModifyFieldOperation {
 		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) 
 		var n : RDBMS!RdbmsField = newModel.tableOf(f.table).fieldOf(f);
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").modifyFieldOperations.add(t);
@@ -155,7 +156,7 @@ rule ModifyExistingForeignKeyField
 
 		f.uuid.println("Modify field: ");
 
-	    if (not n.isTypeOf(CURRENT!RdbmsForeignKey)) {
+	    if (not n.isTypeOf(NEW!RdbmsForeignKey)) {
 	       	t.changedForeignKeyToValueField = true;
 			"".println("    Foreign key changed to Value field");
 	    } else {	    

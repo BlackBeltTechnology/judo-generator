@@ -12,20 +12,6 @@
 	<artifactId>hu.blackbelt.judo.generator.transformer.rdbms.incremental</artifactId>
 	<packaging>jar</packaging>
 
-
-    <properties>
-        <src.dir>src</src.dir>
-    </properties>
-
-    <build>
-        <sourceDirectory>${src.dir}</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>${src.dir}</directory>
-            </resource>
-        </resources>
-    </build>
-
 	<profiles>
 		<profile>
 			<properties>
@@ -120,8 +106,9 @@
 						</executions>
 					</plugin>
 					<plugin>
-                        <groupId>hu.blackbelt.epsilon</groupId>
+						<groupId>${project.groupId}</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
+						<version>${epsilon.maven.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>create-incremental-postgres</id>
@@ -136,10 +123,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsPostgres.model</artifact>
-											<name>RDBMS</name>
+											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>CURRENT</alias>
+												<alias>RDBMS</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -162,10 +149,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsPostgres.model</artifact>
-											<name>INCREMENTAL</name>
-											<aliases>
-												<alias>RDBMS</alias>
-											</aliases>
+											<name>TARGET</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -193,10 +177,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsOracle.model</artifact>
-											<name>RDBMS</name>
+											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>CURRENT</alias>
+												<alias>RDBMS</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -219,10 +203,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsOracle.model</artifact>
-											<name>INCREMENTAL</name>
-											<aliases>
-												<alias>RDBMS</alias>
-											</aliases>
+											<name>TARGET</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -251,10 +232,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</artifact>
-											<name>RDBMS</name>
+											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>CURRENT</alias>
+												<alias>RDBMS</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -277,10 +258,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsHsqldb.model</artifact>
-											<name>INCREMENTAL</name>
-											<aliases>
-												<alias>RDBMS</alias>
-											</aliases>
+											<name>TARGET</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -344,7 +322,7 @@
 			<build>
 				<plugins>
 					<plugin>
-                        <groupId>hu.blackbelt.epsilon</groupId>
+						<groupId>hu.blackbelt.judo.generator</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<executions>
 							<execution>
@@ -538,7 +516,7 @@
 			<build>
 				<plugins>
 					<plugin>
-                        <groupId>hu.blackbelt.epsilon</groupId>
+						<groupId>hu.blackbelt.judo.generator</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<executions>
 							<execution>
@@ -554,10 +532,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/test/B-Postgres.model</artifact>
-											<name>RDBMS</name>
+											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>CURRENT</alias>
+												<alias>RDBMS</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -580,10 +558,11 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Postgres.model</artifact>
-											<name>INCREMENTAL</name>
+											<name>TARGET</name>
 											<aliases>
-												<alias>RDBMS</alias>
+												<alias>TRG</alias>
 											</aliases>
+
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -611,10 +590,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/test/B-Oracle.model</artifact>
-											<name>RDBMS</name>
+											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>CURRENT</alias>
+												<alias>RDBMS</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -637,10 +616,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Oracle.model</artifact>
-											<name>INCREMENTAL</name>
-											<aliases>
-												<alias>RDBMS</alias>
-											</aliases>
+											<name>TARGET</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -669,10 +645,10 @@
 									<models>
 										<model>
 											<artifact>${project.build.directory}/test/B-Hsqldb.model</artifact>
-											<name>RDBMS</name>
+											<name>NEW</name>
 											<aliases>
 												<alias>SOURCE</alias>
-												<alias>CURRENT</alias>
+												<alias>RDBMS</alias>
 											</aliases>
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
@@ -695,10 +671,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Hsqldb.model</artifact>
-											<name>INCREMENTAL</name>
-											<aliases>
-												<alias>RDBMS</alias>
-											</aliases>
+											<name>TARGET</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -727,7 +700,7 @@
 			<build>
 				<plugins>
 					<plugin>
-                        <groupId>hu.blackbelt.epsilon</groupId>
+						<groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<executions>
 							<execution>

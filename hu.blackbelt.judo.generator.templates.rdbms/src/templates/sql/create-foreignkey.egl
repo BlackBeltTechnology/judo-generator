@@ -6,7 +6,7 @@
 
 [* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
 
-[% for (foreignKey in CURRENT!RdbmsForeignKey.all) {
+[% for (foreignKey in RDBMS!RdbmsForeignKey.all) {
 		var inc : Template = TemplateFactory.load("templates/sql/macros/create-foreignkey.egl");
 		inc.populate("foreignKey", foreignKey);
     	inc.populate("scriptName", scriptName);
