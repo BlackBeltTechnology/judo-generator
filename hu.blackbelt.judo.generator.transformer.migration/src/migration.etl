@@ -67,7 +67,7 @@ rule Element
 		mapElement(s,t,"");
 }
 
-operation mapElement(s, t, suffix) {
+operation mapElement(s :RDBMS!RdbmsElement, t : MIG!RdbmsElement, suffix : String) {
 	t.name = s.name + suffix;
 	t.uuid = s.uuid + suffix;
 	t.fullName = s.fullName + suffix;
@@ -119,7 +119,7 @@ rule Model
 		}
 		
 		for (fk in RDBMS!RdbmsForeignKey.all) {
-			if (not ecxludedFields.contains(fk.name) and not fk.inheritenceBased) {
+			if (not ecxludedFields.contains(fk.name)) {
 			    var refKey = t.rdbmsTables.primaryKey.selectOne(f | f.uuid = fk.referenceKey.uuid);
 			    var table = t.rdbmsTables.selectOne(t | t.uuid = fk.table.uuid);
 			    
@@ -129,23 +129,20 @@ rule Model
 						equiv.table = table;
 						equiv.referenceKey = refKey;
 					}
-			    } else {
-			    	if (fk.referenceKey.table.isAbstract() and table.isDefined()) {
-					    var ds = descendants(fk.referenceKey.table.uuid, t.rdbmsTables);
-					    for (d in ds) {
-					    	var equiv = new MIG!RdbmsForeignKey;
-					    	mapElement(fk, equiv, "_" + d.sqlName);
-					    	mapFK(fk, equiv, "_" + d.sqlName);
-					    	equiv.mandatory = false;
-					    	equiv.inheritenceBased = true; //using this to be able distinguish in the INSERT statements int he templates 
-							equiv.table = table;
-							equiv.referenceKey = d.primaryKey;
-					    }
+			    } else if (fk.referenceKey.table.isAbstract() and table.isDefined()) {
+				    var ds = fk.referenceKey.table.descendants(t.rdbmsTables);
+				    for (d in ds) {
+						createFK(fk, table, d.primaryKey, d.sqlName);
+				    }
+				} else if (refKey.isDefined() and fk.table.isAbstract() and not fk.inheritenceBased) {
+					var ds = fk.table.descendants(t.rdbmsTables).excluding(refKey.table);
+				    for (d in ds) {
+				    	createFK(fk, d, refKey, d.sqlName);
 				    }
 				}				
 			}
 		}
-	}
+}
 
 @lazy
 rule View 
@@ -204,22 +201,6 @@ rule Fk
 		mapFK(s, fk, "");
 }
 
-operation mapFK(s, fk, suffix) {
-	var typeName = s.rdbmsTypeName;
-	if (not typeName.isDefined()) {
-		typeName = s.type.rdbmsTypeName;
-	}		
-	fk.rdbmsTypeName = typeName;
-	fk.size = s.size;
-	fk.precision = s.precision;
-	fk.scale = s.scale;
-	fk.storageByte = s.storageByte;
-	fk.mandatory = s.mandatory;
-    fk.foreignKeySqlName = s.foreignKeySqlName + suffix;
-	fk.deleteOnCascade = s.deleteOnCascade;
-	fk.readOnly = s.readOnly;
-}
-
 @lazy
 rule Junction
 	transform s : RDBMS!RdbmsJunctionTable
@@ -251,12 +232,38 @@ rule Junction
 		j.field2.table = j;
 }
 
-operation RDBMS!RdbmsView isAbstract() {
+operation mapFK(s : RDBMS!RdbmsForeignKey, t : MIG!RdbmsForeignKey, suffix : String) {
+	var typeName = s.rdbmsTypeName;
+	if (not typeName.isDefined()) {
+		typeName = s.type.rdbmsTypeName;
+	}		
+	t.rdbmsTypeName = typeName;
+	t.size = s.size;
+	t.precision = s.precision;
+	t.scale = s.scale;
+	t.storageByte = s.storageByte;
+	t.mandatory = s.mandatory;
+    t.foreignKeySqlName = s.foreignKeySqlName + suffix;
+	t.deleteOnCascade = s.deleteOnCascade;
+	t.readOnly = s.readOnly;
+}
+
+operation createFK(source : RDBMS!RdbmsForeignKey, owner :  MIG!RdbmsTable, refKey : MIG!RdbmsIdentifierField, suffix : String) {
+	var equiv = new MIG!RdbmsForeignKey;
+	mapElement(source, equiv, "_" + suffix);
+	mapFK(source, equiv, "_" + suffix);
+	equiv.mandatory = false;
+	equiv.inheritenceBased = true; //using this to be able distinguish in the INSERT statements in the templates 
+	equiv.table = owner;
+	equiv.referenceKey = refKey;
+}
+
+operation RDBMS!RdbmsView isAbstract() : Boolean {
 	var target = self.uuid.substring(0, self.uuid.indexOf(viewSuffix));
 	return PSM!JClass.all.selectOne(c | c.uuid = target).`abstract`.asBoolean();
 }
 
-operation RDBMS!RdbmsTable isAbstract() {
+operation RDBMS!RdbmsTable isAbstract()  : Boolean {
 	var c = PSM!JClass.all.selectOne(c | c.uuid = self.uuid);
 	if (c.isDefined()) {
 		return c.`abstract`.asBoolean();
@@ -279,9 +286,9 @@ operation MIG!RdbmsTable originalTableName() : String {
 	return "t_"  + self.shortName.substring(2).toLowerCase();
 }
 
-operation descendants(uuid : String, tables : Collection<MIG!RdbmsTable>) : Set<MIG!RdbmsTable> {
+operation RDBMS!RdbmsTable descendants(tables : Collection<MIG!RdbmsTable>) : Set<MIG!RdbmsTable> {
 	var cs = PSM!JClass.all
-		.select(c | c.supertype.isDefined() and c.supertype.uuid == uuid)
+		.select(c | c.supertype.isDefined() and c.supertype.uuid == self.uuid)
 		.select(c | not c.`abstract`)
 		.collect(c | c.uuid)
 		.asSet();

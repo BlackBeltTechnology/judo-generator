@@ -4,13 +4,6 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="./script-definition.xsd">
 
-	<!-- Variables:
-		- currentVersion - The current version which composited from project version and MD5 sum of the model.
-		- previpusVersion - The previous version which is used to make delta model. The incremental version based on that.
-		- dialect - The sql dialects. All variants are executed on all script
-	-->
-
-
 	<sql name = "create-migration-schema" scriptName="templates/sql/create-migration-schema.egl" out ="schema/sql/${currentVersion}/${dialect}/create-migration-schema.sql"/>    
 
 	<!-- It runs when there is NO DB presented -->
