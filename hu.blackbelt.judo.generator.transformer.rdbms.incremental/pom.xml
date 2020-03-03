@@ -106,7 +106,7 @@
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>${project.groupId}</groupId>
+						<groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<version>${epsilon.maven.plugin.version}</version>
 						<executions>
@@ -241,7 +241,7 @@
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
 
-											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</platformAlias>
+											<!-- <platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.version}.rdbmsHsqldb.model</platformAlias> -->
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</artifact>
@@ -254,7 +254,7 @@
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
-											<platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</platformAlias>
+											<!-- <platformAlias>platform:/resource/${project.artifactId}/target/${test.model.artifactId}-${test.model.previousVersion}.rdbmsHsqldb.model</platformAlias> -->
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsHsqldb.model</artifact>
@@ -322,7 +322,7 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>hu.blackbelt.judo.generator</groupId>
+						<groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
 						<executions>
 							<execution>
@@ -705,7 +705,7 @@
 						<executions>
 							<execution>
 								<id>excecute-test</id>
-								<phase>generate-resources</phase>
+								<phase>test</phase>
 								<goals>
 									<goal>execute</goal>
 								</goals>
@@ -725,8 +725,34 @@
 									</excelModels>
 									<models>
 										<model>
+											<artifact>${project.build.directory}/test/A-Hsqldb.model</artifact>
+											<name>PREVIOUS</name>
+											<aliases>
+												<alias>SOURCE</alias>
+												<alias>HSQLDB</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+
+											<platformAlias>platform:/resource/${project.artifactId}/test/A-Hsqldb.model</platformAlias>
+										</model>
+										<model>
+											<artifact>${project.build.directory}/test/B-Hsqldb.model</artifact>
+											<name>NEW</name>
+											<aliases>
+												<alias>TARGET</alias>
+												<alias>HSQLDB</alias>
+											</aliases>
+											<metaModelUris>
+												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
+											</metaModelUris>
+											<platformAlias>platform:/resource/${project.artifactId}/test/B-Hsqldb.model</platformAlias>
+										</model>
+
+										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Hsqldb.model</artifact>
-											<name>hsqldbDifference</name>
+											<name>INCREMENTAL</name>
 											<aliases>
 												<alias>HSQLDB</alias>
 											</aliases>

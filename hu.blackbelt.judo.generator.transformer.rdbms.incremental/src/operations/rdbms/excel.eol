@@ -18,6 +18,10 @@ operation XLS!Differences typeChanged() : Boolean {
 	return self.type_changed.isDefined();
 }
 
+operation XLS!Differences sizeChanged() : Boolean {
+	return self.size_changed.isDefined();
+}
+
 operation XLS!Differences nameChanged() : Boolean {
 	return self.name_changed.isDefined();
 }
@@ -36,4 +40,10 @@ operation XLS!Differences toForeignKey() : Boolean {
 
 operation String removeIndicator() : String {
 	return self.split("-").first();
+}
+
+operation XLS!Differences isAnyChanged() : Boolean {
+    return self.recreated() or self.deleted() or self.created() or self.typeChanged()
+       or self.sizeChanged() or self.nameChanged() or self.mandatoryChanged() or self.toValueField()
+       or self.toForeignKey();
 }

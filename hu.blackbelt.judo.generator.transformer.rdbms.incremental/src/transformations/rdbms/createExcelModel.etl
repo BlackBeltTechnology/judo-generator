@@ -4,6 +4,7 @@ pre {
    var originalModel = new ORIGINAL!RdbmsModel();
    originalModel.version = "1.0";
 }
+
 //A
 rule transformOriginalTable
 	transform f : XLS!TablesOriginal
@@ -28,7 +29,7 @@ rule transformOriginalValue
 		t.precision = f.precision.asInteger();
 		t.scale = f.scale.asInteger();
 		t.storageByte = f.storage_byte.asInteger();
-		t.table = XLS!TablesOriginal.allInstances.selectOne(table | table.uuid == f.table_uuid).equivalent("transformOriginalTable");	
+		t.table = XLS!TablesOriginal.allInstances.selectOne(table | table.uuid == f.table_uuid).equivalent("transformOriginalTable");
 }
 
 rule transformOriginalId

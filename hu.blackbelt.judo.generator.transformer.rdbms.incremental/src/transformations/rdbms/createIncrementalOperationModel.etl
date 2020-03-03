@@ -10,6 +10,21 @@ pre {
 	newModel.flattenTypes();
 }
 
+post {
+	var previousModel = PREVIOUS!RdbmsModel.all.first();
+	var newModel = NEW!RdbmsModel.all.first();
+
+    // Removing operations which have no field and name does not changed
+    for (op in TARGET!RdbmsModifyTableOperation.all()) {
+        if (op.deleteFieldOperations.size() == 0 and op.createFieldOperations.size() == 0 and op.modifyFieldOperations.size() == 0 and not op.nameChanged) {
+            TARGET!RdbmsModel.all.first().tableOperations.remove(op);
+        }
+    }
+
+    TARGET.resource.contents.add(previousModel);
+    TARGET.resource.contents.add(newModel);
+}
+
 rule OperationModel 
 	transform s : NEW!RdbmsModel
 	to t : TARGET!RdbmsModel {
@@ -29,7 +44,7 @@ rule CreateOperationMeta
 rule CreateNewTable 
 	transform s : NEW!RdbmsTable
 	to t : TARGET!RdbmsCreateTableOperation {
-	guard : not previousModel.tableExists(s)
+	guard : not previousModel.tableExists(s) and s.fields.size() > 0
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Create " + s.name;
 	    t.uuid =  s.uuid + "-CreateTable";
@@ -40,7 +55,7 @@ rule CreateNewTable
 rule DeletePreviousTable 
 	transform s : PREVIOUS!RdbmsTable
 	to t : TARGET!RdbmsDeleteTableOperation {
-	guard : not newModel.tableExists(s)
+	guard : not newModel.tableExists(s) or newModel.tableOf(s).fields.size() == 0
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Delete " + s.name;
 	    t.uuid =  s.uuid + "-DeleteTable";
@@ -49,20 +64,22 @@ rule DeletePreviousTable
 }
 
 @lazy
-rule ModifyTableOperationForExistingTable 
+rule ModifyTableOperationForExistingTable
 	transform s : RDBMS!RdbmsTable
 	to t : TARGET!RdbmsModifyTableOperation {
+	guard : s.fields.size() > 0
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Modify " + s.name;
 	    t.uuid =  s.uuid + "-ModifyTable";
 	    t.table = s;
+	    t.previousTable = previousModel.tableOf(s);
 		s.uuid.println("Modified table: ");
 }
 
 rule CreateNewValueFieldOnExistingTable
 	transform f : NEW!RdbmsValueField
 	to t : TARGET!RdbmsCreateFieldOperation {
-		guard : previousModel.tableExists(f.table) and (not previousModel.tableOf(f.table).fieldExists(f) or not previousModel.tableOf(f.table).fieldOf(f).isTypeOf(PREVIOUS!RdbmsValueField))
+		guard : previousModel.tableExists(f.table) and (not previousModel.tableOf(f.table).fieldExists(f))
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").createFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-CreateValueField";
 	    t.name = "Create " + f.name;
@@ -73,7 +90,7 @@ rule CreateNewValueFieldOnExistingTable
 rule DeletePreviousValueFieldOnExistingTable
 	transform f : PREVIOUS!RdbmsValueField
 	to t : TARGET!RdbmsDeleteFieldOperation {
-		guard : newModel.tableExists(f.table) and (not newModel.tableOf(f.table).fieldExists(f) or not newModel.tableOf(f.table).fieldOf(f).isTypeOf(NEW!RdbmsValueField))
+		guard : newModel.tableExists(f.table) and (newModel.tableOf(f.table).fields.size() > 0 and not newModel.tableOf(f.table).fieldExists(f))
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").deleteFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-DeleteValueField";
 	    t.name = "Delete " + f.name;
@@ -109,7 +126,7 @@ rule DeletePreviousForeignKeyOnExistingTable
 rule ModifyExistingValueField
 	transform f : PREVIOUS!RdbmsValueField
 	to t : TARGET!RdbmsModifyFieldOperation {
-		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) 
+		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and (f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) or not newModel.tableOf(f.table).fieldOf(f).isTypeOf(NEW!RdbmsValueField))
 		var n : RDBMS!RdbmsField = newModel.tableOf(f.table).fieldOf(f);
 
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").modifyFieldOperations.add(t);
@@ -123,30 +140,31 @@ rule ModifyExistingValueField
 	    if (not n.isTypeOf(NEW!RdbmsValueField)) {
 	    	t.changedValueFieldToForeignKey = true;
 			"".println("    Value field changed to foreign key");
-	    } else {	    
-		    if (f.isSqlNameChanged(n)) {
-		    	t.nameChanged = true;	
-				(f.sqlName + " ->" + n.sqlName).println("    Name changed: ");
-		    }
-	
-		    if (f.isSqlTypeChanged(n)) {
-		    	t.typeChanged = true;	
-				(f.rdbmsTypeName + " ->" + n.rdbmsTypeName).println("    Type changed: ");
-		    } else if (f.isSizeChanged(n) or f.isPrecisionChanged(n) or f.isScaleChanged(n) or f.isStorageByteChanged(n)) {
-		    	t.sizeChanged = true;
-		    	("Size: " + f.size  + " ->" + n.size + " Precision: " + f.precision  + " ->" + n.precision + " Scale: " + f.scale  + " ->" + n.scale + " StorageByte: " + f.storageByte  + " ->" + n.storageByte).println("    Type changed: ");
-		    }
-		    
-		    if (f.isMandatoryChanged(n)) {
-		    	t.mandatoryChanged = true;	
-		    }
-	    }    	    
+	    }
+
+        if (f.isSqlTypeChanged(n)) {
+            t.typeChanged = true;
+            (f.rdbmsTypeName + " -> " + n.rdbmsTypeName).println("    Type changed: ");
+        } else if (f.isSizeChanged(n) or f.isPrecisionChanged(n) or f.isScaleChanged(n) or f.isStorageByteChanged(n)) {
+            t.sizeChanged = true;
+            ("Size: " + f.size  + " -> " + n.size + " Precision: " + f.precision  + " -> " + n.precision + " Scale: " + f.scale  + " -> " + n.scale + " StorageByte: " + f.storageByte  + " -> " + n.storageByte).println("    Type changed: ");
+        }
+
+        if (f.isSqlNameChanged(n)) {
+            t.nameChanged = true;
+            (f.sqlName + " -> " + n.sqlName).println("    Name changed: ");
+        }
+
+        if (f.isMandatoryChanged(n)) {
+            t.mandatoryChanged = true;
+        }
+
 }
 
 rule ModifyExistingForeignKeyField
 	transform f : PREVIOUS!RdbmsForeignKey
 	to t : TARGET!RdbmsModifyFieldOperation {
-		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) 
+		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and (f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) or not newModel.tableOf(f.table).fieldOf(f).isTypeOf(NEW!RdbmsForeignKey))
 		var n : RDBMS!RdbmsField = newModel.tableOf(f.table).fieldOf(f);
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").modifyFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-ModifyField";
@@ -159,10 +177,33 @@ rule ModifyExistingForeignKeyField
 	    if (not n.isTypeOf(NEW!RdbmsForeignKey)) {
 	       	t.changedForeignKeyToValueField = true;
 			"".println("    Foreign key changed to Value field");
-	    } else {	    
-		    if (f.isSqlNameChanged(n)) {
-		    	t.nameChanged = true;	
-				(f.sqlName + " ->" + n.sqlName).println("    Name changed: ");
-		    }
 	    }
+
+        if (f.isSqlTypeChanged(n)) {
+            t.typeChanged = true;
+            (f.rdbmsTypeName + " -> " + n.rdbmsTypeName).println("    Type changed: ");
+        } else if (f.isSizeChanged(n) or f.isPrecisionChanged(n) or f.isScaleChanged(n) or f.isStorageByteChanged(n)) {
+            t.sizeChanged = true;
+            ("Size: " + f.size  + " -> " + n.size + " Precision: " + f.precision  + " -> " + n.precision + " Scale: " + f.scale  + " -> " + n.scale + " StorageByte: " + f.storageByte  + " -> " + n.storageByte).println("    Type changed: ");
+        }
+
+        if (f.isSqlNameChanged(n)) {
+            t.nameChanged = true;
+            (f.sqlName + " -> " + n.sqlName).println("    Name changed: ");
+        }
+
+        if (f.isMandatoryChanged(n)) {
+            t.mandatoryChanged = true;
+        }
+}
+
+rule RenameExistingTable
+	transform s : NEW!RdbmsTable
+	to t : TARGET!RdbmsModifyTableOperation
+	extends ModifyTableOperationForExistingTable {
+    	guard : previousModel.tableExists(s) and previousModel.tableOf(s).isSqlNameChanged(s)
+
+        t.nameChanged = true;
+        (previousModel.tableOf(s).sqlName + " -> " + s.sqlName).println("    Name changed: ");
+
 }
