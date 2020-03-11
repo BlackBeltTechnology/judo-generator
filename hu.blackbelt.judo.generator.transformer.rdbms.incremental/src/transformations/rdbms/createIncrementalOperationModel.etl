@@ -15,19 +15,19 @@ post {
 	var newModel = NEW!RdbmsModel.all.first();
 
     // Removing operations which have no field and name does not changed
-    for (op in TARGET!RdbmsModifyTableOperation.all()) {
+    for (op in INCREMENTAL!RdbmsModifyTableOperation.all()) {
         if (op.deleteFieldOperations.size() == 0 and op.createFieldOperations.size() == 0 and op.modifyFieldOperations.size() == 0 and not op.nameChanged) {
-            TARGET!RdbmsModel.all.first().tableOperations.remove(op);
+            INCREMENTAL!RdbmsModel.all.first().tableOperations.remove(op);
         }
     }
 
-    TARGET.resource.contents.add(previousModel);
-    TARGET.resource.contents.add(newModel);
+    INCREMENTAL.resource.contents.add(previousModel);
+    INCREMENTAL.resource.contents.add(newModel);
 }
 
 rule OperationModel 
 	transform s : NEW!RdbmsModel
-	to t : TARGET!RdbmsModel {
+	to t : INCREMENTAL!RdbmsModel {
 	    t.version = previousModel.version + "_" + newModel.version;
 		"".println("Created operation model: ");
 }
@@ -35,7 +35,7 @@ rule OperationModel
 
 rule CreateOperationMeta 
 	transform s : NEW!RdbmsModel
-	to t : TARGET!RdbmsOperationMeta {
+	to t : INCREMENTAL!RdbmsOperationMeta {
 		t.previousModel = previousModel;
 		t.currentModel = newModel;
 		"".println("Created operation meta: ");
@@ -43,7 +43,7 @@ rule CreateOperationMeta
 
 rule CreateNewTable 
 	transform s : NEW!RdbmsTable
-	to t : TARGET!RdbmsCreateTableOperation {
+	to t : INCREMENTAL!RdbmsCreateTableOperation {
 	guard : not previousModel.tableExists(s) and s.fields.size() > 0
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Create " + s.name;
@@ -54,7 +54,7 @@ rule CreateNewTable
 
 rule DeletePreviousTable 
 	transform s : PREVIOUS!RdbmsTable
-	to t : TARGET!RdbmsDeleteTableOperation {
+	to t : INCREMENTAL!RdbmsDeleteTableOperation {
 	guard : not newModel.tableExists(s) or newModel.tableOf(s).fields.size() == 0
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Delete " + s.name;
@@ -66,7 +66,7 @@ rule DeletePreviousTable
 @lazy
 rule ModifyTableOperationForExistingTable
 	transform s : RDBMS!RdbmsTable
-	to t : TARGET!RdbmsModifyTableOperation {
+	to t : INCREMENTAL!RdbmsModifyTableOperation {
 	guard : s.fields.size() > 0
 	    newModel.equivalent("OperationModel").tableOperations.add(t);
 		t.name = "Modify " + s.name;
@@ -78,7 +78,7 @@ rule ModifyTableOperationForExistingTable
 
 rule CreateNewValueFieldOnExistingTable
 	transform f : NEW!RdbmsValueField
-	to t : TARGET!RdbmsCreateFieldOperation {
+	to t : INCREMENTAL!RdbmsCreateFieldOperation {
 		guard : previousModel.tableExists(f.table) and (not previousModel.tableOf(f.table).fieldExists(f))
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").createFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-CreateValueField";
@@ -89,7 +89,7 @@ rule CreateNewValueFieldOnExistingTable
 
 rule DeletePreviousValueFieldOnExistingTable
 	transform f : PREVIOUS!RdbmsValueField
-	to t : TARGET!RdbmsDeleteFieldOperation {
+	to t : INCREMENTAL!RdbmsDeleteFieldOperation {
 		guard : newModel.tableExists(f.table) and (newModel.tableOf(f.table).fields.size() > 0 and not newModel.tableOf(f.table).fieldExists(f))
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").deleteFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-DeleteValueField";
@@ -101,7 +101,7 @@ rule DeletePreviousValueFieldOnExistingTable
 
 rule CreateNewForeignKeyOnExistingTable
 	transform f : NEW!RdbmsForeignKey
-	to t : TARGET!RdbmsCreateFieldOperation {
+	to t : INCREMENTAL!RdbmsCreateFieldOperation {
 		guard : previousModel.tableExists(f.table) and not previousModel.tableOf(f.table).fieldExists(f)
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").createFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-CreateForeignKey";
@@ -112,7 +112,7 @@ rule CreateNewForeignKeyOnExistingTable
 
 rule DeletePreviousForeignKeyOnExistingTable
 	transform f : PREVIOUS!RdbmsForeignKey
-	to t : TARGET!RdbmsDeleteFieldOperation {
+	to t : INCREMENTAL!RdbmsDeleteFieldOperation {
 		guard : newModel.tableExists(f.table) and not newModel.tableOf(f.table).fieldExists(f)
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").deleteFieldOperations.add(t);
 	    t.uuid =  f.uuid + "-DeleteForeignKey";
@@ -125,7 +125,7 @@ rule DeletePreviousForeignKeyOnExistingTable
 
 rule ModifyExistingValueField
 	transform f : PREVIOUS!RdbmsValueField
-	to t : TARGET!RdbmsModifyFieldOperation {
+	to t : INCREMENTAL!RdbmsModifyFieldOperation {
 		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and (f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) or not newModel.tableOf(f.table).fieldOf(f).isTypeOf(NEW!RdbmsValueField))
 		var n : RDBMS!RdbmsField = newModel.tableOf(f.table).fieldOf(f);
 
@@ -163,7 +163,7 @@ rule ModifyExistingValueField
 
 rule ModifyExistingForeignKeyField
 	transform f : PREVIOUS!RdbmsForeignKey
-	to t : TARGET!RdbmsModifyFieldOperation {
+	to t : INCREMENTAL!RdbmsModifyFieldOperation {
 		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and (f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) or not newModel.tableOf(f.table).fieldOf(f).isTypeOf(NEW!RdbmsForeignKey))
 		var n : RDBMS!RdbmsField = newModel.tableOf(f.table).fieldOf(f);
 	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").modifyFieldOperations.add(t);
@@ -199,7 +199,7 @@ rule ModifyExistingForeignKeyField
 
 rule RenameExistingTable
 	transform s : NEW!RdbmsTable
-	to t : TARGET!RdbmsModifyTableOperation
+	to t : INCREMENTAL!RdbmsModifyTableOperation
 	extends ModifyTableOperationForExistingTable {
     	guard : previousModel.tableExists(s) and previousModel.tableOf(s).isSqlNameChanged(s)
 

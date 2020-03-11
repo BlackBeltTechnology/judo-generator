@@ -158,7 +158,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsPostgres.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -212,7 +212,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsOracle.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
