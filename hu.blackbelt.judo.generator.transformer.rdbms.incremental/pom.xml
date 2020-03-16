@@ -267,7 +267,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsHsqldb.model</artifact>
-											<name>TARGET</name>
+											<name>INREMENTAL</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -525,8 +525,9 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>hu.blackbelt.judo.generator</groupId>
+						<groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
+						<version>${epsilon.maven.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>create-incremental-postgres</id>
@@ -567,7 +568,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Postgres.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
 											<aliases>
 												<alias>TRG</alias>
 											</aliases>
@@ -625,7 +626,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Oracle.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -680,7 +681,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/A-B-incremental-Hsqldb.model</artifact>
-											<name>TARGET</name>
+											<name>INCREMENTAL</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
@@ -711,6 +712,7 @@
 					<plugin>
 						<groupId>hu.blackbelt.epsilon</groupId>
 						<artifactId>epsilon-maven-plugin</artifactId>
+						<version>${epsilon.maven.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>excecute-test</id>
@@ -743,7 +745,6 @@
 											<metaModelUris>
 												<param>http://blackbelt.hu/judo/meta/psm/rdbms</param>
 											</metaModelUris>
-
 											<platformAlias>platform:/resource/${project.artifactId}/test/A-Hsqldb.model</platformAlias>
 										</model>
 										<model>
