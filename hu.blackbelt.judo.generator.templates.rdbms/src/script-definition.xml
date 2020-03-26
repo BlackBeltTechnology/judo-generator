@@ -33,8 +33,6 @@
 	<sql name = "drop-table-before-insert-trigger" scriptName="templates/sql/drop-table-before-insert-trigger.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-before-insert-trigger.sql"/>
 	<sql name = "drop-table-before-update-trigger" scriptName="templates/sql/drop-table-before-update-trigger.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-before-update-trigger.sql"/>
 	<sql name = "drop-junction-before-insert-trigger" scriptName="templates/sql/drop-junction-before-insert-trigger.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-junction-before-insert-trigger.sql"/>
-	<sql name = "drop-table-before-insert-trigger" scriptName="templates/sql/drop-table-before-insert-trigger.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-before-insert-trigger.sql"/>
-	<sql name = "drop-table-before-update-trigger" scriptName="templates/sql/drop-table-before-update-trigger.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-before-update-trigger.sql"/>
 	<sql name = "drop-index" scriptName="templates/sql/drop-index.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-index.sql"/>
 	<sql name = "drop-unique-constraint" scriptName="templates/sql/drop-unique-constraint.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-unique-constraint.sql"/>
 	<sql name = "drop-not-null-constraint" scriptName="templates/sql/drop-not-null-constraint.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-not-null-constraint.sql"/>
@@ -47,6 +45,7 @@
 	<sql name = "alter-table-drop-column-incremental" scriptName="templates/sql/alter-table-drop-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sql"/>
 	<sql name = "alter-table-alter-column-type-incremental" scriptName="templates/sql/alter-table-alter-column-type.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-alter-column-type-incremental.sql"/>
 	<sql name = "alter-table-alter-column-set-mandatoryincremental" scriptName="templates/sql/alter-table-alter-column-set-mandatory.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-alter-column-set-mandatory-incremental.sql"/>
+	<sql name = "create-table-incremental" scriptName="templates/sql/create-table-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-table-incremental.sql"/>
 	<sql name = "drop-table-incremental" scriptName="templates/sql/drop-table-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-incremental.sql"/>
 	<sql name = "backup-table-deleted-incremental" scriptName="templates/sql/backup-table-delete-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/backup-table-delete-incremental.sql"/>
 	<sql name = "backup-table-modify-incremental" scriptName="templates/sql/backup-table-modify-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/backup-table-modify-incremental.sql"/>
@@ -97,6 +96,7 @@
 	<changeset name = "changeset-incremental"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-incremental.xml" >
 		<change sql ="sql/${currentVersion}/${dialect}/backup-table-delete-incremental.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/backup-table-modify-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-table-incremental.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-table-incremental.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-rename-column-incremental.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/alter-table-drop-column-incremental.sql"/>

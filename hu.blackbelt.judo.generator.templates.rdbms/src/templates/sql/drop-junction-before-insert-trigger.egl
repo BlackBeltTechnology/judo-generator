@@ -6,7 +6,7 @@
 
 [%for (table in CURRENT!RdbmsJunctionTable.all) {%]
 
---changeset generator:DROP_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
+--changeset generator:DROP_TRIGGER_BEFORE_INSERT_[%= table.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true splitStatements:false
 -- [%= table.name %] [%= table.uuid %]
 DROP TRIGGER BI_[%= table.sqlName %] ON [%= table.sqlName %];
 

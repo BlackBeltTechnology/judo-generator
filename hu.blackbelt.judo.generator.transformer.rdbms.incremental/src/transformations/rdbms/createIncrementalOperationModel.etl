@@ -52,8 +52,30 @@ rule CreateNewTable
 		s.uuid.println("Created table: ");
 }
 
+rule CreateNewJunctionTable
+	transform s : NEW!RdbmsJunctionTable
+	to t : INCREMENTAL!RdbmsCreateTableOperation {
+	guard : not previousModel.tableExists(s) and s.fields.size() > 0
+	    newModel.equivalent("OperationModel").tableOperations.add(t);
+		t.name = "Create " + s.name;
+	    t.uuid =  s.uuid + "-CreateTable";
+	    t.table = s;
+		s.uuid.println("Created table: ");
+}
+
 rule DeletePreviousTable 
 	transform s : PREVIOUS!RdbmsTable
+	to t : INCREMENTAL!RdbmsDeleteTableOperation {
+	guard : not newModel.tableExists(s) or newModel.tableOf(s).fields.size() == 0
+	    newModel.equivalent("OperationModel").tableOperations.add(t);
+		t.name = "Delete " + s.name;
+	    t.uuid =  s.uuid + "-DeleteTable";
+	    t.table = s;
+		s.uuid.println("Deleted table: ");
+}
+
+rule DeletePreviousJunctionTable
+	transform s : PREVIOUS!RdbmsJunctionTable
 	to t : INCREMENTAL!RdbmsDeleteTableOperation {
 	guard : not newModel.tableExists(s) or newModel.tableOf(s).fields.size() == 0
 	    newModel.equivalent("OperationModel").tableOperations.add(t);

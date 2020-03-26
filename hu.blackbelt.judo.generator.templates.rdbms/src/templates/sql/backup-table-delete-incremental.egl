@@ -5,7 +5,7 @@
 --liquibase formatted sql
 
 [% for (op in INCREMENTAL!RdbmsDeleteTableOperation.all) { %]
---changeset generator:BACKUP_TABLE_[%= op.table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:BACKUP_TABLE_[%= op.table.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= op.table.name %] [%= op.table.uuid %]
 CREATE TABLE [%= op.table.backupName() %] AS
 SELECT * FROM [%= op.table.sqlName %];

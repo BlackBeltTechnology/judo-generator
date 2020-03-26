@@ -5,7 +5,7 @@
 --liquibase formatted sql
 
 [% for (view in CURRENT!RdbmsView.all) { %]
---changeset generator:DROP_VIEW_[%= view.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:DROP_VIEW_[%= view.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= view.name %] [%= view.uuid %]
 DROP VIEW IF EXISTS [%= view.sqlName %] CASCADE;
 [% out.println("\n"); %]

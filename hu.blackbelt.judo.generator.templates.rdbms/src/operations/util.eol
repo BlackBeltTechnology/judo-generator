@@ -27,6 +27,15 @@ operation dialect() : String {
 }
 
 @cached
+operation dialectLiquibaseName() : String {
+	if (dialect() == 'Postgres') {
+		return "postgresql";
+	} else {
+		return dialect().toLowerCase();
+	}
+}
+
+@cached
 operation fieldLiteral() : String {
 	if (dialect() == 'Oracle') {
 		return "\"";

@@ -2,6 +2,6 @@
   import "../../../operations/_importAll.eol";
 %]
 
---changeset generator:DROP_TABLE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:DROP_TABLE_[%= table.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= table.name %] [%= table.uuid %]
 DROP TABLE [%= table.sqlName %];

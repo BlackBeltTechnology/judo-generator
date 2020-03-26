@@ -5,7 +5,7 @@
 --liquibase formatted sql
 
 [% for (constraint in CURRENT!RdbmsUniqueConstraint.all) { %]
---changeset generator:DROP_UNIQUE_CONSTRAINT_[%= constraint.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:DROP_UNIQUE_CONSTRAINT_[%= constraint.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 ALTER TABLE [%= constraint.table.sqlName %] DROP CONSTRAINT IF EXISTS [%= constraint.sqlName %];	
 
 [% } %]
