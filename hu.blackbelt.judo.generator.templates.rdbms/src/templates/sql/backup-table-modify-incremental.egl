@@ -9,10 +9,13 @@
 -- [%= op.table.name %] [%= op.table.uuid %]
 CREATE TABLE [%= op.table.backupName() %] AS
 SELECT ID, 
-	[% for (field in op.modifyFieldOperations.select(o | o.fieldIsAltered()).collect(o | o.field).includingAll(op.deleteFieldOperations.collect(f | f.field))) { %]
-		[%= field.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= field.name %] [%= field.uuid %]
+	[% for (fop in op.modifyFieldOperations.select(o | o.fieldIsAltered())) { %]
+		[%= fop.previousField.sqlName %] [% if (hasMore or op.deleteFieldOperations.size > 0) { out.print(","); } %] -- [%= fop.previousField.name %] [%= fop.previousField.uuid %]
 	[% } %]
-FROM [%= op.table.sqlName %];
+	[% for (fop in op.deleteFieldOperations) { %]
+		[%= fop.field.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= fop.field.name %] [%= fop.field.uuid %]
+	[% } %]
+FROM [%= op.previousTable.sqlName %];
 
 [% } %]
 
