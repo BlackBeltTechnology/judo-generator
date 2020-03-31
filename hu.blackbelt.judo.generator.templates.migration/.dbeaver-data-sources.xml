@@ -6,5 +6,17 @@
 			<provider-property name="@dbeaver-show-template-db@" value="false"/>
 		</connection>
 	</data-source>
+	<data-source id="postgres-jdbc-1711baf071f-5b484cf6003adae9" provider="postgresql" driver="postgres-jdbc" name="PostgreSQL - anakin_6" save-password="true" read-only="false">
+		<connection host="localhost" port="5436" server="" database="anakin" url="jdbc:postgresql://localhost:5436/anakin" user="anakin" password="EgoHK0hNJPc=" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+		</connection>
+	</data-source>
+	<data-source id="postgres-jdbc-1711baf1aa3-19d1c0bd35d6bf6d" provider="postgresql" driver="postgres-jdbc" name="PostgreSQL - anakin_5" save-password="true" read-only="false">
+		<connection host="localhost" port="5435" server="" database="anakin" url="jdbc:postgresql://localhost:5435/anakin" user="anakin" password="EgoHK0hNJPc=" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+		</connection>
+	</data-source>
 	<filters/>
 </data-sources>
