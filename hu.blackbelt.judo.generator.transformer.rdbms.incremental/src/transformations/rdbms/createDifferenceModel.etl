@@ -5,32 +5,38 @@ pre {
 	var modifiedElements = new Map;
 	var deletedElements = new Map;
 	
-	var root = HSQLDB!RdbmsModel.all().first();
+	var root = INCREMENTAL!RdbmsModel.all().first();
 	
 	for (op in root.tableOperations) {
-	
+
 		if(op.instanceOf(HSQLDB!RdbmsModifyTableOperation)) {
-		
+
+    	    op.println("Modify Table operation: " + op.table.name + " ");
 			modifiedElements.put(op.uuid.removeIndicator(), op);
 			
 			for (field in op.createFieldOperations) {
+        	    op.println("   - Create field operation: " + field.field.name + " ");
 				createdElements.put(field.uuid.removeIndicator(), field);
 			}
 			
 			for (field in op.deleteFieldOperations) {
+        	    op.println("   - Delete field operation: " + field.field.name + " ");
 				deletedElements.put(field.uuid.removeIndicator(), field);
 			}
 			
 			for (field in op.modifyFieldOperations) {
+        	    op.println("   - Modify field operation: " + field.field.name + " ");
 				modifiedElements.put(field.uuid.removeIndicator(), field);
 			}
 		}
 		
 		if(op.instanceOf(HSQLDB!RdbmsCreateTableOperation)) {
+    	    op.println("Create Table operation: " + op.table.name + " ");
 			createdElements.put(op.uuid.removeIndicator(), op);
 		}
 		
 		if(op.instanceOf(HSQLDB!RdbmsDeleteTableOperation)) {
+    	    op.println("Remove Table operation: " + op.table.name + " ");
 			deletedElements.put(op.uuid.removeIndicator(), op);
 		}
 		
@@ -73,57 +79,64 @@ post {
 rule processExistingElement
 	transform f : XLS!Differences
 	to t : XLS!Result {
-		guard : f.uuid.isDefined() and (f.exists() or f.recreated())
-		if(f.exists()) {
-			f.uuid.print("|-Exists ");
-		} else {
-			f.uuid.print("|-Recreated ");
-		}
-		
+		guard : f.uuid.isDefined() and f.exists()
 		var obj = modifiedElements.get(f.uuid);
-		
+
+		f.uuid.print("|-Exists ");
+
 		if (obj.isDefined()) {
 			"".println();
 			if (f.nameChanged() == obj.nameChanged) {
-				"|----Type: OK".println();
+				"|----Name: OK".println();
 			} else {
-				"|----Type: ERROR".println();
+                ("|----Name: ERROR  " + "Expected: " + f.nameChanged() + " Actual: " + obj.nameChanged).println("");
 				testOK = false;
 			}
 			
 			if(obj.instanceOf(HSQLDB!RdbmsModifyFieldOperation)) {
 				if(f.typeChanged() == obj.typeChanged) {
-					"|----Name: OK".println();
+					"|----Type: OK".println();
 				} else {
-					"|----Name: ERROR".println();
+					("|----Type: ERROR  " + "Expected: " + f.typeChanged() + " Actual: " + obj.typeChanged).println("");
 					testOK = false;
 				}
-				
+
+				if(f.sizeChanged() == obj.sizeChanged) {
+					"|----Size: OK".println();
+				} else {
+					("|----Size: ERROR  " + "Expected: " + f.sizeChanged() + " Actual: " + obj.sizeChanged).println("");
+					testOK = false;
+				}
+
 				if (f.mandatoryChanged() == obj.mandatoryChanged) {
 					"|----Mandatory: OK".println();
 				} else {
-					"|----Mandatory: ERROR".println();
+                    ("|----Mandatory: ERROR  " + "Expected: " + f.mandatoryChanged() + " Actual: " + obj.mandatoryChanged).println("");
 					testOK = false;
 				}
 				
 				if (f.toValueField() == obj.changedForeignKeyToValueField) {
 					"|----Foreign key changed to value field: OK".println();
 				} else {
-					"|----Foreign key changed to value field: ERROR".println();
+                    ("|----Foreign key changed to value field: ERROR  " + "Expected: " + f.toValueField() + " Actual: " + obj.changedForeignKeyToValueField).println("");
 					testOK = false;
 				}
 				
 				if (f.toForeignKey() == obj.changedValueFieldToForeignKey) {
 					"|----Value field changed to foreign key: OK".println();
 				} else {
-					"|----Value field changed to foreign key: ERROR".println();
+                    ("|----Value field changed to foreign key: ERROR  " + "Expected: " + f.toForeignKey() + " Actual: " + obj.changedValueFieldToForeignKey).println("");
 					testOK = false;
 				}
 			}
 			modifiedElements.remove(f.uuid);
 		} else {
-			": NOT FOUND".println();
-			testOK = false;
+		    if (f.isAnyChanged()) {
+                ": ERROR - NOT FOUND".println();
+                testOK = false;
+            } else {
+                ": OK - Not changed ".println();
+            }
 		}
 }
 

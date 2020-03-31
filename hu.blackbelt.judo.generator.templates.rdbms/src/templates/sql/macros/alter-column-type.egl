@@ -3,7 +3,7 @@
 %]
 
 [%for (fop in modifyTableOperation.modifyFieldOperations.select(m | m.fieldIsAltered())) { %]
---changeset generator:ALTER_TABLE_ALTER_COLUMN_TYPE_ADD_NEW_[%= table.sqlName %]_[%=fop.field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:ALTER_TABLE_ALTER_COLUMN_TYPE_ADD_NEW_[%= table.sqlName %]_[%=fop.field.sqlName%]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= fop.field.name %] [%= fop.field.uuid %]
 ALTER TABLE [%= table.sqlName %] 
 		[% if (dialect() == 'Oracle') { %]
@@ -19,7 +19,7 @@ ALTER TABLE [%= table.sqlName %]
 		[% } %]
 ;[% out.println("\n"); %]
 
---changeset generator:ALTER_TABLE_ALTER_COLUMN_TYPE_UPDATE_NEW_[%= table.sqlName %]_[%=fop.field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:ALTER_TABLE_ALTER_COLUMN_TYPE_UPDATE_NEW_[%= table.sqlName %]_[%=fop.field.sqlName%]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= fop.field.name %] [%= fop.field.uuid %]
 [%
 		var inc : Template = TemplateFactory.load(fop.scriptName());
@@ -34,8 +34,8 @@ ALTER TABLE [%= table.sqlName %]
 		out.println(inc.process());
 %]
 
---changeset generator:ALTER_TABLE_ALTER_COLUMN_TYPE_DROP_OLD_[%= table.sqlName %]_[%=fop.field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
--- [%= fop.field.name %] [%= fop.field.uuid %]
+--changeset generator:ALTER_TABLE_ALTER_COLUMN_TYPE_DROP_OLD_[%= table.sqlName %]_[%=fop.previousField.sqlName%]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
+-- [%= fop.previousField.name %] [%= fop.previousField.uuid %]
 ALTER TABLE [%= table.sqlName %] 
 		[% if (dialect() == 'Oracle') { %]
 			DROP (
@@ -52,7 +52,7 @@ ALTER TABLE [%= table.sqlName %]
 		[% } %]
 ;[% out.println("\n"); %]
 
---changeset generator:ALTER_TABLE_ALTER_COLUMN_TYPE_RENAME_NEW_TO_OLD_[%= table.sqlName %]_[%=fop.field.sqlName%]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:ALTER_TABLE_ALTER_COLUMN_TYPE_RENAME_NEW_TO_OLD_[%= table.sqlName %]_[%=fop.field.sqlName%]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= fop.field.name %] [%= fop.field.uuid %]
 ALTER TABLE [%= table.sqlName %] RENAME COLUMN NEW_[%= fop.field.sqlName %] TO [%= fop.field.sqlName %];
 [% out.println("\n"); %]

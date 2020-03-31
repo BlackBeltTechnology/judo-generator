@@ -5,7 +5,7 @@
 --liquibase formatted sql
 
 [% for (table in CURRENT!RdbmsTable.all.select(t | not t.isKindOf(RDBMS!RdbmsJunctionTable) and (t.fields.select(f | f.isKindOf(RDBMS!RdbmsForeignKey) and f.readOnly).size() > 0 or t.parent.isUndefined()))) {%]
---changeset generator:DROP_TRIGGER_BEFORE_UPDATE_[%= table.sqlName %]#[%= version() %] dbms:[%= dialect() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:DROP_TRIGGER_BEFORE_UPDATE_[%= table.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= table.name %] [%= table.uuid %]
 DROP TRIGGER BU_[%= table.sqlName %] ON [%= table.sqlName %];
 [% } %]

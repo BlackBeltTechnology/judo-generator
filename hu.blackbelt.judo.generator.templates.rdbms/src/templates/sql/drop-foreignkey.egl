@@ -7,7 +7,7 @@
 [* TODO: Multiple modification if possible, foreignKey, null, Deferred *]
 
 [% for (foreignKey in CURRENT!RdbmsForeignKey.all) { %]
---changeset generator:DROP_FOREIGN_KEY_[%= foreignKey.table.sqlName %]_[%= foreignKey.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:DROP_FOREIGN_KEY_[%= foreignKey.table.sqlName %]_[%= foreignKey.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 ALTER TABLE [%= foreignKey.table.sqlName %]
 DROP CONSTRAINT [%= foreignKey.foreignKeySqlName %]
 ;[% out.println("\n"); %]

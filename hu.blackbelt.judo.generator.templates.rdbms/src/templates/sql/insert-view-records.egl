@@ -9,8 +9,46 @@
 [*   - Type casting *]
 [% for (record in CURRENT!RdbmsViewRecord.all) { %]
 
---changeset generator:INSERT_VIEW_RECORD_#[%= record.getValueFieldBySqlName("C_GUID").value %] logicalFilePath:[%= scriptName%]
+--changeset generator:INSERT_VIEW_RECORD_#[%= record.getValueFieldBySqlName("C_GUID").value %]#[%= version() %] logicalFilePath:[%= scriptName%]
+[% if (dialect() == 'Postgres') { %]
+WITH
+UPD AS (
+ UPDATE [%= record.view.sqlName %] SET
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		[% if (v.valueField.sqlName <> 'C_GUID') { %]
+    		[%= v.valueField.sqlName %] = '[%= v.value %]'  [% if (hasMore) { out.print(","); } %]
+    	[% } %]
+	[% } %]
+  WHERE C_GUID = '[%= record.values.select(rv | rv.valueField.sqlName == 'C_GUID').first().value %]'
+  RETURNING C_GUID
+),
+INS AS (
+    SELECT
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+        '[%= v.value %]'  [% if (hasMore) { out.print(","); } %]
+	[% } %]
+    WHERE NOT EXISTS (SELECT * FROM UPD)
+)
 INSERT INTO [%= record.view.sqlName %] (
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		[%= v.valueField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= v.valueField.name %] [%= v.valueField.uuid %]
+	[% } %]
+) SELECT * FROM INS
+[% } %]
+[% if (dialect() == 'Oracle') { %]
+MERGE INTO [%= record.view.sqlName %]
+USING (SELECT C_GUID FROM DUAL) REC ON (
+    [%= record.view.sqlName %].C_GUID=REC.C_GUID
+)
+WHEN MATCHED THEN
+DO UPDATE SET
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		[% if (v.valueField.sqlName <> 'C_GUID') { %]
+    		[%= v.valueField.sqlName %] = '[%= v.value %]'  [% if (hasMore) { out.print(","); } %]
+    	[% } %]
+	[% } %]
+WHEN NOT MATCHED THEN
+INSERT (
 	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
 		[%= v.valueField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= v.valueField.name %] [%= v.valueField.uuid %]
 	[% } %]
@@ -18,7 +56,38 @@ INSERT INTO [%= record.view.sqlName %] (
 	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
 		'[%= v.value %]' [% if (hasMore) { out.print(","); } %]
 	[% } %]
-);
-
+)
+[% } %]
+[% if (dialect() == 'Hsqldb') { %]
+MERGE INTO [%= record.view.sqlName %]
+USING (VALUES
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		'[%= v.value %]' [% if (hasMore) { out.print(","); } %]
+	[% } %]
+) REC (
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		[%= v.valueField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= v.valueField.name %] [%= v.valueField.uuid %]
+	[% } %]
+)
+ON ([%= record.view.sqlName %].C_GUID = REC.GUID)
+WHEN MATCHED THEN
+DO UPDATE SET
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		[% if (v.valueField.sqlName <> 'C_GUID') { %]
+    		[%= v.valueField.sqlName %] = '[%= v.value %]'  [% if (hasMore) { out.print(","); } %]
+    	[% } %]
+	[% } %]
+WHEN NOT MATCHED THEN
+INSERT (
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		[%= v.valueField.sqlName %] [% if (hasMore) { out.print(","); } %] -- [%= v.valueField.name %] [%= v.valueField.uuid %]
+	[% } %]
+) VALUES (
+	[% for (v in record.values.select(rv | rv.valueField.isDefined())) { %]
+		'[%= v.value %]' [% if (hasMore) { out.print(","); } %]
+	[% } %]
+)
+[% } %]
+;
 [% } %]
 

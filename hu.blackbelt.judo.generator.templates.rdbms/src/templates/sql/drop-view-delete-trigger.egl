@@ -6,7 +6,7 @@
 
 [% for (view in CURRENT!RdbmsView.all) { %]
 
---changeset generator:DROP_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %]
+--changeset generator:DROP_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %]
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
 DROP TRIGGER DEL_[%= view.sqlName %] ON [%= view.sqlName %];
 

@@ -235,5 +235,7 @@
         eType="#//RdbmsModel"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="currentModel" lowerBound="1"
         eType="#//RdbmsModel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="incrementalModel" lowerBound="1"
+        eType="#//RdbmsModel"/>
   </eClassifiers>
 </ecore:EPackage>

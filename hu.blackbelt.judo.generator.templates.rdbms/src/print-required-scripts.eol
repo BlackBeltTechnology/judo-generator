@@ -6,7 +6,7 @@ import "operations/_importAll.eol";
  for (top in INCREMENTAL!RdbmsModifyTableOperation.all) {
 
 	for (fop in top.modifyFieldOperations.select(m | m.fieldIsAltered())
-										 .includingAll(top.modifyFieldOperations.select(m | m.mandatoryChanged and m.field.mandatory))) {
+	                                 .includingAll(top.modifyFieldOperations.select(m | m.mandatoryChanged and m.field.mandatory) )) {
 		
 		("------------------------------------------------------------------------------------------------------------------------").println("");
 		fop.scriptName().println("Put script: ");

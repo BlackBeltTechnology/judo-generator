@@ -6,7 +6,7 @@
 
 [% for (table in CURRENT!RdbmsTable.all) { %]
 	[% if (hasFeature('SupportMultipleColumnModificationInOneStatement')  and table.fields.exists(f | f.mandatory and not f.isPrimary())) { %]
---changeset generator:DROP_NOT_NULL_CONSTRAINT_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:DROP_NOT_NULL_CONSTRAINT_[%= table.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 ALTER TABLE [%= table.sqlName %] 
 		[% if (dialect() == 'Oracle') { %]
 			MODIFY (
@@ -29,7 +29,7 @@ ALTER TABLE [%= table.sqlName %]
 ;[% out.println("\n"); %]
 	[% } else { %]
 		[% for (field in table.fields.select(f | f.mandatory and not f.isPrimary())) { %]
---changeset generator:DROP_NOT_NULL_CONSTRAINT_[%= table.sqlName %]_[%= field.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:DROP_NOT_NULL_CONSTRAINT_[%= table.sqlName %]_[%= field.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 ALTER TABLE [%= table.sqlName %] ALTER COLUMN [%= field.sqlName %] SET NULL;
 			[% out.println("\n");%]
 		[% } %]

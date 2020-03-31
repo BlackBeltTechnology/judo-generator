@@ -1,4 +1,11 @@
 @cached
 operation RDBMS!RdbmsRelationExpression statement () : String {
+	/* TODO: Better way to define type casts
+	if (self.field.tableField.type.name = "DateTime") {
+	 	var pattern = "'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'";
+	 	return "COALESCE(to_char(" + self.field.fieldExpression() + ", " + pattern + "), '')";
+	}
+	*/
 	return "COALESCE(CAST(" + self.field.fieldExpression() + " AS VARCHAR(255)), '')";
 }
+

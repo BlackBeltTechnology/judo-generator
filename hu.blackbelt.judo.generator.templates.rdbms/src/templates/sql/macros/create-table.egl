@@ -2,7 +2,7 @@
   import "../../../operations/_importAll.eol";
 %]
 
---changeset generator:CREATE_TABLE_[%= table.sqlName %]#[%= version() %] logicalFilePath:[%= scriptName %] stripComments:true
+--changeset generator:CREATE_TABLE_[%= table.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %] stripComments:true
 -- [%= table.name %] [%= table.uuid %]
 CREATE TABLE [%= table.sqlName %] (
 	[% for (field in table.fields) { %]

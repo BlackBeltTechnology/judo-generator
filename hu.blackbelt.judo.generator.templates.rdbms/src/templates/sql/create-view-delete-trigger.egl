@@ -19,7 +19,7 @@ CREATE TRIGGER DEL_[%= view.sqlName %] INSTEAD OF DELETE ON [%= view.sqlName %]
     END;
 /
 
---changeset generator:RECOMPILE_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] stripComments:true failOnError:[%= failOnError %]
+--changeset generator:RECOMPILE_TRIGGER_INSTEAD_OF_DELETE_[%= view.sqlName %]#[%= version() %] dbms:oracle stripComments:true failOnError:[%= failOnError %]
 alter trigger DEL_[%= view.sqlName %] compile;
 select is_trigger_valid('DEL_[%= view.sqlName %]') from DUAL;
 [% } %]

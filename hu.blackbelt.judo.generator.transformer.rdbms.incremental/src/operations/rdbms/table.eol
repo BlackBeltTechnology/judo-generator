@@ -5,3 +5,7 @@ operation RDBMS!RdbmsTable fieldExists(field : RDBMS!RdbmsField) : Boolean {
 operation RDBMS!RdbmsTable fieldOf(field : RDBMS!RdbmsField) : RDBMS!RdbmsField {
 	return self.fields.selectOne(f | f.uuid == field.uuid);
 }
+
+operation RDBMS!RdbmsTable isSqlNameChanged(field : RDBMS!RdbmsTable) : Boolean {
+	return self.sqlName <> field.sqlName;
+}
