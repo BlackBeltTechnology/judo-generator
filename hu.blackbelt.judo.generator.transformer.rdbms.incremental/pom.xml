@@ -267,7 +267,7 @@
 										</model>
 										<model>
 											<artifact>${project.build.directory}/${test.model.artifactId}-incremental-${test.model.previousVersion}_${test.model.version}.rdbmsHsqldb.model</artifact>
-											<name>INREMENTAL</name>
+											<name>INCREMENTAL</name>
 											<readOnLoad>false</readOnLoad>
 											<storeOnDisposal>true</storeOnDisposal>
 											<metaModelUris>
