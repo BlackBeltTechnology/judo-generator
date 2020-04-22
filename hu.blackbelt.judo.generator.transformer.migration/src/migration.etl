@@ -52,6 +52,13 @@ pre {
 operation PSM!JClass allRoles(acc : Set<String>) {
 	for (r in PSM!JRole.all.select(r | self.allSupertypesAndIncludingSelf().contains(r.ownerClass))) {
 		var opp = r.opposite().ownerClass;
+		var descendants = PSM!JClass.all.select(c | c.supertype.isDefined() and c.supertype.uuid = opp.uuid);
+			for (d in descendants) {
+				if (not acc.contains(d.uuid)) {
+					acc.add(d.uuid);
+					d.allRoles(acc);
+				}
+			}
 		if (not acc.contains(opp.uuid)) {
 				acc.add(opp.uuid);
 				opp.allRoles(acc);
