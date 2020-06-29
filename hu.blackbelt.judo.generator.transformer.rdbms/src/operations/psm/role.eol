@@ -65,7 +65,11 @@ operation PSM!JRole roleIndexSqlName() : String {
 @cached
 operation PSM!JRole roleIdSqlName() : String {
     --    return "C_" +  self.ownerClass.package.sqlName() + "_" + self.opposite().ownerClass.sqlName()+ "_ID" + "_" + self.sqlName();
-    return "C_" +  self.sqlName() + "_ID";
+    var prefix = "C_";
+    if (self.ownerRelationship.pimDerived) {
+    	prefix = "D_";
+    }
+    return prefix +  self.sqlName() + "_ID"; 
 }
 
 @cached

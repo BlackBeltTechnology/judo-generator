@@ -21,6 +21,7 @@ rule ClassProperty
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.uiNoSearch = stereotypeApplications.get("nosearch").includes(s);
 	t.derived = s.isDerived;
+	t.pimDerived = s.isDerived;
 	
 	if (s.defaultValue.isKindOf(Expression)) {
 		t.value = s.defaultValue.symbol;

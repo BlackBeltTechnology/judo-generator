@@ -34,7 +34,11 @@ operation PSM!JAttribute fieldSqlName() : String {
     } else if (self.name = "auditCreateTime") {
 	    return "C_ACT";
     } else {
-	    return "C_" + self.sqlName();
+	    if (self.pimDerived) {
+	    	return "D_" + self.sqlName();
+	    } else {
+	    	return "C_" + self.sqlName();
+	    }
 	}
 }
 

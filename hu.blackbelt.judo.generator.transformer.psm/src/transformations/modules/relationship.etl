@@ -33,6 +33,7 @@ rule Relationship
 	}
 
 	t.derived = s.memberEnd.exists(me | me.isDerived);
+	t.pimDerived = s.memberEnd.exists(me | me.isDerived);
 	
 	if (t.derived) {
 		t.println("Rule::Relationship - Association has at least one member, flagged as <<derived>> ");

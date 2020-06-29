@@ -66,6 +66,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/upper"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/ordered"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/unique"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/pimDerived"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JPrimitive">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JPrimitive/package"/>
@@ -128,6 +129,7 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JRelationship/package"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JRelationship/roles"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRelationship/derived"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRelationship/pimDerived"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JRole">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/lower"/>
