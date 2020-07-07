@@ -131,6 +131,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JRelationship/roles"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRelationship/derived"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRelationship/pimDerived"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRelationship/preCalculated"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JRole">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JRole/lower"/>
