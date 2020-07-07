@@ -67,6 +67,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/ordered"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/unique"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/pimDerived"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JTypedElement/preCalculated"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JPrimitive">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JPrimitive/package"/>
