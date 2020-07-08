@@ -98,6 +98,19 @@ rule ModifyTableOperationForExistingTable
 		s.uuid.println("Modified table: ");
 }
 
+@lazy
+rule ModifyJunctionTableOperationForExistingTable
+	transform s : RDBMS!RdbmsJunctionTable
+	to t : INCREMENTAL!RdbmsModifyTableOperation {
+	guard : s.fields.size() > 0
+	    newModel.equivalent("OperationModel").tableOperations.add(t);
+		t.name = "Modify " + s.name;
+	    t.uuid =  s.uuid + "-ModifyTable";
+	    t.table = s;
+	    t.previousTable = previousModel.tableOf(s);
+		s.uuid.println("Modified table: ");
+}
+
 rule CreateNewValueFieldOnExistingTable
 	transform f : NEW!RdbmsValueField
 	to t : INCREMENTAL!RdbmsCreateFieldOperation {
@@ -188,7 +201,14 @@ rule ModifyExistingForeignKeyField
 	to t : INCREMENTAL!RdbmsModifyFieldOperation {
 		guard : newModel.tableExists(f.table) and newModel.tableOf(f.table).fieldExists(f) and (f.isAnyChanged(newModel.tableOf(f.table).fieldOf(f)) or not newModel.tableOf(f.table).fieldOf(f).isTypeOf(NEW!RdbmsForeignKey))
 		var n : RDBMS!RdbmsField = newModel.tableOf(f.table).fieldOf(f);
-	    newModel.tableOf(f.table).equivalent("ModifyTableOperationForExistingTable").modifyFieldOperations.add(t);
+		
+		var ee = newModel.tableOf(f.table);
+		
+		if (ee.isTypeOf(RDBMS!RdbmsTable)) {
+	    	ee.equivalent("ModifyTableOperationForExistingTable").modifyFieldOperations.add(t);
+		} else {
+			ee.equivalent("ModifyJunctionTableOperationForExistingTable").modifyFieldOperations.add(t);
+		}
 	    t.uuid =  f.uuid + "-ModifyField";
 	    t.field = n;
 	    t.previousField = f;

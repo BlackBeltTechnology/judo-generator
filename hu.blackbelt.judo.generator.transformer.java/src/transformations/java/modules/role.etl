@@ -154,10 +154,9 @@ operation JAVA!JvmReference fillFrom (source : PSM!JRole, rulPrefix : String) : 
 		self.virtualExpressionScript = source.derivedExpression.replace("\n", " ");
 	}
 	self.derived = source.ownerRelationship.derived;
+	self.pimDerived = source.ownerRelationship.pimDerived;
 	self.derivedDescription = source.derivedDescription;
-	if (self.derivedDescription.isDefined() and self.derivedDescription = "") {
-	   self.derived = true;
-	}
+	
 	self.referenceType = source.transformToReferenceType();
 	self.optionScript = source.optionScript;
 	if (source.value.isDefined() and not self.derived) {

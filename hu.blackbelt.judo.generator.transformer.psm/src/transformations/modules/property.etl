@@ -21,6 +21,7 @@ rule ClassProperty
 	t.calculated = stereotypeApplications.get("calculated").includes(s);
 	t.uiNoSearch = stereotypeApplications.get("nosearch").includes(s);
 	t.derived = s.isDerived;
+	t.pimDerived = s.isDerived;
 	
 	if (s.defaultValue.isKindOf(Expression)) {
 		t.value = s.defaultValue.symbol;
@@ -181,6 +182,7 @@ rule ClassPropertyToRelationship
 	r2.visibility = r1.visibility;
 	
 	rs.uuid = generateUuid(r1.uuid, r2.uuid, "-");
+	rs.pimDerived = s.isDerived;
 	rs.name = r1.name + " - " + r2.name;
 	rs.visibility = r1.visibility;
 	rs.roles.add(r1);
@@ -218,6 +220,7 @@ rule ClassPropertyRoleEnum
 	r2.ownerClass = s.type.equivalent("Enum2CorrespondingValueClass");
 	r2.visibility = r1.visibility;
 	rs.uuid = generateUuid(r1.uuid, r2.uuid, "-");
+	rs.pimDerived = s.isDerived;
 	rs.name = r1.name + " - " + r2.name;
 	rs.visibility = r1.visibility;
 	rs.roles.add(r1);

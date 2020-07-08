@@ -161,6 +161,7 @@ operation JAVA!JvmAttribute fillFrom (source : PSM!JAttribute, correspondingRule
         self.placeholder = "";
     }
     self.derived = source.derived;
+    self.pimDerived = source.pimDerived;
 
 	self.type = source.type.equivalent(correspondingRule);
 	if (self.type.isUndefined()) {
