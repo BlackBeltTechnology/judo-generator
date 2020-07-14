@@ -27,6 +27,26 @@ import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
 public class [%=junction.name%] extends QueryDslContext<[%=junction.name%], JunctionPo> {
     public static final [%=junction.name%] q = new [%=junction.name%]("[%=junction.sqlName%]");
+    
+    public static [%=junction.name%] getQ() {
+    	return getQ(q.getAlias());
+    }
+    
+    public static [%=junction.name%] getQ(String alias) {
+    	return new [%=junction.name%](alias);
+    }
+    
+    public static [%=junction.name%] getQForSelect() {
+    		return getQ();
+	}
+	
+	public static [%=junction.name%] getQForSelect(String alias) {
+    		return getQ(alias);
+	}
+	
+	public static boolean isViewOverriden(){
+    	return false;
+	}
 
     // Constructors
 
@@ -39,6 +59,19 @@ public class [%=junction.name%] extends QueryDslContext<[%=junction.name%], Junc
     public [%=junction.name%](QueryDslContext parent) {
         super([%=junction.name%].class, JunctionPo.class,
                 forVariable(parent.getAliasGenerator().getNextForName("[%=junction.foreignKey1.sqlName.toUpperCase()%][%=junction.foreignKey2.sqlName.toUpperCase()%]")), parent.getSchemaName(), "[%=junction.sqlName%]");
+        super.setAliasGenerator(parent.getAliasGenerator());
+        addMetadata();
+    }
+    
+    /**
+     * Contsucts [%=junction.name%] and sets the PathBase. It inherits the parent schema and all reured property which is shared
+     * in the query which created by the root.
+     *
+     * @param parent
+     */
+    public [%=junction.name%](QueryDslContext parent, String tableName) {
+        super([%=junction.name%].class, JunctionPo.class,
+                forVariable(parent.getAliasGenerator().getNextForName("[%=junction.foreignKey1.sqlName.toUpperCase()%][%=junction.foreignKey2.sqlName.toUpperCase()%]")), parent.getSchemaName(), tableName);
         super.setAliasGenerator(parent.getAliasGenerator());
         addMetadata();
     }

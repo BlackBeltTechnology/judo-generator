@@ -29,7 +29,16 @@ public class [%=class.name%] extends AbstractQueryDslEntityDao<[%=class.bo().fqN
 
     @Override
     public [%=class.daoQClass().fqName()%] getQBase() {
-        return new [%=class.daoQClass().fqName()%]([%=class.daoQClass().fqName()%].q.getAlias());
+        return [%=class.daoQClass().fqName()%].getQ();
+    }
+    
+    @Override
+    public [%=class.daoQClass().fqName()%] getQBaseForSelect() {
+        [%=class.daoQClass().fqName()%] ret =  getQBase();
+        if ([%=class.daoQClass().fqName()%].isViewOverriden()) {
+            ret = [%=class.daoQClass().fqName()%].getQForSelect();
+        }
+        return ret;
     }
 
     @Override

@@ -30,6 +30,22 @@ operation QUERYDSL!QueryDslView getAllNmKeys() : OrderedSet(QUERYDSL!QueryDslRel
 	return all; //.sortBy(a | a.name);
 }
 
+@cached
+operation QUERYDSL!QueryDslView isViewOverriden() : Boolean {
+	return OW!OverridenViews.all.selectOne(s | s.Name = self.sqlName).isDefined();
+}
+
+@cached
+operation QUERYDSL!QueryDslView overridenName() : String {
+	return "VS" + self.sqlName.substring(1);
+}
+
+@cached
+operation QUERYDSL!QueryDslView tableName() : String {
+	return "T" + self.sqlName.substring(1);
+}
+
+
 
 @cached
 operation QUERYDSL!QueryDslClass allReferences () : Collection {

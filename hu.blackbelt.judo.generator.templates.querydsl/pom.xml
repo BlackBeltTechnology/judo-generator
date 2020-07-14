@@ -36,7 +36,7 @@
 						<executions>
 							<execution>
 								<id>template-model-querydsl</id>
-								<phase>generate-resources</phase>
+								<phase>compile</phase>
 								<goals>
 									<goal>execute</goal>
 								</goals>
@@ -54,6 +54,13 @@
 											</metaModelUris>
 										</model>
 									</models>
+                                    <excelModels>
+                                        <excelModel>
+                                            <name>OW</name>
+                                            <artifact>${project.basedir}/target/classes/model/OverridenViews.xlsx</artifact>
+                                            <configurationArtifact>${project.basedir}/target/classes/model/overridenviews.xml</configurationArtifact>
+                                        </excelModel>
+                                    </excelModels>
 									<eolPrograms>
 										<Egl>
 											<source>src/main.egl</source>

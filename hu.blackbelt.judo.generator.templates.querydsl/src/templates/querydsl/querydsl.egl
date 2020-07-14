@@ -42,6 +42,43 @@ import static com.querydsl.core.types.Projections.bean;
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
 public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.poClassName()%]> {
     public static final [%=class.name%] q = new [%=class.name%]("[%=class.view.sqlName%]");
+    
+    public static [%=class.name%] getQ() {
+    	return getQ(q.getAlias());
+    }
+    
+    public static [%=class.name%] getQ(String alias) {
+    	return new [%=class.name%](alias);
+    }
+    
+    [% if (class.view.isViewOverriden()) {%]
+    	public static final [%=class.name%] qs = new [%=class.name%]("[%=class.view.overridenName()%]", null, "[%=class.view.overridenName()%]");
+    	
+    	public static [%=class.name%] getQForSelect() {
+    		return getQForSelect(qs.getAlias());
+    	}
+    	
+    	public static [%=class.name%] getQForSelect(String alias) {
+    		return new [%=class.name%](alias, null, qs.getTableName());
+    	}
+
+    	public static boolean isViewOverriden(){
+        	return true;
+    	}
+    [%} else{%]
+    
+    	public static [%=class.name%] getQForSelect() {
+    		return getQ();
+    	}
+    	
+    	public static [%=class.name%] getQForSelect(String alias) {
+    		return getQ(alias);
+    	}
+    	
+    	public static boolean isViewOverriden(){
+        	return false;
+    	}
+    [%}%]
 
     // Constructors
     /**
@@ -53,6 +90,19 @@ public class [%=class.name%] extends QueryDslContext<[%=class.name%], [%=class.p
     public [%=class.name%](QueryDslContext parent) {
         super([%=class.name%].class, [%=class.poClassName()%].class,
             forVariable(parent.getAliasGenerator().getNextForName("[%=class.originName%]")), parent.getSchemaName(), "[%=class.view.sqlName%]");
+        super.setAliasGenerator(parent.getAliasGenerator());
+        addMetadata();
+    }
+    
+    /**
+     * Same as above, just provided with a tableName to sue.
+     *
+     * @param parent
+     * @param tableName the table or view name to use
+     */
+    public [%=class.name%](QueryDslContext parent, String tableName) {
+        super([%=class.name%].class, [%=class.poClassName()%].class,
+            forVariable(parent.getAliasGenerator().getNextForName("[%=class.originName%]")), parent.getSchemaName(), tableName);
         super.setAliasGenerator(parent.getAliasGenerator());
         addMetadata();
     }
