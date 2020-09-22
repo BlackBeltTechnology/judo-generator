@@ -20,6 +20,8 @@ CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
         END IF;
         [% } %]
         [% if (table.parent.isUndefined()) { %]
+        :NEW.C_ACT := :OLD.C_ACT;
+        :NEW.C_ACU := :OLD.C_ACU;
         :NEW.C_AUT := SYSTIMESTAMP;
         :NEW.C_AUU := 'system';
         [% } %]
@@ -46,6 +48,8 @@ CREATE OR REPLACE FUNCTION BU_[%= table.sqlName %]() RETURNS TRIGGER AS $BU_[%= 
         END IF;
         [% } %]
         [% if (table.parent.isUndefined()) { %]
+        NEW.C_ACT := OLD.C_ACT;
+        NEW.C_ACU := OLD.C_ACU;
         NEW.C_AUT := transaction_timestamp();
         NEW.C_AUU := 'system';
         [% } %]
@@ -77,6 +81,8 @@ CREATE TRIGGER BU_[%= table.sqlName %] BEFORE UPDATE ON [%= table.sqlName %]
         END IF;
         [% } %]
         [% if (table.parent.isUndefined()) { %]
+        SET NEW.C_ACT = OLD.C_ACT;
+        SET NEW.C_ACU = OLD.C_ACU;
         SET NEW.C_AUT = CURRENT_TIMESTAMP;
         SET NEW.C_AUU = 'system';
         [% } %]
