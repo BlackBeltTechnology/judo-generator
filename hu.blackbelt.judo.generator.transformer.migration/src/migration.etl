@@ -293,11 +293,11 @@ operation MIG!RdbmsTable originalTableName() : String {
 	return "t_"  + self.shortName.substring(2).toLowerCase();
 }
 
-operation RDBMS!RdbmsTable descendants(tables : Collection<MIG!RdbmsTable>) : Set<MIG!RdbmsTable> {
+operation RDBMS!RdbmsTable descendants(tables : Collection<MIG!RdbmsTable>) : Sequence<MIG!RdbmsTable> {
 	var cs = PSM!JClass.all
 		.select(c | c.supertype.isDefined() and c.supertype.uuid == self.uuid)
 		.select(c | not c.`abstract`)
 		.collect(c | c.uuid)
 		.asSet();
-	return tables.select(t | cs.contains(t.uuid)).asSet();
+	return tables.select(t | cs.contains(t.uuid)).asSet().sortBy(t | t.uuid);
 }
