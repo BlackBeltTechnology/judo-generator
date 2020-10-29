@@ -58,12 +58,19 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="businessSingleton" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="implements" upperBound="-1"
         eType="#//JvmInterface"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="readableWith" upperBound="-1"
+        eType="#//JvmLiteral"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="listableWith" upperBound="-1"
+        eType="#//JvmLiteral"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="editableWith" upperBound="-1"
+        eType="#//JvmLiteral"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmEnum" eSuperTypes="#//JvmCoordinated">
     <eStructuralFeatures xsi:type="ecore:EReference" name="literals" upperBound="-1"
         eType="#//JvmLiteral" containment="true" eOpposite="#//JvmLiteral/ownerEnum"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="classRepresentation" eType="#//JvmClass"
         eOpposite="#//JvmClass/fixedEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsAccessDef" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmLiteral" eSuperTypes="#//JvmElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerEnum" eType="#//JvmEnum"
@@ -91,6 +98,8 @@
         eOpposite="#//JvmInterface/methods"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="origin" eType="#//JvmMethod"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="originReference" eType="#//JvmReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="accessibleWith" upperBound="-1"
+        eType="#//JvmLiteral"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JvmMember" abstract="true" eSuperTypes="#//JvmTypedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerClass" eType="#//JvmClass"

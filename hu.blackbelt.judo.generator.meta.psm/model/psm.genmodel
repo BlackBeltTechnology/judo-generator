@@ -77,6 +77,7 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JEnumeration/package"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//JEnumeration/literals"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JEnumeration/classRepresentation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JEnumeration/representsAccessDef"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JClass">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JClass/abstract"/>
@@ -99,6 +100,9 @@
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JClass/aliases"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JClass/watched"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JClass/representsEnumValue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JClass/readableWith"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JClass/editableWith"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JClass/listableWith"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JAttribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JAttribute/placeholder"/>
@@ -120,6 +124,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/bulk"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/kind"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//JOperation/uiMustConfirm"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference psm.ecore#//JOperation/accessibleWith"/>
     </genClasses>
     <genClasses ecoreClass="psm.ecore#//JParameter">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference psm.ecore#//JParameter/ownerOperation"/>

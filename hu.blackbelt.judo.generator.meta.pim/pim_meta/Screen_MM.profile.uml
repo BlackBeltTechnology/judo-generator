@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_18_5_3_1c100dd_1549556370188_725258_12314" name="Screen MM" visibility="public" URI="" metamodelReference="_18_5_3_1c100dd_1549556370188_431078_12315">
+  <eAnnotations xmi:id="_T7L73BRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <contents xmi:type="ecore:EPackage" xmi:id="_T7L73RRuEeuywbyiBUijNQ" name="ScreenMM" nsURI="http:///schemas/ScreenMM/_T5-acBRuEeuywbyiBUijNQ/0" nsPrefix="ScreenMM">
+      <eAnnotations xmi:id="_T7L73hRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <details xmi:id="_T7L73xRuEeuywbyiBUijNQ" key="originalName" value="Screen MM"/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_T7L74BRuEeuywbyiBUijNQ" name="ControllElement">
+        <eAnnotations xmi:id="_T7L74RRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_18_5_3_1c100dd_1549556399101_727564_12317"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T7L74hRuEeuywbyiBUijNQ" name="base_ConnectableElement" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//ConnectableElement"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <packageImport xmi:id="_18_5_3_1c100dd_1549556370188_431078_12315">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_0primitiveTypesScreen_MM">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_0javaPrimitiveTypesScreen_MM">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_18_5_3_1c100dd_1549556399101_727564_12317" name="ControllElement" visibility="public">
+    <ownedAttribute xmi:id="_18_5_3_1c100dd_1549556802039_608626_12429" name="base_ConnectableElement" visibility="private" association="_18_5_3_1c100dd_1549556802039_656190_12428">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#ConnectableElement"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_18_5_3_1c100dd_1549556802039_656190_12428" name="" visibility="public" memberEnd="_18_5_3_1c100dd_1549556802039_608626_12429 _18_5_3_1c100dd_1549556802039_580266_12430">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_18_5_3_1c100dd_1549556802039_580266_12430" name="extension_ControlElement" visibility="private" type="_18_5_3_1c100dd_1549556399101_727564_12317" association="_18_5_3_1c100dd_1549556802039_656190_12428"/>
+  </packagedElement>
+</uml:Profile>

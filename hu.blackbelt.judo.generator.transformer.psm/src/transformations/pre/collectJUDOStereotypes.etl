@@ -2,7 +2,6 @@ operation collectPersistenceRelatedStInstances() {
 }
 
 // TODO: outsource Model as parameter
-@cached
 operation collectJUDOStereotypeInstances() : Map {
 
 	var JUDOStereotypeInstances : Map;
@@ -149,11 +148,23 @@ operation collectJUDOStereotypeInstances() : Map {
 	JUDOStereotypeInstances.put("shortname", 		inpPIM!shortname.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("validation", 		inpPIM!validation.allInstances().collectConstrainedElements());
 	JUDOStereotypeInstances.put("processData", 		inpPIM!ProcessData.allInstances()->collect(c | c.base_Class).asSet());
+    
+    //AccessDefinition profile
+	JUDOStereotypeInstances.put("accessDef", 		inpPIM!AccessDef.allInstances()->aggregate(c | c.base_Operation, c.AccessBy.base_EnumerationLiteral));
+	JUDOStereotypeInstances.put("entityAccessDef", 	inpPIM!EntityAccessDef.allInstances()->aggregate(c | c.base_Class, c.collectPriviliges()));
 
 	// dump result Map
 	dumpStereotypeInstances( JUDOStereotypeInstances );
 	
 	return JUDOStereotypeInstances;
+}
+
+operation EntityAccessDef collectPriviliges() : Map {
+	var ret : Map = new Map;
+	ret.put("readableWith", self.Read.base_EnumerationLiteral);
+	ret.put("editableWith", self.Edit.base_EnumerationLiteral);
+	ret.put("listableWith", self.`List`.base_EnumerationLiteral);
+	return ret;
 }
 
 operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
@@ -220,6 +231,8 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	dumpMapAt( JUDOStereotypeInstances, "shortname");
 	dumpMapAt( JUDOStereotypeInstances, "validation");
 	dumpSetAt( JUDOStereotypeInstances, "processData");
+    dumpMapAt( JUDOStereotypeInstances, "accessDef");
+    dumpMapAt( JUDOStereotypeInstances, "entityAccessDef");
 }
 
 operation seqOfMapsToMap( seqOfMaps : Sequence ) : Map {

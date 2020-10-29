@@ -121,6 +121,21 @@ rule Class
 		t.supertype.println("ProcessData: ");
 	}
 	
+	var m : Map = stereotypeApplications.get("entityAccessDef").get(s);
+	if ( m.isDefined() ) {
+		entityAccesDefMapper(m.get("readableWith"), t.readableWith);
+		entityAccesDefMapper(m.get("listableWith"), t.listableWith);
+		entityAccesDefMapper(m.get("editableWith"), t.editableWith);
+	}
+	
+}
+
+operation entityAccesDefMapper(source , target) : Any {
+	if (source.isDefined() and source.size() > 0) {
+		for (a in source) {
+			target.add(a.equivalent());
+		}
+	}
 }
 
 rule UIMenu

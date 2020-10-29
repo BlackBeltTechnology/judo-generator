@@ -131,11 +131,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/representsUser"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmClass/businessSingleton"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/implements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/readableWith"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/listableWith"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmClass/editableWith"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmInterface/representsEnum"/>
     </genClasses>
     <genClasses ecoreClass="java.ecore#//JvmEnum">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference java.ecore#//JvmEnum/literals"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmEnum/classRepresentation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute java.ecore#//JvmEnum/representsAccessDef"/>
     </genClasses>
     <genClasses ecoreClass="java.ecore#//JvmLiteral">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmLiteral/ownerEnum"/>
@@ -157,6 +161,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/ownerClass"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/origin"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/originReference"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMethod/accessibleWith"/>
     </genClasses>
     <genClasses ecoreClass="java.ecore#//JvmMember">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference java.ecore#//JvmMember/ownerClass"/>

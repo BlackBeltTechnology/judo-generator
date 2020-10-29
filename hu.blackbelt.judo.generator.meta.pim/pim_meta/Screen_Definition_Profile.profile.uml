@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_T6uB0RRuEeuywbyiBUijNQ">
+  <uml:Profile xmi:id="_19_0_3_5a901f7_1602152766615_119793_5259" name="Screen Definition Profile" visibility="public" URI="http://www.blackbelt.hu/metamodel/sdp/v0.1" metamodelReference="_19_0_3_5a901f7_1602152766621_65218_5270">
+    <eAnnotations xmi:id="_T6sMIRRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <contents xmi:type="ecore:EPackage" xmi:id="_T6sMIhRuEeuywbyiBUijNQ" name="ScreenDefinitionProfile" nsURI="http://www.blackbelt.hu/metamodel/sdp/v0.1" nsPrefix="ScreenDefinitionProfile">
+        <eAnnotations xmi:id="_T6sMIxRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+          <details xmi:id="_T6sMJBRuEeuywbyiBUijNQ" key="originalName" value="Screen Definition Profile"/>
+        </eAnnotations>
+        <eAnnotations xmi:id="_T6sMJRRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/4.0.0/UML">
+          <references xmi:type="uml:Profile" href="Access_Definition_Profile.profile.uml#_19_0_3_5a901f7_1602152911570_153479_5612"/>
+        </eAnnotations>
+        <eClassifiers xmi:type="ecore:EClass" xmi:id="_T6sMJhRuEeuywbyiBUijNQ" name="Screen">
+          <eAnnotations xmi:id="_T6sMJxRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_19_0_3_5a901f7_1602152766616_633800_5260"/>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T6sMKBRuEeuywbyiBUijNQ" name="base_Class" ordered="false" lowerBound="1">
+            <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+          </eStructuralFeatures>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T6sMKhRuEeuywbyiBUijNQ" name="Access" ordered="false" lowerBound="1" upperBound="-1" eType="_T6sMLBRuEeuywbyiBUijNQ"/>
+        </eClassifiers>
+        <eClassifiers xmi:type="ecore:EClass" xmi:id="_T6sMLBRuEeuywbyiBUijNQ" name="AccessDefinitionProfile_Privilege">
+          <eAnnotations xmi:id="_T6sMLRRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+            <details xmi:id="_T6sMLhRuEeuywbyiBUijNQ" key="originalName" value="Access Definition Profile_Privilege"/>
+            <references xmi:type="uml:Stereotype" href="Access_Definition_Profile.profile.uml#_19_0_3_5a901f7_1602152766620_991666_5267"/>
+          </eAnnotations>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T6sMLxRuEeuywbyiBUijNQ" name="base_EnumerationLiteral" ordered="false" lowerBound="1">
+            <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//EnumerationLiteral"/>
+          </eStructuralFeatures>
+        </eClassifiers>
+        <eClassifiers xmi:type="ecore:EClass" xmi:id="_T6sMMRRuEeuywbyiBUijNQ" name="ScreenOperation">
+          <eAnnotations xmi:id="_T6sMMhRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_19_0_3_5a901f7_1602152766618_407067_5264"/>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T6sMMxRuEeuywbyiBUijNQ" name="base_Operation" ordered="false" lowerBound="1">
+            <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Operation"/>
+          </eStructuralFeatures>
+        </eClassifiers>
+        <eClassifiers xmi:type="ecore:EClass" xmi:id="_T6sMNRRuEeuywbyiBUijNQ" name="Control">
+          <eAnnotations xmi:id="_T6sMNhRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_19_0_3_5a901f7_1602152766617_646298_5262"/>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T6sMNxRuEeuywbyiBUijNQ" name="Permissons" ordered="false" lowerBound="1" upperBound="-1" eType="_T6sMLBRuEeuywbyiBUijNQ"/>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T6sMORRuEeuywbyiBUijNQ" name="Call" ordered="false" lowerBound="1" eType="_T6sMMRRuEeuywbyiBUijNQ"/>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T6sMOxRuEeuywbyiBUijNQ" name="base_Property" ordered="false" lowerBound="1">
+            <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Property"/>
+          </eStructuralFeatures>
+        </eClassifiers>
+      </contents>
+    </eAnnotations>
+    <packageImport xmi:id="_19_0_3_5a901f7_1602152766621_65218_5270">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0primitiveTypesScreen_Definition_Profile">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypesScreen_Definition_Profile">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Extension" xmi:id="_19_0_3_5a901f7_1602152766618_666214_5263" name="" visibility="public" memberEnd="_19_0_3_5a901f7_1602152766632_789559_5298 _19_0_3_5a901f7_1602152766632_931440_5299" navigableOwnedEnd="_19_0_3_5a901f7_1602152766632_931440_5299">
+      <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_19_0_3_5a901f7_1602152766632_931440_5299" name="extension_Control" visibility="private" type="_19_0_3_5a901f7_1602152766617_646298_5262" aggregation="composite" association="_19_0_3_5a901f7_1602152766618_666214_5263">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_3_5a901f7_1602152766640_205000_5318" name="" visibility="public"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_3_5a901f7_1602152766640_850377_5317" name="" visibility="public" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_19_0_3_5a901f7_1602152766616_633800_5260" name="Screen" visibility="public">
+      <ownedComment xmi:id="_19_0_4_8990274_1602811644830_28130_5308" annotatedElement="_19_0_3_5a901f7_1602152766616_633800_5260" body="Egy képernyőt vagy weboldalt definiáló stereotype."/>
+      <ownedAttribute xmi:id="_19_0_3_5a901f7_1602152766631_408912_5293" name="base_Class" visibility="private" association="_19_0_3_5a901f7_1602152766616_681391_5261">
+        <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_19_0_3_5a901f7_1602152766632_689498_5294" name="Access" visibility="private">
+        <ownedComment xmi:id="_19_0_4_8990274_1602811499911_974077_5305" annotatedElement="_19_0_3_5a901f7_1602152766632_689498_5294" body="Azon privilégiumok felsorolása, amelyek birtokában megtekinthető az adott oldal.&#xA;"/>
+        <type xmi:type="uml:Stereotype" href="Access_Definition_Profile.profile.uml#_19_0_3_5a901f7_1602152766620_991666_5267"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_3_5a901f7_1602152766639_975818_5310" name="" visibility="public" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_3_5a901f7_1602152766639_734923_5309" name="" visibility="public" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_19_0_3_5a901f7_1602152766618_407067_5264" name="ScreenOperation" visibility="public">
+      <ownedComment xmi:id="_19_0_4_8990274_1602811780208_460326_5309" annotatedElement="_19_0_3_5a901f7_1602152766618_407067_5264" body="Egy képernyőhöz vagy weboldalhoz definiált képernyő műveletet definiáló stereotype."/>
+      <ownedAttribute xmi:id="_19_0_3_5a901f7_1602152766632_867188_5300" name="base_Operation" visibility="private" association="_19_0_3_5a901f7_1602152766619_404404_5265">
+        <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Operation"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="_19_0_3_5a901f7_1602152766619_404404_5265" name="" visibility="public" memberEnd="_19_0_3_5a901f7_1602152766632_867188_5300 _19_0_3_5a901f7_1602152766632_744395_5301" navigableOwnedEnd="_19_0_3_5a901f7_1602152766632_744395_5301">
+      <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_19_0_3_5a901f7_1602152766632_744395_5301" name="extension_ScreenOperation" visibility="private" type="_19_0_3_5a901f7_1602152766618_407067_5264" aggregation="composite" association="_19_0_3_5a901f7_1602152766619_404404_5265">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_3_5a901f7_1602152766641_430411_5320" name="" visibility="public"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_3_5a901f7_1602152766640_551966_5319" name="" visibility="public" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="_19_0_3_5a901f7_1602152766616_681391_5261" name="" visibility="public" memberEnd="_19_0_3_5a901f7_1602152766631_408912_5293 _19_0_3_5a901f7_1602152766632_7720_5295" navigableOwnedEnd="_19_0_3_5a901f7_1602152766632_7720_5295">
+      <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_19_0_3_5a901f7_1602152766632_7720_5295" name="extension_Screen" visibility="private" type="_19_0_3_5a901f7_1602152766616_633800_5260" aggregation="composite" association="_19_0_3_5a901f7_1602152766616_681391_5261">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_3_5a901f7_1602152766639_53667_5312" name="" visibility="public"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_3_5a901f7_1602152766639_830698_5311" name="" visibility="public" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_19_0_3_5a901f7_1602152766617_646298_5262" name="Control" visibility="public">
+      <ownedComment xmi:id="_19_0_4_8990274_1602811591838_519528_5306" annotatedElement="_19_0_3_5a901f7_1602152766617_646298_5262" body="Egy képernyőn vagy weboldalon lévő vezérlő elemet (gomb, link) definiáló stereotype."/>
+      <ownedAttribute xmi:id="_19_0_3_5a901f7_1602152766632_856614_5296" name="Permissons" visibility="private">
+        <ownedComment xmi:id="_19_0_4_8990274_1602812306707_531573_5417" annotatedElement="_19_0_3_5a901f7_1602152766632_856614_5296" body="Azon privilégiumok felsorolása, amelyek birtokában akciót kezdeményezhetnek az adott control elemmel."/>
+        <type xmi:type="uml:Stereotype" href="Access_Definition_Profile.profile.uml#_19_0_3_5a901f7_1602152766620_991666_5267"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_3_5a901f7_1602152766639_24319_5314" name="" visibility="public" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_3_5a901f7_1602152766639_559320_5313" name="" visibility="public" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_19_0_3_5a901f7_1602152766632_539807_5297" name="Call" visibility="private" type="_19_0_3_5a901f7_1602152766618_407067_5264">
+        <ownedComment xmi:id="_19_0_4_8990274_1602813479890_302952_5679" annotatedElement="_19_0_3_5a901f7_1602152766632_539807_5297" body="Azon képernyő művelet, amely meghívásra kerül a control elem aktivitása esetén."/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_3_5a901f7_1602152766639_729327_5316" name="" visibility="public" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_3_5a901f7_1602152766639_547214_5315" name="" visibility="public" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_19_0_3_5a901f7_1602152766632_789559_5298" name="base_Property" visibility="private" association="_19_0_3_5a901f7_1602152766618_666214_5263">
+        <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+      </ownedAttribute>
+    </packagedElement>
+    <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationScreen_Definition_Profile">
+      <eAnnotations xmi:id="_ULpZQRRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_T6uB0RRuEeuywbyiBUijNQ"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
+    </profileApplication>
+  </uml:Profile>
+  <MagicDrawProfile:TODO_Owner xmi:id="_ULpZQhRuEeuywbyiBUijNQ" base_Element="_19_0_3_5a901f7_1602152766615_119793_5259">
+    <TODO>Validációt írni, ami ellenőrzi, hogy a screen típusú osztályon van operáció, annak kell legyen ScreenOperation sztereotípiája.</TODO>
+  </MagicDrawProfile:TODO_Owner>
+  <MagicDrawProfile:additionalPackageImport xmi:id="_UMnppBRuEeuywbyiBUijNQ" base_Element="_19_0_3_5a901f7_1602152766621_65218_5270" base_PackageImport="_19_0_3_5a901f7_1602152766621_65218_5270"/>
+</xmi:XMI>

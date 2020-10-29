@@ -61,6 +61,7 @@ rule JLiteral
 
 operation JAVA!JvmEnum fillFrom (source : PSM!JEnumeration, jvmJudoCoordinate : Any) : Any {
 	self.coordinate = jvmJudoCoordinate;
+	self.representsAccessDef = source.representsAccessDef;
 	var cMap = COORDINATES.get(self.coordinate);
 	var suffix = cMap.get(NAME_SUFFIX);
 	if (not self.name.endsWith("Enum")) {
