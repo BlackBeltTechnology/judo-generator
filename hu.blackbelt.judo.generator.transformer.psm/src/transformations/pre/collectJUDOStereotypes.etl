@@ -152,6 +152,7 @@ operation collectJUDOStereotypeInstances() : Map {
     //AccessDefinition profile
 	JUDOStereotypeInstances.put("accessDef", 		inpPIM!AccessDef.allInstances()->aggregate(c | c.base_Operation, c.AccessBy.base_EnumerationLiteral));
 	JUDOStereotypeInstances.put("entityAccessDef", 	inpPIM!EntityAccessDef.allInstances()->aggregate(c | c.base_Class, c.collectPriviliges()));
+	JUDOStereotypeInstances.put("privilegeSet", 	inpPIM!PrivilegeSet.allInstances()->collect(c | c.base_Enumeration).asSet());
 
 	// dump result Map
 	dumpStereotypeInstances( JUDOStereotypeInstances );
@@ -233,6 +234,7 @@ operation dumpStereotypeInstances( JUDOStereotypeInstances : Map ) {
 	dumpSetAt( JUDOStereotypeInstances, "processData");
     dumpMapAt( JUDOStereotypeInstances, "accessDef");
     dumpMapAt( JUDOStereotypeInstances, "entityAccessDef");
+    dumpSetAt( JUDOStereotypeInstances, "privilegeSet");
 }
 
 operation seqOfMapsToMap( seqOfMaps : Sequence ) : Map {
