@@ -1,0 +1,37 @@
+operation getEntityReadAccessDef(uuid : String) : Sequence(tgtPSM!JLiteral) {
+	var def = AccessControl!Classes.all.selectOne(e | e.uuid = uuid);
+	if (def.isDefined() and def.readableWith.isDefined()) {
+		return def.readableWith.split(",").collect(c | mapLiteral(c));
+	}
+}
+
+operation getEntityListAccessDef(uuid : String) : Sequence(tgtPSM!JLiteral) {
+	var def = AccessControl!Classes.all.selectOne(e | e.uuid = uuid);
+	if (def.isDefined() and def.listableWith.isDefined()) {
+		return def.listableWith.split(",").collect(c | mapLiteral(c));
+	}
+}
+
+operation getEntityEditAccessDef(uuid : String) : Sequence(tgtPSM!JLiteral) {
+	var def = AccessControl!Classes.all.selectOne(e | e.uuid = uuid);
+	if (def.isDefined() and def.editableWith.isDefined()) {
+		return def.editableWith.split(",").collect(c | mapLiteral(c));
+	}
+}
+
+operation getMethodAccessDef (uuid : String) : Sequence(tgtPSM!JLiteral) {
+	var def =  AccessControl!Methods.all.selectOne(o | o.uuid = uuid);
+	def.println("DEF: ");
+	if (def.isDefined() and def.accessibleWith.isDefined()) {
+		return def.accessibleWith.split(",").collect(c | mapLiteral(c));
+	}
+}
+
+@cached
+operation accessControlRepresentation () : tgtPSM!JEnumeration {
+	return tgtPSM!JEnumeration.all.selectOne(e | e.representsAccessDef);
+}
+
+operation mapLiteral (s : String) : tgtPSM!JLiteral {
+	return accessControlRepresentation().literals.selectOne(l | l.name = s.trim());
+}

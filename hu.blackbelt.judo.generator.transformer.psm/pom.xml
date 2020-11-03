@@ -137,6 +137,11 @@
                                             <artifact>${project.build.directory}/classes/model/PIM2PSM.xlsx</artifact>
                                             <configurationArtifact>${project.build.directory}/classes/model/typemapping.xml</configurationArtifact>
                                         </excelModel>
+                                        <excelModel>
+                                            <name>AccessControl</name>
+                                            <artifact>${project.build.directory}/classes/model/AccessControl.xlsx</artifact>
+                                            <configurationArtifact>${project.build.directory}/classes/model/accesscontrol.xml</configurationArtifact>
+                                        </excelModel>
                                     </excelModels>
                                     <eolPrograms>
                                         <Etl>
