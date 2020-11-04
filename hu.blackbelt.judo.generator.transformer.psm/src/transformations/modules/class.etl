@@ -121,7 +121,7 @@ rule Class
 		t.supertype.println("ProcessData: ");
 	}
 	
-	var m : Map = stereotypeApplications.get("entityAccessDef").get(s);
+	var m : Map = stereotypeApplications.get("classAccessDef").get(s);
 	if ( m.isDefined() ) {
 		entityAccesDefMapper(m.get("readableWith"), t.readableWith);
 		entityAccesDefMapper(m.get("listableWith"), t.listableWith);

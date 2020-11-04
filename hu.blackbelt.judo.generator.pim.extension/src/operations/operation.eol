@@ -55,3 +55,16 @@ operation inpPIM!Operation addStereotypes(annotation : pimEXT!EAnnotation) {
 		const.base_Operation = self;
 	}
 }
+
+
+operation transfromPrivStrings(s) : Sequence(inpPIM!Privilege) {
+    var privs = s.split(",");
+    return privs.collect(c | privilegiumLiteral(c));
+    
+}
+
+operation privilegiumLiteral(name : String) : inpPIM!Privilege {
+    var ret = new inpPIM!Privilege;
+    ret.base_EnumerationLiteral = inpPIM!PrivilegeSet.allInstances().collect(c | c.base_Enumeration).first().ownedLiteral.selectOne(l | l.name = name);
+    return ret;
+}
