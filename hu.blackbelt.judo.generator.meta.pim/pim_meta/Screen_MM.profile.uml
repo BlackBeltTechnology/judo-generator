@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Profile xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_18_5_3_1c100dd_1549556370188_725258_12314" name="Screen MM" visibility="public" URI="" metamodelReference="_18_5_3_1c100dd_1549556370188_431078_12315">
-  <eAnnotations xmi:id="_T7L73BRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
-    <contents xmi:type="ecore:EPackage" xmi:id="_T7L73RRuEeuywbyiBUijNQ" name="ScreenMM" nsURI="http:///schemas/ScreenMM/_T5-acBRuEeuywbyiBUijNQ/0" nsPrefix="ScreenMM">
-      <eAnnotations xmi:id="_T7L73hRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <details xmi:id="_T7L73xRuEeuywbyiBUijNQ" key="originalName" value="Screen MM"/>
+  <eAnnotations xmi:id="_z5_tCCf0EeuFcMB2y3vzaw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <contents xmi:type="ecore:EPackage" xmi:id="_z5_tCSf0EeuFcMB2y3vzaw" name="ScreenMM" nsURI="http:///schemas/ScreenMM/_z5WzECf0EeuFcMB2y3vzaw/0" nsPrefix="ScreenMM">
+      <eAnnotations xmi:id="_z5_tCif0EeuFcMB2y3vzaw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <details xmi:id="_z5_tCyf0EeuFcMB2y3vzaw" key="originalName" value="Screen MM"/>
       </eAnnotations>
-      <eClassifiers xmi:type="ecore:EClass" xmi:id="_T7L74BRuEeuywbyiBUijNQ" name="ControllElement">
-        <eAnnotations xmi:id="_T7L74RRuEeuywbyiBUijNQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_18_5_3_1c100dd_1549556399101_727564_12317"/>
-        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_T7L74hRuEeuywbyiBUijNQ" name="base_ConnectableElement" ordered="false" lowerBound="1">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_z5_tDCf0EeuFcMB2y3vzaw" name="ControllElement">
+        <eAnnotations xmi:id="_z5_tDSf0EeuFcMB2y3vzaw" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_18_5_3_1c100dd_1549556399101_727564_12317"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_z5_tDif0EeuFcMB2y3vzaw" name="base_ConnectableElement" ordered="false" lowerBound="1">
           <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//ConnectableElement"/>
         </eStructuralFeatures>
       </eClassifiers>
