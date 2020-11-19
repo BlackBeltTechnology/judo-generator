@@ -14,6 +14,10 @@ rule Enumeration
 	t.name = t.name + "Enum";
 	s.owner.equivalent("Package").enumerations.add( t);
 	
+	if (stereotypeApplications.get("privilegeSet").includes(s)) {
+		t.representsAccessDef = true;
+	}
+	
 	"".println("RULE::Enumeration");
 }
 
@@ -36,6 +40,16 @@ rule Enum2CorrespondingValueClass
 	var isFrameworkElmt = tgtPkg.framework;
 	
 	t.representsEnum = true;
+	
+	var m : Map = stereotypeApplications.get("enumAccessDef").get(s);
+	if ( m.isDefined() ) {
+		entityAccesDefMapper(m.get("readableWith"), t.readableWith);
+		entityAccesDefMapper(m.get("listableWith"), t.listableWith);
+		entityAccesDefMapper(m.get("editableWith"), t.editableWith);
+		entityAccesDefMapper(m.get("readableWith"), enumValueClass.readableWith);
+		entityAccesDefMapper(m.get("listableWith"), enumValueClass.listableWith);
+		entityAccesDefMapper(m.get("editableWith"), enumValueClass.editableWith);
+	}
 	
 	var code = createDefaultAttribute("code").uuid(t.uuid).type(getPSMPrimitiveType("String"));
 	code.lower = 1;
@@ -148,6 +162,14 @@ rule Enum2CorrespondingValueClass
  	enumValueClassLangClassRelationship.framework = isFrameworkElmt;
 	tgtPkg.relationships.add( enumValueClassLangClassRelationship );
  }
+ 
+ operation entityAccesDefMapper(source , target) : Any {
+	if (source.isDefined() and source.size() > 0) {
+		for (a in source) {
+			target.add(a.equivalent());
+		}
+	}
+}
 
 @primary
 rule EnumerationLiteral

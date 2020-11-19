@@ -430,4 +430,17 @@ operation JAVA!JvmClass fillClass(source : PSM!JClass, coordinate : Any) : Any {
 	self.businessSingleton = source.businessSingleton;
 	self.representsUser = source.representsUser;
 	self.representsTenantUser = source.representsTenantUser;
+	
+	entityAccesDefMapper(source.readableWith, self.readableWith);
+	entityAccesDefMapper(source.listableWith, self.listableWith);
+	entityAccesDefMapper(source.editableWith, self.editableWith);
+	
+}
+
+operation entityAccesDefMapper(source, target) : Any {
+	if (source.isDefined and source.size() > 0) {
+		for (a in source) {
+			target.add(a.equivalent());
+		}
+	}
 }

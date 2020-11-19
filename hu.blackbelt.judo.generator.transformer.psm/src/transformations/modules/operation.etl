@@ -25,4 +25,11 @@ rule Operation
 	} else {
 		t.bulk = false;
 	}
+	
+	var accessBy : Sequence = stereotypeApplications.get("accessDef").get(s);
+	if (accessBy.isDefined() and accessBy.size() > 0) {
+		for (a in accessBy) { 
+			t.accessibleWith.add(a.equivalent());
+		}
+	}
 }

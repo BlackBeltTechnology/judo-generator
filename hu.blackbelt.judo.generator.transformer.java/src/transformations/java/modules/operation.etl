@@ -136,6 +136,11 @@ operation JAVA!JvmMethod fillFrom (source : PSM!JOperation, ownerClassRuleName :
 	self.origin ::= source;
 	self.kind = source.kind.toJava();
 	self.classBased = source.classBased;
+	if (source.accessibleWith.isDefined() and source.accessibleWith.size() > 0) {
+		for (a in source.accessibleWith) { 		
+			self.accessibleWith.add(a.equivalent());
+		}
+	}
 	var out = source.parameters.select(p | not p.input).first();
 	if (out.isDefined() and out.type.isDefined()) {
 		self.type = out.type.transformType(returnTypeRuleName, out.upper = -1);

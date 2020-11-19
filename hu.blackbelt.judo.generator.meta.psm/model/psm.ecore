@@ -42,6 +42,7 @@
         eType="#//JLiteral" containment="true" eOpposite="#//JLiteral/enumeration"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="classRepresentation" eType="#//JClass"
         eOpposite="#//JClass/fixedEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsAccessDef" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JClass" eSuperTypes="#//JType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -79,6 +80,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="watched" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="representsEnumValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="readableWith" upperBound="-1"
+        eType="#//JLiteral"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="editableWith" upperBound="-1"
+        eType="#//JLiteral"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="listableWith" upperBound="-1"
+        eType="#//JLiteral"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JAttribute" eSuperTypes="#//JTypedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="placeholder" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -108,6 +115,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//JOperationKind"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="uiMustConfirm" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="accessibleWith" upperBound="-1"
+        eType="#//JLiteral"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JParameter" eSuperTypes="#//JTypedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownerOperation" eType="#//JOperation"

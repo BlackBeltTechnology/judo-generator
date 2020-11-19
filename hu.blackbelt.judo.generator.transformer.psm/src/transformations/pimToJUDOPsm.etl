@@ -29,6 +29,19 @@ pre {
 post {
 	"POST processing STARTED:".println();
 	
+	"PARSNIG ACCESS CONTROL for model".println();
+	
+	for (c in tgtPSM!JClass.all.select(c | c.framework)) {
+		c.readableWith = getEntityReadAccessDef(c.uuid);
+		c.listableWith = getEntityListAccessDef(c.uuid);
+		c.editableWith = getEntityEditAccessDef(c.uuid);
+		
+		for (o in c.operations) {
+			o.uuid.println("O UUID: ");
+			o.accessibleWith = getMethodAccessDef(o.uuid);
+		}
+	}
+	
 	// set attributesForListing on all Classes
 	stereotypeApplications.get("list").setAttrForListingAssocs();
 	

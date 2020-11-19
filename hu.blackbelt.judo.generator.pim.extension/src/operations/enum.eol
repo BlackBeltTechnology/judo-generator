@@ -21,4 +21,25 @@ operation inpPIM!Enumeration addStereotypes(annotation : pimEXT!EAnnotation) {
 		const = new inpPIM!fixed();
 		const.base_Enumeration = self;
 	}
+	
+	if (annotation.details.get("read").isDefined()) {
+        self.getOrAddentityAccessDef().Read = transfromPrivStrings(annotation.details.get("read"));
+	}
+    
+    if (annotation.details.get("list").isDefined()) {
+        self.getOrAddentityAccessDef().`List` = transfromPrivStrings(annotation.details.get("list"));
+	}
+    
+    if (annotation.details.get("edit").isDefined()) {
+        self.getOrAddentityAccessDef().Edit = transfromPrivStrings(annotation.details.get("edit"));
+	}
+}
+
+operation inpPIM!Enumeration getOrAddentityAccessDef () : inpPIM!EntityAccessDef {
+    var ead = inpPIM!EntityAccessDef.allInstances()->selectOne(c | c.base_Enumeration = self);
+    if (not ead.isDefined()) {
+        ead = new inpPIM!EntityAccessDef;
+        ead.base_Enumeration = self;
+    }
+    return ead;
 }
