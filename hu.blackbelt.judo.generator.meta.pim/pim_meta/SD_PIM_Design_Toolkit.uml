@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:JudoProfile="http://www.blackbelt.hu/metamodel/pim/1.3" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.blackbelt.hu/metamodel/pim/1.3 JudoProfile.profile.uml#_PINOcZ7dEeypSrJXJSy5zw">
+  <uml:Model xmi:id="c1475388-5da3-4104-98c4-dc69d2206675" name="Model" visibility="public" URI="http://www.blackbelt.hu/metamodel/SD_PIM_Design_Toolkit" viewpoint="">
+    <ownedComment xmi:id="60e8244f-f9bd-43b7-85b2-6534d23c72d9" annotatedElement="c1475388-5da3-4104-98c4-dc69d2206675" body="Egy képernyőt vagy weboldalt definiáló stereotype."/>
+    <packageImport xmi:id="_0primitiveTypesModel">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypesModel">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Model" xmi:id="d01eb6f3-2fd9-46c1-add0-de3b6c85f52c" name="PIM Types" visibility="public" URI="" viewpoint="">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="eb7055c2-7e2c-4a42-b362-ca571265f334" name="cjszam" visibility="public">
+        <ownedRule xmi:id="15abf3d9-0092-47fc-b233-92b59fb9da0f" name="" visibility="public" constrainedElement="eb7055c2-7e2c-4a42-b362-ca571265f334">
+          <specification xmi:type="uml:LiteralString" xmi:id="33bd7b89-1e7f-4b80-ab97-d6b88175d24b" name="" visibility="public" value="^(\d{2})\-(\d{2})\-(\d{6})$"/>
+        </ownedRule>
+        <ownedRule xmi:id="7093f073-4412-450d-a144-d4d2687bb8df" name="" visibility="public" constrainedElement="eb7055c2-7e2c-4a42-b362-ca571265f334">
+          <specification xmi:type="uml:LiteralString" xmi:id="a3511138-9f8e-45a0-86cc-603ddf20509f" name="" visibility="public" value="01-01-012345"/>
+        </ownedRule>
+        <generalization xmi:id="e91b9d7c-8b78-4f19-b479-8a4f14e3e976">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="8d5711e3-7f79-4576-8a3c-515f65d7b493" name="adoszam" visibility="public">
+        <ownedRule xmi:id="2a700c99-e865-4335-a057-cc6312610224" name="" visibility="public" constrainedElement="8d5711e3-7f79-4576-8a3c-515f65d7b493">
+          <specification xmi:type="uml:LiteralString" xmi:id="311d02a6-54cb-406f-aaa9-04873d3aff8a" name="" visibility="public" value="^(\d{7})(\d)\-([1-5])\-(0[2-9]|[13][0-9]|2[02-9]|4[0-4]|51)$"/>
+        </ownedRule>
+        <ownedRule xmi:id="e89928f4-7d06-411d-bbd2-bec77320da98" name="" visibility="public" constrainedElement="8d5711e3-7f79-4576-8a3c-515f65d7b493">
+          <specification xmi:type="uml:LiteralString" xmi:id="110a0949-aad5-47a5-bd47-3adaa64443f9" name="" visibility="public" value="12345678-1-02"/>
+        </ownedRule>
+        <generalization xmi:id="e97fe26d-635d-4521-b7d3-d222de32c4c2">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="2547402a-e93e-4ee8-a7d0-315553a81a5e" name="ipaddress" visibility="public">
+        <ownedRule xmi:id="fea96a4d-d7ab-4d45-bc75-b09d8a863505" name="" visibility="public" constrainedElement="2547402a-e93e-4ee8-a7d0-315553a81a5e">
+          <specification xmi:type="uml:LiteralString" xmi:id="3f53ec36-38d6-4092-917d-c66ec2ddedf8" name="" visibility="public" value="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"/>
+        </ownedRule>
+        <ownedRule xmi:id="914e2a07-83c2-4652-9b7f-e31e88c53c27" name="" visibility="public" constrainedElement="2547402a-e93e-4ee8-a7d0-315553a81a5e">
+          <specification xmi:type="uml:LiteralString" xmi:id="eae72fd3-4fe3-4bfa-8c6e-d768150e4ada" name="" visibility="public" value="127.0.0.1"/>
+        </ownedRule>
+        <generalization xmi:id="12695d32-b5db-4260-9866-29897280bbd5">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="55f0fb7a-9e51-4681-8b61-5dedf0f3b11e" name="currency" visibility="public">
+        <ownedRule xmi:id="c2600bd5-0ae9-413e-833a-9f828cad0ac3" name="" visibility="public" constrainedElement="55f0fb7a-9e51-4681-8b61-5dedf0f3b11e">
+          <specification xmi:type="uml:LiteralString" xmi:id="f8cb7be1-c1da-4c6e-afa2-927cc8a6fd37" name="" visibility="public" value="2"/>
+        </ownedRule>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="ba1e48d1-dfe8-4d88-9f1d-711c835b9f10" name="time" visibility="public"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="45eaf02b-0b4a-4550-b6fe-d312ca557451" name="email" visibility="public">
+        <ownedRule xmi:id="4489d8d9-8b9a-4444-81be-cc65f3a73ed6" name="format" visibility="public" constrainedElement="45eaf02b-0b4a-4550-b6fe-d312ca557451">
+          <specification xmi:type="uml:LiteralString" xmi:id="f8219288-cbf8-4b8e-9668-33bd09c99e90" name="" visibility="public" value="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"/>
+        </ownedRule>
+        <ownedRule xmi:id="fa29a305-f833-4b6e-811b-fd7d5c5f2d8f" name="sample" visibility="public" constrainedElement="45eaf02b-0b4a-4550-b6fe-d312ca557451">
+          <specification xmi:type="uml:LiteralString" xmi:id="34cdf1e0-0bd3-4e18-a068-875ff3d3512d" name="" visibility="public" value="name@company.com"/>
+        </ownedRule>
+        <generalization xmi:id="e9adfb2f-3d7a-4f16-8d15-8e35773236c1">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="7487c82d-23be-46c8-9a41-581882f68386" name="memo" visibility="public"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="a7555270-fa57-45d1-be97-47d2df2b73f9" name="phone" visibility="public">
+        <ownedRule xmi:id="bc748019-29f4-4cc6-a72b-095566197d1c" name="" visibility="public" constrainedElement="a7555270-fa57-45d1-be97-47d2df2b73f9">
+          <specification xmi:type="uml:LiteralString" xmi:id="2b554997-0c0c-4c4e-8964-fa59f8b3c71f" name="" visibility="public" value="^\+?\(?\d{2,4}\)?[\d\s-]{3,}$"/>
+        </ownedRule>
+        <ownedRule xmi:id="1f8b74a4-3264-4210-a243-29bbe5107db8" name="" visibility="public" constrainedElement="a7555270-fa57-45d1-be97-47d2df2b73f9">
+          <specification xmi:type="uml:LiteralString" xmi:id="60fbd6ed-5017-49b8-ac79-f5d2fcc83452" name="" visibility="public" value="+36-1-3007777"/>
+        </ownedRule>
+        <generalization xmi:id="b140a155-3a4e-401d-be83-4da6e0f3f29d">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="cc64fcf5-b52f-4092-9673-d4e8fdcc1042" name="duration" visibility="public">
+        <ownedRule xmi:id="726a23a7-39e4-45de-aa9f-a27030644478" name="" visibility="public" constrainedElement="cc64fcf5-b52f-4092-9673-d4e8fdcc1042">
+          <specification xmi:type="uml:LiteralString" xmi:id="cd3efc80-c9c4-4e5b-99be-c77011272160" name="" visibility="public" value="[0,,]"/>
+        </ownedRule>
+        <generalization xmi:id="5d6eaf12-7120-4ac5-91f4-b020278fa537">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="c6a18f7f-84d8-44a5-a49a-d374d755e370" name="percentage" visibility="public"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="5e10144c-07b3-44a3-b8e9-b64b7bab1dbc" name="text" visibility="public"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="db655376-b23e-4e15-bd6c-02c4705c17d9" name="natural" visibility="public">
+        <ownedRule xmi:id="1a18026e-e3a6-4ee4-b169-8de5f01e0816" name="" visibility="public" constrainedElement="db655376-b23e-4e15-bd6c-02c4705c17d9">
+          <specification xmi:type="uml:LiteralString" xmi:id="fd090e6c-0174-44e5-8cc3-dced9723e4cf" name="" visibility="public" value="[0,,]"/>
+        </ownedRule>
+        <generalization xmi:id="2fc68fa9-2fa9-4bfb-922c-69e94b25b022">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="07697cc0-baa4-42e7-989b-c55c65e4a7a4" name="datetime" visibility="public"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="366a2e31-b716-4dd1-ab3d-e975c35cad2e" name="file" visibility="public"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="5bbea0a5-2cf0-4f15-8f44-96e4ce703870" name="uuid" visibility="public"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="5745cb79-50d5-46f0-8a2e-4bbc07acfd77" name="url" visibility="public">
+        <ownedRule xmi:id="c36de1a9-348f-4d3e-95cf-1b0584426215" name="" visibility="public" constrainedElement="5745cb79-50d5-46f0-8a2e-4bbc07acfd77">
+          <specification xmi:type="uml:LiteralString" xmi:id="13eaca9b-b118-49aa-b99e-a58a2280b917" name="" visibility="public" value="^(https?\:\/\/)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}(\/.*)*$"/>
+        </ownedRule>
+        <ownedRule xmi:id="79d57290-9dbf-4e5d-8dff-5b71b63e5862" name="" visibility="public" constrainedElement="5745cb79-50d5-46f0-8a2e-4bbc07acfd77">
+          <specification xmi:type="uml:LiteralString" xmi:id="ab351999-28d0-4a2b-b9f0-ad4a68e4c1bb" name="" visibility="public" value="http://www.blackbelt.hu"/>
+        </ownedRule>
+        <generalization xmi:id="592f5aa5-1539-4cb1-9995-ac6114ea34a3">
+          <general xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </generalization>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="8829d1b2-0b5b-4365-b0ef-1f2cf8525c8d" name="float" visibility="public"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="db256460-3aba-4c54-8b8d-3315112c9bb9" name="date" visibility="public"/>
+    </packagedElement>
+    <profileApplication xmi:id="553e1a27-60fb-4b2e-b093-c87d7e4acc07profileApplicationModel">
+      <eAnnotations xmi:id="_PPR_Hp7dEeypSrJXJSy5zw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="JudoProfile.profile.uml#_PINOcZ7dEeypSrJXJSy5zw"/>
+      </eAnnotations>
+      <appliedProfile href="JudoProfile.profile.uml#553e1a27-60fb-4b2e-b093-c87d7e4acc07"/>
+    </profileApplication>
+  </uml:Model>
+  <JudoProfile:regexp xmi:id="_PPR_H57dEeypSrJXJSy5zw" base_Constraint="c36de1a9-348f-4d3e-95cf-1b0584426215"/>
+  <JudoProfile:regexp xmi:id="_PPR_IJ7dEeypSrJXJSy5zw" base_Constraint="bc748019-29f4-4cc6-a72b-095566197d1c"/>
+  <JudoProfile:regexp xmi:id="_PPR_IZ7dEeypSrJXJSy5zw" base_Constraint="4489d8d9-8b9a-4444-81be-cc65f3a73ed6"/>
+  <JudoProfile:regexp xmi:id="_PPR_Ip7dEeypSrJXJSy5zw" base_Constraint="fea96a4d-d7ab-4d45-bc75-b09d8a863505"/>
+  <JudoProfile:regexp xmi:id="_PPR_I57dEeypSrJXJSy5zw" base_Constraint="2a700c99-e865-4335-a057-cc6312610224"/>
+  <JudoProfile:regexp xmi:id="_PPR_JJ7dEeypSrJXJSy5zw" base_Constraint="15abf3d9-0092-47fc-b233-92b59fb9da0f"/>
+  <JudoProfile:decimals xmi:id="_PPR_KJ7dEeypSrJXJSy5zw" base_Constraint="c2600bd5-0ae9-413e-833a-9f828cad0ac3"/>
+  <JudoProfile:interval xmi:id="_PPR_MZ7dEeypSrJXJSy5zw" base_Constraint="1a18026e-e3a6-4ee4-b169-8de5f01e0816"/>
+  <JudoProfile:interval xmi:id="_PPR_Mp7dEeypSrJXJSy5zw" base_Constraint="726a23a7-39e4-45de-aa9f-a27030644478"/>
+  <JudoProfile:placeholder xmi:id="_PPR_PZ7dEeypSrJXJSy5zw" base_Constraint="79d57290-9dbf-4e5d-8dff-5b71b63e5862"/>
+  <JudoProfile:placeholder xmi:id="_PPR_Pp7dEeypSrJXJSy5zw" base_Constraint="1f8b74a4-3264-4210-a243-29bbe5107db8"/>
+  <JudoProfile:placeholder xmi:id="_PPR_P57dEeypSrJXJSy5zw" base_Constraint="fa29a305-f833-4b6e-811b-fd7d5c5f2d8f"/>
+  <JudoProfile:placeholder xmi:id="_PPR_QJ7dEeypSrJXJSy5zw" base_Constraint="914e2a07-83c2-4652-9b7f-e31e88c53c27"/>
+  <JudoProfile:placeholder xmi:id="_PPR_QZ7dEeypSrJXJSy5zw" base_Constraint="e89928f4-7d06-411d-bbd2-bec77320da98"/>
+  <JudoProfile:placeholder xmi:id="_PPR_Qp7dEeypSrJXJSy5zw" base_Constraint="7093f073-4412-450d-a144-d4d2687bb8df"/>
+</xmi:XMI>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_PH8A0p7dEeypSrJXJSy5zw">
+  <uml:Model xmi:id="ed947650-c5e6-47ec-b193-068d571bde34" name="Model" visibility="public" URI="" viewpoint="">
+    <packageImport xmi:id="_0primitiveTypesModel">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypesModel">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="df1856b5-a68a-4bcc-a825-9a64ba1c47fa" name="UML Standard Profile" visibility="public" URI="">
+      <ownedComment xmi:id="86e9ee6b-c6fc-46d2-a216-ebc9c714e3be" annotatedElement="df1856b5-a68a-4bcc-a825-9a64ba1c47fa" body="UML Standard Profile contains a UML metamodel (metaclasses without properties and associations), Standard UML stereotypes defined in the annex C of UML specification, validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally."/>
+    </packagedElement>
+    <profileApplication xmi:id="0c5b9926-4921-4fec-9112-7888a201496dprofileApplicationModel">
+      <eAnnotations xmi:id="_PNFA057dEeypSrJXJSy5zw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_PH8A0p7dEeypSrJXJSy5zw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#0c5b9926-4921-4fec-9112-7888a201496d"/>
+    </profileApplication>
+  </uml:Model>
+  <MagicDrawProfile:auxiliaryResource xmi:id="_PNFA1J7dEeypSrJXJSy5zw" base_Element="ed947650-c5e6-47ec-b193-068d571bde34"/>
+  <MagicDrawProfile:auxiliaryResource xmi:id="_PNFA1Z7dEeypSrJXJSy5zw" base_Element="df1856b5-a68a-4bcc-a825-9a64ba1c47fa"/>
+</xmi:XMI>

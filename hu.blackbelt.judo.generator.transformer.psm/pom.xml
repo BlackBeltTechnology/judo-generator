@@ -95,7 +95,7 @@
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:UML_Standard_Profile.MagicDraw_Profile.Traceability_customization:${project.version}</metaModel>
                                         <metaModel>mvn:${project.groupId}:hu.blackbelt.judo.generator.meta.pim:uml:JudoProfile:${project.version}</metaModel>
                                         <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:Access_Definition_Profile:${project.version}</metaModel>
-                                        <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:Screen_Definition_Profile:${project.version}</metaModel>
+                                        <metaModel>mvn:${groupId}:hu.blackbelt.judo.generator.meta.pim:uml:Screen_Definition_Profile:${project.version}</metaModel>                                       
                                     </metaModels>
                                     <models>
                                         <model>
@@ -105,11 +105,12 @@
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML</param>
                                                 <param>http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard</param>
                                                 <param>http://www.omg.org/spec/UML/20131001/MagicDrawProfile</param>
-                                                <param>http:///schemas/ValidationProfile/_E8DQcDGdEei6IdEFC9bfxw/0</param>
-                                                <param>http:///schemas/DSLCustomization/_E8xpMDGdEei6IdEFC9bfxw/0</param>
+                                                <param>http://UML_Standard_Profile/Validation_Profile/_11_5_f720368_1159529670215_231387_1</param>
+                                                <param>http://UML_Standard_Profile/MagicDraw_Profile/DSL_Customization/_11_5_be00301_1153310565718_226811_161</param>
                                                 <param>http://www.blackbelt.hu/metamodel/pim/1.3</param>
                                                 <param>http://www.blackbelt.hu/metamodel/sdp/v0.1</param>
                                                 <param>http://www.blackbelt.hu/metamodel/adp/v1.0</param>
+                                               
                                             </metaModelUris>
                                             <expand>true</expand>
                                         </model>
