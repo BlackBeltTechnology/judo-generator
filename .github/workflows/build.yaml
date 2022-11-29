@@ -1,0 +1,44 @@
+name: Build
+on: 
+  workflow_dispatch:
+  push:
+env:
+  APP_NAME: anakin-web
+  BASE_VERSION: "12.14"
+  NPM_REGISTRY: nexus.blackbelt.cloud/repository
+  NPM_DOWNSTREAM_REGISTRY: nexus.blackbelt.cloud/repository/npm
+  NPM_UPSTREAM_REGISTRY: nexus.blackbelt.cloud/repository/npm-opm-release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: hmarr/debug-action@v2
+    - uses: actions/checkout@v3
+
+
+    - name: setting vars
+      run: |
+        set -ex
+        export BUILD_NUMBER=$((600 + $GITHUB_RUN_NUMBER))
+        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+
+
+
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+        cache: 'maven'
+    - name: mvn set version
+      run: |
+        set -exu
+        POM_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
+        PROJECT_VERSION=$(echo $POM_VERSION | sed "s/-SNAPSHOT/-$BUILD_NUMBER/")
+        mvn org.codehaus.mojo:versions-maven-plugin:2.7:set -DnewVersion=$PROJECT_VERSION
+        mvn org.codehaus.mojo:versions-maven-plugin:2.7:set -DnewVersion=$PROJECT_VERSION -f hu.blackbelt.judo.generator.parent
+    
+      
+            
