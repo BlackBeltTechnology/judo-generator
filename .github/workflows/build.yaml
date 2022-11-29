@@ -39,6 +39,9 @@ jobs:
         PROJECT_VERSION=$(echo $POM_VERSION | sed "s/-SNAPSHOT/-$BUILD_NUMBER/")
         mvn org.codehaus.mojo:versions-maven-plugin:2.7:set -DnewVersion=$PROJECT_VERSION
         mvn org.codehaus.mojo:versions-maven-plugin:2.7:set -DnewVersion=$PROJECT_VERSION -f hu.blackbelt.judo.generator.parent
-    
+    - name: mvn clean deploy
+      run: |
+        set -exu
+        mvn clean deploy
       
             
