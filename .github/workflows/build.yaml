@@ -3,13 +3,8 @@ on:
   workflow_dispatch:
   push:
     tags-ignore:        
-      - "*"
-env:
-  APP_NAME: anakin-web
-  BASE_VERSION: "12.14"
-  NPM_REGISTRY: nexus.blackbelt.cloud/repository
-  NPM_DOWNSTREAM_REGISTRY: nexus.blackbelt.cloud/repository/npm
-  NPM_UPSTREAM_REGISTRY: nexus.blackbelt.cloud/repository/npm-opm-release
+      - "[0-9].**"
+
 
 jobs:
   build:
