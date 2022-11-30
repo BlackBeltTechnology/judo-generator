@@ -53,6 +53,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         # release_branches: "*"
         create_annotated_tag: false
+        tag_prefix: ""
         custom_tag: ${{ steps.version.output.version }}  
         
 
