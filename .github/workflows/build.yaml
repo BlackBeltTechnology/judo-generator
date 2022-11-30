@@ -54,7 +54,7 @@ jobs:
         # release_branches: "*"
         create_annotated_tag: false
         tag_prefix: ""
-        custom_tag: ${{ steps.version.output.version }}  
+        custom_tag: ${{ steps.version.outputs.version }}  
         
 
             
