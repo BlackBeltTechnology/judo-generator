@@ -42,6 +42,11 @@ jobs:
     - name: mvn clean deploy
       run: |
         set -exu
+        echo $GCLOUD_SERVICE_KEY > gcp.credentials
+        export GOOGLE_APPLICATION_CREDENTIALS=$PWD/gcp.credentials
         mvn -s mvn-settings.xml clean deploy -DaltDeploymentRepository=artifact-registry::default::artifactregistry://europe-west1-maven.pkg.dev/anakin2-216418/maven
-      
+      env:
+        GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+        
+
             
