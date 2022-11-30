@@ -2,8 +2,8 @@ name: Build
 on: 
   workflow_dispatch:
   push:
-    # tags-ignore:        
-    #   - "[0-9].**"
+    branches:        
+      - "**"
 
 
 jobs:
