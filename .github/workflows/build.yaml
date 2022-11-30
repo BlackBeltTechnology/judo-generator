@@ -2,6 +2,8 @@ name: Build
 on: 
   workflow_dispatch:
   push:
+    tags-ignore:        
+      - "*"
 env:
   APP_NAME: anakin-web
   BASE_VERSION: "12.14"
@@ -33,20 +35,30 @@ jobs:
         distribution: 'adopt'
         cache: 'maven'
     - name: mvn set version
+      id: version
       run: |
         set -exu
         POM_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
         PROJECT_VERSION=$(echo $POM_VERSION | sed "s/-SNAPSHOT/-$BUILD_NUMBER/")
+        echo "version=$PROJECT_VERSION" >> $GITHUB_OUTPUT
         mvn org.codehaus.mojo:versions-maven-plugin:2.7:set -DnewVersion=$PROJECT_VERSION
         mvn org.codehaus.mojo:versions-maven-plugin:2.7:set -DnewVersion=$PROJECT_VERSION -f hu.blackbelt.judo.generator.parent
     - name: mvn clean deploy
       run: |
-        set -exu
+        set -eu
         echo $GCLOUD_SERVICE_KEY > gcp.credentials
         export GOOGLE_APPLICATION_CREDENTIALS=$PWD/gcp.credentials
         mvn -s mvn-settings.xml clean deploy -DaltDeploymentRepository=artifact-registry::default::artifactregistry://europe-west1-maven.pkg.dev/anakin2-216418/maven
       env:
         GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+    - name: Tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v6.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        # release_branches: "*"
+        create_annotated_tag: false
+        custom_tag: ${{ steps.version.output.version }}  
         
 
             
