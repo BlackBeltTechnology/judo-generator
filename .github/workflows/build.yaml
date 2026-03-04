@@ -1,0 +1,60 @@
+name: Build
+on: 
+  workflow_dispatch:
+  push:
+    branches:        
+      - "**"
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: hmarr/debug-action@v2
+    - uses: actions/checkout@v3
+
+
+    - name: setting vars
+      run: |
+        set -ex
+        export BUILD_NUMBER=$((600 + $GITHUB_RUN_NUMBER))
+        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+
+
+
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+        cache: 'maven'
+    - name: mvn set version
+      id: version
+      run: |
+        set -exu
+        POM_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
+        PROJECT_VERSION=$(echo $POM_VERSION | sed "s/-SNAPSHOT/-$BUILD_NUMBER/")
+        echo "version=$PROJECT_VERSION" >> $GITHUB_OUTPUT
+        mvn org.codehaus.mojo:versions-maven-plugin:2.7:set -DnewVersion=$PROJECT_VERSION
+        mvn org.codehaus.mojo:versions-maven-plugin:2.7:set -DnewVersion=$PROJECT_VERSION -f hu.blackbelt.judo.generator.parent
+    - name: mvn clean deploy
+      run: |
+        set -eu
+        echo $GCLOUD_SERVICE_KEY > gcp.credentials
+        export GOOGLE_APPLICATION_CREDENTIALS=$PWD/gcp.credentials
+        mvn -s mvn-settings.xml clean deploy -DaltDeploymentRepository=artifact-registry::default::artifactregistry://europe-west1-maven.pkg.dev/anakin2-216418/maven
+      env:
+        GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+    - name: Tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v6.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        # release_branches: "*"
+        create_annotated_tag: false
+        tag_prefix: ""
+        custom_tag: ${{ steps.version.outputs.version }}  
+        
+
+            
