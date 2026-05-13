@@ -11,6 +11,8 @@
 	-->
 
 
+	<sql name = "diff-report" scriptName="templates/diff-report.egl" out ="schema/sql/${currentVersion}/${dialect}/diff-report.md"/>
+
 	<sql name = "database-initialize" scriptName="templates/sql/database-initialize.egl" out ="schema/sql/${currentVersion}/${dialect}/database-initialize.sql"/>
 	<sql name = "start-version" scriptName="templates/sql/start-version.egl" out ="schema/sql/${currentVersion}/${dialect}/start-version.sql"/>
 	<sql name = "create-table-full" scriptName="templates/sql/create-table-full.egl" out ="schema/sql/${currentVersion}/${dialect}/create-table-full.sql"/>
@@ -38,6 +40,18 @@
 	<sql name = "drop-not-null-constraint" scriptName="templates/sql/drop-not-null-constraint.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-not-null-constraint.sql"/>
 	<sql name = "drop-foreignkey" scriptName="templates/sql/drop-foreignkey.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-foreignkey.sql"/>
 	<sql name = "drop-table-full" scriptName="templates/sql/drop-table-full.egl" out ="schema/sql/${currentVersion}/${dialect}/drop-table-full.sql"/>
+
+	<sql name = "create-foreignkey-incremental" scriptName="templates/sql/create-foreignkey-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-foreignkey-incremental.sql"/>
+	<sql name = "create-not-null-constraint-incremental" scriptName="templates/sql/create-not-null-constraint-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-not-null-constraint-incremental.sql"/>
+	<sql name = "create-unique-constraint-incremental" scriptName="templates/sql/create-unique-constraint-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-unique-constraint-incremental.sql"/>
+	<sql name = "create-index-incremental" scriptName="templates/sql/create-index-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-index-incremental.sql"/>
+	<sql name = "create-table-before-insert-trigger-incremental" scriptName="templates/sql/create-table-before-insert-trigger-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-table-before-insert-trigger-incremental.sql"/>
+	<sql name = "create-table-before-update-trigger-incremental" scriptName="templates/sql/create-table-before-update-trigger-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-table-before-update-trigger-incremental.sql"/>
+	<sql name = "create-junction-before-insert-trigger-incremental" scriptName="templates/sql/create-junction-before-insert-trigger-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-junction-before-insert-trigger-incremental.sql"/>
+	<sql name = "create-view-incremental" scriptName="templates/sql/create-view-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-view-incremental.sql"/>
+	<sql name = "create-view-insert-trigger-incremental" scriptName="templates/sql/create-view-insert-trigger-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-view-insert-trigger-incremental.sql"/>
+	<sql name = "create-view-update-trigger-incremental" scriptName="templates/sql/create-view-update-trigger-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-view-update-trigger-incremental.sql"/>
+	<sql name = "create-view-delete-trigger-incremental" scriptName="templates/sql/create-view-delete-trigger-incremental.egl" out ="schema/sql/${currentVersion}/${dialect}/create-view-delete-trigger-incremental.sql"/>
 
 	<sql name = "alter-table-rename-table-incremental" scriptName="templates/sql/alter-table-rename-table.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-rename-table-incremental.sql"/>
 	<sql name = "alter-table-rename-column-incremental" scriptName="templates/sql/alter-table-rename-column.egl" out ="schema/sql/${currentVersion}/${dialect}/alter-table-rename-column-incremental.sql"/>
@@ -75,7 +89,7 @@
 		<change sql ="sql/${currentVersion}/setup-permission.sql"/>
 	</changeset>
 
-	<!-- If DB version exists (so it is installed earlier), have to remove all database object which are not table -->
+	<!-- If an earlier DB schema exists, we remove all database objects affected by the new schema -->
 	<changeset name = "changeset-before-incremental"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-before-incremental.xml" >
 		<change sql ="sql/${currentVersion}/${dialect}/drop-view-insert-trigger.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/drop-view-update-trigger.sql"/>
@@ -92,7 +106,7 @@
 		<change sql ="sql/${currentVersion}/${dialect}/drop-foreignkey.sql"/>
 	</changeset>
 
-	<!-- Run all incremental version between last installed version and current version -->
+	<!-- Update schema to the current version -->
 	<changeset name = "changeset-incremental"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-incremental.xml" >
 		<change sql ="sql/${currentVersion}/${dialect}/backup-table-delete-incremental.sql"/>
 		<change sql ="sql/${currentVersion}/${dialect}/backup-table-modify-incremental.sql"/>
@@ -106,18 +120,19 @@
 		<change sql ="sql/${currentVersion}/${dialect}/drop-table-incremental.sql"/>
 	</changeset>
 
+	<!-- Update schema to the current version -->
 	<changeset name = "changeset-after-incremental"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-after-incremental.xml" >
-		<change sql ="sql/${currentVersion}/${dialect}/create-foreignkey.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-not-null-constraint.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-unique-constraint.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-index.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-table-before-insert-trigger.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-table-before-update-trigger.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-junction-before-insert-trigger.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-view.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-view-insert-trigger.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-view-update-trigger.sql"/>
-		<change sql ="sql/${currentVersion}/${dialect}/create-view-delete-trigger.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-foreignkey-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-not-null-constraint-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-unique-constraint-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-index-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-table-before-insert-trigger-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-table-before-update-trigger-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-junction-before-insert-trigger-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-insert-trigger-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-update-trigger-incremental.sql"/>
+		<change sql ="sql/${currentVersion}/${dialect}/create-view-delete-trigger-incremental.sql"/>
 	</changeset>
 
 	<changeset name = "end"  scriptName="templates/xml/changeset.egl" out="schema/${currentVersion}-${dialect}-end.xml" >
