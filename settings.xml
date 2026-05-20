@@ -42,16 +42,6 @@
           <name>Central Repository</name>
           <url>https://repo.maven.apache.org/maven2</url>
         </repository>
-        <repository>
-          <id>artifact-registry</id>
-          <url>artifactregistry://europe-west1-maven.pkg.dev/anakin2-216418/maven</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </repository>
       </repositories>
       <pluginRepositories>
         <pluginRepository>
