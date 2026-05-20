@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Full build and deploy
-mvn clean deploy -s mvn-settings.xml
+mvn clean deploy -s settings.xml
 
 # Build without deploying
 mvn clean package
@@ -74,4 +74,4 @@ PIM-to-PSM type mappings are defined in Excel spreadsheets (`PIM2PSM.xlsx`, `Acc
 
 ### CI/CD
 
-GitHub Actions (`.github/workflows/build.yaml`) builds with JDK 8 on Ubuntu and deploys to Google Cloud Artifact Registry. Artifact versioning uses a BUILD_NUMBER offset (+600). The `mvn-settings.xml` file contains the artifact registry wagon configuration required for deployment.
+GitHub Actions (`.github/workflows/build.yaml`) builds with JDK 8 on Ubuntu and deploys to Google Cloud Artifact Registry. Artifact versioning uses a BUILD_NUMBER offset (+600). The `settings.xml` file contains the artifact registry wagon configuration required for deployment.
