@@ -62,14 +62,9 @@ jobs:
         if: always()
         run: |
           if [ "${{ job.status }}" = "success" ]; then
-            EMOJI="✅"
-            COLOR="good"
-          elif [ "${{ job.status }}" = "cancelled" ]; then
-            EMOJI="✋"
-            COLOR="warning"
+            EMOJI="🟢"
           else
-            EMOJI="❌"
-            COLOR="danger"
+            EMOJI="🔴"
           fi
           
           REPO_NAME="${GITHUB_REPOSITORY##*/}"
@@ -78,32 +73,9 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%s)
           BUILD_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           
-          TITLE="*${EMOJI} ${REPO_NAME} (${BRANCH}) #${BUILD_NUMBER}*"
-          BODY="_${COMMIT_MSG}_ - *${GITHUB_ACTOR}* (${SHORT_SHA})"
-          TAIL="<${BUILD_URL}|View Build>"
-          
-          PAYLOAD=$(jq -n \
-            --arg color "$COLOR" \
-            --arg title "$TITLE" \
-            --arg body "$BODY" \
-            --arg tail "$TAIL" \
-            '{
-              attachments: [
-                {
-                  color: $color,
-                  blocks: [
-                    {
-                      type: "section",
-                      text: {
-                        type: "mrkdwn",
-                        text: ($title + "\n" + $body + "\n" + $tail)
-                      }
-                    }
-                  ]
-                }
-              ]
-            }')
+          NEWLINE=$'\n'
+          TEXT="${EMOJI} *${REPO_NAME} (${BRANCH}) #${BUILD_NUMBER}*${NEWLINE}_${COMMIT_MSG}_ - ${GITHUB_ACTOR} (${SHORT_SHA})${NEWLINE}<${BUILD_URL}|View Build>"
           
           curl -X POST -H 'Content-type: application/json' \
-            --data "$PAYLOAD" \
+            --data "$(jq -n --arg text "$TEXT" '{text: $text}')" \
             "$SLACK_WEBHOOK_URL"
