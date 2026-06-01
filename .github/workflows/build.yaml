@@ -32,7 +32,7 @@ jobs:
           cache: 'maven'
 
       - name: Copy mvn-settings.xml
-        run: cp mvn-settings.xml /home/runner/.m2/
+        run: cp mvn-settings.xml /home/runner/.m2/settings.xml
 
       - name: mvn set version
         id: version
