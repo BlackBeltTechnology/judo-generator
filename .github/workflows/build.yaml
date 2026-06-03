@@ -31,8 +31,8 @@ jobs:
           distribution: 'adopt'
           cache: 'maven'
 
-      - name: Copy settings.xml
-        run: cp settings.xml /home/runner/.m2/
+      - name: Copy mvn-settings.xml
+        run: cp mvn-settings.xml /home/runner/.m2/settings.xml
 
       - name: mvn set version
         id: version
