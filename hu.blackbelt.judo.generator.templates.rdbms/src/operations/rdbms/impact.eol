@@ -1,0 +1,442 @@
+/*
+ * Impact analysis for incremental schema migration.
+ *
+ * The drop-*.egl and create-*-incremental.egl templates filter their iteration
+ * via the isImpactedDrop()/isImpactedCreate() operations defined here so that
+ * a small model change does not trigger drop+recreate of every FK, index,
+ * unique constraint, view and trigger in the schema.
+ *
+ * Identity is by uuid: the same logical RdbmsElement keeps its uuid across
+ * PREVIOUS/CURRENT/INCREMENTAL models, so the sets below can be queried from
+ * any iteration model.
+ *
+ * In "full mode" (no diff: fresh install or unchanged model) isImpactedDrop
+ * returns false (drop files are empty; changeset-before-incremental is a
+ * no-op) and isImpactedCreate returns true (incremental create files include
+ * everything; the file is harmless because changeset-after-incremental does
+ * not run when no upgrade is happening).
+ */
+
+@cached
+operation isFullMode() : Boolean {
+	return INCREMENTAL!RdbmsModifyTableOperation.all.size() == 0
+		and INCREMENTAL!RdbmsCreateTableOperation.all.size() == 0
+		and INCREMENTAL!RdbmsDeleteTableOperation.all.size() == 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Field-level impact sets (uuids)
+ * ------------------------------------------------------------------------- */
+
+/*
+ * Columns whose physical SQL identity is being torn down: type/size change
+ * (alter-column-type uses ADD NEW / COPY / DROP OLD / RENAME NEW), value-field
+ * <-> foreign-key flip, or outright deletion. Anything pinned to the column
+ * (FK, index, unique, NOT NULL, view, trigger) must be dropped first.
+ */
+@cached
+operation columnUuidsRebuilt() : Set {
+	var result = new Set;
+	for (mop in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		for (fop in mop.modifyFieldOperations) {
+			if (fop.fieldIsAltered()) {
+				if (fop.field.isDefined()) result.add(fop.field.uuid);
+				if (fop.previousField.isDefined()) result.add(fop.previousField.uuid);
+			}
+		}
+		for (fop in mop.deleteFieldOperations) {
+			if (fop.field.isDefined()) result.add(fop.field.uuid);
+		}
+	}
+	return result;
+}
+
+/*
+ * Columns whose SQL name changes (without a physical rebuild). FK/index/unique
+ * constraints reference the column by id and survive a rename, but views and
+ * triggers hardcode the column name in their DDL and must be rebuilt.
+ */
+@cached
+operation columnUuidsRenamed() : Set {
+	var result = new Set;
+	for (mop in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		for (fop in mop.modifyFieldOperations) {
+			if (fop.nameChanged and not fop.fieldIsAltered()) {
+				if (fop.field.isDefined()) result.add(fop.field.uuid);
+				if (fop.previousField.isDefined()) result.add(fop.previousField.uuid);
+			}
+		}
+	}
+	return result;
+}
+
+@cached
+operation createdFieldUuids() : Set {
+	var result = new Set;
+	for (mop in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		for (fop in mop.createFieldOperations) {
+			if (fop.field.isDefined()) result.add(fop.field.uuid);
+		}
+	}
+	return result;
+}
+
+@cached
+operation modifiedFieldUuids() : Set {
+	var result = new Set;
+	for (mop in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		for (fop in mop.modifyFieldOperations) {
+			if (fop.field.isDefined()) result.add(fop.field.uuid);
+			if (fop.previousField.isDefined()) result.add(fop.previousField.uuid);
+		}
+	}
+	return result;
+}
+
+@cached
+operation deletedFieldUuids() : Set {
+	var result = new Set;
+	for (mop in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		for (fop in mop.deleteFieldOperations) {
+			if (fop.field.isDefined()) result.add(fop.field.uuid);
+		}
+	}
+	return result;
+}
+
+@cached
+operation columnUuidsLosingMandatory() : Set {
+	var result = new Set;
+	for (mop in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		for (fop in mop.modifyFieldOperations) {
+			if (fop.mandatoryChanged and fop.field.isDefined() and not fop.field.mandatory) {
+				if (fop.previousField.isDefined()) result.add(fop.previousField.uuid);
+				result.add(fop.field.uuid);
+			}
+		}
+	}
+	return result;
+}
+
+@cached
+operation columnUuidsGainingMandatory() : Set {
+	var result = new Set;
+	for (mop in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		for (fop in mop.modifyFieldOperations) {
+			if (fop.mandatoryChanged and fop.field.isDefined() and fop.field.mandatory) {
+				if (fop.previousField.isDefined()) result.add(fop.previousField.uuid);
+				result.add(fop.field.uuid);
+			}
+		}
+		for (fop in mop.createFieldOperations) {
+			if (fop.field.isDefined() and fop.field.mandatory) result.add(fop.field.uuid);
+		}
+	}
+	return result;
+}
+
+/* ---------------------------------------------------------------------------
+ * Table-level impact sets (uuids)
+ * ------------------------------------------------------------------------- */
+
+@cached
+operation createdTableUuids() : Set {
+	var result = new Set;
+	for (op in INCREMENTAL!RdbmsCreateTableOperation.all) {
+		if (op.table.isDefined()) result.add(op.table.uuid);
+	}
+	return result;
+}
+
+@cached
+operation deletedTableUuids() : Set {
+	var result = new Set;
+	for (op in INCREMENTAL!RdbmsDeleteTableOperation.all) {
+		if (op.table.isDefined()) result.add(op.table.uuid);
+	}
+	return result;
+}
+
+@cached
+operation modifiedTableUuids() : Set {
+	var result = new Set;
+	for (op in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		if (op.table.isDefined()) result.add(op.table.uuid);
+		if (op.previousTable.isDefined()) result.add(op.previousTable.uuid);
+	}
+	return result;
+}
+
+/*
+ * Tables whose readOnly-FK set or root-table audit footprint changed. The BU
+ * trigger body interpolates each readOnly FK (see
+ * create-table-before-update-trigger.egl), so any add/remove/modify of a
+ * readOnly FK on a table forces that trigger to be rebuilt.
+ */
+@cached
+operation tableUuidsWithReadOnlyFkChange() : Set {
+	var result = new Set;
+	for (mop in INCREMENTAL!RdbmsModifyTableOperation.all) {
+		var touched = false;
+		for (fop in mop.createFieldOperations) {
+			if (fop.field.isDefined() and fop.field.isKindOf(RDBMS!RdbmsForeignKey) and fop.field.readOnly) touched = true;
+		}
+		for (fop in mop.deleteFieldOperations) {
+			if (fop.field.isDefined() and fop.field.isKindOf(RDBMS!RdbmsForeignKey) and fop.field.readOnly) touched = true;
+		}
+		for (fop in mop.modifyFieldOperations) {
+			if (fop.field.isDefined() and fop.field.isKindOf(RDBMS!RdbmsForeignKey) and fop.field.readOnly) touched = true;
+			if (fop.previousField.isDefined() and fop.previousField.isKindOf(RDBMS!RdbmsForeignKey) and fop.previousField.readOnly) touched = true;
+		}
+		if (touched) {
+			if (mop.table.isDefined()) result.add(mop.table.uuid);
+			if (mop.previousTable.isDefined()) result.add(mop.previousTable.uuid);
+		}
+	}
+	return result;
+}
+
+/* ---------------------------------------------------------------------------
+ * NOT NULL constraints
+ *
+ * isImpactedDropNotNull is asked of a field iterated on the CURRENT model. A
+ * column losing mandatory has uuid in columnUuidsLosingMandatory but is not
+ * mandatory in CURRENT, so the caller must drop the f.mandatory check before
+ * applying this filter. Column-rebuild cases do not need an explicit drop
+ * because alter-column-type uses DROP COLUMN, which discards any NOT NULL on
+ * the old column.
+ * ------------------------------------------------------------------------- */
+
+operation RDBMS!RdbmsField isImpactedDropNotNull() : Boolean {
+	if (isFullMode()) return false;
+	return columnUuidsLosingMandatory().includes(self.uuid);
+}
+
+operation RDBMS!RdbmsField isImpactedCreateNotNull() : Boolean {
+	if (not self.mandatory) return false;
+	if (isFullMode()) return true;
+	return columnUuidsGainingMandatory().includes(self.uuid);
+}
+
+/* ---------------------------------------------------------------------------
+ * Foreign keys
+ * ------------------------------------------------------------------------- */
+
+operation RDBMS!RdbmsForeignKey isImpactedDrop() : Boolean {
+	if (isFullMode()) return false;
+	if (deletedFieldUuids().includes(self.uuid)) return true;
+	if (modifiedFieldUuids().includes(self.uuid)) return true;
+	if (columnUuidsRebuilt().includes(self.uuid)) return true;
+	if (self.referenceKey.isDefined() and columnUuidsRebuilt().includes(self.referenceKey.uuid)) return true;
+	if (self.table.isDefined() and deletedTableUuids().includes(self.table.uuid)) return true;
+	return false;
+}
+
+operation RDBMS!RdbmsForeignKey isImpactedCreate() : Boolean {
+	if (isFullMode()) return true;
+	if (self.table.isDefined() and deletedTableUuids().includes(self.table.uuid)) return false;
+	if (createdFieldUuids().includes(self.uuid)) return true;
+	if (self.table.isDefined() and createdTableUuids().includes(self.table.uuid)) return true;
+	return self.isImpactedDrop();
+}
+
+/* ---------------------------------------------------------------------------
+ * Indexes
+ * ------------------------------------------------------------------------- */
+
+operation RDBMS!RdbmsIndex isImpactedDrop() : Boolean {
+	if (isFullMode()) return false;
+	if (self.table.isDefined() and deletedTableUuids().includes(self.table.uuid)) return true;
+	for (f in self.fields) {
+		if (columnUuidsRebuilt().includes(f.uuid)) return true;
+	}
+	return false;
+}
+
+operation RDBMS!RdbmsIndex isImpactedCreate() : Boolean {
+	if (isFullMode()) return true;
+	if (self.table.isDefined() and deletedTableUuids().includes(self.table.uuid)) return false;
+	if (self.table.isDefined() and createdTableUuids().includes(self.table.uuid)) return true;
+	for (f in self.fields) {
+		if (createdFieldUuids().includes(f.uuid)) return true;
+	}
+	return self.isImpactedDrop();
+}
+
+/* ---------------------------------------------------------------------------
+ * Unique constraints
+ * ------------------------------------------------------------------------- */
+
+operation RDBMS!RdbmsUniqueConstraint isImpactedDrop() : Boolean {
+	if (isFullMode()) return false;
+	if (self.table.isDefined() and deletedTableUuids().includes(self.table.uuid)) return true;
+	for (f in self.fields) {
+		if (columnUuidsRebuilt().includes(f.uuid)) return true;
+	}
+	return false;
+}
+
+operation RDBMS!RdbmsUniqueConstraint isImpactedCreate() : Boolean {
+	if (isFullMode()) return true;
+	if (self.table.isDefined() and deletedTableUuids().includes(self.table.uuid)) return false;
+	if (self.table.isDefined() and createdTableUuids().includes(self.table.uuid)) return true;
+	for (f in self.fields) {
+		if (createdFieldUuids().includes(f.uuid)) return true;
+	}
+	return self.isImpactedDrop();
+}
+
+/* ---------------------------------------------------------------------------
+ * Views and view triggers
+ * ------------------------------------------------------------------------- */
+
+@cached
+operation RDBMS!RdbmsView referencedColumnUuids() : Set {
+	var result = new Set;
+	for (f in self.fields) {
+		if (f.isKindOf(RDBMS!RdbmsViewTableField) and f.tableField.isDefined()) {
+			result.add(f.tableField.uuid);
+		}
+	}
+	for (rel in self.relations) {
+		if (rel.fromField.isDefined()) result.add(rel.fromField.uuid);
+		if (rel.toField.isDefined()) result.add(rel.toField.uuid);
+	}
+	return result;
+}
+
+@cached
+operation RDBMS!RdbmsView referencedTableUuids() : Set {
+	var result = new Set;
+	for (a in self.tables) {
+		if (a.table.isDefined()) result.add(a.table.uuid);
+	}
+	return result;
+}
+
+/*
+ * The view in the database mirrors PREVIOUS, not CURRENT. A column being
+ * deleted (or rebuilt) only appears in the PREVIOUS view's field list, since
+ * the CURRENT view has already been regenerated without it. So drop-impact
+ * has to consult the PREVIOUS counterpart as well, otherwise we miss views
+ * that depend on a column the incremental step is about to drop.
+ */
+@cached
+operation RDBMS!RdbmsView previousCounterpart() : RDBMS!RdbmsView {
+	return PREVIOUS!RdbmsView.all.selectOne(v | v.uuid == self.uuid);
+}
+
+@cached
+operation RDBMS!RdbmsView previousReferencedColumnUuids() : Set {
+	var result = new Set;
+	var prev = self.previousCounterpart();
+	if (prev.isUndefined()) return result;
+	for (f in prev.fields) {
+		if (f.isKindOf(RDBMS!RdbmsViewTableField) and f.tableField.isDefined()) {
+			result.add(f.tableField.uuid);
+		}
+	}
+	for (rel in prev.relations) {
+		if (rel.fromField.isDefined()) result.add(rel.fromField.uuid);
+		if (rel.toField.isDefined()) result.add(rel.toField.uuid);
+	}
+	return result;
+}
+
+@cached
+operation RDBMS!RdbmsView previousReferencedTableUuids() : Set {
+	var result = new Set;
+	var prev = self.previousCounterpart();
+	if (prev.isUndefined()) return result;
+	for (a in prev.tables) {
+		if (a.table.isDefined()) result.add(a.table.uuid);
+	}
+	return result;
+}
+
+/*
+ * True when the view's DDL is not identical to what's in PREVIOUS, regardless
+ * of direction. Both Drop and Create are derived from this so the two sides
+ * cannot disagree. Concretely:
+ *   - a column the view exposes (now or previously) is being rebuilt/renamed
+ *   - a column the view newly exposes is being added (your scenario)
+ *   - a table the view joins (now or previously) is being created or deleted
+ */
+@cached
+operation RDBMS!RdbmsView definitionAffected() : Boolean {
+	var currentRefs = self.referencedColumnUuids();
+	var previousRefs = self.previousReferencedColumnUuids();
+	for (uuid in columnUuidsRebuilt()) {
+		if (currentRefs.includes(uuid) or previousRefs.includes(uuid)) return true;
+	}
+	for (uuid in columnUuidsRenamed()) {
+		if (currentRefs.includes(uuid) or previousRefs.includes(uuid)) return true;
+	}
+	for (uuid in createdFieldUuids()) {
+		if (currentRefs.includes(uuid)) return true;
+	}
+	var currentRefTables = self.referencedTableUuids();
+	var previousRefTables = self.previousReferencedTableUuids();
+	for (uuid in deletedTableUuids()) {
+		if (currentRefTables.includes(uuid) or previousRefTables.includes(uuid)) return true;
+	}
+	for (uuid in createdTableUuids()) {
+		if (currentRefTables.includes(uuid)) return true;
+	}
+	return false;
+}
+
+operation RDBMS!RdbmsView isImpactedDrop() : Boolean {
+	if (isFullMode()) return false;
+	// Brand-new view: nothing in the DB to drop.
+	if (self.previousCounterpart().isUndefined()) return false;
+	return self.definitionAffected();
+}
+
+operation RDBMS!RdbmsView isImpactedCreate() : Boolean {
+	if (isFullMode()) return true;
+	// Brand-new view: must be created even if definitionAffected misses it.
+	if (self.previousCounterpart().isUndefined()) return true;
+	return self.definitionAffected();
+}
+
+/* ---------------------------------------------------------------------------
+ * Table triggers (BI / BU / Junction-BI)
+ *
+ * BI on parent tables: stamps audit columns on insert. Tied to the table
+ * itself; rebuild whenever the table is affected.
+ *
+ * BU on parent tables: enforces readOnly FKs and resets audit columns on
+ * update. Rebuild on table changes or when the readOnly FK set changes.
+ *
+ * Junction BI: assigns serial id on insert. Tied to the junction table.
+ * ------------------------------------------------------------------------- */
+
+operation RDBMS!RdbmsTable isImpactedBeforeInsertTriggerDrop() : Boolean {
+	if (isFullMode()) return false;
+	// Newly created tables: nothing to drop yet (the table doesn't exist in the DB
+	// before this migration runs). Deleted tables: handled by DROP TABLE CASCADE,
+	// and they would not appear in CURRENT-iterated drop templates anyway.
+	if (createdTableUuids().includes(self.uuid)) return false;
+	return modifiedTableUuids().includes(self.uuid);
+}
+
+operation RDBMS!RdbmsTable isImpactedBeforeInsertTriggerCreate() : Boolean {
+	if (isFullMode()) return true;
+	if (deletedTableUuids().includes(self.uuid)) return false;
+	if (createdTableUuids().includes(self.uuid)) return true;
+	return modifiedTableUuids().includes(self.uuid);
+}
+
+operation RDBMS!RdbmsTable isImpactedBeforeUpdateTriggerDrop() : Boolean {
+	if (isFullMode()) return false;
+	if (createdTableUuids().includes(self.uuid)) return false;
+	return tableUuidsWithReadOnlyFkChange().includes(self.uuid);
+}
+
+operation RDBMS!RdbmsTable isImpactedBeforeUpdateTriggerCreate() : Boolean {
+	if (isFullMode()) return true;
+	if (deletedTableUuids().includes(self.uuid)) return false;
+	if (createdTableUuids().includes(self.uuid)) return true;
+	return tableUuidsWithReadOnlyFkChange().includes(self.uuid);
+}

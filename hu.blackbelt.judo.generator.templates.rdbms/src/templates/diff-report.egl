@@ -1,0 +1,121 @@
+[%
+  import "../operations/_importAll.eol";
+
+  var createTableOps = INCREMENTAL!RdbmsCreateTableOperation.all
+        .sortBy(o | o.table.sqlName);
+  var deleteTableOps = INCREMENTAL!RdbmsDeleteTableOperation.all
+        .sortBy(o | o.table.sqlName);
+  var modifyTableOps = INCREMENTAL!RdbmsModifyTableOperation.all
+        .sortBy(o | o.table.sqlName);
+
+  var newFieldCount = 0;
+  var removedFieldCount = 0;
+  var modifiedFieldCount = 0;
+  for (op in modifyTableOps) {
+    newFieldCount = newFieldCount + op.createFieldOperations.size();
+    removedFieldCount = removedFieldCount + op.deleteFieldOperations.size();
+    modifiedFieldCount = modifiedFieldCount + op.modifyFieldOperations.size();
+  }
+%]
+# Schema diff ([%= dialect() %]): [%= previousVersion() %] → [%= version() %]
+
+[% if (createTableOps.isEmpty() and deleteTableOps.isEmpty() and modifyTableOps.isEmpty()) { %]
+_No structural changes between these versions._
+[% } else { %]
+## Summary
+
+| Change             | Count |
+|--------------------|------:|
+| Tables created     | [%= createTableOps.size() %] |
+| Tables deleted     | [%= deleteTableOps.size() %] |
+| Tables modified    | [%= modifyTableOps.size() %] |
+| Columns added      | [%= newFieldCount %] |
+| Columns removed    | [%= removedFieldCount %] |
+| Columns modified   | [%= modifiedFieldCount %] |
+
+[% if (not createTableOps.isEmpty()) { %]
+## Tables created ([%= createTableOps.size() %])
+
+[% for (op in createTableOps) { var t = op.table; %]
+### `[%= t.sqlName %]`
+
+`[%= t.uuid %]` — [%= t.name %]
+
+[% if (t.fields.size() > 0) { %]
+Fields ([%= t.fields.size() %]):
+
+[% for (f in t.fields.sortBy(field | field.sqlName)) { %]
+- `[%= f.sqlName %]` `[%= f.toFieldDefinition() %]`[% if (f.isKindOf(RDBMS!RdbmsForeignKey) and f.referenceKey.isDefined() and f.referenceKey.table.isDefined()) { %] _(FK → `[%= f.referenceKey.table.sqlName %]`)_[% } %] — [%= f.name %]
+[% } %]
+[% } %]
+
+[% } %]
+[% } %]
+
+[% if (not deleteTableOps.isEmpty()) { %]
+## Tables deleted ([%= deleteTableOps.size() %])
+
+[% for (op in deleteTableOps) { var t = op.table; %]
+- `[%= t.sqlName %]` — [%= t.name %] (`[%= t.uuid %]`)
+[% } %]
+
+[% } %]
+
+[% if (not modifyTableOps.isEmpty()) { %]
+## Tables modified ([%= modifyTableOps.size() %])
+
+[% for (op in modifyTableOps) { var t = op.table; %]
+### `[%= t.sqlName %]`
+
+`[%= t.uuid %]` — [%= t.name %]
+
+[% if (op.nameChanged and op.previousTable.isDefined()) { %]
+- **Renamed table:** `[%= op.previousTable.sqlName %]` → `[%= t.sqlName %]`
+[% } %]
+
+[% if (op.createFieldOperations.size() > 0) { %]
+**Columns added ([%= op.createFieldOperations.size() %]):**
+
+[% for (fop in op.createFieldOperations.sortBy(f | f.field.sqlName)) { var f = fop.field; %]
+- `[%= f.sqlName %]` `[%= f.toFieldDefinition() %]`[% if (f.isKindOf(RDBMS!RdbmsForeignKey) and f.referenceKey.isDefined() and f.referenceKey.table.isDefined()) { %] _(FK → `[%= f.referenceKey.table.sqlName %]`)_[% } %] — [%= f.name %]
+[% } %]
+[% } %]
+
+[% if (op.deleteFieldOperations.size() > 0) { %]
+**Columns removed ([%= op.deleteFieldOperations.size() %]):**
+
+[% for (fop in op.deleteFieldOperations.sortBy(f | f.field.sqlName)) { var f = fop.field; %]
+- `[%= f.sqlName %]` — [%= f.name %]
+[% } %]
+[% } %]
+
+[% if (op.modifyFieldOperations.size() > 0) { %]
+**Columns modified ([%= op.modifyFieldOperations.size() %]):**
+
+[% for (fop in op.modifyFieldOperations.sortBy(f | f.field.sqlName)) { var f = fop.field; var pf = fop.previousField; %]
+- `[%= f.sqlName %]`[% if (fop.nameChanged and pf.isDefined()) { %] _(renamed from `[%= pf.sqlName %]`)_[% } %]:
+  [% if (fop.typeChanged and pf.isDefined()) { %]
+  - type: `[%= pf.toFieldDefinition() %]` → `[%= f.toFieldDefinition() %]`
+  [% } %]
+  [% if (fop.sizeChanged and not fop.typeChanged and pf.isDefined()) { %]
+  - size/precision/scale: `[%= pf.toFieldDefinition() %]` → `[%= f.toFieldDefinition() %]`
+  [% } %]
+  [% if (fop.mandatoryChanged) { %]
+    [% if (f.mandatory) { %]
+  - became NOT NULL
+    [% } else { %]
+  - became NULLABLE
+    [% } %]
+  [% } %]
+  [% if (fop.changedValueFieldToForeignKey) { %]
+  - kind: value field → foreign key
+  [% } %]
+  [% if (fop.changedForeignKeyToValueField) { %]
+  - kind: foreign key → value field
+  [% } %]
+[% } %]
+[% } %]
+
+[% } %]
+[% } %]
+[% } %]

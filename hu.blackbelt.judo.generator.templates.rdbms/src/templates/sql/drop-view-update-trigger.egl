@@ -4,7 +4,7 @@
 %]
 --liquibase formatted sql
 
-[% for (view in CURRENT!RdbmsView.all) { %]
+[% for (view in CURRENT!RdbmsView.all.select(v | v.isImpactedDrop())) { %]
 
 --changeset generator:DROP_TRIGGER_INSTEAD_OF_UPDATE_[%= view.sqlName %]#[%= version() %] dbms:[%= dialectLiquibaseName() %] logicalFilePath:[%= scriptName %]
 -- [%= view.name %] [%= view.primaryTable.table.uuid %]
